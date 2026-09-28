@@ -99,24 +99,24 @@ body.shake .wrap{animation:shake .35s}
 <canvas id="fx"></canvas>
 
 <div class="over show" id="intro">
-  <div style="font-weight:900;color:var(--muted);margin-bottom:18px">給你的驚喜 · 按一下解除封印</div>
-  <div class="seal" id="seal">封印</div>
+  <div style="font-weight:900;color:var(--muted);margin-bottom:18px">作文默寫練習 · 按一下開始</div>
+  <div class="seal" id="seal">開始</div>
 </div>
 
 <div class="over" id="rk">
   <svg class="mc" viewBox="0 0 200 200" id="mc"></svg>
   <div class="big" id="rkBig"></div>
   <div class="sub" id="rkSub"></div>
-  <button class="btn" id="rkGo">繼續修行 →</button>
+  <button class="btn" id="rkGo">繼續 →</button>
 </div>
 
 <div class="top">
-  <span class="ttl">洛琪希老師的無詠唱修行</span><span class="rank" id="rank">初級魔術師</span>
+  <span class="ttl">作文默寫練習</span><span class="rank" id="rank">初級</span>
   <div class="chips" id="chips"></div><div class="sp"></div>
 </div>
 
 <div class="wrap">
-  <div class="roxy"><div class="av">洛</div><div class="bub" id="say"></div></div>
+  <div class="roxy"><div class="av">文</div><div class="bub" id="say"></div></div>
 
   <div id="play">
     <div class="grid">
@@ -127,8 +127,8 @@ body.shake .wrap{animation:shake .35s}
         <p class="para" id="para"></p>
       </div>
       <div class="side">
-        <div class="mana">魔力 <div class="bar"><i id="mana"></i></div><span id="combo"></span></div>
-        <h3>咒語碎片<span id="poolHint">按下一格要放的那一片</span></h3>
+        <div class="mana">熟練度 <div class="bar"><i id="mana"></i></div><span id="combo"></span></div>
+        <h3>要填的詞<span id="poolHint">按下一格要放的那個詞</span></h3>
         <div class="pool" id="pool"></div>
         <div class="stat" id="stat"></div>
         <div id="olWrap" class="hide" style="margin-top:14px"><h3>你的大綱<span>星期三 iPad 上只有這一張</span></h3><div class="ol" id="ol1"></div></div>
@@ -141,7 +141,7 @@ body.shake .wrap{animation:shake .35s}
       <div id="cards"></div>
       <div class="side"><h3>你的大綱<span>只看這一張,講出口或者寫在紙上</span></h3><div class="ol" id="ol2"></div>
         <div class="card" style="margin-top:14px"><b>記到幾多紅字:</b> <span id="silScore">0 / 0</span><div class="stat" style="margin-top:6px">每段展開之後,按一下你記得的紅字,它會變綠。</div>
-        <div style="margin-top:10px"><button class="btn" id="finish">完成修行</button></div></div>
+        <div style="margin-top:10px"><button class="btn" id="finish">完成</button></div></div>
       </div>
     </div>
   </div>
@@ -160,13 +160,13 @@ var PARAS=[
 var LABS=["第一段 · 引入 + 立場","第二段 · 左格:正直","第三段 · 中格:誠實可信","第四段 · 右格:見聞廣博","第五段 · 結論(大綱沒有這一格)"];
 var DECOY=[["首先,","可見他是一位益友。","我覺得魯迪可能是益友。"],["其次,","意思是要做一個令朋友信任的人。","可見他是一位誠實可信的益友。"],["首先,","可見他是一位正直的益友。","意思是看見應該做的事卻不去做,就是沒有勇氣。"],["其次,","可見他是一位正直的益友。","所以他很厲害。"],["由此可見,魯迪","首先,","所以,魯迪可能不是益友。"]];
 var LV=[
- {n:"初級",hint:true,say:"魔術不是背出來的,是組合出來的。藍字大綱已經幫你寫好,紅字才是咒語。每一格我給你第一個字做提示。"},
+ {n:"初級",hint:true,say:"作文不是背出來的,是組合出來的。藍字大綱已經幫你寫好,紅字才是要記的重點。每一格給你第一個字做提示。"},
  {n:"中級",say:"很好。這一級,提示沒有了。紅字要自己認得。"},
- {n:"上級",dec:true,say:"假咒語會混進來 —— 「其次」放錯段、「可見」用錯詞。看清楚這一段是哪一格。"},
- {n:"聖級",dec:true,blue:true,ol:true,say:"連大綱上的字也要你自己放。右邊只有大綱,跟星期三一模一樣。"},
- {n:"王級",silent:true,say:"最後一關:無詠唱。沒有碎片,只有大綱。每一段先講出口,或者寫在紙上,然後才展開對答案。"}
+ {n:"上級",dec:true,say:"干擾選項會混進來 —— 「其次」放錯段、「可見」用錯詞。看清楚這一段是哪一格。"},
+ {n:"高級",dec:true,blue:true,ol:true,say:"連大綱上的字也要你自己放。右邊只有大綱,跟星期三一模一樣。"},
+ {n:"默寫級",silent:true,say:"最後一關:全默。沒有詞語卡,只有大綱。每一段先講出口,或者寫在紙上,然後才展開對答案。"}
 ];
-var TITLES=["初級魔術師","中級魔術師","上級魔術師","聖級魔術師","王級魔術師","帝級魔術師","神級魔術師"];
+var TITLES=["初級","中級","上級","高級","默寫級","進階","滿分級"];
 var lv=0,pi=0,blanks=[],cur=0,combo=0,wrong=0,done={},muted=false,AC=null;
 try{ done=JSON.parse(localStorage.getItem("mushou_done")||"{}")||{}; }catch(e){ done={}; }
 function save(){ try{ localStorage.setItem("mushou_done",JSON.stringify(done)); }catch(e){} }
@@ -213,7 +213,7 @@ function chips(){
   $("rank").textContent=TITLES[lv];
 }
 function startLevel(k){
-  lv=k; pi=0; combo=0; wrong=0; chips(); $("say").textContent="洛琪希:「"+LV[k].say+"」";
+  lv=k; pi=0; combo=0; wrong=0; chips(); $("say").textContent="「"+LV[k].say+"」";
   if(LV[k].silent){ $("play").classList.add("hide"); $("silent").classList.remove("hide"); silentStart(); return; }
   $("silent").classList.add("hide"); $("play").classList.remove("hide");
   $("olWrap").classList.toggle("hide",!LV[k].ol);
@@ -254,13 +254,13 @@ function tap(btn){
     wrong++; combo=0; btn.classList.remove("bad"); void btn.offsetWidth; btn.classList.add("bad"); thud();
     document.body.classList.remove("shake"); void document.body.offsetWidth; document.body.classList.add("shake");
     var dc=DECOY[pi].indexOf(btn.textContent)>=0;
-    $("say").textContent="洛琪希:「"+(dc?"這是假咒語。想一想:這一段是哪一格?開頭應該用哪個詞?":"次序不對。先想想這一句下一步要講什麼。")+"」";
+    $("say").textContent="「"+(dc?"這是干擾選項。想一想:這一段是哪一格?開頭應該用哪個詞?":"次序不對。先想想這一句下一步要講什麼。")+"」";
     stat();
   }
 }
 function paraDone(){
   $("pbox").classList.add("cleared"); var r=$("pbox").getBoundingClientRect(); ring(r.left+r.width/2,r.top+r.height/2); fanfare();
-  setTimeout(function(){ pi++; if(pi>=5) levelDone(); else { $("say").textContent="洛琪希:「"+LV[lv].say+"」"; renderPara(); } },1300);
+  setTimeout(function(){ pi++; if(pi>=5) levelDone(); else { $("say").textContent="「"+LV[lv].say+"」"; renderPara(); } },1300);
 }
 function rankUp(big,sub,btn,cb){
   var o=$("rk"); o.classList.remove("rankup"); void o.offsetWidth; o.classList.add("rankup","show");
@@ -271,7 +271,7 @@ function rankUp(big,sub,btn,cb){
 function levelDone(){
   done[lv]=1; save();
   var next=lv+1;
-  rankUp("晉升 · "+TITLES[next], "「"+LV[next].say+"」(這一級放錯 "+wrong+" 次)", "開始"+LV[next].n+" →", function(){ startLevel(next); });
+  rankUp("升級 · "+TITLES[next], "「"+LV[next].say+"」(這一級放錯 "+wrong+" 次)", "開始"+LV[next].n+" →", function(){ startLevel(next); });
 }
 
 var silTotal=0,silGot=0;
@@ -292,11 +292,11 @@ function reveal(k,btn){
   $("silScore").textContent=silGot+" / "+silTotal;
 }
 $("finish").onclick=function(){
-  if(document.querySelectorAll("#cards .btn").length){ $("say").textContent="洛琪希:「還有段落未展開。五段都講完、寫完,才算修行完成。」"; return; }
+  if(document.querySelectorAll("#cards .btn").length){ $("say").textContent="「還有段落未展開。五段都講完、寫完,才算完成。」"; return; }
   done[4]=1; save(); var pct=silTotal?Math.round(silGot/silTotal*100):0, god=pct>=90;
-  rankUp((god?"神級":"帝級")+" · 無詠唱達成",
-    "紅字你記得 "+silGot+" / "+silTotal+"("+pct+"%)。魯迪很小就學會無詠唱,你只用了兩日。星期三,你只需要看大綱,然後無詠唱。"+(god?"":"再修行一次,90% 以上就是神級。"),
-    "再修行一次", function(){ startLevel(god?0:4); });
+  rankUp((god?"滿分":"完成")+" · 全默達成",
+    "紅字你記得 "+silGot+" / "+silTotal+"("+pct+"%)。你只用了兩日就記熟。星期三,你只需要看大綱,然後默寫。"+(god?"":"再練一次,90% 以上就是滿分。"),
+    "再練一次", function(){ startLevel(god?0:4); });
   $("rank").textContent=god?TITLES[6]:TITLES[5];
 };
 
