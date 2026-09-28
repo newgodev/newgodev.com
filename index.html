@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NEWGODEV — hw video</title>
+<meta name="description" content="Benedict 的功課影片。喺學校打開 newgodev.com,揀一個掣就睇。">
+<meta name="theme-color" content="#14110d">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%230B0B0E'/%3E%3CclipPath id='c'%3E%3Crect x='0' y='96' width='512' height='416'/%3E%3C/clipPath%3E%3Cg clip-path='url(%23c)'%3E%3Cpolyline points='104,372 104,96 200,372 272,96 344,372 416,96' fill='none' stroke='%23FCBC24' stroke-width='68' stroke-linejoin='miter' stroke-miterlimit='30' stroke-linecap='butt'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Spline+Sans:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  font-size:21px;
+  --bg:#14110d; --bg2:#191510; --panel:#0f0c09; --line:#2c241a;
+  --gold:#e7b173; --gold2:#f3cf99; --gold3:#c98e4a;
+  --mtl:#FCBC24; --mtl2:#FFF3C9; --mtl3:#E0A310;
+  --ink:#efe4d6; --dim:rgba(164,148,129,.85);
+  --card:rgba(28,23,16,.55);
+  --r:20px;
+}
+*{box-sizing:border-box}
+html{scrollbar-width:thin;scrollbar-color:#c98e4a #16120d}
+::-webkit-scrollbar{width:14px;height:14px}
+::-webkit-scrollbar-track{background:#16120d;border-radius:999px}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#e7b173,#c98e4a);border-radius:999px;border:3px solid #16120d}
+::-webkit-scrollbar-thumb:hover{background:#f3cf99}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Spline Sans",system-ui,sans-serif; line-height:1.5;
+  min-height:100vh;
+  background-image:radial-gradient(1200px 600px at 80% -10%,rgba(252,188,36,.06),transparent 60%),
+                   radial-gradient(900px 500px at -10% 110%,rgba(231,177,115,.05),transparent 60%);
+}
+.wrap{max-width:1040px; margin:0 auto; padding:44px 22px 80px}
+.brand{display:flex; align-items:center; gap:14px; margin-bottom:6px}
+.mark{width:46px;height:46px;flex:0 0 auto}
+.brand h1{
+  font-family:"Fraunces",serif; font-weight:800; font-size:2.1rem; margin:0;
+  letter-spacing:.5px;
+  background:linear-gradient(180deg,var(--mtl2),var(--mtl),var(--mtl3));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.lead{color:var(--dim); font-size:1rem; margin:0 0 8px 60px}
+.hint{margin:14px 0 30px 60px; font-size:.86rem; color:var(--gold3);
+  font-family:"JetBrains Mono",monospace}
+.hint b{color:var(--gold2); font-weight:600}
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:18px}
+a.card{
+  display:block; text-decoration:none; color:inherit;
+  background:var(--card); border:1px solid var(--line); border-radius:var(--r);
+  padding:22px 22px 20px; position:relative; overflow:hidden;
+  transition:transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+}
+a.card:hover,a.card:focus{transform:translateY(-3px); border-color:var(--gold3);
+  box-shadow:0 14px 34px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,243,201,.06)}
+.code{font-family:"JetBrains Mono",monospace; font-size:.82rem; color:var(--mtl);
+  letter-spacing:2px; text-transform:uppercase}
+.tt{font-family:"Fraunces",serif; font-weight:600; font-size:1.28rem; margin:6px 0 4px; color:var(--gold2)}
+.meta{font-size:.82rem; color:var(--dim)}
+.play{position:absolute; right:18px; bottom:16px; width:44px; height:44px; border-radius:50%;
+  background:linear-gradient(180deg,var(--mtl),var(--mtl3)); display:grid; place-items:center;
+  box-shadow:0 6px 16px rgba(224,163,16,.35)}
+.play svg{width:18px;height:18px;margin-left:3px;fill:#1a1206}
+.empty{grid-column:1/-1; border:1px dashed var(--line); border-radius:var(--r);
+  padding:26px; text-align:center; color:var(--dim); font-size:.92rem}
+.foot{margin-top:46px; color:var(--dim); font-size:.76rem;
+  font-family:"JetBrains Mono",monospace; text-align:center}
+@media(max-width:560px){
+  :root{font-size:19px}
+  .lead,.hint{margin-left:0}
+  .grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <svg class="mark" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#0B0B0E"/><g><polyline points="104,372 104,140 200,372 272,140 344,372 416,140" fill="none" stroke="#FCBC24" stroke-width="60" stroke-linejoin="miter" stroke-miterlimit="30"/></g></svg>
+    <h1>hw video</h1>
+  </div>
+  <p class="lead">功課影片。老師工作紙 + 課本原圖,鏡頭拉近,一步一步講答案由邊度嚟。</p>
+  <p class="hint">喺學校打開 <b>newgodev.com</b>,揀一個掣就睇。每條片有網址 <b>newgodev.com/a001</b> 咁,可以直接跳。</p>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="foot">NEWGODEV · 石宇浩 · measured, not promised</div>
+</div>
+
+<script>
+// 加一條新片:喺 ITEMS 最前面加一行,再喺 repo 開 aNNN/index.html 就得。
+const ITEMS = [
+  { code:"a001", title:"示範:因式分解", subject:"數學 · demo", time:"3:20" },
+];
+
+const grid = document.getElementById("grid");
+const PLAY = '<span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>';
+if(!ITEMS.length){
+  grid.innerHTML = '<div class="empty">還未有片。做好一份功課影片,佢就會喺呢度出現。</div>';
+}else{
+  grid.innerHTML = ITEMS.map(it => `
+    <a class="card" href="./${it.code}/">
+      <div class="code">${it.code}</div>
+      <div class="tt">${it.title}</div>
+      <div class="meta">${it.subject} · ${it.time}</div>
+      ${PLAY}
+    </a>`).join("");
+}
+</script>
+</body>
+</html>
