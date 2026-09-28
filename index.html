@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>NEWGODEV — hw video</title>
-<meta name="description" content="Benedict 的功課影片板。由上到下 = 由最緊要到最唔急。喺學校打開 newgodev.com,揀最上面那個先。">
+<title>hw video</title>
+<meta name="description" content="功課影片。打開就揀一個做。">
 <meta name="theme-color" content="#14110d">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%230B0B0E'/%3E%3CclipPath id='c'%3E%3Crect x='0' y='96' width='512' height='416'/%3E%3C/clipPath%3E%3Cg clip-path='url(%23c)'%3E%3Cpolyline points='104,372 104,96 200,372 272,96 344,372 416,96' fill='none' stroke='%23FCBC24' stroke-width='68' stroke-linejoin='miter' stroke-miterlimit='30' stroke-linecap='butt'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,117 +12,133 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Spline+Sans:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  font-size:21px;
+  font-size:20px;
   --bg:#14110d; --panel:#0f0c09; --line:#2c241a;
   --gold:#e7b173; --gold2:#f3cf99; --gold3:#c98e4a;
   --mtl:#FCBC24; --mtl2:#FFF3C9; --mtl3:#E0A310;
   --ink:#efe4d6; --dim:rgba(164,148,129,.85);
   --hot:#e8674f; --warm:#e7b173; --cool:#9bbf95;
   --card:rgba(28,23,16,.55);
-  --r:18px;
+  --r:16px;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scrollbar-width:thin;scrollbar-color:#c98e4a #16120d}
-::-webkit-scrollbar{width:14px;height:14px}
-::-webkit-scrollbar-track{background:#16120d;border-radius:999px}
+::-webkit-scrollbar{width:12px}
+::-webkit-scrollbar-track{background:#16120d}
 ::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#e7b173,#c98e4a);border-radius:999px;border:3px solid #16120d}
 body{
   margin:0; background:var(--bg); color:var(--ink);
   font-family:"Spline Sans",system-ui,-apple-system,sans-serif; line-height:1.5;
   min-height:100vh; -webkit-font-smoothing:antialiased;
-  padding:max(28px,env(safe-area-inset-top)) 0 70px;
-  background-image:radial-gradient(1200px 600px at 80% -10%,rgba(252,188,36,.06),transparent 60%),
+  padding:max(26px,env(safe-area-inset-top)) 0 60px;
+  background-image:radial-gradient(1100px 560px at 82% -10%,rgba(252,188,36,.06),transparent 60%),
                    radial-gradient(900px 500px at -10% 110%,rgba(231,177,115,.05),transparent 60%);
 }
-.wrap{max-width:760px; margin:0 auto; padding:0 20px}
-.brand{display:flex; align-items:center; gap:13px; margin-bottom:4px}
-.mark{width:44px;height:44px;flex:0 0 auto}
-.brand h1{font-family:"Fraunces",serif; font-weight:800; font-size:2rem; margin:0; letter-spacing:.5px;
+.wrap{max-width:960px; margin:0 auto; padding:0 20px}
+.top{display:flex; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap}
+.brand{display:flex; align-items:center; gap:11px; margin-right:auto}
+.mark{width:40px;height:40px}
+.brand h1{font-family:"Fraunces",serif; font-weight:800; font-size:1.7rem; margin:0; letter-spacing:.5px;
   background:linear-gradient(180deg,var(--mtl2),var(--mtl),var(--mtl3));
   -webkit-background-clip:text; background-clip:text; color:transparent}
-.lead{color:var(--dim); font-size:.95rem; margin:0 0 6px 57px}
-.hint{margin:12px 0 26px 57px; font-size:.82rem; color:var(--gold3); font-family:"JetBrains Mono",monospace}
-.hint b{color:var(--gold2); font-weight:600}
-.board{display:flex; flex-direction:column; gap:14px}
-a.row{
-  display:flex; align-items:center; gap:16px; text-decoration:none; color:inherit;
-  background:var(--card); border:1px solid var(--line); border-left:5px solid var(--warm);
-  border-radius:var(--r); padding:16px 18px; position:relative;
+.search{position:relative; flex:1; min-width:180px; max-width:340px}
+.search input{
+  width:100%; font-size:.9rem; font-family:inherit; color:var(--ink);
+  background:var(--panel); border:1px solid var(--line); border-radius:11px;
+  padding:11px 14px 11px 38px; outline:none; transition:border-color .12s;
+}
+.search input:focus{border-color:var(--gold3)}
+.search input::placeholder{color:var(--dim)}
+.search svg{position:absolute; left:12px; top:50%; transform:translateY(-50%); width:16px; height:16px; fill:var(--gold3)}
+.grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(215px,1fr)); gap:14px}
+a.tile{
+  display:flex; flex-direction:column; text-decoration:none; color:inherit;
+  background:var(--card); border:1px solid var(--line); border-top:4px solid var(--warm);
+  border-radius:var(--r); padding:16px 16px 14px; position:relative; min-height:158px;
   transition:transform .12s ease, border-color .12s ease, background .12s ease;
   -webkit-tap-highlight-color:rgba(252,188,36,.18);
 }
-a.row:active{transform:scale(.99)}
-a.row:hover{border-color:var(--gold3); background:rgba(40,32,22,.66)}
-a.row.hot{border-left-color:var(--hot)}
-a.row.warm{border-left-color:var(--warm)}
-a.row.cool{border-left-color:var(--cool)}
-.rank{font-family:"Fraunces",serif; font-weight:800; font-size:1.5rem; color:var(--gold3); min-width:26px; text-align:center}
-.mid{flex:1; min-width:0}
-.tags{display:flex; gap:8px; align-items:center; margin-bottom:3px; flex-wrap:wrap}
-.tag{font-family:"JetBrains Mono",monospace; font-size:.66rem; letter-spacing:1px; text-transform:uppercase;
-  padding:2px 8px; border-radius:99px; border:1px solid var(--line); color:var(--dim)}
+a.tile:active{transform:scale(.985)}
+a.tile:hover{border-color:var(--gold3); background:rgba(40,32,22,.66)}
+a.tile.hot{border-top-color:var(--hot)}
+a.tile.warm{border-top-color:var(--warm)}
+a.tile.cool{border-top-color:var(--cool)}
+.tags{display:flex; gap:6px; align-items:center; margin-bottom:8px; flex-wrap:wrap}
+.tag{font-family:"JetBrains Mono",monospace; font-size:.62rem; letter-spacing:1px; text-transform:uppercase;
+  padding:2px 7px; border-radius:99px; border:1px solid var(--line); color:var(--dim)}
 .tag.pri-hot{color:#1a0f0b; background:var(--hot); border-color:var(--hot); font-weight:700}
 .tag.pri-warm{color:#1a1206; background:var(--warm); border-color:var(--warm); font-weight:700}
 .tag.pri-cool{color:#0f1a0d; background:var(--cool); border-color:var(--cool); font-weight:700}
-.tt{font-family:"Fraunces",serif; font-weight:600; font-size:1.2rem; color:var(--gold2); margin:0; overflow:hidden; text-overflow:ellipsis}
-.meta{font-size:.78rem; color:var(--dim); font-family:"JetBrains Mono",monospace}
-.play{width:42px;height:42px;flex:0 0 auto;border-radius:50%;
+.tt{font-family:"Fraunces",serif; font-weight:600; font-size:1.12rem; color:var(--gold2); margin:0 0 4px}
+.sub{font-size:.76rem; color:var(--dim); font-family:"JetBrains Mono",monospace}
+.foot-row{margin-top:auto; display:flex; align-items:flex-end; justify-content:space-between; gap:8px; padding-top:12px}
+.date{font-size:.68rem; color:var(--dim); font-family:"JetBrains Mono",monospace}
+.play{width:38px;height:38px;flex:0 0 auto;border-radius:50%;
   background:linear-gradient(180deg,var(--mtl),var(--mtl3)); display:grid; place-items:center;
-  box-shadow:0 6px 15px rgba(224,163,16,.32)}
-.play svg{width:17px;height:17px;margin-left:3px;fill:#1a1206}
-.empty{border:1px dashed var(--line); border-radius:var(--r); padding:26px; text-align:center; color:var(--dim); font-size:.9rem}
-.foot{margin-top:40px; color:var(--dim); font-size:.72rem; font-family:"JetBrains Mono",monospace; text-align:center}
+  box-shadow:0 5px 13px rgba(224,163,16,.3)}
+.play svg{width:15px;height:15px;margin-left:2px;fill:#1a1206}
+.empty{grid-column:1/-1; border:1px dashed var(--line); border-radius:var(--r); padding:26px; text-align:center; color:var(--dim); font-size:.9rem}
 @media(max-width:520px){
-  :root{font-size:19px}
-  .lead,.hint{margin-left:0}
-  .rank{min-width:20px;font-size:1.3rem}
+  :root{font-size:18px}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:11px}
+  .search{max-width:100%}
 }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="brand">
-    <svg class="mark" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#0B0B0E"/><polyline points="104,372 104,140 200,372 272,140 344,372 416,140" fill="none" stroke="#FCBC24" stroke-width="60" stroke-linejoin="miter" stroke-miterlimit="30"/></svg>
-    <h1>hw video</h1>
+  <div class="top">
+    <div class="brand">
+      <svg class="mark" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#0B0B0E"/><polyline points="104,372 104,140 200,372 272,140 344,372 416,140" fill="none" stroke="#FCBC24" stroke-width="60" stroke-linejoin="miter" stroke-miterlimit="30"/></svg>
+      <h1>hw video</h1>
+    </div>
+    <label class="search">
+      <svg viewBox="0 0 24 24"><path d="M21 20l-4.35-4.35a7.5 7.5 0 10-1.4 1.4L20 21zM5 10.5a5.5 5.5 0 1111 0 5.5 5.5 0 01-11 0z"/></svg>
+      <input id="q" type="search" placeholder="搜尋科目、功課、日期…" autocomplete="off">
+    </label>
   </div>
-  <p class="lead">功課影片板。由上到下 = 由最緊要到最唔急,揀最上面那個先。</p>
-  <p class="hint">喺學校打開 <b>newgodev.com</b>,撳一個掣就跳到另一頁做功課。每份有自己的隨機網址。</p>
 
-  <div class="board" id="board"></div>
-
-  <div class="foot">NEWGODEV · 石宇浩 · measured, not promised</div>
+  <div class="grid" id="grid"></div>
 </div>
 
 <script>
-// 加一份新功課:喺 ITEMS 加一行(code = 隨機碼、pri 3=最緊要 2=緊要 1=普通),再喺 repo 開 那個隨機碼/index.html。
-// 板會自己按 pri 由高到低排。
+// 加一份新功課:喺 ITEMS 加一行,再喺 repo 開 那個 code/index.html。
+// pri 3=最緊要 2=緊要 1=普通;板按 pri 由高到低排,search 即時篩。
 var ITEMS = [
-  { code:"r7m2kq", title:"由大綱寫出來（動畫教學）", subject:"中文作文", kind:"教學片", pri:3, due:"星期三堂上寫" },
-  { code:"q9x4vn", title:"作文 Kahoot",             subject:"中文作文", kind:"練習題", pri:2, due:"25 題" },
-  { code:"w3h8pz", title:"洛琪希老師的無詠唱修行",     subject:"中文作文", kind:"挑戰",   pri:1, due:"由提示到全默" },
+  { code:"r7m2kq", title:"由大綱寫出來（動畫教學）", subject:"中文作文", kind:"教學片", pri:3, date:"2026-09-28" },
+  { code:"q9x4vn", title:"作文 Kahoot",             subject:"中文作文", kind:"練習題", pri:2, date:"2026-09-28" },
+  { code:"w3h8pz", title:"洛琪希老師的無詠唱修行",     subject:"中文作文", kind:"挑戰",   pri:1, date:"2026-09-28" },
 ];
 
 var LV = {3:{c:"hot",t:"最緊要"},2:{c:"warm",t:"緊要"},1:{c:"cool",t:"普通"}};
-var board = document.getElementById("board");
+var grid = document.getElementById("grid");
+var q = document.getElementById("q");
 var PLAY = '<span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>';
 var sorted = ITEMS.slice().sort(function(a,b){return (b.pri||1)-(a.pri||1);});
-if(!sorted.length){
-  board.innerHTML = '<div class="empty">還未有功課。做好一份,佢就會喺呢度出現,最緊要那份排最上。</div>';
-}else{
-  board.innerHTML = sorted.map(function(it,i){
+
+function render(term){
+  term = (term||"").trim().toLowerCase();
+  var list = sorted.filter(function(it){
+    if(!term) return true;
+    return (it.title+" "+it.subject+" "+it.kind+" "+it.date+" "+it.code).toLowerCase().indexOf(term) >= 0;
+  });
+  if(!list.length){
+    grid.innerHTML = '<div class="empty">'+(term?'搵唔到「'+term+'」。':'還未有功課,做好一份就會喺呢度出現。')+'</div>';
+    return;
+  }
+  grid.innerHTML = list.map(function(it){
     var lv = LV[it.pri||1];
-    return '<a class="row '+lv.c+'" href="./'+it.code+'/">'
-      + '<span class="rank">'+(i+1)+'</span>'
-      + '<span class="mid">'
-      +   '<span class="tags"><span class="tag pri-'+lv.c+'">'+lv.t+'</span>'
-      +     '<span class="tag">'+it.subject+'</span><span class="tag">'+it.kind+'</span>'
-      +     (it.due?'<span class="tag">'+it.due+'</span>':'')+'</span>'
-      +   '<div class="tt">'+it.title+'</div>'
-      +   '<div class="meta">newgodev.com/'+it.code+'</div>'
-      + '</span>'
-      + PLAY + '</a>';
+    return '<a class="tile '+lv.c+'" href="./'+it.code+'/">'
+      + '<span class="tags"><span class="tag pri-'+lv.c+'">'+lv.t+'</span>'
+      +   '<span class="tag">'+it.subject+'</span><span class="tag">'+it.kind+'</span></span>'
+      + '<div class="tt">'+it.title+'</div>'
+      + '<div class="sub">'+it.code+'</div>'
+      + '<div class="foot-row"><span class="date">建立 '+it.date+'</span>'+PLAY+'</div>'
+      + '</a>';
   }).join("");
 }
+q.addEventListener("input", function(){ render(q.value); });
+render("");
 </script>
 </body>
 </html>
