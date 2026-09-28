@@ -87,6 +87,16 @@ canvas#fx{position:fixed;inset:0;z-index:60;pointer-events:none}
 .fire{display:inline-block;animation:flick .5s infinite alternate}
 @keyframes flick{to{transform:scale(1.25) rotate(8deg)}}
 </style>
+<style id="dtap-css">*{touch-action:manipulation}</style>
+<script id="dtap-js">
+(function(){var last=0,lx=-99,ly=-99;
+document.addEventListener("touchend",function(e){
+ var t=Date.now(),p=e.changedTouches&&e.changedTouches[0],x=p?p.clientX:0,y=p?p.clientY:0,el=e.target,ptr=false;
+ try{ptr=!!(el&&el.nodeType===1&&(el.closest("button,a,input,select,textarea,label,[role=button],[onclick]")||getComputedStyle(el).cursor==="pointer"));}catch(_){}
+ if(t-last<350&&Math.abs(x-lx)<45&&Math.abs(y-ly)<45&&!ptr&&e.cancelable){e.preventDefault();}
+ last=t;lx=x;ly=y;},{passive:false});
+})();
+</script>
 </head>
 <body>
 <canvas id="fx"></canvas>

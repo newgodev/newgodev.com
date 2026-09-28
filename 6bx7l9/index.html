@@ -105,31 +105,116 @@ body{padding-bottom:70px}
   .board{position:relative;top:0;flex:1;max-height:none;min-height:0}
   .player{position:relative;flex:none}
 }
-/* iPad 模式:開 = iPad(殺 double-tap 放大 + 字大),關 = 電腦 */
-.modesw{display:inline-flex;border:2px solid var(--ink);border-radius:999px;overflow:hidden;cursor:pointer;user-select:none;-webkit-user-select:none;font-weight:900;font-size:.9rem;-webkit-tap-highlight-color:transparent;flex:none}
-.modesw .mopt{padding:6px 13px;color:var(--muted);background:#fff;white-space:nowrap;transition:background .15s,color .15s;line-height:1.2}
-.modesw .mopt.pc{border-left:2px solid var(--ink)}
-body:not(.ipad) .modesw .mopt.pc{background:var(--ink);color:#fff}
-body.ipad .modesw .mopt.ipad{background:#1d70b8;color:#fff}
-body.ipad{touch-action:manipulation}
-body.ipad{font-size:1.07rem}
-body.ipad .ctrl button{font-size:1.04rem;padding:10px 18px}
-body.ipad .say{font-size:1.26rem}
-body.ipad .player{padding:14px 16px;gap:14px}
-body.ipad .player button,body.ipad #pp{width:56px;height:48px;font-size:1.25rem}
-body.ipad .track{height:20px}
-body.ipad .knob{width:28px;height:28px;margin:-14px 0 0 -14px}
-body.ipad .spdwrap{font-size:1.02rem}
-body.ipad .spdwrap input{width:190px;height:28px}
-body.ipad .brain .bt{font-size:1.12rem}
 .box.flash{border-color:#ff00aa !important;background:rgba(255,0,170,.2) !important;animation:pulse .6s infinite}
 .flashw{background:#fff08a;outline:3px solid #ff00aa;border-radius:3px}
 </style>
+<style id="dtap-css">*{touch-action:manipulation}</style>
+<script id="dtap-js">
+(function(){var last=0,lx=-99,ly=-99;
+document.addEventListener("touchend",function(e){
+ var t=Date.now(),p=e.changedTouches&&e.changedTouches[0],x=p?p.clientX:0,y=p?p.clientY:0,el=e.target,ptr=false;
+ try{ptr=!!(el&&el.nodeType===1&&(el.closest("button,a,input,select,textarea,label,[role=button],[onclick]")||getComputedStyle(el).cursor==="pointer"));}catch(_){}
+ if(t-last<350&&Math.abs(x-lx)<45&&Math.abs(y-ly)<45&&!ptr&&e.cancelable){e.preventDefault();}
+ last=t;lx=x;ly=y;},{passive:false});
+})();
+</script>
+<style id="ipadmode-css">
+#ipadsw{display:inline-flex;flex:none;border:2px solid #0b0c0c;border-radius:999px;overflow:hidden;cursor:pointer;user-select:none;-webkit-user-select:none;font-weight:900;font-size:.85rem;background:#fff;-webkit-tap-highlight-color:transparent;font-family:inherit;line-height:1.15}
+#ipadsw.float{position:fixed;z-index:2147483000;top:6px;left:50%;transform:translateX(-50%);box-shadow:0 2px 8px rgba(0,0,0,.28)}
+#ipadsw b{padding:6px 12px;color:#505a5f;white-space:nowrap;font-weight:900}
+#ipadsw b.pc{border-left:2px solid #0b0c0c}
+body:not(.ipadm) #ipadsw b.pc{background:#0b0c0c;color:#fff}
+body.ipadm #ipadsw b.ip{background:#1d70b8;color:#fff}
+body.ipadm #ipadsw b{padding:10px 15px;font-size:.95rem}
+html.ipadm-h,html.ipadm-h body{height:100%}
+body.ipadm{height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column;padding-bottom:0!important}
+body.ipadm .top{position:relative;top:auto;flex:none;padding:6px 10px}
+body.ipadm .row{gap:6px 8px}
+body.ipadm .legend{font-size:.78rem;margin-left:0}
+body.ipadm .ctrl button{font-size:1rem;padding:9px 14px}
+body.ipadm .say{min-height:0;margin:4px 0 0;font-size:1.06rem;line-height:1.45}
+body.ipadm .zh{margin:2px 0 0}
+body.ipadm .grid{flex:1;min-height:0;padding:8px 10px;gap:8px;align-items:stretch}
+body.ipadm .grid>.col{display:flex;flex-direction:column;min-height:0;min-width:0;height:100%;overflow:hidden}
+body.ipadm .col h2{flex:none;margin:0 0 4px;font-size:.84rem}
+body.ipadm .cam{flex:1.6 1 0;min-height:0}
+body.ipadm .brain{flex:1 1 0;min-height:0;margin-top:8px;overflow:auto}
+body.ipadm .paper{flex:1 1 0;min-height:0;overflow:auto}
+body.ipadm .board{position:relative;top:0;flex:1 1 0;max-height:none;min-height:0;overflow:auto}
+body.ipadm .teach{max-height:none;min-height:0;overflow:auto}
+body.ipadm .player{position:relative;left:auto;right:auto;bottom:auto;flex:none;padding:8px 12px;gap:10px}
+body.ipadm .player button{width:52px;height:44px;font-size:1.2rem}
+body.ipadm .track{height:18px}
+body.ipadm .knob{width:26px;height:26px;margin:-13px 0 0 -13px}
+body.ipadm .spdwrap input{width:150px;height:26px}
+body.ipadm:is(.lay-m3,.lay-e4,.lay-geo) .grid>.col:nth-child(1){grid-area:a}
+body.ipadm:is(.lay-m3,.lay-e4,.lay-geo) .grid>.col:nth-child(2){grid-area:b}
+body.ipadm:is(.lay-m3,.lay-e4,.lay-geo) .grid>.col:nth-child(3){grid-area:c}
+body.ipadm.lay-e4 .grid>.col:nth-child(4){grid-area:d}
+@media (orientation:portrait){
+ body.ipadm.lay-m3 .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1.25fr) minmax(0,1fr);grid-template-areas:"a b" "a c"}
+ body.ipadm.lay-e4 .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1.2fr) minmax(0,1fr);grid-template-areas:"b c" "a d"}
+ body.ipadm.lay-e4 .grid>.col:nth-child(1){display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);grid-template-rows:auto minmax(0,1fr);column-gap:8px;align-items:start}
+ body.ipadm.lay-e4 .grid>.col:nth-child(1)>h2{grid-column:1/-1}
+ body.ipadm.lay-e4 .grid>.col:nth-child(1)>.pic{grid-column:1;grid-row:2;max-height:100%}
+ body.ipadm.lay-e4 .grid>.col:nth-child(1)>.brain{grid-column:2;grid-row:2;margin-top:0;height:100%}
+ body.ipadm.lay-geo .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1.7fr) minmax(0,1fr);grid-template-areas:"a b" "c c"}
+ body.ipadm.lay-geo .grid>.col:nth-child(3){flex-direction:row;gap:8px}
+ body.ipadm.lay-geo .grid>.col:nth-child(3)>*{flex:1 1 0;margin:0;min-width:0}
+ body.ipadm.lay-gen .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-auto-rows:minmax(0,1fr)}
+}
+@media (orientation:landscape){
+ body.ipadm.lay-m3 .grid{grid-template-columns:minmax(0,1.1fr) minmax(0,1.2fr) minmax(0,.9fr);grid-template-rows:minmax(0,1fr);grid-template-areas:"a b c"}
+ body.ipadm.lay-e4 .grid{grid-template-columns:minmax(0,.95fr) minmax(0,1.1fr) minmax(0,1.15fr) minmax(0,.9fr);grid-template-rows:minmax(0,1fr);grid-template-areas:"a b c d"}
+ body.ipadm.lay-geo .grid{grid-template-columns:minmax(0,1.05fr) minmax(0,1.2fr) minmax(0,.8fr);grid-template-rows:minmax(0,1fr);grid-template-areas:"a b c"}
+ body.ipadm.lay-gen .grid{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
+}
+</style>
+<script id="ipadmode-js">
+(function(){
+function boot(){
+ var b=document.body,h=document.documentElement; if(!b||document.getElementById("ipadsw"))return;
+ var cols=document.querySelectorAll(".grid>.col").length, lay="lay-gen";
+ if(document.getElementById("tcam")) lay="lay-geo";
+ else if(cols===4) lay="lay-e4";
+ else if(cols===3&&document.getElementById("cam")) lay="lay-m3";
+ b.classList.add(lay);
+ var sw=document.createElement("span"); sw.id="ipadsw"; sw.setAttribute("role","button"); sw.tabIndex=0;
+ sw.title="iPad \u6a21\u5f0f\uff1a\u4e00\u500b\u756b\u9762\u770b\u5b8c\uff0c\u4e0d\u7528\u6372";
+ sw.innerHTML='<b class="ip">\uD83D\uDCF1 iPad</b><b class="pc">\uD83D\uDCBB \u96FB\u8166</b>';
+ var row=document.querySelector(".top .row");
+ if(row) row.insertBefore(sw,row.firstChild); else { sw.classList.add("float"); b.appendChild(sw); }
+ function apply(on,save){
+  b.classList.toggle("ipadm",!!on); h.classList.toggle("ipadm-h",!!on);
+  if(save){ try{localStorage.setItem("hw_ipad_mode",on?"1":"0");}catch(e){} }
+  setTimeout(function(){ window.dispatchEvent(new Event("resize")); },80);
+ }
+ var ua=navigator.userAgent, isTab=/iPad|iPhone|iPod|Android/.test(ua)||(/Macintosh/.test(ua)&&(navigator.maxTouchPoints||0)>1);
+ var saved=null; try{saved=localStorage.getItem("hw_ipad_mode");}catch(e){}
+ apply(saved===null?isTab:saved==="1",false);
+ var bd=document.getElementById("board");
+ if(bd&&window.MutationObserver){
+  var follow=function(n){ setTimeout(function(){
+   if(!b.classList.contains("ipadm")||n.style.visibility==="hidden"||!n.isConnected) return;
+   var top=n.offsetTop, bot=top+n.offsetHeight;
+   if(bot>bd.scrollTop+bd.clientHeight-4||top<bd.scrollTop) bd.scrollTop=Math.max(0,bot-bd.clientHeight+12);
+  },60); };
+  new MutationObserver(function(ms){ ms.forEach(function(m){
+   if(m.type==="childList") m.addedNodes.forEach(function(n){ if(n.nodeType===1&&n.classList.contains("note")) follow(n); });
+   else if(m.target.nodeType===1&&m.target.classList.contains("note")) follow(m.target);
+  }); }).observe(bd,{childList:true,subtree:true,attributes:true,attributeFilter:["style"]});
+ }
+ function flip(){ apply(!b.classList.contains("ipadm"),true); }
+ sw.addEventListener("click",flip);
+ sw.addEventListener("keydown",function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); flip(); } });
+}
+if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot); else boot();
+})();
+</script>
 </head>
 <body>
 <div class="top">
   <div class="row">
-    <span class="modesw" id="modesw" role="button" tabindex="0" title="iPad:撳兩下唔會自動放大;字同掣都大啲"><span class="mopt ipad">📱 iPad</span><span class="mopt pc">💻 電腦</span></span>
     <span class="tag" id="tag">開始</span><span class="num" id="num"></span>
     <span class="legend"><b class="c">藍字</b> = 由題目抄下來　<b class="o">紅字</b> = 你自己寫的步驟</span>
     <div class="ctrl"><button id="prev">← 上一步</button><button id="play" class="main">▶ 播放</button><button id="next">下一步 →</button></div>
@@ -443,29 +528,6 @@ var PAGES = {pA:"第 4 頁 · 科學記數法", pB:"Q8 · 光速", pC:"數系"};
   }
   $("spd").oninput=function(){ setSpeed(parseFloat($("spd").value)); };
   try{ var sv=parseFloat(localStorage.getItem("soin_speed")); if(sv>0) setSpeed(sv); }catch(e){}
-  // iPad 模式:開 = iPad(殺 double-tap 放大 + UI 大),關 = 電腦。設定記得住,iPad 上自動開。
-  (function(){
-    var sw=document.getElementById("modesw"), body=document.body;
-    function apply(on){
-      body.classList.toggle("ipad",!!on);
-      try{ localStorage.setItem("hw_ipad_mode", on?"1":"0"); }catch(e){}
-    }
-    var saved=null; try{ saved=localStorage.getItem("hw_ipad_mode"); }catch(e){}
-    var isTouch=(navigator.maxTouchPoints||0)>1;
-    apply(saved===null ? isTouch : saved==="1");
-    function flip(){ apply(!body.classList.contains("ipad")); }
-    if(sw){
-      sw.addEventListener("click",flip);
-      sw.addEventListener("keydown",function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); flip(); } });
-    }
-    var lastTE=0;
-    document.addEventListener("touchend",function(e){
-      if(!body.classList.contains("ipad")) return;
-      var t=Date.now();
-      if(t-lastTE<=350){ e.preventDefault(); }
-      lastTE=t;
-    },{passive:false});
-  })();
 
   $("allnotes").onclick=function(){ showAll=true; boardAdd(STEPS.length); };
   $("play").textContent="▶ 播放";
