@@ -86,7 +86,7 @@ a.row.cool{border-left-color:var(--cool)}
     <h1>hw video</h1>
   </div>
   <p class="lead">功課影片板。由上到下 = 由最緊要到最唔急,揀最上面那個先。</p>
-  <p class="hint">喺學校打開 <b>newgodev.com</b>,撳一個掣就跳到另一頁睇片。每條片有自己的隨機網址。</p>
+  <p class="hint">喺學校打開 <b>newgodev.com</b>,撳一個掣就跳到另一頁做功課。每份有自己的隨機網址。</p>
 
   <div class="board" id="board"></div>
 
@@ -94,10 +94,12 @@ a.row.cool{border-left-color:var(--cool)}
 </div>
 
 <script>
-// 加一條新片:喺 ITEMS 加一行(code = 隨機碼、pri 3=最緊要 2=緊要 1=普通),再喺 repo 開 那個隨機碼/index.html。
-// 板會自己按 pri 由高到低排,你唔使理次序。
+// 加一份新功課:喺 ITEMS 加一行(code = 隨機碼、pri 3=最緊要 2=緊要 1=普通),再喺 repo 開 那個隨機碼/index.html。
+// 板會自己按 pri 由高到低排。
 var ITEMS = [
-  { code:"kx8m3q", title:"示範:睇下點用(因式分解)", subject:"demo", time:"3:20", pri:1, due:"任何時候" },
+  { code:"r7m2kq", title:"由大綱寫出來（動畫教學）", subject:"中文作文", kind:"教學片", pri:3, due:"星期三堂上寫" },
+  { code:"q9x4vn", title:"作文 Kahoot",             subject:"中文作文", kind:"練習題", pri:2, due:"25 題" },
+  { code:"w3h8pz", title:"洛琪希老師的無詠唱修行",     subject:"中文作文", kind:"挑戰",   pri:1, due:"由提示到全默" },
 ];
 
 var LV = {3:{c:"hot",t:"最緊要"},2:{c:"warm",t:"緊要"},1:{c:"cool",t:"普通"}};
@@ -105,7 +107,7 @@ var board = document.getElementById("board");
 var PLAY = '<span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>';
 var sorted = ITEMS.slice().sort(function(a,b){return (b.pri||1)-(a.pri||1);});
 if(!sorted.length){
-  board.innerHTML = '<div class="empty">還未有片。做好一份功課影片,佢就會喺呢度出現,最緊要那份排最上。</div>';
+  board.innerHTML = '<div class="empty">還未有功課。做好一份,佢就會喺呢度出現,最緊要那份排最上。</div>';
 }else{
   board.innerHTML = sorted.map(function(it,i){
     var lv = LV[it.pri||1];
@@ -113,7 +115,7 @@ if(!sorted.length){
       + '<span class="rank">'+(i+1)+'</span>'
       + '<span class="mid">'
       +   '<span class="tags"><span class="tag pri-'+lv.c+'">'+lv.t+'</span>'
-      +     '<span class="tag">'+it.subject+'</span><span class="tag">'+it.time+'</span>'
+      +     '<span class="tag">'+it.subject+'</span><span class="tag">'+it.kind+'</span>'
       +     (it.due?'<span class="tag">'+it.due+'</span>':'')+'</span>'
       +   '<div class="tt">'+it.title+'</div>'
       +   '<div class="meta">newgodev.com/'+it.code+'</div>'

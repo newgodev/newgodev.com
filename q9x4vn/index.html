@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>作文 Kahoot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#111;--muted:#5b5f66;--red:#e21b3c;--blue:#1368ce;--yel:#d89e00;--grn:#26890c;--pur:#46178f;--hi:#ffdd00}
+*{box-sizing:border-box}
+html{color-scheme:light;background:#fff;font-size:18px}
+body{margin:0;background:#fff;color:var(--ink);font-family:"Noto Sans HK",Arial,sans-serif;min-height:100vh;overflow-x:hidden}
+.top{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:6px solid var(--pur)}
+.logo{font-weight:900;font-size:1.3rem;color:var(--pur);letter-spacing:.5px}
+.logo span{color:var(--red)}
+.pill{font-weight:900;background:#f1eef8;color:var(--pur);border-radius:999px;padding:3px 12px;font-size:.9rem}
+.sp{flex:1}
+.mute{font-family:inherit;font-weight:900;border:2px solid var(--ink);background:#fff;border-radius:6px;padding:4px 10px;cursor:pointer}
+.stage{max-width:1100px;margin:0 auto;padding:16px}
+.screen{display:none}.screen.on{display:block;animation:in .4s}
+@keyframes in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.hero{text-align:center;padding:40px 10px}
+.hero h1{font-size:2.6rem;margin:0 0 6px;color:var(--pur)}
+.hero p{color:var(--muted);margin:6px 0}
+.pin{display:inline-block;margin:18px 0;font-weight:900;font-size:1.1rem;border:3px dashed var(--pur);border-radius:10px;padding:8px 18px;color:var(--pur)}
+.big{font-family:inherit;font-weight:900;font-size:1.3rem;border:0;border-radius:10px;padding:14px 38px;background:var(--pur);color:#fff;cursor:pointer;box-shadow:0 6px 0 #2c0e5b;transition:transform .08s}
+.big:active{transform:translateY(4px);box-shadow:0 2px 0 #2c0e5b}
+.modes{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.modes .big.alt{background:var(--red);box-shadow:0 6px 0 #8f0f25}
+.qhead{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.qnum{font-weight:900;color:var(--muted)}
+.streak{font-weight:900;color:var(--red)}
+.score{font-weight:900;margin-left:auto;font-size:1.1rem}
+.qtext{font-size:1.6rem;font-weight:900;text-align:center;padding:22px 14px;border-radius:12px;background:#f7f5fb;box-shadow:inset 0 0 0 3px #e6def5;min-height:110px;display:flex;align-items:center;justify-content:center}
+.qtext.pop{animation:qpop .5s}
+@keyframes qpop{0%{transform:scale(.8);opacity:0}60%{transform:scale(1.04)}100%{transform:scale(1);opacity:1}}
+.timer{position:relative;height:18px;background:#eee;border-radius:999px;margin:14px 0;overflow:hidden}
+.timer i{position:absolute;left:0;top:0;bottom:0;background:var(--pur);border-radius:999px}
+.timer.hurry i{background:var(--red);animation:blinkbar .4s infinite}
+@keyframes blinkbar{50%{opacity:.5}}
+.tnum{position:absolute;right:10px;top:-2px;font-weight:900;font-size:.85rem;color:#fff;text-shadow:0 1px 2px #000}
+.ans{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:700px){.ans{grid-template-columns:1fr}}
+.a{position:relative;font-family:inherit;text-align:left;border:0;border-radius:10px;color:#fff;font-weight:900;font-size:1.1rem;padding:18px 16px 18px 62px;min-height:84px;cursor:pointer;
+  box-shadow:0 6px 0 rgba(0,0,0,.25);transition:transform .1s,opacity .3s,filter .3s;animation:tile .4s backwards}
+.a:hover{transform:translateY(-2px)}
+.a:active{transform:translateY(3px)}
+.a .shp{position:absolute;left:16px;top:50%;margin-top:-16px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:1.6rem}
+.a0{background:var(--red)}.a1{background:var(--blue)}.a2{background:var(--yel)}.a3{background:var(--grn)}
+.a:nth-child(2){animation-delay:.08s}.a:nth-child(3){animation-delay:.16s}.a:nth-child(4){animation-delay:.24s}
+@keyframes tile{from{transform:scale(.6);opacity:0}}
+.a.dim{opacity:.25;filter:grayscale(.7)}
+.a.right{outline:6px solid #111;animation:bounce .6s}
+.a.wrongpick{animation:shake .45s}
+@keyframes bounce{30%{transform:scale(1.06)}60%{transform:scale(.98)}}
+@keyframes shake{20%,60%{transform:translateX(-10px)}40%,80%{transform:translateX(10px)}}
+.banner{position:fixed;left:0;right:0;top:38%;z-index:50;text-align:center;font-weight:900;font-size:2.4rem;color:#fff;padding:18px;pointer-events:none;
+  transform:scaleY(0);transition:transform .25s}
+.banner.show{transform:scaleY(1)}
+.banner.ok{background:var(--grn)}.banner.no{background:var(--red)}
+.banner small{display:block;font-size:1.1rem;margin-top:4px}
+.why{margin-top:14px;font-size:1.05rem;background:#fffbe0;border-left:6px solid var(--hi);padding:10px 14px;border-radius:6px;display:none}
+.why.on{display:block;animation:in .3s}
+.why b{color:var(--red)}
+.next{margin-top:14px;text-align:right}
+.board{max-width:620px;margin:0 auto}
+.board h2{text-align:center;font-size:1.8rem;color:var(--pur);margin:10px 0 16px}
+.row{display:flex;align-items:center;gap:12px;background:#f7f5fb;border-radius:10px;padding:10px 14px;margin:8px 0;font-weight:900;font-size:1.15rem;transition:transform .6s}
+.row.me{background:var(--pur);color:#fff;transform:scale(1.04)}
+.row .rk{width:32px;text-align:center}
+.row .nm{flex:1}
+.row small{font-weight:400;opacity:.8;font-size:.8rem;margin-left:6px}
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:10px;margin:26px 0 10px;height:260px}
+.pd{width:150px;text-align:center;font-weight:900}
+.pd .col{background:var(--pur);color:#fff;border-radius:10px 10px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:10px;font-size:2rem;height:0;transition:height 1.2s cubic-bezier(.2,.8,.2,1)}
+.pd .nm{margin-bottom:6px;font-size:1.05rem}
+.pd .pt{font-size:.85rem;color:var(--muted)}
+.review{margin-top:18px}
+.review .it{border:2px solid #eee;border-radius:10px;padding:10px 14px;margin:8px 0}
+.review .it b{color:var(--red)}
+.review .it .ok{color:var(--grn);font-weight:900}
+.flash{position:fixed;inset:0;z-index:40;pointer-events:none;opacity:0;transition:opacity .15s}
+body.shake{animation:shake .4s}
+canvas#fx{position:fixed;inset:0;z-index:60;pointer-events:none}
+.fire{display:inline-block;animation:flick .5s infinite alternate}
+@keyframes flick{to{transform:scale(1.25) rotate(8deg)}}
+</style>
+</head>
+<body>
+<canvas id="fx"></canvas>
+<div class="flash" id="flash"></div>
+<div class="top"><div class="logo">作文<span>!</span> Kahoot</div><span class="pill" id="modePill">魯迪是否一位益友</span><div class="sp"></div></div>
+<div class="stage">
+
+<section class="screen on" id="sStart">
+  <div class="hero">
+    <h1>寫全文 · 快問快答</h1>
+    <p>每一題都是星期三寫全文時要用的一步。答得越快,分數越高;連續答對有火。</p>
+    <p>對手是《無職轉生》那幾位,希露菲最快,小心被她追過。</p>
+    <div class="pin">遊戲 PIN:0930 · 星期三</div>
+    <div class="modes">
+      <button class="big" id="goNormal">開始(25 題,每題 20 秒)</button>
+      <button class="big alt" id="goCrazy">瘋狂模式(每題 8 秒,分數 × 2)</button>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="sQ">
+  <div class="qhead"><span class="qnum" id="qn"></span><span class="streak" id="st"></span><span class="score" id="sc">0 分</span></div>
+  <div class="qtext" id="qt"></div>
+  <div class="timer" id="tm"><i id="tb"></i><span class="tnum" id="tn"></span></div>
+  <div class="ans" id="ans"></div>
+  <div class="why" id="why"></div>
+  <div class="next"><button class="big" id="nx" style="display:none">下一題 →</button></div>
+</section>
+
+<section class="screen" id="sBoard">
+  <div class="board"><h2 id="bt">排行榜</h2><div id="rows"></div>
+  <div class="next" style="text-align:center"><button class="big" id="bn">繼續 →</button></div></div>
+</section>
+
+<section class="screen" id="sEnd">
+  <div class="board">
+    <h2 id="et">頒獎台</h2>
+    <div class="podium" id="pod"></div>
+    <p style="text-align:center;font-weight:900" id="es"></p>
+    <div class="modes"><button class="big" id="again">再玩一次</button><button class="big alt" id="againCrazy">瘋狂模式</button></div>
+    <div class="review" id="rv"></div>
+  </div>
+</section>
+
+</div>
+<div class="banner" id="bnr"></div>
+<script>
+(function(){
+var $=function(id){return document.getElementById(id);};
+var Q=[
+ {q:"第三段用哪個詞開頭?",a:"其次",w:["首先","最後","綜上所述"],why:"三個理由:<b>首先</b>(第二段)、<b>其次</b>(第三段)、<b>最後</b>(第四段)。"},
+ {q:"第五段(結論)第一個詞是?",a:"綜上所述",w:["由此可見","首先","另外"],why:"結論永遠用<b>綜上所述</b>開頭。大綱沒有結論格,這個詞要自己記。"},
+ {q:"全文第一句寫什麼?",a:"孔子說:「益者三友……」",w:["我認為,魯迪是一位益友。","首先,魯迪正直。","魯迪是《無職轉生》的主角。"],why:"大綱「引入」第一點就是孔子那句,所以第一句是<b>孔子說:</b>+ 原句。"},
+ {q:"引了孔子一句之後,下一句一定用?",a:"意思是……",w:["可見……","首先……","綜上所述……"],why:"古文後面即刻用<b>意思是</b>講成白話,老師才知道你看得懂。"},
+ {q:"第一段最後一句(立場句)是?",a:"我認為,魯迪是一位益友。",w:["魯迪可能是益友,也可能不是。","我認為,艾莉絲是一位益友。","大家都覺得魯迪很厲害。"],why:"立場句用<b>我認為,</b>開頭,一句講完,不可以模稜兩可。"},
+ {q:"大綱「希露菲綠頭髮被欺負」,寫成句子最好是?",a:"希露菲因為一頭綠頭髮,常常被村中的孩子欺負。",w:["希露菲的頭髮是綠色的。","希露菲常常欺負村中的孩子。","希露菲因為一頭金頭髮,常常被欺負。"],why:"點變句 = 補<b>為什麼</b>(因為一頭綠頭髮)同<b>被誰</b>(村中的孩子)。"},
+ {q:"中間三段(第二至四段)每段最後一句的公式是?",a:"可見他是一位___的益友。",w:["所以他很厲害。","綜上所述,他是益友。","意思是他很好。"],why:"每段收尾:<b>可見他是一位___的益友</b>,空格填這段分論點的第一個詞。"},
+ {q:"第二段收尾:可見他是一位___的益友?",a:"正直",w:["誠實可信","見聞廣博","勇敢"],why:"第二段用左格,分論點是「魯迪<b>正直</b>,敢為朋友出頭」。"},
+ {q:"第三段收尾:可見他是一位___的益友?",a:"誠實可信",w:["正直","見聞廣博","善良"],why:"第三段用中格,分論點是「魯迪<b>誠實可信</b>,不丟下朋友」。"},
+ {q:"第四段收尾:可見他是一位___的益友?",a:"見聞廣博",w:["正直","誠實可信","聰明"],why:"第四段用右格,分論點是「魯迪<b>見聞廣博</b>,教朋友知識」。"},
+ {q:"「見義不為,無勇也」放在哪一段?",a:"第二段(正直)",w:["第三段(誠實可信)","第四段(見聞廣博)","第五段(結論)"],why:"看見朋友被欺負就出手 = 有勇氣 = <b>正直</b>,所以跟保護希露菲那段。"},
+ {q:"「見義不為,無勇也」的意思是?",a:"看見應該做的事卻不去做,就是沒有勇氣。",w:["看見別人做錯事就要罵他。","有勇氣的人不用講道理。","見到朋友有困難就要逃走。"],why:"義 = 應該做的事,不為 = 不去做,無勇 = <b>沒有勇氣</b>。"},
+ {q:"「朋友信之」的意思是?",a:"要做一個令朋友信任的人。",w:["朋友說的話全部都要相信。","要常常寫信給朋友。","朋友之間不可以借錢。"],why:"信 = <b>信任</b>,所以放在「誠實可信」那一段。"},
+ {q:"孔子講的益友,三種品格是?",a:"正直、誠實可信、見聞廣博",w:["正直、有錢、見聞廣博","聰明、誠實可信、好看","勇敢、有趣、會打機"],why:"友直 = 正直,友諒 = 誠實可信,友多聞 = <b>見聞廣博</b>。"},
+ {q:"大綱上哪一段是沒有格的,要自己記?",a:"第五段(結論)",w:["第一段(引入)","第二段(左格)","第四段(右格)"],why:"大綱只有引入、立場、三格;<b>結論</b>要自己記:綜上所述 + 三個詞 + 我認為。"},
+ {q:"「綜上所述,魯迪___」後面接?",a:"正直、誠實可信,又見聞廣博",w:["很厲害,又很好","是《無職轉生》的主角","保護了希露菲"],why:"結論 = 把三個分論點的<b>第一個詞</b>串起來。"},
+ {q:"大綱寫「被轉移到魔大陸」,前面最好補?",a:"魯迪和艾莉絲在一次事件中",w:["魯迪自己一個人","希露菲在學校裏","洛琪希老師"],why:"大綱沒有「誰」同「幾時」,寫句子時補回去:<b>誰 + 在什麼時候</b>。"},
+ {q:"「魯迪沒有袖手旁觀,他出手保護希露菲」用了什麼技巧?",a:"先講沒有做相反的事,再講做了什麼",w:["引用名人名言","比喻","反問"],why:"「<b>沒有</b>袖手旁觀 → 出手保護」,一比就更有力。"},
+ {q:"大綱「會讀寫計算」,寫成句子應該是?",a:"她學會了讀書、寫字和計算。",w:["她會讀寫計算。","她學會了劍術和魔法。","她很會讀書。"],why:"大綱把詞縮埋,寫句子時<b>拆回來</b>:讀書、寫字和計算。"},
+ {q:"第四段艾莉絲以前只會寫名字、之後會讀會寫,這是什麼論證手法?",a:"對比",w:["比喻","引用","反問"],why:"以前 vs 之後放在一起 = <b>對比</b>。大綱右下角也寫住「舉例、對比」。"},
+ {q:"全文最後一句的作用是?",a:"由人物拉回自己:我們也要成為益友",w:["再講一次魯迪的故事","問老師一個問題","講《無職轉生》好不好看"],why:"最後一句<b>拉回自己身上</b>,老師看到你有自己的想法。"},
+ {q:"星期三堂上,iPad 可以開什麼?",a:"只可以開大綱",w:["可以開範文","可以開 AI","什麼都可以開"],why:"蔡老師會用 MDM 看住,<b>只准開大綱</b>。所以紅字那幾句要記在腦裏。"},
+ {q:"中間三段,每段大約幾句?",a:"五句",w:["一句","十句","二十句"],why:"<b>五句</b>:開頭 → 發生什麼 → 魯迪做什麼 → 孔子 + 意思是 → 可見。"},
+ {q:"哪一句放在第二段是錯的?",a:"其次,魯迪為人正直,敢為朋友出頭。",w:["首先,魯迪正直,敢為朋友出頭。","魯迪做到了,可見他是一位正直的益友。","孔子說:「見義不為,無勇也。」"],why:"第二段是第一個理由,要用<b>首先</b>,不是其次。"},
+ {q:"第一段裏,「益友,就是……的人」這一句是做什麼?",a:"講益友的定義",w:["講魯迪的故事","講結論","講反面例子"],why:"大綱「立場及定義」第一點:益友 = 正直、誠實可信、見聞廣博。這是<b>定義句</b>。"}
+];
+var NPC=[{n:"希露菲",r:.92,s:0},{n:"艾莉絲",r:.72,s:0},{n:"洛琪希",r:.85,s:0}];
+var SHP=["▲","◆","●","■"];
+var order=[],i=0,score=0,streak=0,best=0,wrongs=[],T=20,mult=1,left=0,tick=null,answered=false,crazy=false,t0=0;
+var AC=null,muted=false;
+function snd(f,d,type,vol){ return; try{ AC=AC||new (window.AudioContext||window.webkitAudioContext)(); var o=AC.createOscillator(),g=AC.createGain(); o.type=type||"square"; o.frequency.value=f; g.gain.value=vol||.06; o.connect(g); g.connect(AC.destination); var t=AC.currentTime; g.gain.setValueAtTime(vol||.06,t); g.gain.exponentialRampToValueAtTime(.0001,t+d); o.start(t); o.stop(t+d); }catch(e){} }
+function chord(){ [523,659,784,1047].forEach(function(f,k){ setTimeout(function(){ snd(f,.25,"triangle",.08); },k*70); }); }
+function buzz(){ snd(140,.35,"sawtooth",.07); setTimeout(function(){snd(110,.35,"sawtooth",.07);},120); }
+function shuffle(a){ a=a.slice(); for(var k=a.length-1;k>0;k--){ var j=Math.floor(Math.random()*(k+1)); var x=a[k]; a[k]=a[j]; a[j]=x; } return a; }
+function show(id){ document.querySelectorAll(".screen").forEach(function(s){ s.classList.toggle("on",s.id===id); }); window.scrollTo(0,0); }
+
+var cv=$("fx"),cx=cv.getContext("2d"),P=[];
+function fit(){ cv.width=innerWidth; cv.height=innerHeight; } fit(); addEventListener("resize",fit);
+function burst(x,y,n,cols,spd){ for(var k=0;k<n;k++){ var a=Math.random()*Math.PI*2,v=(spd||8)*(.4+Math.random()); P.push({x:x,y:y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-4,g:.3,l:60+Math.random()*40,c:cols[k%cols.length],s:4+Math.random()*6,r:Math.random()*6}); } }
+function rain(){ var cols=["#e21b3c","#1368ce","#d89e00","#26890c","#46178f","#ffdd00"]; for(var k=0;k<180;k++) P.push({x:Math.random()*innerWidth,y:-20-Math.random()*innerHeight,vx:(Math.random()-.5)*2,vy:2+Math.random()*3,g:.03,l:400,c:cols[k%6],s:6+Math.random()*6,r:Math.random()*6}); }
+(function loop(){ cx.clearRect(0,0,cv.width,cv.height); P=P.filter(function(p){ p.x+=p.vx; p.y+=p.vy; p.vy+=p.g; p.l--; p.r+=.1; cx.save(); cx.translate(p.x,p.y); cx.rotate(p.r); cx.fillStyle=p.c; cx.globalAlpha=Math.min(1,p.l/30); cx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2); cx.restore(); return p.l>0 && p.y<innerHeight+40; }); requestAnimationFrame(loop); })();
+function flash(c){ var f=$("flash"); f.style.background=c; f.style.opacity=".35"; setTimeout(function(){ f.style.opacity="0"; },160); }
+function banner(ok,txt,sub){ var b=$("bnr"); b.className="banner "+(ok?"ok":"no"); b.innerHTML=txt+(sub?"<small>"+sub+"</small>":""); requestAnimationFrame(function(){ b.classList.add("show"); }); setTimeout(function(){ b.classList.remove("show"); },1300); }
+
+function start(c){
+  crazy=c; T=c?8:20; mult=c?2:1; $("modePill").textContent=c?"瘋狂模式 × 2":"魯迪是否一位益友";
+  order=shuffle(Q.map(function(_,k){return k;})); i=0; score=0; streak=0; best=0; wrongs=[]; NPC.forEach(function(n){ n.s=0; });
+  ask();
+}
+function ask(){
+  answered=false; var q=Q[order[i]];
+  $("qn").textContent="第 "+(i+1)+" / "+order.length+" 題"; $("sc").textContent=score+" 分";
+  $("st").innerHTML=streak>=2?'<span class="fire">🔥</span> '+streak+" 連勝":"";
+  $("qt").textContent=q.q; $("qt").classList.remove("pop"); void $("qt").offsetWidth; $("qt").classList.add("pop");
+  $("why").className="why"; $("nx").style.display="none";
+  var opts=shuffle([q.a].concat(q.w)), box=$("ans"); box.innerHTML="";
+  opts.forEach(function(o,k){ var b=document.createElement("button"); b.className="a a"+k; b.innerHTML='<span class="shp">'+SHP[k]+"</span>"+o; b.onclick=function(){ pick(b,o,q); }; box.appendChild(b); });
+  show("sQ"); snd(880,.08,"square",.05);
+  left=T; t0=Date.now(); $("tm").classList.remove("hurry"); clearInterval(tick);
+  tick=setInterval(function(){
+    left=T-(Date.now()-t0)/1000; var f=Math.max(0,left/T);
+    $("tb").style.width=(f*100)+"%"; $("tn").textContent=Math.max(0,Math.ceil(left));
+    if(left<=Math.min(5,T*.35)) $("tm").classList.add("hurry");
+    if(left<=3 && left>0 && Math.abs(left-Math.round(left))<.06) snd(1200,.05,"square",.04);
+    if(left<=0){ clearInterval(tick); pick(null,null,q); }
+  },50);
+}
+function pick(btn,o,q){
+  if(answered) return; answered=true; clearInterval(tick);
+  var ok=o===q.a, used=Math.min(T,(Date.now()-t0)/1000);
+  document.querySelectorAll(".a").forEach(function(b){ var isA=b.textContent.slice(1)===q.a; if(isA) b.classList.add("right"); else b.classList.add("dim"); });
+  NPC.forEach(function(n){ if(Math.random()<n.r) n.s+=Math.round((600+Math.random()*350)*mult); });
+  if(ok){
+    streak++; best=Math.max(best,streak);
+    var pts=Math.round((1000*(1-used/T/2))*mult), bonus=streak>=3?Math.min(500,(streak-2)*100)*mult:0;
+    score+=pts+bonus; var r=btn.getBoundingClientRect();
+    burst(r.left+r.width/2,r.top+r.height/2,70,["#ffdd00","#26890c","#fff","#46178f"],10);
+    flash("#26890c"); chord(); banner(true,"正確!+"+(pts+bonus),bonus?"🔥 "+streak+" 連勝加 "+bonus:"答得越快分越高");
+  } else {
+    streak=0; wrongs.push(q); if(btn) btn.classList.add("wrongpick");
+    document.body.classList.remove("shake"); void document.body.offsetWidth; document.body.classList.add("shake");
+    flash("#e21b3c"); buzz(); banner(false,o?"答錯了":"時間到!","正確答案:"+q.a);
+  }
+  $("sc").textContent=score+" 分";
+  $("why").innerHTML=(ok?"✅ ":"❌ ")+q.why; $("why").classList.add("on");
+  $("nx").style.display="inline-block";
+  $("nx").textContent=(i+1>=order.length)?"看頒獎台 →":((i+1)%6===0?"看排行榜 →":"下一題 →");
+}
+$("nx").onclick=function(){ i++; if(i>=order.length) return end(); if(i%6===0) return boardShow(); ask(); };
+document.addEventListener("keydown",function(e){ if(e.key==="Enter" && $("nx").style.display!=="none" && $("sQ").classList.contains("on")) $("nx").onclick(); });
+function ranking(){ return NPC.map(function(n){return {n:n.n,s:n.s,me:false};}).concat([{n:"你",s:score,me:true}]).sort(function(a,b){return b.s-a.s;}); }
+function boardShow(){
+  var rk=ranking(), rows=$("rows"); rows.innerHTML="";
+  var me=rk.findIndex(function(r){return r.me;});
+  $("bt").textContent=me===0?"你暫時第一!":"暫時第 "+(me+1)+" 名,"+rk[0].n+" 領先你 "+(rk[0].s-score)+" 分";
+  rk.forEach(function(r,k){ var d=document.createElement("div"); d.className="row"+(r.me?" me":""); d.innerHTML='<span class="rk">'+(k+1)+'</span><span class="nm">'+r.n+(r.me&&streak>=2?"<small>🔥 "+streak+" 連勝</small>":"")+'</span><span>'+r.s+"</span>"; rows.appendChild(d); });
+  if(me===0){ rain(); chord(); }
+  show("sBoard");
+}
+$("bn").onclick=function(){ ask(); };
+function end(){
+  var rk=ranking().slice(0,3), pod=$("pod"); pod.innerHTML="";
+  var place=[1,0,2], H=[170,230,120];
+  place.forEach(function(p,k){ var r=rk[p]; if(!r) return; var d=document.createElement("div"); d.className="pd"; d.innerHTML='<div class="nm">'+r.n+'</div><div class="pt">'+r.s+' 分</div><div class="col">'+(p+1)+"</div>"; pod.appendChild(d); setTimeout(function(){ d.querySelector(".col").style.height=H[k]+"px"; },200+k*400); });
+  var me=ranking().findIndex(function(r){return r.me;});
+  $("et").textContent=me===0?"冠軍!星期三你已經會寫":"第 "+(me+1)+" 名";
+  $("es").textContent="答對 "+(order.length-wrongs.length)+" / "+order.length+" 題 · 最長連勝 "+best+(crazy?" · 瘋狂模式":"");
+  var rv=$("rv"); rv.innerHTML=wrongs.length?"<h2 style='font-size:1.2rem'>錯題重溫</h2>":"<p style='text-align:center;font-weight:900;color:#26890c'>全對!一題錯題都沒有。</p>";
+  wrongs.forEach(function(q){ var d=document.createElement("div"); d.className="it"; d.innerHTML="<div>"+q.q+"</div><div class='ok'>"+q.a+"</div><div>"+q.why+"</div>"; rv.appendChild(d); });
+  show("sEnd"); setTimeout(function(){ rain(); chord(); },1200);
+}
+$("goNormal").onclick=function(){ start(false); };
+$("goCrazy").onclick=function(){ start(true); };
+$("again").onclick=function(){ start(false); };
+$("againCrazy").onclick=function(){ start(true); };
+})();
+</script>
+</body>
+</html>
