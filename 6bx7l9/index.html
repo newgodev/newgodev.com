@@ -105,6 +105,23 @@ body{padding-bottom:70px}
   .board{position:relative;top:0;flex:1;max-height:none;min-height:0}
   .player{position:relative;flex:none}
 }
+/* iPad 模式:開 = iPad(殺 double-tap 放大 + 字大),關 = 電腦 */
+.modesw{display:inline-flex;border:2px solid var(--ink);border-radius:999px;overflow:hidden;cursor:pointer;user-select:none;-webkit-user-select:none;font-weight:900;font-size:.9rem;-webkit-tap-highlight-color:transparent;flex:none}
+.modesw .mopt{padding:6px 13px;color:var(--muted);background:#fff;white-space:nowrap;transition:background .15s,color .15s;line-height:1.2}
+.modesw .mopt.pc{border-left:2px solid var(--ink)}
+body:not(.ipad) .modesw .mopt.pc{background:var(--ink);color:#fff}
+body.ipad .modesw .mopt.ipad{background:#1d70b8;color:#fff}
+body.ipad{touch-action:manipulation}
+body.ipad{font-size:1.07rem}
+body.ipad .ctrl button{font-size:1.04rem;padding:10px 18px}
+body.ipad .say{font-size:1.26rem}
+body.ipad .player{padding:14px 16px;gap:14px}
+body.ipad .player button,body.ipad #pp{width:56px;height:48px;font-size:1.25rem}
+body.ipad .track{height:20px}
+body.ipad .knob{width:28px;height:28px;margin:-14px 0 0 -14px}
+body.ipad .spdwrap{font-size:1.02rem}
+body.ipad .spdwrap input{width:190px;height:28px}
+body.ipad .brain .bt{font-size:1.12rem}
 .box.flash{border-color:#ff00aa !important;background:rgba(255,0,170,.2) !important;animation:pulse .6s infinite}
 .flashw{background:#fff08a;outline:3px solid #ff00aa;border-radius:3px}
 </style>
@@ -112,6 +129,7 @@ body{padding-bottom:70px}
 <body>
 <div class="top">
   <div class="row">
+    <span class="modesw" id="modesw" role="button" tabindex="0" title="iPad:撳兩下唔會自動放大;字同掣都大啲"><span class="mopt ipad">📱 iPad</span><span class="mopt pc">💻 電腦</span></span>
     <span class="tag" id="tag">開始</span><span class="num" id="num"></span>
     <span class="legend"><b class="c">藍字</b> = 由題目抄下來　<b class="o">紅字</b> = 你自己寫的步驟</span>
     <div class="ctrl"><button id="prev">← 上一步</button><button id="play" class="main">▶ 播放</button><button id="next">下一步 →</button></div>
@@ -425,6 +443,30 @@ var PAGES = {pA:"第 4 頁 · 科學記數法", pB:"Q8 · 光速", pC:"數系"};
   }
   $("spd").oninput=function(){ setSpeed(parseFloat($("spd").value)); };
   try{ var sv=parseFloat(localStorage.getItem("soin_speed")); if(sv>0) setSpeed(sv); }catch(e){}
+  // iPad 模式:開 = iPad(殺 double-tap 放大 + UI 大),關 = 電腦。設定記得住,iPad 上自動開。
+  (function(){
+    var sw=document.getElementById("modesw"), body=document.body;
+    function apply(on){
+      body.classList.toggle("ipad",!!on);
+      try{ localStorage.setItem("hw_ipad_mode", on?"1":"0"); }catch(e){}
+    }
+    var saved=null; try{ saved=localStorage.getItem("hw_ipad_mode"); }catch(e){}
+    var isTouch=(navigator.maxTouchPoints||0)>1;
+    apply(saved===null ? isTouch : saved==="1");
+    function flip(){ apply(!body.classList.contains("ipad")); }
+    if(sw){
+      sw.addEventListener("click",flip);
+      sw.addEventListener("keydown",function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); flip(); } });
+    }
+    var lastTE=0;
+    document.addEventListener("touchend",function(e){
+      if(!body.classList.contains("ipad")) return;
+      var t=Date.now();
+      if(t-lastTE<=350){ e.preventDefault(); }
+      lastTE=t;
+    },{passive:false});
+  })();
+
   $("allnotes").onclick=function(){ showAll=true; boardAdd(STEPS.length); };
   $("play").textContent="▶ 播放";
   go(0);
