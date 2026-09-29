@@ -79,6 +79,12 @@ a.tile.cool{border-top-color:var(--cool)}
   box-shadow:0 5px 13px rgba(224,163,16,.3)}
 .play svg{width:15px;height:15px;margin-left:2px;fill:#1a1206}
 .empty{grid-column:1/-1; border:1px dashed var(--line); border-radius:var(--r); padding:26px; text-align:center; color:var(--dim); font-size:.9rem}
+.sec{display:flex; align-items:center; gap:10px; margin:30px 0 12px; font-family:"Fraunces",serif; font-weight:600; font-size:1.05rem; color:var(--gold2)}
+.sec .n{font-family:"JetBrains Mono",monospace; font-size:.7rem; color:var(--dim); border:1px solid var(--line); border-radius:99px; padding:1px 8px}
+.sec::after{content:""; flex:1; height:1px; background:var(--line)}
+a.tile.done{opacity:.62; border-top-color:#6f8f6a; min-height:0}
+a.tile.done:hover{opacity:.95}
+.tag.ok{color:#0f1a0d; background:#9bbf95; border-color:#9bbf95; font-weight:700}
 @media(max-width:520px){
   :root{font-size:18px}
   .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:11px}
@@ -100,6 +106,8 @@ a.tile.cool{border-top-color:var(--cool)}
   </div>
 
   <div class="grid" id="grid"></div>
+  <div class="sec" id="doneh">已完成 <span class="n" id="donen">0</span></div>
+  <div class="grid" id="done"></div>
 </div>
 
 <script>
@@ -107,8 +115,8 @@ a.tile.cool{border-top-color:var(--cool)}
 // pri 3=最緊要 2=緊要 1=普通;板按 pri 由高到低排,search 即時篩。
 var ITEMS = [
   { code:"g4w8tz", title:"GEO Workbook Ch1 點樣做", subject:"地理", kind:"教學片", pri:3, date:"2026-09-29" },
-{ code:"ze1sdi", title:"Laws of Indices 小測 點解錯", subject:"數學", kind:"教學片", pri:3, date:"2026-09-29" },
-  { code:"6bx7l9", title:"科學記數法 + 數系", subject:"數學 SOIN", kind:"教學片", pri:3, date:"2026-09-29" },
+{ code:"ze1sdi", done:true, title:"Laws of Indices 小測 點解錯", subject:"數學", kind:"教學片", pri:3, date:"2026-09-29" },
+  { code:"6bx7l9", done:true, title:"科學記數法 + 數系", subject:"數學 SOIN", kind:"教學片", pri:3, date:"2026-09-29" },
   { code:"r7m2kq", title:"由大綱寫成文章", subject:"中文作文", kind:"教學片", pri:3, date:"2026-09-28" },
   { code:"q9x4vn", title:"作文 Kahoot",             subject:"中文作文", kind:"練習題", pri:2, date:"2026-09-28" },
   { code:"w3h8pz", title:"作文默寫練習",     subject:"中文作文", kind:"挑戰",   pri:1, date:"2026-09-28" },
@@ -120,26 +128,34 @@ var q = document.getElementById("q");
 var PLAY = '<span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>';
 var sorted = ITEMS.slice().sort(function(a,b){return (b.pri||1)-(a.pri||1);});
 
+var done = document.getElementById("done");
+var doneh = document.getElementById("doneh");
+var donen = document.getElementById("donen");
+function tile(it){
+  var lv = LV[it.pri||1];
+  var cls = it.done ? "done" : lv.c;
+  var first = it.done ? '<span class="tag ok">已完成</span>' : '<span class="tag pri-'+lv.c+'">'+lv.t+'</span>';
+  return '<a class="tile '+cls+'" href="./'+it.code+'/">'
+    + '<span class="tags">'+first
+    +   '<span class="tag">'+it.subject+'</span><span class="tag">'+it.kind+'</span></span>'
+    + '<div class="tt">'+it.title+'</div>'
+    + '<div class="sub">'+it.code+'</div>'
+    + '<div class="foot-row"><span class="date">建立 '+it.date+'</span>'+PLAY+'</div>'
+    + '</a>';
+}
 function render(term){
   term = (term||"").trim().toLowerCase();
   var list = sorted.filter(function(it){
     if(!term) return true;
-    return (it.title+" "+it.subject+" "+it.kind+" "+it.date+" "+it.code).toLowerCase().indexOf(term) >= 0;
+    return (it.title+" "+it.subject+" "+it.kind+" "+it.date+" "+it.code+(it.done?" 已完成 done":"")).toLowerCase().indexOf(term) >= 0;
   });
-  if(!list.length){
-    grid.innerHTML = '<div class="empty">'+(term?'搵唔到「'+term+'」。':'還未有功課,做好一份就會喺呢度出現。')+'</div>';
-    return;
-  }
-  grid.innerHTML = list.map(function(it){
-    var lv = LV[it.pri||1];
-    return '<a class="tile '+lv.c+'" href="./'+it.code+'/">'
-      + '<span class="tags"><span class="tag pri-'+lv.c+'">'+lv.t+'</span>'
-      +   '<span class="tag">'+it.subject+'</span><span class="tag">'+it.kind+'</span></span>'
-      + '<div class="tt">'+it.title+'</div>'
-      + '<div class="sub">'+it.code+'</div>'
-      + '<div class="foot-row"><span class="date">建立 '+it.date+'</span>'+PLAY+'</div>'
-      + '</a>';
-  }).join("");
+  var todo = list.filter(function(it){return !it.done;});
+  var fin = list.filter(function(it){return it.done;});
+  grid.innerHTML = todo.length ? todo.map(tile).join("")
+    : '<div class="empty">'+(term?'找不到「'+term+'」。':'全部做完了。')+'</div>';
+  done.innerHTML = fin.map(tile).join("");
+  doneh.style.display = fin.length ? "" : "none";
+  donen.textContent = fin.length;
 }
 q.addEventListener("input", function(){ render(q.value); });
 render("");
