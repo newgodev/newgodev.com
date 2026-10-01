@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<script>if(location.protocol==="http:")location.replace("https://"+location.host+location.pathname+location.search);</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WWI 默書 1–17 · 鑰匙字填充</title>
+<style>
+:root{--ink:#14161c;--mut:#5b6170;--line:#1d4ed8;--kw:#fde68a;--ok:#15803d;--okbg:#ecfdf3;--bad:#b91c1c;--badbg:#fef2f2;--warn:#b45309;--warnbg:#fff7ed;--card:#f7f8fc;--bd:#d9dde8}
+*{box-sizing:border-box;touch-action:manipulation}
+html{font-size:20px;color-scheme:light;scrollbar-width:thin;scrollbar-color:#a8b3cf #eef1f7}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:#eef1f7}
+::-webkit-scrollbar-thumb{background:#a8b3cf;border-radius:99px;border:2px solid #eef1f7}
+::-webkit-scrollbar-button{display:none;width:0;height:0}
+body{margin:0;background:#fff;color:var(--ink);font-family:"Segoe UI","Noto Sans HK","Microsoft JhengHei","PingFang HK",sans-serif;line-height:1.6}
+header{position:sticky;top:0;z-index:9;background:#fff;border-bottom:3px solid var(--line)}
+.hd{max-width:880px;margin:0 auto;padding:10px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.hd h1{font-size:1rem;margin:0 10px 0 0;font-weight:800}
+.tab{font:inherit;font-size:.85rem;font-weight:700;border:2px solid var(--line);color:var(--line);background:#fff;border-radius:999px;padding:5px 14px;cursor:pointer}
+.tab.on{background:var(--line);color:#fff}
+main{max-width:880px;margin:0 auto;padding:14px 16px 60px}
+.view{display:none}.view.on{display:block}
+.lead{background:#eef3ff;border-left:5px solid var(--line);padding:10px 14px;border-radius:8px;margin:4px 0 14px}
+.lead b{color:var(--line)}
+h2{font-size:1.05rem;margin:22px 0 8px;color:var(--line)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:10px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px 12px}
+.ct{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.ct .n{font-size:.75rem;color:#fff;background:var(--line);border-radius:999px;padding:0 8px}
+.ct .en{font-size:1.1rem;font-weight:800}
+.ct .zh{color:var(--mut)}
+.trap{color:var(--bad);text-decoration:underline;text-decoration-thickness:2px}
+.kp,.kk,.tr{font-size:.85rem;margin-top:4px}
+.kk .kw{background:var(--kw);padding:0 5px;margin:0 2px 3px 0;display:inline-block;line-height:1.5}
+.lab{color:var(--mut);font-weight:700}
+.conf{background:#fff;border:1px solid var(--bd);border-radius:12px;padding:4px 14px}
+.conf p{margin:8px 0;font-size:.9rem}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.btn{font:inherit;font-size:.9rem;font-weight:700;border:0;border-radius:10px;padding:9px 14px;cursor:pointer;background:var(--line);color:#fff}
+.btn.alt{background:#fff;color:var(--line);border:2px solid var(--line);padding:7px 12px}
+.btn:disabled{opacity:.35;cursor:default}
+.tg{font:inherit;font-size:.85rem;border:2px solid #d4a017;background:#fffbea;border-radius:999px;padding:6px 12px;cursor:pointer}
+.paper{border:1px solid var(--bd);border-radius:12px;padding:16px 18px;box-shadow:0 2px 10px rgba(20,30,60,.06)}
+.ph{font-weight:800}
+.pi{font-size:.85rem;color:var(--mut);margin:2px 0 8px}
+.host{display:inline-block;background:#fdf2f8;color:#9d174d;border:1px solid #f9a8d4;border-radius:999px;padding:2px 12px;font-size:.85rem;font-weight:700;margin-bottom:6px}
+.steps{font-size:.85rem;background:#f8fafc;border:1px dashed var(--bd);border-radius:8px;padding:6px 10px;margin-bottom:10px}
+.score{font-weight:800;font-size:1rem;margin:4px 0 6px;min-height:1.6em;color:var(--line)}
+.q{margin:12px 0;line-height:2.15}
+.q .no{font-weight:800;margin-right:6px}
+.kw{border-radius:4px;transition:background .3s}
+body.kwon .kw,.kw.lit{background:var(--kw)}
+input.bl{font:inherit;font-size:1rem;width:11.5em;max-width:62vw;border:0;border-bottom:2px solid #333;background:#fbfbff;padding:0 6px;border-radius:4px 4px 0 0;color:#0b3d91;font-weight:700;outline:none}
+input.bl:focus{background:#eef3ff;border-bottom-color:var(--line)}
+input.bl.ok{color:var(--ok);border-bottom-color:var(--ok);background:var(--okbg)}
+input.bl.bad{color:var(--bad);border-bottom-color:var(--bad);background:var(--badbg)}
+input.bl.near{color:var(--warn);border-bottom-color:var(--warn);background:var(--warnbg)}
+.bn{font-weight:800;color:var(--line);margin:0 3px 0 2px}
+.fb{font-size:.88rem;line-height:1.55;margin:4px 0 0;padding:6px 10px;border-radius:8px}
+.fb.ok{background:var(--okbg);color:#14532d}
+.fb.bad{background:var(--badbg);color:#7f1d1d}
+.fb.near{background:var(--warnbg);color:#7c2d12}
+.fb mark{border-radius:3px;padding:0 2px;color:inherit}
+.fb mark.his{background:#fecaca;text-decoration:line-through}
+.fb mark.cor{background:#bbf7d0}
+.box{border:2px solid #333;border-radius:4px;padding:10px 14px;margin:16px 0 6px;line-height:2.25}
+.sum{margin-top:12px;padding:10px 14px;border-radius:10px;background:#f1f5ff;display:none}
+.sum.on{display:block}
+@media (max-width:600px){html{font-size:18px}.cards{grid-template-columns:1fr}.paper{padding:12px}}
+</style>
+</head>
+<body class="kwon">
+<header><div class="hd"><h1>WWI 默書 1–17 · 鑰匙字</h1>
+<button class="tab on" data-v="v1">① 鑰匙字 · key point</button>
+<button class="tab" data-v="v2">② 做卷(沒有提示)</button></div></header>
+<main>
+<section id="v1" class="view on">
+ <div class="lead">老師的默書是<b>句子填充</b>:沒有第一個字母,也沒有「(4 words)」。<br>但每一句都藏着<b>鑰匙字</b> —— 見到它,就知道答案是哪一個。先找鑰匙字,再<b>寫足全字</b>(大楷、「-」、「'」都要對)。</div>
+ <div id="cards"></div>
+ <h2>最容易混淆的幾組</h2>
+ <div class="conf" id="conf"></div>
+ <h2>空格前面那幾個字,也是提示</h2>
+ <div class="conf" id="pre"></div>
+ <p style="margin-top:18px"><button class="btn" id="bGo">讀完 → 去做卷</button></p>
+</section>
+<section id="v2" class="view">
+ <div class="bar">
+  <button class="btn" id="bNew">做一份新卷</button>
+  <button class="btn alt" id="bAll">17 個字各一句</button>
+  <button class="btn alt" id="bWrong" disabled>只做錯題</button>
+  <button class="tg" id="bKw">黃色鑰匙字:開</button>
+ </div>
+ <div class="paper">
+  <div id="hostline"></div>
+  <div class="ph">F3 History · WWI Vocabulary 1–17 · Dictation practice</div>
+  <div class="pi">Fill in the blanks with the vocabulary items you have learnt. Write the answer in full.</div>
+  <div class="steps">① 找鑰匙字 ② 想是哪一個字 ③ 寫足、串對 —— 每格按 Enter 即時對答案</div>
+  <div class="score" id="score"></div>
+  <div id="qs"></div>
+  <div class="bar" style="margin-top:14px"><button class="btn" id="bCheck">對答案</button></div>
+  <div class="sum" id="sum"></div>
+ </div>
+</section>
+</main>
+<script>
+var HOST = "";
+
+var T=[
+{id:1,a:"splendid isolation",sp:"splendid isolation",zh:"光榮孤立",cs:false,ok:["splendid isolation"],part:["isolation","splendid"],
+ kp:"Britain 的外交政策(1823–1902):只顧殖民地,不理歐洲事務,不加入任何同盟。",
+ kk:["Britain","1823-1902","not interested in European affairs","did not join any alliance","gave up (1902)"],
+ kz:"Britain 不加入同盟的政策",tr:"全部細楷"},
+{id:2,a:"Franco-Prussian War",sp:"Franco{-}Prussian {W}ar",zh:"普法戰爭",cs:true,ok:["Franco-Prussian War"],part:["Franco-Prussian","Prussian War"],
+ kp:"1870-71 年法國對普魯士,法國輸了,之後簽 Treaty of Frankfurt;德國 1871 年統一。",
+ kk:["1870-71","France + Prussia","defeated France","Treaty of Frankfurt"],
+ kz:"1870-71 年法國對普魯士的戰爭",tr:"中間有「-」;War 大楷 W"},
+{id:3,a:"Slavs",sp:"{S}lav{s}",zh:"斯拉夫人",cs:true,ok:["Slavs"],part:["Slav","Slavic"],
+ kp:"東歐的一個民族(人):俄羅斯人、塞爾維亞人都是;很多住在奧匈帝國和巴爾幹。",
+ kk:["race / people","Russians and Serbs","lived in Austria-Hungary","protector (Russia)"],
+ kz:"一個民族(人)",tr:"S 大楷;尾有 s"},
+{id:4,a:"Austria-Hungary",sp:"Austria{-}Hungary",zh:"奧匈帝國",cs:true,ok:["Austria-Hungary"],part:["Austria","Hungary"],
+ kp:"多民族帝國:德意志人統治,還有匈牙利人、捷克人、意大利人、斯拉夫人;1867 年分成奧匈;想向巴爾幹擴張。",
+ kk:["multi-national empire","1867 split into","lost control of Central Europe"],
+ kz:"多民族帝國(一個國家)",tr:"中間有「-」"},
+{id:5,a:"Serbia",sp:"Serbia",zh:"塞爾維亞",cs:true,ok:["Serbia"],part:["Serb","Serbian"],
+ kp:"巴爾幹的獨立斯拉夫國家;俄羅斯支持它擴張;奧匈境內的斯拉夫人想加入它。",
+ kk:["also a Slavic nation","independent Slavic country","join (the Slavs want to join it)"],
+ kz:"巴爾幹的斯拉夫國家",tr:"S 大楷"},
+{id:6,a:"extreme nationalism",sp:"extreme nationalism",zh:"極端民族主義",cs:false,ok:["extreme nationalism"],part:["nationalism"],
+ kp:"覺得自己的民族最優秀、看不起其他民族;Pan-Germanism 和 Pan-Slavism 都是它的例子。",
+ kk:["superior to others","love their nation blindly","look down on","examples of"],
+ kz:"覺得自己民族最優秀(統稱)",tr:"細楷;要寫足 extreme"},
+{id:7,a:"Pan-Germanism",sp:"{P}an{-}{G}ermanism",zh:"泛日耳曼主義",cs:true,ok:["Pan-Germanism"],part:["Germanism"],
+ kp:"要把全歐洲的德意志人統一在德國之下。",
+ kk:["unite all German people","a German movement","clashed with Pan-Slavism"],
+ kz:"統一全部德意志人",tr:"P、G 大楷;中間有「-」"},
+{id:8,a:"Pan-Slavism",sp:"{P}an{-}{S}lavism",zh:"泛斯拉夫主義",cs:true,ok:["Pan-Slavism"],part:["Slavism"],
+ kp:"要把全部斯拉夫人團結起來,由俄羅斯帶頭。",
+ kk:["unite all the Slavs","Russia wanted to lead the Slavs","Austria-Hungary was afraid"],
+ kz:"團結全部斯拉夫人,俄羅斯帶頭",tr:"P、S 大楷;中間有「-」"},
+{id:9,a:"Balkan Peninsula",sp:"Balkan Pen{in}sula",zh:"巴爾幹半島",cs:true,ok:["Balkan Peninsula"],part:["Balkans","Balkan","Peninsula"],
+ kp:"東南歐的一個地方,民族多、衝突多,叫「歐洲火藥庫」;奧匈和俄羅斯都想擴張到那裏。",
+ kk:["Southeastern Europe","powder keg","expand into","Serbia, Greece, Romania"],
+ kz:"東南歐的一個地方",tr:"Pen-in-su-la;要寫足,不是 Balkans"},
+{id:10,a:"revenge",sp:"revenge",zh:"報復",cs:false,ok:["revenge"],part:[],
+ kp:"法國輸了普法戰爭、失去土地,想向德國報仇。",
+ kk:["French hated Germany","wanted ___ on Germany","afraid of ___ from France"],
+ kz:"法國想報仇的感覺",tr:"細楷;re-venge"},
+{id:11,a:"Alsace-Lorraine",sp:"Alsa{c}e{-}Lo{rr}aine",zh:"阿爾薩斯-洛林",cs:true,ok:["Alsace-Lorraine"],part:["Alsace","Lorraine"],
+ kp:"法國在 Treaty of Frankfurt 割給普魯士的土地,法國一直想拿回來。",
+ kk:["ceded","get back","land","took ... from France"],
+ kz:"法國失去的土地",tr:"Alsace(ce)-Lorraine(rr)"},
+{id:12,a:"Kaiser William II",sp:"Kai{se}r William {II}",zh:"德皇威廉二世",cs:true,ok:["Kaiser William II"],part:["William II","Kaiser William","Kaiser"],
+ kp:"1888 年起的德國皇帝;1890 年辭退 Bismarck;要殖民地(a place in the sun)、建強大海軍。",
+ kk:["German Emperor","1890 dismissed Bismarck","a place in the sun","strong navy"],
+ kz:"1888 年起的德國皇帝",tr:"Kai-ser;II 是兩條直線,不是 2;不是 William I(1871 年那個)",
+ sw:{"kaiserwilliami":"Kaiser William I 是 1871 年第一個德皇(筆記裏那個);1888 年起的是 Kaiser William II。","williami":"William I 是 1871 年第一個德皇;這裏要 Kaiser William II。","kaiserwilliam2":"II 是羅馬數字(兩條直線),不是 2。","william2":"要寫足 Kaiser William II,而且 II 是羅馬數字。","kaiserwilliamll":"II 是兩個大楷 I,不是兩個細楷 l。","kaiserwilhelmii":"英文寫 William,不是 Wilhelm。"}},
+{id:13,a:"alliance system",sp:"a{ll}iance system",zh:"同盟制度",cs:false,ok:["alliance system"],part:["alliance","system"],
+ kp:"國家互相簽約,承諾打仗時幫手 → 歐洲分成兩大陣營;小衝突會變成大戰。",
+ kk:["two armed camps","promised to help each other","small conflict → big war"],
+ kz:"整個互相幫手的同盟制度(兩大陣營)",tr:"細楷;al-li-ance(兩個 l)"},
+{id:14,a:"Bismarck",sp:"Bisma{rck}",zh:"俾斯麥",cs:true,ok:["Bismarck"],part:[],
+ kp:"1862 年做普魯士首相(chancellor),幫普魯士統一德國,之後想孤立法國。",
+ kk:["chancellor","1862","isolate France","dismissed in 1890"],
+ kz:"普魯士 / 德國首相(chancellor)",tr:"rck 結尾,不是 Bismark",
+ sw:{"bismark":"Bismarck 的尾是 rck —— 漏了 c。"}},
+{id:15,a:"Three Emperor’s League",sp:"Three Emperor{’s} League",zh:"三帝同盟",cs:true,ok:["Three Emperor's League","Three Emperors' League"],part:["Three Emperor","Emperor's League","Emperors' League"],
+ kp:"1873 年 Bismarck 組成:德國、奧匈、俄羅斯三個皇帝。",
+ kk:["1873","three emperors","Germany, Austria-Hungary and Russia"],
+ kz:"1873 年 德、奧匈、俄",tr:"Emperor’s 有 's(字表寫法);筆記寫 Emperors’,兩個都對"},
+{id:16,a:"Triple Alliance",sp:"Triple A{ll}iance",zh:"三國同盟",cs:true,ok:["Triple Alliance"],part:["Alliance"],
+ kp:"1882 年:德國、奧匈、意大利。",
+ kk:["1882","Italy","Tunisia (1881)"],
+ kz:"1882 年 德、奧匈、意",tr:"A 大楷;Al-li-ance"},
+{id:17,a:"Triple Entente",sp:"Triple Ent{e}nt{e}",zh:"三國協約",cs:true,ok:["Triple Entente"],part:["Entente"],
+ kp:"1907 年:英國、法國、俄羅斯;用來對抗 Triple Alliance。",
+ kk:["1907","Britain, France and Russia","balance the Triple Alliance"],
+ kz:"1907 年 英、法、俄",tr:"En-ten-te,尾有 e",
+ sw:{"tripleentent":"Entente 的尾還有一個 e。"}}
+];
+
+var S=[
+{t:1,s:"From 1823 to 1902, [[Britain]] adopted a policy of ___ because it was [[not interested in European affairs]]."},
+{t:1,s:"Britain [[did not join any alliance]] in Europe. This policy was called ___."},
+{t:1,s:"Britain [[gave up]] ___ when it signed the Anglo-Japanese alliance in [[1902]]."},
+{t:2,s:"[[France]] fought against [[Prussia]] in the ___ ([[1870-71]])."},
+{t:2,s:"After losing the ___, France signed the [[Treaty of Frankfurt]] with Prussia."},
+{t:2,s:"Germany was unified in 1871 after Prussia [[defeated France]] in the ___."},
+{t:3,s:"[[Russians]] and [[Serbs]] belong to the same race. They are ___."},
+{t:3,s:"Many ___ [[lived in]] Austria-Hungary and wanted to [[break away]] from the empire."},
+{t:3,s:"Russia saw herself as the [[protector]] of all the ___."},
+{t:4,s:"___ was a [[multi-national empire]] consisting of Germans, Hungarians, Czechs, Italians and Slavs."},
+{t:4,s:"In [[1867]], the Austrian Empire [[split into]] ___."},
+{t:4,s:"After [[losing control of Central Europe]], ___ hoped to expand in the Balkans."},
+{t:5,s:"Russia supported the expansion of ___, [[also a Slavic nation]], in the Balkans."},
+{t:5,s:"___ was an [[independent Slavic country]] in the Balkans."},
+{t:5,s:"The Slavs in Austria-Hungary wanted to break away and [[join]] ___, a [[Slavic country]] next to them."},
+{t:6,s:"People who believed their own nation was [[superior to others]] showed ___."},
+{t:6,s:"___ made people [[love their own nation blindly]] and [[look down on]] other nations."},
+{t:6,s:"Pan-Germanism and Pan-Slavism were [[examples of]] ___."},
+{t:7,s:"The idea of [[uniting all German people]] under Germany was called ___."},
+{t:7,s:"Germany supported ___ because it wanted to [[unite all the Germans]] in Europe."},
+{t:7,s:"___ was a [[German movement]]. It [[clashed with Pan-Slavism]] in the Balkans."},
+{t:8,s:"The movement to [[unite all the Slavs]] was called ___."},
+{t:8,s:"[[Russia]] supported ___ because she wanted to [[lead all the Slavs]]."},
+{t:8,s:"Austria-Hungary was afraid of ___ because the [[Slavs]] in its empire might break away."},
+{t:9,s:"The ___ in [[Southeastern Europe]] was called the '[[powder keg]] of Europe'."},
+{t:9,s:"Both [[Austria-Hungary and Russia]] wanted to [[expand into]] the ___."},
+{t:9,s:"[[Serbia, Greece and Romania]] were countries in the ___."},
+{t:10,s:"The French [[hated]] Germany and wanted ___ on Germany."},
+{t:10,s:"Germany was [[afraid of]] ___ from France, so Bismarck tried to isolate France."},
+{t:10,s:"France wanted to take ___ for its [[defeat in 1871]]."},
+{t:11,s:"Under the Treaty of Frankfurt, France [[ceded]] ___ to Prussia."},
+{t:11,s:"France wanted to [[get back]] ___, the [[land]] it lost in 1871."},
+{t:11,s:"Germany [[took]] ___ from France after the Franco-Prussian War."},
+{t:12,s:"In [[1890]], [[German Emperor]] ___ [[dismissed Bismarck]]."},
+{t:12,s:"___ wanted Germany to have '[[a place in the sun]]', so Germany looked for colonies."},
+{t:12,s:"___ built a [[strong navy]] to challenge Britain's [[naval supremacy]]."},
+{t:13,s:"Europe was divided into [[two armed camps]] because of the ___."},
+{t:13,s:"Under the ___, countries [[promised to help each other]] in a war."},
+{t:13,s:"Because of the ___, a [[small conflict]] could turn into a [[big war]] in Europe."},
+{t:14,s:"___ was appointed as the [[chancellor of Prussia]] in 1862."},
+{t:14,s:"To [[isolate France]], the German [[chancellor]] ___ made alliances with other countries."},
+{t:14,s:"[[Kaiser William II]] [[dismissed]] ___ in 1890."},
+{t:15,s:"In [[1873]], Bismarck formed the ___ with Austria-Hungary and Russia."},
+{t:15,s:"The ___ was made up of [[Germany, Austria-Hungary and Russia]]."},
+{t:15,s:"The [[three emperors]] of Germany, Austria-Hungary and Russia joined the ___."},
+{t:16,s:"In [[1882]], [[Italy]] joined Germany and Austria-Hungary to form the ___."},
+{t:16,s:"Germany, Austria-Hungary and [[Italy]] were members of the ___."},
+{t:16,s:"After losing [[Tunisia]] to France in 1881, Italy joined the ___."},
+{t:17,s:"[[Britain, France and Russia]] formed the ___ in [[1907]]."},
+{t:17,s:"The ___ was formed to [[balance the power]] of the Triple Alliance."},
+{t:17,s:"After giving up splendid isolation, Britain joined [[France and Russia]] in the ___."}
+];
+
+var P=[
+{s:"France was defeated in the {2} ([[2:1870-71]]). Under the Treaty of Frankfurt, she [[11:ceded]] {11} to Prussia. The French [[10:hated]] Germany and wanted {10} on Germany. To prevent France from attacking, the German [[14:chancellor]] {14} tried to isolate France."},
+{s:"In [[15:1873]], Bismarck formed the {15} with Austria-Hungary and Russia. In [[16:1882]], [[16:Italy]] joined Germany and Austria-Hungary to form the {16}. Later, [[17:Britain, France and Russia]] formed the {17}. Europe was divided into [[13:two armed camps]] because of the {13}."},
+{s:"{4} was a [[4:multi-national empire]]. Many {3} [[3:lived in]] it and wanted to break away and [[5:join]] {5}, [[5:a Slavic country]]. [[8:Russia]] supported them because of {8}, the idea of [[8:uniting all the Slavs]]. Conflicts in the {9} made it the '[[9:powder keg]] of Europe'."},
+{s:"From [[1:1823 to 1902]], Britain adopted a policy of {1}. After 1888, [[12:German Emperor]] {12} wanted '[[12:a place in the sun]]' for Germany. Many Germans supported {7}, the idea of [[7:uniting all German people]]. People who believed their nation was [[6:superior to others]] showed {6}."}
+];
+
+var GROUPS=[
+{t:"英國",ids:[1]},
+{t:"法國 vs 德國",ids:[2,11,10]},
+{t:"兩個德國人",ids:[14,12]},
+{t:"奧匈帝國、巴爾幹、斯拉夫人",ids:[4,3,5,9]},
+{t:"民族主義",ids:[6,7,8]},
+{t:"同盟",ids:[13,15,16,17]}
+];
+
+var CONF=[
+{ids:[15,16,17,13],tip:"三個同盟看國家和年份:有 Russia、1873 → Three Emperor’s League;有 Italy、1882 → Triple Alliance;有 Britain、1907 → Triple Entente。講整個制度、two armed camps → alliance system。"},
+{ids:[3,5,9,4],tip:"人(race、people、lived in)→ Slavs;國家(Slavic nation / country、join)→ Serbia;地方(Southeastern Europe、powder keg、expand into)→ Balkan Peninsula;帝國(multi-national empire)→ Austria-Hungary。"},
+{ids:[2,11,10],tip:"法國三件事:戰爭(1870-71、defeated)→ Franco-Prussian War;土地(ceded、get back、land)→ Alsace-Lorraine;感覺(hated、wanted ___ on)→ revenge。"},
+{ids:[7,8,6],tip:"German → Pan-Germanism;Slavs、Russia → Pan-Slavism;講「自己民族最好、看不起人」或者「examples of」→ extreme nationalism。"},
+{ids:[14,12],tip:"chancellor(首相)、1862、isolate France → Bismarck;Emperor(皇帝)、1888 / 1890、navy、a place in the sun → Kaiser William II。"},
+{ids:[1,13],tip:"Britain 不加入同盟 → splendid isolation;國家互相簽約幫手 → alliance system。"}
+];
+
+var PRE=[
+"「a policy of ___」→ splendid isolation",
+"「wanted ___ on Germany」、「afraid of ___ from France」→ revenge",
+"「Many ___ lived in …」(很多「人」)→ Slavs",
+"空格前面有 the → 多數是戰爭、同盟、制度、地方:the Franco-Prussian War、the Triple Alliance、the alliance system、the Balkan Peninsula",
+"空格前面沒有 the → 多數是國家、人名、帝國、土地:Serbia、Austria-Hungary、Bismarck、Kaiser William II、Alsace-Lorraine"
+];
+
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+var TM={};T.forEach(function(t){TM[t.id]=t;});
+function norm(s){return String(s).replace(/[‘’ʼ`´]/g,"'").replace(/[‐-―−]/g,"-").replace(/\s*-\s*/g,"-").replace(/\s+/g," ").trim().replace(/[.,;]+$/,"");}
+function loose(s){return norm(s).toLowerCase().replace(/[^a-z0-9]/g,"");}
+function lettersOnly(s){return s.replace(/[^A-Za-z0-9]/g,"");}
+function spHtml(sp){return esc(sp).replace(/\{(.+?)\}/g,'<span class="trap">$1</span>');}
+function pick(a){return a[Math.floor(Math.random()*a.length)];}
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var x=a[i];a[i]=a[j];a[j]=x;}return a;}
+function uniq(a){var o=[];a.forEach(function(x){if(o.indexOf(x)<0)o.push(x);});return o;}
+
+/* ---------- ① key point page ---------- */
+function cardHtml(t){
+ return '<div class="card"><div class="ct"><span class="n">'+t.id+'</span><span class="en">'+spHtml(t.sp)+'</span><span class="zh">'+esc(t.zh)+'</span></div>'+
+ '<div class="kp"><span class="lab">key point:</span>'+esc(t.kp)+'</div>'+
+ '<div class="kk"><span class="lab">鑰匙字:</span>'+t.kk.map(function(k){return '<span class="kw">'+esc(k)+'</span>';}).join(' ')+'</div>'+
+ '<div class="tr"><span class="lab">串字:</span>'+esc(t.tr)+'</div></div>';
+}
+(function(){
+ var h='';
+ GROUPS.forEach(function(g){h+='<h2>'+esc(g.t)+'</h2><div class="cards">'+g.ids.map(function(id){return cardHtml(TM[id]);}).join('')+'</div>';});
+ document.getElementById('cards').innerHTML=h;
+ document.getElementById('conf').innerHTML=CONF.map(function(c){return '<p>'+esc(c.tip)+'</p>';}).join('');
+ document.getElementById('pre').innerHTML=PRE.map(function(c){return '<p>'+esc(c)+'</p>';}).join('');
+})();
+
+/* ---------- ② paper ---------- */
+var paper=[],lastSent={},lastWrong=[],lastP=null;
+function sentFor(tid){
+ var c=[];S.forEach(function(s,i){if(s.t===tid)c.push(i);});
+ var c2=c.filter(function(i){return i!==lastSent[tid];});
+ var i=pick(c2.length?c2:c);lastSent[tid]=i;return S[i];
+}
+function kwOf(s,tid){var r=[];s.replace(/\[\[(?:(\d+):)?(.+?)\]\]/g,function(m,k,x){if(!k||+k===tid)r.push(x);return m;});return r;}
+function markKw(s,tid){return esc(s).replace(/\[\[(?:(\d+):)?(.+?)\]\]/g,function(m,k,x){return '<span class="kw" data-k="'+(k||tid)+'">'+x+'</span>';});}
+function inputHtml(n){return '<input class="bl" data-n="'+n+'" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="next" aria-label="blank '+(n+1)+'">';}
+
+function build(singles,passage,focus){
+ paper=[];var h='';
+ singles.forEach(function(tid){
+  var s=sentFor(tid),n=paper.length;
+  paper.push({tid:tid,kws:kwOf(s.s,tid),done:false,st:''});
+  h+='<div class="q"><span class="no">'+(n+1)+'.</span>'+markKw(s.s,tid).replace('___',inputHtml(n))+'<div class="fb" id="fb'+n+'" hidden></div></div>';
+ });
+ if(passage){
+  var ps=passage.s,fbs='';
+  var body=markKw(ps,0).replace(/\{(\d+)\}/g,function(m,k){
+   var tid=+k,n=paper.length;
+   paper.push({tid:tid,kws:kwOf(ps,tid),done:false,st:''});
+   fbs+='<div class="fb" id="fb'+n+'" hidden></div>';
+   return '<span class="bn">('+(n+1)+')</span>'+inputHtml(n);
+  });
+  h+='<div class="box">'+body+'</div>'+fbs;
+ }
+ document.getElementById('qs').innerHTML=h;
+ document.getElementById('score').textContent='';
+ var sum=document.getElementById('sum');sum.classList.remove('on');sum.innerHTML='';
+ if(focus){var f=document.querySelector('input.bl');if(f)f.focus();}
+}
+function newPaper(focus){
+ var pool=P.filter(function(x){return x!==lastP;});var p=pick(pool);lastP=p;
+ var inP=[];p.s.replace(/\{(\d+)\}/g,function(m,k){inP.push(+k);return m;});
+ var rest=shuffle(T.map(function(t){return t.id;}).filter(function(id){return inP.indexOf(id)<0;})).slice(0,6);
+ build(rest,p,focus);
+}
+function allPaper(){build(shuffle(T.map(function(t){return t.id;})),null,true);}
+function wrongPaper(){var w=uniq(lastWrong);if(!w.length)return;build(shuffle(w.slice()),null,true);}
+
+function nearWhy(n,t){
+ var o=t.ok[0],w=[];
+ if(t.cs&&!t.ok.some(function(x){return lettersOnly(x)===lettersOnly(n);}))w.push('大楷細楷不對');
+ var hy=function(s){return (s.match(/-/g)||[]).length;};if(hy(n)!==hy(o))w.push('「-」不對');
+ var ap=function(s){return (s.match(/'/g)||[]).length;};if(!t.ok.some(function(x){return ap(x)===ap(n);}))w.push("漏了「'」");
+ var sp=function(s){return (s.match(/ /g)||[]).length;};if(sp(n)!==sp(o))w.push('空格不對');
+ return w.length?w.join('、'):'大楷細楷或者符號不對';
+}
+function judge(tid,raw){
+ var t=TM[tid],n=norm(raw);
+ if(!n)return {st:'empty'};
+ if(/^the /i.test(n))n=n.slice(4);
+ var L=loose(n);
+ var exact=t.cs?t.ok.indexOf(n)>=0:t.ok.some(function(o){return o.toLowerCase()===n.toLowerCase();});
+ if(exact)return {st:'ok'};
+ if(t.sw&&t.sw[L])return {st:'bad',why:t.sw[L]};
+ if(t.ok.some(function(o){return loose(o)===L;}))return {st:'near',why:nearWhy(n,t)};
+ if((t.part||[]).some(function(p){return loose(p)===L;}))return {st:'near',why:'沒有寫足 —— 默書要寫足全字(Write the answer in full)'};
+ for(var i=0;i<T.length;i++){
+  var o=T[i];
+  if(o.id!==tid&&(o.ok.some(function(x){return loose(x)===L;})||(o.part||[]).some(function(x){return loose(x)===L;})))return {st:'other',o:o};
+ }
+ return {st:'bad'};
+}
+function confTip(a,b){for(var i=0;i<CONF.length;i++){if(CONF[i].ids.indexOf(a)>=0&&CONF[i].ids.indexOf(b)>=0)return '<br>分辨:'+esc(CONF[i].tip);}return '';}
+function diff(a,b){
+ var A=a.toLowerCase(),B=b.toLowerCase(),p=0;while(p<A.length&&p<B.length&&A[p]===B[p])p++;
+ var s=0;while(s<A.length-p&&s<B.length-p&&A[A.length-1-s]===B[B.length-1-s])s++;
+ var am=a.slice(p,a.length-s),bm=b.slice(p,b.length-s);
+ return [esc(a.slice(0,p))+'<mark class="his">'+(am?esc(am):'‸')+'</mark>'+esc(a.slice(a.length-s)),
+         esc(b.slice(0,p))+(bm?'<mark class="cor">'+esc(bm)+'</mark>':'')+esc(b.slice(b.length-s))];
+}
+function msg(it,r,raw){
+ var t=TM[it.tid],kw=it.kws.length?'「'+it.kws.map(esc).join('」「')+'」':'';
+ var ans='<b>'+spHtml(t.sp)+'</b>('+esc(t.zh)+')';
+ if(r.st==='ok')return '✓ 鑰匙字 '+kw+' → '+ans;
+ if(r.st==='empty')return '✗ 沒有寫。鑰匙字 '+kw+' → '+ans;
+ if(r.st==='near')return '⚠ 差一點:'+esc(r.why)+'。你寫「'+esc(raw.trim())+'」,要寫 '+ans+'。默書會當錯,所以要寫到一模一樣。';
+ if(r.st==='other'){
+  var same=loose(norm(raw).replace(/^the /i,''))===loose(r.o.a);
+  var his=same?esc(r.o.a):'「'+esc(raw.trim())+'」('+esc(r.o.a)+')';
+  return '✗ 你寫的 '+his+' 是「'+esc(r.o.kz)+'」;但這句的鑰匙字 '+kw+' 指向 '+ans+'。'+confTip(it.tid,r.o.id);
+ }
+ var d=diff(norm(raw),t.ok[0]);
+ return '✗ '+(r.why?esc(r.why)+' ':'串錯了。')+'你寫「'+d[0]+'」,答案「'+d[1]+'」('+esc(t.zh)+')。鑰匙字 '+kw+'。串字:'+esc(t.tr);
+}
+function grade(n){
+ var it=paper[n];if(!it)return;
+ var inp=document.querySelector('input.bl[data-n="'+n+'"]');if(!inp)return;
+ var r=judge(it.tid,inp.value),cls=r.st==='ok'?'ok':(r.st==='near'?'near':'bad');
+ it.done=true;it.st=r.st;
+ inp.classList.remove('ok','bad','near');inp.classList.add(cls);
+ var scope=inp.closest('.q')||inp.closest('.box');
+ scope.querySelectorAll('.kw[data-k="'+it.tid+'"]').forEach(function(e){e.classList.add('lit');});
+ var fb=document.getElementById('fb'+n);fb.hidden=false;fb.className='fb '+cls;
+ fb.innerHTML=(inp.closest('.box')?'<b>('+(n+1)+')</b> ':'')+msg(it,r,inp.value);
+ updScore();
+}
+function updScore(){
+ var done=paper.filter(function(x){return x.done;}).length,ok=paper.filter(function(x){return x.st==='ok';}).length;
+ document.getElementById('score').textContent=done?('已對答案 '+done+' / '+paper.length+' 格 · ✓ '+ok):'';
+ if(done===paper.length)finish();
+}
+function finish(){
+ var ok=paper.filter(function(x){return x.st==='ok';}).length,N=paper.length;
+ lastWrong=paper.filter(function(x){return x.st!=='ok';}).map(function(x){return x.tid;});
+ document.getElementById('bWrong').disabled=!lastWrong.length;
+ var sum=document.getElementById('sum');sum.classList.add('on');
+ var h='<b>'+ok+' / '+N+'</b> ';
+ if(ok===N)h+='全對!'+(HOST?' 連'+esc(HOST)+'都考不倒你。':'')+' 下一份試試把黃色鑰匙字關掉,自己找。';
+ else h+='要再練:'+uniq(lastWrong).map(function(id){return esc(TM[id].a);}).join('、')+'<br>按「只做錯題」—— 同一個字會換一句新的句子。';
+ sum.innerHTML=h;
+}
+function gradeAll(){for(var i=0;i<paper.length;i++)grade(i);var s=document.getElementById('sum');if(s.scrollIntoView)s.scrollIntoView({behavior:'smooth',block:'center'});}
+
+/* ---------- wiring ---------- */
+function go(v){
+ document.querySelectorAll('.view').forEach(function(e){e.classList.toggle('on',e.id===v);});
+ document.querySelectorAll('.tab').forEach(function(b){b.classList.toggle('on',b.dataset.v===v);});
+ window.scrollTo(0,0);
+ if(v==='v2'&&!paper.length)newPaper(false);
+}
+document.querySelectorAll('.tab').forEach(function(b){b.addEventListener('click',function(){go(b.dataset.v);});});
+document.getElementById('bGo').addEventListener('click',function(){go('v2');});
+document.getElementById('bNew').addEventListener('click',function(){newPaper(true);});
+document.getElementById('bAll').addEventListener('click',allPaper);
+document.getElementById('bWrong').addEventListener('click',wrongPaper);
+document.getElementById('bCheck').addEventListener('click',gradeAll);
+document.getElementById('qs').addEventListener('keydown',function(e){
+ if(e.key!=='Enter')return;var el=e.target;if(!el.classList||!el.classList.contains('bl'))return;
+ e.preventDefault();var n=+el.dataset.n;grade(n);
+ var nx=document.querySelector('input.bl[data-n="'+(n+1)+'"]');if(nx)nx.focus();else el.blur();
+});
+function setKw(on){
+ document.body.classList.toggle('kwon',on);
+ document.getElementById('bKw').textContent='黃色鑰匙字:'+(on?'開':'關');
+ try{localStorage.setItem('wwiKwOn',on?'1':'0');}catch(e){}
+}
+var kwOn=true;try{kwOn=localStorage.getItem('wwiKwOn')!=='0';}catch(e){}
+setKw(kwOn);
+document.getElementById('bKw').addEventListener('click',function(){setKw(!document.body.classList.contains('kwon'));});
+if(HOST)document.getElementById('hostline').innerHTML='<span class="host">'+esc(HOST)+'考你</span>';
+var lastTouch=0;
+document.addEventListener('touchend',function(e){var now=Date.now();if(now-lastTouch<350&&!(e.target.closest&&e.target.closest('input,button,a')))e.preventDefault();lastTouch=now;},{passive:false});
+</script>
+</body>
+</html>
