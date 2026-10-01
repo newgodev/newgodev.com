@@ -165,10 +165,11 @@ var T=[
  kk:["chancellor","1862","isolate France","dismissed in 1890"],
  kz:"普魯士 / 德國首相(chancellor)",tr:"rck 結尾,不是 Bismark",
  sw:{"bismark":"Bismarck 的尾是 rck —— 漏了 c。"}},
-{id:15,a:"Three Emperor’s League",sp:"Three Emperor{’s} League",zh:"三帝同盟",cs:true,ok:["Three Emperor's League","Three Emperors' League"],part:["Three Emperor","Emperor's League","Emperors' League"],
+{id:15,a:"Three Emperor’s League",sp:"Three Emperor{’s} League",zh:"三帝同盟",cs:true,ok:["Three Emperor's League"],part:["Three Emperor","Emperor's League","Emperors' League"],
  kp:"1873 年 Bismarck 組成:德國、奧匈、俄羅斯三個皇帝。",
  kk:["1873","three emperors","Germany, Austria-Hungary and Russia"],
- kz:"1873 年 德、奧匈、俄",tr:"Emperor’s 有 's(字表寫法);筆記寫 Emperors’,兩個都對"},
+ kz:"1873 年 德、奧匈、俄",tr:"Emperor’s 有 's —— 照字表寫;筆記寫 Emperors’,默書不要跟筆記",
+ alt:{"Three Emperors' League":"這是筆記的寫法(Emperors’);老師對答案以字表為準,字表寫 Three Emperor’s League"}},
 {id:16,a:"Triple Alliance",sp:"Triple A{ll}iance",zh:"三國同盟",cs:true,ok:["Triple Alliance"],part:["Alliance"],
  kp:"1882 年:德國、奧匈、意大利。",
  kk:["1882","Italy","Tunisia (1881)"],
@@ -349,6 +350,7 @@ function judge(tid,raw){
  var L=loose(n);
  var exact=t.cs?t.ok.indexOf(n)>=0:t.ok.some(function(o){return o.toLowerCase()===n.toLowerCase();});
  if(exact)return {st:'ok'};
+ if(t.alt&&t.alt[n])return {st:'near',why:t.alt[n]};
  if(t.sw&&t.sw[L])return {st:'bad',why:t.sw[L]};
  if(t.ok.some(function(o){return loose(o)===L;}))return {st:'near',why:nearWhy(n,t)};
  if((t.part||[]).some(function(p){return loose(p)===L;}))return {st:'near',why:'沒有寫足 —— 默書要寫足全字(Write the answer in full)'};
