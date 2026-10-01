@@ -278,7 +278,9 @@ function makeSet(){
 
 var set=[],i=0,score=0,answered=false,notesFrom="sStart";
 
+var cf=null;
 function show(id){
+  if(id!=="sEnd"&&cf&&cf.parentNode){cf.parentNode.removeChild(cf);cf=null;}
   ["sStart","sNotes","sQ","sEnd"].forEach(function(s){$(s).classList.toggle("on",s===id);});
   window.scrollTo(0,0);
 }
@@ -358,7 +360,7 @@ function end(){
 function confetti(){
   var c=document.createElement("canvas"), W=window.innerWidth, H=window.innerHeight;
   c.width=W; c.height=H; c.style.cssText="position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:50";
-  document.body.appendChild(c);
+  document.body.appendChild(c); cf=c;
   var x=c.getContext("2d"), cols=["#1f6feb","#d42a3c","#b97800","#1a8a3a","#7a3fd1"], P=[];
   for(var k=0;k<140;k++) P.push({x:Math.random()*W,y:-20-Math.random()*H*0.5,vx:(Math.random()-0.5)*3,vy:2+Math.random()*4,r:4+Math.random()*5,c:cols[k%cols.length],a:Math.random()*6});
   var t0=Date.now();
