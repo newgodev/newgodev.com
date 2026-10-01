@@ -429,5 +429,64 @@ var LABEL={"e_snow": ["If it snowed in Hong Kong … (it never snows here)", ""]
  go(0);
 })();
 </script>
+
+<style>
+#ansbox{max-width:1100px;margin:28px auto 60px;padding:20px 22px;border:2px solid #c0392b;border-radius:12px;background:#fff;font-family:Arial,"Microsoft JhengHei",sans-serif;color:#222}
+#ansbox h2{margin:0 0 6px;font-size:22px;color:#c0392b}
+#ansbox p{margin:4px 0 10px;font-size:15px;line-height:1.5}
+#ansbox textarea{width:100%;height:150px;box-sizing:border-box;font-size:14px;padding:8px;border:1px solid #bbb;border-radius:8px}
+#ansbox button{margin-top:10px;padding:8px 18px;font-size:16px;border:0;border-radius:8px;background:#c0392b;color:#fff;cursor:pointer}
+#anslist{margin-top:14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px}
+#anslist div{border:1px solid #eee;border-radius:8px;padding:8px 10px;font-size:16px}
+#anslist b{display:inline-block;min-width:34px}
+#anslist .a{color:#c0392b;font-weight:700}
+#anslist .x{color:#999}
+</style>
+<div id="ansbox">
+<h2>全部答案 · All answers</h2>
+<p>把你手上那份完整歌詞貼進下面，按「出答案」，11 格答案會用紅字列出來。歌詞只在你這部機上對，不會上載。<br>Paste the full lyrics below and press the button; the 11 answers appear in red.</p>
+<textarea id="lyr" placeholder="Paste the full lyrics here"></textarea>
+<button id="go">出答案</button>
+<div id="anslist"></div>
+</div>
+<script>
+(function(){
+  // each gap: [regex on one line, add 'd if the worksheet has I before the gap and the song line does not]
+  var G=[
+    [/^\s*I\s*('d|would)?\s*(.+?)\s+out of bed/i,1],
+    [/^\s*And\s+(.+?)\s+what I wanted/i,0],
+    [/^\s*I\s*('d|would)?\s*(.+?)\s+it with who/i,1],
+    [/^\s*And\s+(?:I\s*('d|would)?\s*)?(.+?)\s+confronted/i,1],
+    [/^\s*I think I\s+(.+?)\s+understand/i,0],
+    [/^\s*I swear I\s*('d|would)?\s*(.+?)\s+a better man/i,1],
+    [/^\s*I\s*('d|would)?\s*(.+?)\s+to her\b/i,1],
+    [/^\s*I\s*('d|would)?\s*(.+?)\s+my phone/i,1],
+    [/^\s*(.+?)\s+everyone it'?s broken/i,0],
+    [/^\s*I\s*('d|would)?\s*(.+?)\s+myself first/i,1],
+    [/^\s*And\s+(.+?)\s+the rules as/i,0]
+  ];
+  function solve(text){
+    var lines=text.replace(/[‘’ʼ]/g,"'").split(/\r?\n/);
+    return G.map(function(g){
+      for(var i=0;i<lines.length;i++){
+        var m=lines[i].match(g[0]); if(!m) continue;
+        var aux=m.length>2?m[1]:null, body=(m.length>2?m[2]:m[1]).trim();
+        if(g[1]) body=(aux==='would'?'would ':"'d ")+body.replace(/^'d\s*/,'');
+        return body;
+      }
+      return null;
+    });
+  }
+  function show(){
+    var t=document.getElementById('lyr').value; try{localStorage.setItem('t2lyr',t);}catch(e){}
+    var r=solve(t), h='';
+    r.forEach(function(a,i){h+='<div><b>'+(i+1)+')</b> '+(a?'<span class="a">'+a.replace(/</g,'&lt;')+'</span>':'<span class="x">找不到這一行</span>')+'</div>';});
+    document.getElementById('anslist').innerHTML=h;
+  }
+  document.getElementById('go').onclick=show;
+  try{var s=localStorage.getItem('t2lyr'); if(s){document.getElementById('lyr').value=s; show();}}catch(e){}
+  window.__t2solve=solve;
+})();
+</script>
 </body>
 </html>
