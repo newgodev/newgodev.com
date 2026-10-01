@@ -85,6 +85,31 @@ a.tile.cool{border-top-color:var(--cool)}
 a.tile.done{opacity:.62; border-top-color:#6f8f6a; min-height:0}
 a.tile.done:hover{opacity:.95}
 .tag.ok{color:#0f1a0d; background:#9bbf95; border-color:#9bbf95; font-weight:700}
+.filters{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:12px 14px 6px; margin:0 0 18px}
+.fhead{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px}
+.ft{font-family:"Fraunces",serif; font-weight:600; color:var(--gold2); font-size:1rem}
+.fsort{display:flex; align-items:center; gap:6px; font-size:.68rem; color:var(--dim); font-family:"JetBrains Mono",monospace}
+.fsort select{font-family:"Spline Sans",system-ui,sans-serif; font-size:.78rem; color:var(--ink); background:#1b1610; border:1px solid var(--line);
+  border-radius:9px; padding:6px 10px; outline:none; cursor:pointer}
+.fsort select:focus{border-color:var(--gold3)}
+.fsp{flex:1}
+.fcount{font-family:"JetBrains Mono",monospace; font-size:.68rem; color:var(--dim)}
+.fclear{font-family:inherit; font-weight:700; font-size:.74rem; color:var(--ink); background:#1b1610; border:1px solid var(--line); border-radius:9px; padding:6px 12px; cursor:pointer}
+.fclear:hover{border-color:var(--gold3)}
+.fg{display:flex; align-items:flex-start; gap:10px; padding:7px 0; border-top:1px solid rgba(44,36,26,.7)}
+.fl{flex:0 0 3.4em; font-family:"JetBrains Mono",monospace; font-size:.64rem; letter-spacing:1px; color:var(--dim); padding-top:7px}
+.fc{display:flex; flex-wrap:wrap; gap:7px}
+.chip{font-family:inherit; font-weight:600; font-size:.74rem; color:var(--ink); background:#1b1610; border:1px solid #3a3022; border-radius:999px;
+  padding:6px 13px; cursor:pointer; transition:border-color .12s, background .12s, color .12s; -webkit-tap-highlight-color:transparent}
+.chip:hover{border-color:var(--gold3)}
+.chip .cn{font-family:"JetBrains Mono",monospace; font-size:.62rem; color:var(--dim); margin-left:5px}
+.chip.on{color:#5fe07c; border-color:#3fbf5f; background:rgba(63,191,95,.12)}
+.chip.on::after{content:" \2713"}
+.chip.on .cn{color:#5fe07c}
+.due{font-size:.7rem; color:var(--gold); font-family:"JetBrains Mono",monospace; margin-top:5px}
+.due.soon{color:var(--hot); font-weight:600}
+a.tile.done .due{color:var(--dim)}
+@media(max-width:520px){ .filters{padding:10px 10px 4px} .fg{gap:8px} .fl{flex-basis:2.6em} .chip{padding:5px 11px} }
 @media(max-width:520px){
   :root{font-size:18px}
   .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:11px}
@@ -105,6 +130,23 @@ a.tile.done:hover{opacity:.95}
     </label>
   </div>
 
+  <div class="filters" id="filters">
+    <div class="fhead">
+      <span class="ft">篩選</span>
+      <label class="fsort">排序
+        <select id="fsort">
+          <option value="pri">最緊要先</option>
+          <option value="due">截止日最近先</option>
+          <option value="new">最新建立先</option>
+          <option value="old">最舊建立先</option>
+        </select>
+      </label>
+      <span class="fsp"></span>
+      <span class="fcount" id="fcount"></span>
+      <button type="button" class="fclear" id="fclear">Clear All</button>
+    </div>
+    <div id="fgroups"></div>
+  </div>
   <div class="grid" id="grid"></div>
   <div class="sec" id="doneh">已完成 <span class="n" id="donen">0</span></div>
   <div class="grid" id="done"></div>
@@ -112,64 +154,142 @@ a.tile.done:hover{opacity:.95}
 
 <script>
 // 加一份新功課:喺 ITEMS 加一行,再喺 repo 開 那個 code/index.html。
-// pri 3=最緊要 2=緊要 1=普通;板按 pri 由高到低排,search 即時篩。
+// pri 3=最緊要 2=緊要 1=普通;due = 截止日,過咗就自動跌落已完成;done:true = 手動已完成。
 var ITEMS = [
-  { code:"jhfj9e", title:"UT2(10 月 8 日)Vocab 18 字 + Tenses 溫習", subject:"英文", kind:"練習題", pri:2, date:"2026-10-01" },
-  { code:"mt3k8a", title:"Matilda Ch 1-3 預習(The Reader of Books 至 Superglue)", subject:"英文", kind:"教學片", pri:3, date:"2026-10-01" },
-  { code:"bsfdap", title:"AI Quiz:Type 2 + Reported Instructions(聽日 08:15 交)", subject:"英文", kind:"練習題", pri:3, date:"2026-10-01" },
+  { code:"jhfj9e", title:"UT2(10 月 8 日)Vocab 18 字 + Tenses 溫習", subject:"英文", kind:"練習題", pri:2, date:"2026-10-01", due:"2026-10-08" },
+  { code:"mt3k8a", title:"Matilda Ch 1-3 預習(The Reader of Books 至 Superglue)", subject:"英文", kind:"教學片", pri:3, date:"2026-10-01", due:"2026-10-08" },
+  { code:"bsfdap", title:"AI Quiz:Type 2 + Reported Instructions(10-02 08:15 交)", subject:"英文", kind:"練習題", pri:3, date:"2026-10-01", due:"2026-10-02" },
   { code:"lc3w7n", title:"填詞功課:0243 怎樣用", subject:"音樂", kind:"教學片", pri:3, date:"2026-10-01" },
   { code:"mu8k4q", title:"音樂筆記:音階密碼、唱名、走勢圖", subject:"音樂", kind:"教學片", pri:2, date:"2026-10-01" },
-  { code:"ut1e7q", title:"English UT 1 Reading Test 點解錯", subject:"英文", kind:"教學片", pri:3, date:"2026-09-29" },
-  { code:"t2cw5j", title:"Type 2 WS 條件句 Grammar Unit 12", subject:"英文", kind:"教學片", pri:3, date:"2026-09-29" },
+  { code:"ut1e7q", title:"English UT 1 Reading Test 點解錯", subject:"英文", kind:"教學片", pri:3, date:"2026-09-29", due:"2026-09-29" },
+  { code:"t2cw5j", title:"Type 2 WS 條件句 Grammar Unit 12", subject:"英文", kind:"教學片", pri:3, date:"2026-09-29", due:"2026-09-29" },
   { code:"fn8k2d", title:"FinEd BAFS ACC1 + ACC2 會計等式", subject:"FinEd", kind:"教學片", pri:1, date:"2026-09-30" },
   { code:"rc5w2k", title:"RAC Unit 11 The Art of LEGO", subject:"英文 RAC", kind:"教學片", pri:1, date:"2026-09-30" },
-  { code:"zx3m7q", title:"單元一 自習篇章《孟子二則》", subject:"中文", kind:"教學片", pri:2, date:"2026-09-30" },
+  { code:"zx3m7q", title:"單元一 自習篇章《孟子二則》", subject:"中文", kind:"教學片", pri:2, date:"2026-09-30", due:"2026-10-09" },
   { code:"ut9c4n", title:"中文 UT 單元檢測（一）點解錯", subject:"中文", kind:"教學片", pri:3, date:"2026-09-30" },
-  { code:"g4w8tz", title:"GEO Workbook Ch1 點樣做", subject:"地理", kind:"教學片", pri:3, date:"2026-09-29" },
-{ code:"ze1sdi", done:true, title:"Laws of Indices 小測 點解錯", subject:"數學", kind:"教學片", pri:3, date:"2026-09-29" },
+  { code:"g4w8tz", title:"GEO Workbook Ch1 點樣做", subject:"地理", kind:"教學片", pri:3, date:"2026-09-29", due:"2026-09-30" },
+  { code:"ze1sdi", done:true, title:"Laws of Indices 小測 點解錯", subject:"數學", kind:"教學片", pri:3, date:"2026-09-29" },
   { code:"6bx7l9", done:true, title:"科學記數法 + 數系", subject:"數學 SOIN", kind:"教學片", pri:3, date:"2026-09-29" },
-  { code:"r7m2kq", title:"由大綱寫成文章", subject:"中文作文", kind:"教學片", pri:3, date:"2026-09-28" },
-  { code:"q9x4vn", title:"作文 Kahoot",             subject:"中文作文", kind:"練習題", pri:2, date:"2026-09-28" },
-  { code:"w3h8pz", title:"作文默寫練習",     subject:"中文作文", kind:"挑戰",   pri:1, date:"2026-09-28" },
+  { code:"r7m2kq", done:true, title:"由大綱寫成文章", subject:"中文作文", kind:"教學片", pri:3, date:"2026-09-28" },
+  { code:"q9x4vn", done:true, title:"作文 Kahoot",             subject:"中文作文", kind:"練習題", pri:2, date:"2026-09-28" },
+  { code:"w3h8pz", done:true, title:"作文默寫練習",     subject:"中文作文", kind:"挑戰",   pri:1, date:"2026-09-28" },
 ];
 
 var LV = {3:{c:"hot",t:"最緊要"},2:{c:"warm",t:"緊要"},1:{c:"cool",t:"普通"}};
-var grid = document.getElementById("grid");
-var q = document.getElementById("q");
 var PLAY = '<span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>';
-var sorted = ITEMS.slice().sort(function(a,b){return (b.pri||1)-(a.pri||1);});
+var $ = function(id){ return document.getElementById(id); };
+var grid = $("grid"), done = $("done"), doneh = $("doneh"), donen = $("donen"), q = $("q");
 
-var done = document.getElementById("done");
-var doneh = document.getElementById("doneh");
-var donen = document.getElementById("donen");
+function pad(n){ return (n<10?"0":"")+n; }
+function ymd(d){ return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate()); }
+var TODAY = ymd(new Date());
+function days(a,b){ return Math.round((new Date(b+"T00:00:00")-new Date(a+"T00:00:00"))/86400000); }
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+// 截止日一過(due 細過今日)就自動當已完成;done:true 係手動。
+function isDone(it){ return !!it.done || (!!it.due && it.due < TODAY); }
+function soon(it){ if(isDone(it)||!it.due) return false; var n=days(TODAY,it.due); return n>=0 && n<=3; }
+function root(s){ var r=String(s||"").split(" ")[0]; if(r.indexOf("中文")===0) r="中文"; return r; }
+function dueText(it){
+  if(!it.due) return "";
+  if(isDone(it)) return "截止 "+it.due.slice(5);
+  var n=days(TODAY,it.due);
+  if(n===0) return "今天截止";
+  if(n===1) return "明天截止";
+  return "截止 "+it.due.slice(5)+" · 還有 "+n+" 天";
+}
+
 function tile(it){
-  var lv = LV[it.pri||1];
-  var cls = it.done ? "done" : lv.c;
-  var first = it.done ? '<span class="tag ok">已完成</span>' : '<span class="tag pri-'+lv.c+'">'+lv.t+'</span>';
-  return '<a class="tile '+cls+'" href="./'+it.code+'/">'
+  var fin = isDone(it), lv = LV[it.pri||1];
+  var first = fin ? '<span class="tag ok">已完成</span>' : '<span class="tag pri-'+lv.c+'">'+lv.t+'</span>';
+  var dt = dueText(it), hot = !fin && it.due && days(TODAY,it.due)<=1;
+  return '<a class="tile '+(fin?"done":lv.c)+'" href="./'+esc(it.code)+'/">'
     + '<span class="tags">'+first
-    +   '<span class="tag">'+it.subject+'</span><span class="tag">'+it.kind+'</span></span>'
-    + '<div class="tt">'+it.title+'</div>'
-    + '<div class="sub">'+it.code+'</div>'
-    + '<div class="foot-row"><span class="date">建立 '+it.date+'</span>'+PLAY+'</div>'
+    +   '<span class="tag">'+esc(it.subject)+'</span><span class="tag">'+esc(it.kind)+'</span></span>'
+    + '<div class="tt">'+esc(it.title)+'</div>'
+    + '<div class="sub">'+esc(it.code)+'</div>'
+    + (dt ? '<div class="due'+(hot?' soon':'')+'">'+dt+'</div>' : '')
+    + '<div class="foot-row"><span class="date">建立 '+esc(it.date)+'</span>'+PLAY+'</div>'
     + '</a>';
 }
-function render(term){
-  term = (term||"").trim().toLowerCase();
-  var list = sorted.filter(function(it){
-    if(!term) return true;
-    return (it.title+" "+it.subject+" "+it.kind+" "+it.date+" "+it.code+(it.done?" 已完成 done":"")).toLowerCase().indexOf(term) >= 0;
-  });
-  var todo = list.filter(function(it){return !it.done;});
-  var fin = list.filter(function(it){return it.done;});
+
+function countBy(fn){ var m={}, order=[]; ITEMS.forEach(function(it){ var k=fn(it); if(!(k in m)){ m[k]=0; order.push(k); } m[k]++; }); return order.sort(function(a,b){ return m[b]-m[a]; }).map(function(k){ return [k,k,m[k]]; }); }
+var GROUPS = [
+  { k:"subj", label:"科目", opts:function(){ return countBy(function(it){ return root(it.subject); }); } },
+  { k:"kind", label:"種類", opts:function(){ return countBy(function(it){ return it.kind; }); } },
+  { k:"pri",  label:"緊要", opts:function(){ return [["3","最緊要"],["2","緊要"],["1","普通"]]; } },
+  { k:"st",   label:"狀態", opts:function(){ return [["todo","未完成"],["soon","3 天內截止"],["done","已完成"]]; } }
+];
+var F = {subj:{}, kind:{}, pri:{}, st:{}}, SORT = "pri";
+function on(g){ for(var k in F[g]) return true; return false; }
+function anyF(){ return on("subj")||on("kind")||on("pri")||on("st"); }
+
+function match(it, term){
+  if(term){
+    var hay = (it.title+" "+it.subject+" "+it.kind+" "+it.date+" "+(it.due||"")+" "+it.code+(isDone(it)?" 已完成 done":" 未完成")).toLowerCase();
+    if(hay.indexOf(term) < 0) return false;
+  }
+  if(on("subj") && !F.subj[root(it.subject)]) return false;
+  if(on("kind") && !F.kind[it.kind]) return false;
+  if(on("pri") && !F.pri[String(it.pri||1)]) return false;
+  if(on("st")){
+    var d = isDone(it);
+    if(!((F.st.todo && !d) || (F.st.done && d) || (F.st.soon && soon(it)))) return false;
+  }
+  return true;
+}
+function byDue(a,b){ var x=a.due||"9999-99-99", y=b.due||"9999-99-99"; return x<y?-1:x>y?1:0; }
+var SORTS = {
+  pri: function(a,b){ return ((b.pri||1)-(a.pri||1)) || byDue(a,b); },
+  due: function(a,b){ return byDue(a,b) || ((b.pri||1)-(a.pri||1)); },
+  "new": function(a,b){ return a.date<b.date?1:a.date>b.date?-1:0; },
+  old: function(a,b){ return a.date<b.date?-1:a.date>b.date?1:0; }
+};
+
+function render(){
+  var term = (q.value||"").trim().toLowerCase();
+  var list = ITEMS.filter(function(it){ return match(it, term); }).sort(SORTS[SORT]);
+  var todo = list.filter(function(it){ return !isDone(it); }), fin = list.filter(isDone);
+  var hideTodo = on("st") && !F.st.todo && !F.st.soon;
+  grid.style.display = hideTodo ? "none" : "";
   grid.innerHTML = todo.length ? todo.map(tile).join("")
-    : '<div class="empty">'+(term?'找不到「'+term+'」。':'全部做完了。')+'</div>';
+    : '<div class="empty">'+((term||anyF()) ? '沒有符合條件的功課。' : '全部做完了。')+'</div>';
   done.innerHTML = fin.map(tile).join("");
   doneh.style.display = fin.length ? "" : "none";
   donen.textContent = fin.length;
+  $("fcount").textContent = list.length + " / " + ITEMS.length + " 份";
 }
-q.addEventListener("input", function(){ render(q.value); });
-render("");
+
+function buildChips(){
+  var h = "";
+  GROUPS.forEach(function(g){
+    h += '<div class="fg"><div class="fl">'+g.label+'</div><div class="fc">';
+    g.opts().forEach(function(o){
+      h += '<button type="button" class="chip" data-g="'+g.k+'" data-v="'+esc(o[0])+'" aria-pressed="false">'
+        + esc(o[1]) + (o[2]!=null ? '<span class="cn">'+o[2]+'</span>' : '') + '</button>';
+    });
+    h += '</div></div>';
+  });
+  $("fgroups").innerHTML = h;
+  Array.prototype.forEach.call(document.querySelectorAll("#fgroups .chip"), function(b){
+    b.addEventListener("click", function(){
+      var g = b.getAttribute("data-g"), v = b.getAttribute("data-v");
+      if(F[g][v]) delete F[g][v]; else F[g][v] = 1;
+      b.classList.toggle("on", !!F[g][v]);
+      b.setAttribute("aria-pressed", F[g][v] ? "true" : "false");
+      render();
+    });
+  });
+}
+$("fsort").addEventListener("change", function(){ SORT = this.value; render(); });
+$("fclear").addEventListener("click", function(){
+  F = {subj:{}, kind:{}, pri:{}, st:{}}; SORT = "pri"; $("fsort").value = "pri"; q.value = "";
+  Array.prototype.forEach.call(document.querySelectorAll("#fgroups .chip"), function(b){ b.classList.remove("on"); b.setAttribute("aria-pressed","false"); });
+  render();
+});
+q.addEventListener("input", render);
+buildChips();
+render();
 </script>
 </body>
 </html>
