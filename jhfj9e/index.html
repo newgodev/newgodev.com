@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>if(location.protocol==="http:")location.replace("https://"+location.host+location.pathname+location.search);</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UT2 Vocabulary &amp; Usage Practice (8 Oct)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+HK:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#14171c;--muted:#5b6270;--blue:#1f6feb;--pur:#7a3fd1;--grn:#1a8a3a;--red:#d42a3c;--amb:#b97800;--teal:#0b7f86;--pink:#c2347a;--soft:#f3f6fb;--line:#dfe5ee}
+*{box-sizing:border-box}
+html{color-scheme:light;background:#fff;font-size:20px;scrollbar-width:thin;scrollbar-color:#7ea6ec #eef3fb}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:#eef3fb;border-radius:999px}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#9cc0ff,#5d8fe8);border-radius:999px;border:2px solid #eef3fb}
+::-webkit-scrollbar-thumb:hover{background:#4a7fdc}
+::-webkit-scrollbar-button{display:none;width:0;height:0}
+::-webkit-scrollbar-corner{background:#eef3fb}
+body{margin:0;background:#fff;color:var(--ink);font-family:"Inter",Arial,"Noto Sans HK",sans-serif;min-height:100vh;overflow-x:hidden}
+button,a{font-family:inherit}
+.top{position:sticky;top:0;z-index:5;background:#fff;border-bottom:4px solid var(--blue);display:flex;align-items:center;gap:12px;padding:9px 18px}
+.brand{font-weight:900;color:var(--blue);font-size:.95rem;white-space:nowrap}
+.ttl{font-weight:700;font-size:.8rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp{flex:1}
+.pill{font-weight:900;background:var(--soft);color:var(--blue);border-radius:999px;padding:4px 12px;font-size:.8rem;white-space:nowrap}
+.wrap{max-width:920px;margin:0 auto;padding:18px 16px 40px}
+.screen{display:none}
+.screen.on{display:block;animation:in .3s}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.hero{text-align:center;padding:18px 6px 6px}
+.kicker{font-weight:700;color:var(--muted);font-size:.8rem;letter-spacing:.3px}
+h1{font-size:1.9rem;line-height:1.2;margin:10px 0 6px}
+.sub{color:var(--muted);margin:4px 0 14px;font-size:.9rem}
+.scope{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0 10px;text-align:left}
+@media (max-width:700px){.scope{grid-template-columns:1fr}}
+.part{border:2px solid var(--line);border-radius:14px;padding:12px 14px;background:#fff;display:flex;flex-direction:column;gap:6px}
+.part .pn{font-weight:900;font-size:.72rem;color:var(--muted)}
+.part .pt{font-weight:900;font-size:1rem}
+.part .pd{font-size:.8rem;color:var(--muted);line-height:1.4}
+.part .go{align-self:flex-start;margin-top:4px;font-weight:900;font-size:.85rem;border:0;border-radius:10px;padding:8px 16px;color:#fff;cursor:pointer;text-decoration:none;display:inline-block}
+.part.voc .pt{color:var(--teal)}.part.voc .go{background:var(--teal)}
+.part.tns .pt{color:var(--pink)}.part.tns .go{background:var(--pink)}
+.part.t2 .pt{color:var(--blue)}.part.t2 .go{background:var(--blue)}
+.part.ri .pt{color:var(--pur)}.part.ri .go{background:var(--pur)}
+.tag{display:inline-block;font-weight:900;font-size:.75rem;border-radius:999px;padding:4px 12px;white-space:nowrap}
+.tag.voc{background:#e0f4f5;color:var(--teal)}
+.tag.tns{background:#fbe6f0;color:var(--pink)}
+.tag.t2{background:#e7f0ff;color:var(--blue)}
+.tag.ri{background:#f1e9ff;color:var(--pur)}
+.tag.ts{background:#fff2d6;color:var(--amb)}
+.btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.big{font-weight:900;font-size:1.05rem;border:0;border-radius:12px;padding:13px 30px;background:var(--blue);color:#fff;cursor:pointer;box-shadow:0 5px 0 #1450b0;transition:transform .08s}
+.big:active{transform:translateY(3px);box-shadow:0 2px 0 #1450b0}
+.ghost{font-weight:900;font-size:1rem;border:2px solid var(--blue);border-radius:12px;padding:11px 22px;background:#fff;color:var(--blue);cursor:pointer}
+.foot{text-align:center;color:var(--muted);font-size:.72rem;margin-top:18px}
+.qhead{display:flex;align-items:center;gap:10px;margin:4px 0 10px;flex-wrap:wrap}
+.qn{font-weight:900;color:var(--muted);font-size:.9rem}
+.dots{display:flex;gap:5px;margin:0 0 14px}
+.dot{flex:1;height:8px;border-radius:999px;background:#e8edf5}
+.dot.cur{background:#9cc0ff}
+.dot.ok{background:var(--grn)}
+.dot.no{background:var(--red)}
+.qbox{font-size:1.3rem;font-weight:700;line-height:1.55;padding:22px 20px;border-radius:14px;background:var(--soft);border:2px solid var(--line);min-height:96px}
+.blank{display:inline-block;min-width:4.2em;border-bottom:3px solid var(--ink);margin:0 4px;transform:translateY(-3px)}
+.fill{font-weight:900;border-radius:6px;padding:0 6px;margin:0 2px}
+.fill.ok{color:var(--grn);background:#e3f5e9}
+.fill.bad{color:var(--red);background:#fde8ea;text-decoration:line-through}
+.ans{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+@media (max-width:700px){.ans{grid-template-columns:1fr}h1{font-size:1.5rem}.qbox{font-size:1.12rem}}
+.a{position:relative;display:flex;align-items:center;gap:12px;text-align:left;border:2px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);font-weight:700;font-size:1rem;padding:14px 14px;min-height:66px;cursor:pointer;transition:transform .1s,background .2s,border-color .2s,opacity .2s}
+.a:hover{border-color:#9cc0ff;background:#f7faff}
+.a:active{transform:translateY(2px)}
+.a .lt{flex:none;width:34px;height:34px;border-radius:9px;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+.a0 .lt{background:#d42a3c}.a1 .lt{background:#1f6feb}.a2 .lt{background:#b97800}.a3 .lt{background:#1a8a3a}
+.a .tx{flex:1}
+.a .mk{flex:none;font-weight:900;font-size:1.2rem}
+.a.right{border-color:var(--grn);background:#e3f5e9;opacity:1}
+.a.wrong{border-color:var(--red);background:#fde8ea;animation:shake .4s}
+.a.dim{opacity:.45}
+.a:disabled{cursor:default}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.fb{display:none;margin-top:16px;border-radius:12px;padding:12px 16px;border-left:7px solid var(--grn);background:#f1faf4}
+.fb.on{display:block;animation:in .25s}
+.fb.bad{border-left-color:var(--red);background:#fff4f5}
+.fbh{font-weight:900;font-size:1.05rem;margin-bottom:4px}
+.fb.good .fbh{color:var(--grn)}
+.fb.bad .fbh{color:var(--red)}
+.why{font-size:.95rem;line-height:1.5}
+.zh{font-size:.92rem;color:var(--muted);margin-top:3px;line-height:1.5}
+.next{text-align:right;margin-top:14px;min-height:56px}
+.wl{width:100%;border-collapse:collapse;font-size:.8rem}
+.wl th{text-align:left;color:var(--muted);font-size:.72rem;border-bottom:2px solid var(--line);padding:6px 6px}
+.wl td{border-bottom:1px solid var(--line);padding:6px 6px;vertical-align:top;line-height:1.4}
+.wl td.w{font-weight:900;color:var(--teal);white-space:nowrap}
+.wl td.p{color:var(--muted);white-space:nowrap}
+.wl tr.cat td{font-weight:900;color:var(--ink);background:var(--soft);font-size:.75rem}
+.card{border:2px solid var(--line);border-radius:14px;padding:12px 14px;background:#fff;margin-top:14px}
+.card h2{font-size:1rem;margin:0 0 8px}
+.card.voc h2{color:var(--teal)}
+.card.tns h2{color:var(--pink)}
+.res{text-align:center;padding:6px 0 4px}
+.scoreBig{font-size:2.6rem;font-weight:900;line-height:1.1;margin:6px 0 2px}
+.scoreBig small{font-size:1.2rem;color:var(--muted);margin-left:10px}
+.target{display:inline-block;font-weight:900;border-radius:999px;padding:5px 16px;font-size:.85rem}
+.target.hit{background:#e3f5e9;color:var(--grn)}
+.target.miss{background:#fff2d6;color:var(--amb)}
+.when{color:var(--muted);font-size:.72rem;margin-top:6px}
+.review{list-style:none;margin:12px 0 14px;padding:0}
+.review li{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;border-bottom:1px solid var(--line);font-size:.78rem;line-height:1.45}
+.review .num{flex:none;font-weight:900;color:var(--muted);width:1.8em}
+.review .mk{flex:none;font-weight:900;width:1.1em}
+.review li.ok .mk{color:var(--grn)}
+.review li.no .mk{color:var(--red)}
+.review .rtag{flex:none;font-weight:900;font-size:.62rem;border-radius:999px;padding:2px 8px;margin-top:2px;white-space:nowrap}
+.review .rtag.voc{background:#e0f4f5;color:var(--teal)}
+.review .rtag.tns{background:#fbe6f0;color:var(--pink)}
+.review .rtag.t2{background:#e7f0ff;color:var(--blue)}
+.review .rtag.ri{background:#f1e9ff;color:var(--pur)}
+.review .rtag.ts{background:#fff2d6;color:var(--amb)}
+.review .rq{flex:1}
+.review .fill{padding:0 4px}
+</style>
+</head>
+<body>
+<div class="top">
+  <span class="brand">English UT2</span>
+  <span class="ttl">Vocabulary &amp; Usage · 8 Oct</span>
+  <span class="sp"></span>
+  <span class="pill" id="pill">4 parts</span>
+</div>
+<div class="wrap">
+
+<section class="screen on" id="sStart">
+  <div class="hero">
+    <div class="kicker">UT2 · Vocabulary and Usage · 8 October</div>
+    <h1>UT2 practice — all 4 parts</h1>
+    <p class="sub">Same scope as the teacher’s slide. Tap a part to practise. 每題答完即刻有解釋。</p>
+  </div>
+  <div class="scope">
+    <div class="part voc">
+      <span class="pn">PART 1</span>
+      <span class="pt">Vocab · LE Unit 1 (highlighted only)</span>
+      <span class="pd">The 18 yellow words on the vocab list. Meaning + using them in a sentence.</span>
+      <button class="go" id="goVoc" type="button">Practise 10 →</button>
+    </div>
+    <div class="part tns">
+      <span class="pn">PART 2</span>
+      <span class="pt">Tenses</span>
+      <span class="pd">Correct verb form from the signal words (last week, so far, by 5 p.m. …).</span>
+      <button class="go" id="goTns" type="button">Practise 10 →</button>
+    </div>
+    <div class="part ri">
+      <span class="pn">PART 3</span>
+      <span class="pt">Reporting instructions</span>
+      <span class="pd">told / asked + person + (not) to + verb.</span>
+      <a class="go" href="../bsfdap/">Open quiz →</a>
+    </div>
+    <div class="part t2">
+      <span class="pn">PART 4</span>
+      <span class="pt">Type 2 conditional</span>
+      <span class="pd">If + past simple, … would + verb.</span>
+      <a class="go" href="../bsfdap/">Open quiz →</a>
+    </div>
+  </div>
+  <div class="btns">
+    <button class="big" id="goMix" type="button">Mixed UT2 · 20 questions</button>
+    <button class="ghost" id="notesBtn" type="button">Word list + tense signals</button>
+  </div>
+  <div class="foot">Every new round gives different questions.</div>
+</section>
+
+<section class="screen" id="sNotes">
+  <div class="card voc">
+    <h2>Part 1 · The 18 highlighted words(LE Unit 1)</h2>
+    <table class="wl" id="wl"></table>
+  </div>
+  <div class="card tns">
+    <h2>Part 2 · Tense signal words 時態訊號</h2>
+    <table class="wl">
+      <tr><th>You see …</th><th>Use</th><th>Example</th></tr>
+      <tr><td>last week / ago / yesterday</td><td class="w" style="color:var(--pink)">past simple</td><td>Tom won the contest last Friday.</td></tr>
+      <tr><td>so far / since / for / already</td><td class="w" style="color:var(--pink)">present perfect</td><td>She has written three novels so far.</td></tr>
+      <tr><td>usually / every day</td><td class="w" style="color:var(--pink)">present simple</td><td>My brother usually goes by bus.</td></tr>
+      <tr><td>was …-ing when …</td><td class="w" style="color:var(--pink)">past continuous</td><td>I was watching TV when the lights went out.</td></tr>
+      <tr><td>by the time + past</td><td class="w" style="color:var(--pink)">past perfect</td><td>By the time we arrived, the film had started.</td></tr>
+      <tr><td>by + future time</td><td class="w" style="color:var(--pink)">future perfect</td><td>By 5 p.m. tomorrow, I will have finished.</td></tr>
+      <tr><td>evidence now (Look!)</td><td class="w" style="color:var(--pink)">be going to</td><td>Look at the clouds! It is going to rain.</td></tr>
+      <tr><td>I think / probably</td><td class="w" style="color:var(--pink)">will</td><td>I think it will be sunny tomorrow.</td></tr>
+      <tr><td>by + person / born</td><td class="w" style="color:var(--pink)">passive (be + pp)</td><td>The library was opened by the principal.</td></tr>
+      <tr><td>after at / in / of …</td><td class="w" style="color:var(--pink)">verb-ing</td><td>She is good at drawing.</td></tr>
+    </table>
+  </div>
+  <div class="btns" style="margin-top:16px">
+    <button class="ghost" id="notesBack" type="button">Back</button>
+  </div>
+</section>
+
+<section class="screen" id="sQ">
+  <div class="qhead">
+    <span class="qn" id="qn"></span>
+    <span class="tag" id="qtag"></span>
+  </div>
+  <div class="dots" id="dots"></div>
+  <div class="qbox" id="qt"></div>
+  <div class="ans" id="ans"></div>
+  <div class="fb" id="fb"></div>
+  <div class="next"><button class="big" id="nx" type="button" style="visibility:hidden">Next →</button></div>
+</section>
+
+<section class="screen" id="sEnd">
+  <div class="res">
+    <div class="kicker" id="rk"></div>
+    <div class="scoreBig"><span id="rs"></span><small id="rp"></small></div>
+    <div class="target" id="rt"></div>
+    <div class="when" id="rw"></div>
+  </div>
+  <ol class="review" id="rv"></ol>
+  <div class="btns">
+    <button class="big" id="again" type="button">New round</button>
+    <button class="ghost" id="home" type="button">All parts</button>
+  </div>
+</section>
+
+</div>
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id);};
+
+var WORDS=[
+{w:"confused",p:"p. 10",c:"Adjectives to describe feelings",m:"unable to understand something or think clearly",zh:"困惑、搞不清楚"},
+{w:"depressed",p:"p. 4",c:"",m:"very unhappy for a long time, with no hope",zh:"長期很不開心、抑鬱"},
+{w:"frazzled",p:"p. 4",c:"",m:"very tired and nervous because you have too much to do",zh:"累到心煩意亂"},
+{w:"frustrated",p:"p. 8",c:"",m:"annoyed because you cannot do or get what you want",zh:"因做不到而煩躁、沮喪"},
+{w:"grateful",p:"p. 12",c:"",m:"wanting to thank someone for what they did",zh:"感激"},
+{w:"optimistic",p:"p. 12",c:"",m:"believing that good things will happen",zh:"樂觀"},
+{w:"overwhelmed",p:"p. 3",c:"",m:"feeling that there is too much to deal with",zh:"應付不來、不知所措"},
+{w:"pessimistic",p:"p. 12",c:"",m:"expecting that bad things will happen",zh:"悲觀"},
+{w:"stressed",p:"p. 11",c:"",m:"worried and nervous because of problems or work",zh:"有壓力、緊張"},
+{w:"worthless",p:"p. 5",c:"",m:"feeling that you are not useful or important",zh:"覺得自己沒有價值"},
+{w:"count your blessings",p:"p. 5",c:"Ways to cope with stress and unhappiness",m:"think about the good things you already have",zh:"想想自己擁有的好東西"},
+{w:"engage in physical activities",p:"p. 4",c:"",m:"take part in sports or exercise",zh:"做運動、參與體能活動"},
+{w:"meditate",p:"p. 13",c:"",m:"sit quietly and focus your mind so that you feel calm",zh:"冥想、靜坐"},
+{w:"spend time in nature",p:"p. 4",c:"",m:"go to parks, beaches or the countryside",zh:"去大自然走走"},
+{w:"a vicious cycle",p:"p. 5",c:"Useful collocations",m:"a bad situation where one problem causes another, which makes the first one worse",zh:"惡性循環"},
+{w:"down in the dumps",p:"p. 8",c:"",m:"feeling sad",zh:"心情低落"},
+{w:"drive someone nuts",p:"p. 4",c:"",m:"make someone very annoyed",zh:"令人抓狂"},
+{w:"put someone on edge",p:"p. 4",c:"",m:"make someone nervous",zh:"令人緊張不安"}
+];
+var WM={}; WORDS.forEach(function(x){WM[x.w]=x;});
+
+function V(word,kind,q,pool){var x=WM[word];return {g:word,q:q,a:word,w:pool,why:word+" ("+x.p+") = "+x.m+".",zh:word+":"+x.zh+"。"};}
+var ADJ="confused depressed frazzled frustrated grateful optimistic overwhelmed pessimistic stressed worthless".split(" ");
+function adj(ex){return ADJ.filter(function(x){return ex.indexOf(x)<0;});}
+var COP=["count your blessings","engage in physical activities","meditate","spend time in nature","don't dwell on the past","embrace change","have a good laugh","stop comparing yourself with others"];
+function cop(ex){return COP.filter(function(x){return ex.indexOf(x)<0;});}
+var COL=["a vicious cycle","down in the dumps","drive someone nuts","put someone on edge","be in sb's shoes","go through a rough patch","get the hang of sth"];
+function col(ex){return COL.filter(function(x){return ex.indexOf(x)<0;});}
+function def(word){return "Which one means: “"+WM[word].m+"”?";}
+
+var VOC=[
+V("confused","d",def("confused"),adj(["confused","frazzled","overwhelmed"])),
+V("confused","s","The instructions were so unclear that everyone was ___ and didn't know what to do.",adj(["confused","frustrated","stressed","overwhelmed","frazzled"])),
+V("depressed","d",def("depressed"),adj(["depressed","worthless","pessimistic"])),
+V("depressed","s","For months, he has felt ___; he is sad every day and has lost interest in everything.",adj(["depressed","overwhelmed","stressed","worthless","pessimistic"])),
+V("frazzled","d",def("frazzled"),adj(["frazzled","stressed","overwhelmed"])),
+V("frazzled","s","After rushing between three meetings and a long exam, Miss Lee looked ___ — tired, messy and nervous.",adj(["frazzled","stressed","overwhelmed","depressed"])),
+V("frustrated","d",def("frustrated"),adj(["frustrated","stressed","frazzled"])),
+V("frustrated","s","I tried for two hours to fix my bike but I just couldn't. I was so ___ that I wanted to throw it away.",adj(["frustrated","stressed","frazzled","overwhelmed"])),
+V("grateful","d",def("grateful"),adj(["grateful","overwhelmed"])),
+V("grateful","s","I'm really ___ to my friend for helping me with my homework every night.",adj(["grateful","overwhelmed"])),
+V("optimistic","d",def("optimistic"),adj(["optimistic","overwhelmed"])),
+V("optimistic","s","Even after losing the first game, the team is ___ that they can still win the cup.",adj(["optimistic","overwhelmed"])),
+V("overwhelmed","d",def("overwhelmed"),adj(["overwhelmed","frazzled","stressed"])),
+V("overwhelmed","s","With five tests and three projects in one week, Ken felt ___ — there was simply too much to handle.",adj(["overwhelmed","frazzled","stressed"])),
+V("pessimistic","d",def("pessimistic"),adj(["pessimistic","depressed","overwhelmed"])),
+V("pessimistic","s","She is always ___; before every test, she says she is sure she will fail.",adj(["pessimistic","depressed","stressed","overwhelmed"])),
+V("stressed","d",def("stressed"),adj(["stressed","frazzled","overwhelmed"])),
+V("stressed","s","Many students feel ___ before exams because they worry about their marks.",adj(["stressed","frazzled","overwhelmed","depressed","pessimistic"])),
+V("worthless","d",def("worthless"),adj(["worthless","depressed","overwhelmed"])),
+V("worthless","s","When nobody listened to her ideas, she felt ___ — useless and unimportant.",adj(["worthless","depressed","overwhelmed"])),
+V("count your blessings","d",def("count your blessings"),cop(["count your blessings"])),
+V("count your blessings","s","When life feels hard, ___: think about your family, your friends and your warm home.",cop(["count your blessings","don't dwell on the past"])),
+V("engage in physical activities","d",def("engage in physical activities"),cop(["engage in physical activities"])),
+V("engage in physical activities","s","Joining the school football team is a great way to ___.",cop(["engage in physical activities","have a good laugh","spend time in nature"])),
+V("meditate","d",def("meditate"),cop(["meditate"])),
+V("meditate","s","Every morning, Amy sits quietly with her eyes closed for ten minutes to ___.",cop(["meditate","count your blessings","stop comparing yourself with others"])),
+V("spend time in nature","d",def("spend time in nature"),cop(["spend time in nature"])),
+V("spend time in nature","s","Walking along the beach every Sunday helps him ___ and forget about his stress.",cop(["spend time in nature","engage in physical activities","meditate"])),
+V("a vicious cycle","d",def("a vicious cycle"),col(["a vicious cycle"])),
+V("a vicious cycle","s","He stays up late, so he is tired at school; then he naps after school and can't sleep at night again. It's ___.",col(["a vicious cycle"])),
+V("down in the dumps","d",def("down in the dumps"),col(["down in the dumps","go through a rough patch"])),
+V("down in the dumps","s","Since he lost the match, Max has been ___ all week; he hardly smiles.",col(["down in the dumps","go through a rough patch"])),
+V("drive someone nuts","d",def("drive someone nuts"),col(["drive someone nuts"])),
+V("drive someone nuts","s","The noise from the building site next door all day can really ___.",col(["drive someone nuts","put someone on edge"])),
+V("put someone on edge","d",def("put someone on edge"),col(["put someone on edge"])),
+V("put someone on edge","s","Hearing strange footsteps outside the door at midnight would ___.",col(["put someone on edge","drive someone nuts"]))
+];
+
+var TNS=[
+{g:"t1",q:"Tom ___ (win) the singing contest last Friday.",a:"won",w:["wins","has won","had won","will win","was won","winning","is winning"],why:"‘last Friday’ = finished past time → past simple.",zh:"last Friday 是過去時間 → 過去式 won。"},
+{g:"t2",q:"So far, she ___ (write) three novels.",a:"has written",w:["wrote","writes","had written","is writing","will write","has wrote","was written"],why:"‘so far’ = up to now → present perfect (has + pp).",zh:"so far(到目前為止)→ 現在完成式 has written。"},
+{g:"t3",q:"Her poem ___ (base) on her childhood in Beijing.",a:"is based",w:["bases","based","is basing","has based","base","basing","will base"],why:"The poem does not do the action → passive: is + based.",zh:"首詩是「被根據」→ 被動式 is based。"},
+{g:"t4",q:"He ___ (bear) in Hong Kong in 2011.",a:"was born",w:["born","is born","has born","bore","was bear","had born","were born"],why:"Being born is always passive: was born (past).",zh:"出生一定用被動:was born。"},
+{g:"t5",q:"I ___ (watch) TV when the lights suddenly went out.",a:"was watching",w:["am watching","have watched","watch","had watching","was watched","will watch","were watching"],why:"A longer action in progress is interrupted by a short one → past continuous.",zh:"長動作進行中被短動作打斷 → 過去進行式 was watching。"},
+{g:"t6",q:"By the time we arrived, the film ___ (start).",a:"had started",w:["starts","has started","will start","start","starting","had start","has start"],why:"It happened before another past action → past perfect (had + pp).",zh:"比另一件過去的事更早 → 過去完成式 had started。"},
+{g:"t7",q:"By 5 p.m. tomorrow, I ___ (finish) my project.",a:"will have finished",w:["finished","have finished","had finished","will finish","am finishing","finish","will finished"],why:"‘By + a future time’ = completed before then → future perfect (will have + pp).",zh:"by + 將來時間 → 將來完成式 will have finished。"},
+{g:"t8",q:"Look at those dark clouds! It ___ (rain).",a:"is going to rain",w:["rains","rained","has rained","will have rained","is raining","rain","had rained"],why:"You can see the evidence now → be going to.",zh:"眼前有證據(烏雲)→ be going to。"},
+{g:"t9",q:"I think it ___ (be) sunny tomorrow.",a:"will be",w:["is","was","has been","will have been","be","being","had been"],why:"A prediction with ‘I think’ → will.",zh:"I think + 預測 → will be。"},
+{g:"t10",q:"He had no reason ___ (dispute) the plan.",a:"to dispute",w:["disputing","disputed","dispute","to disputing","disputes","to disputed","has disputed"],why:"‘a reason to + verb’ → to-infinitive.",zh:"reason to + 原形動詞。"},
+{g:"t11",q:"She is good at ___ (draw) cartoons.",a:"drawing",w:["draw","drew","drawn","to draw","draws","to drawing","has drawn"],why:"After a preposition (at) → verb-ing.",zh:"介詞 at 後面 → 動詞加 -ing。"},
+{g:"t12",q:"My brother usually ___ (go) to school by bus.",a:"goes",w:["go","went","gone","going","has gone","was going","had gone"],why:"‘usually’ = a habit → present simple; he → goes.",zh:"usually(習慣)→ 現在式;he 要加 es:goes。"},
+{g:"t13",q:"The new library ___ (open) by the principal last month.",a:"was opened",w:["opened","is opened","has opened","was opening","opens","had open","is opening"],why:"‘by the principal’ + ‘last month’ → past passive: was + pp.",zh:"被校長開幕 + last month → 過去被動式 was opened。"},
+{g:"t14",q:"Kelly ___ (live) in Kowloon since 2020.",a:"has lived",w:["lives","lived","is living","will live","live","was living","living"],why:"‘since 2020’ = from then until now → present perfect.",zh:"since 2020(由當時到現在)→ 現在完成式 has lived。"},
+{g:"t15",q:"Yesterday he ___ (feel) very tired after the match.",a:"felt",w:["feels","feeled","fell","has felt","feel","will feel","is feeling"],why:"‘yesterday’ → past simple; feel → felt (‘fell’ is the past of fall).",zh:"yesterday → 過去式;feel → felt(fell 是 fall 的過去式)。"},
+{g:"t16",q:"I ___ (already / eat) lunch, so I'm not hungry now.",a:"have already eaten",w:["already eat","am already eating","already eaten","have already ate","will already eat","has already eaten","had already eat"],why:"‘already’ + a result now → present perfect (have + pp: eaten).",zh:"already + 現在的結果 → 現在完成式 have already eaten。"}
+];
+
+var T2=[
+{g:"were",q:"If I ___ rich, I would buy a yacht.",a:"were",w:["am","will be","had been","would be","have been","be","is"],why:"Type 2 = If + past simple. ‘were’ works for every person (more formal; ‘was’ is also OK).",zh:"第二類條件句:if 句用過去式;I 用 were 較正式(was 也可以)。"},
+{g:"would",q:"If it snowed in Hong Kong, I ___ very surprised.",a:"would be",w:["will be","am","would have been","are","had been","will have been","be","is"],why:"Main clause = would + base verb.",zh:"主句:would + 原形動詞。"},
+{g:"might",q:"If Andy uploaded his music, he ___ become famous. (Maybe — not sure.)",a:"might",w:["will","must","would have","can","shall","has to","is going to"],why:"could / might = maybe → the result is less certain.",zh:"could / might = 可能,結果沒那麼肯定。"},
+{g:"cold",q:"It's cold today, so we won't go swimming. → Change it into Type 2.",a:"If it weren't cold, we would go swimming.",w:["If it isn't cold, we will go swimming.","If it hadn't been cold, we would go swimming.","If it weren't cold, we will go swimming.","If it weren't cold, we wouldn't go swimming.","If it weren't cold, we would have gone swimming.","If it isn't cold, we would go swimming.","If it is cold, we would go swimming."],why:"Turn the real situation around: cold → weren't cold; won't go → would go.",zh:"把事實反轉:cold → weren't cold;won't go → would go。"},
+{g:"didnt",q:"If I ___ so much homework, I would go out tonight.",a:"didn't have",w:["don't have","haven't","hadn't had","wouldn't have","didn't had","won't have","haven't had"],why:"Past simple negative: didn't + have (base verb).",zh:"過去式否定:didn't + have(原形)。"},
+{g:"question",q:"If you saw a ghost, what ___?",a:"would you do",w:["will you do","would you did","do you do","would you done","did you do","would you doing","you would do"],why:"Question order: would + subject + base verb.",zh:"問句次序:would + 主語 + 原形動詞。"},
+{g:"advice",q:"“If I were you, I would look for a better deal.” What is this sentence for?",a:"giving advice",w:["a true fact","a past regret","making a promise","giving an order","a school rule","a real plan","a past event"],why:"If I were you, I would … = giving advice.",zh:"「如果我是你,我會……」= 給意見。"},
+{g:"type",q:"“If I had been a boy, I would have …” — which type is this?",a:"Type 3",fixed:["Type 0","Type 1","Type 2","Type 3"],why:"had been = past perfect → Type 3 (the past). Type 2 is “If I were a boy, I would …”.",zh:"had been 是過去完成式 → 第三類(講過去)。第二類是 If I were a boy, I would……"}
+];
+var RI=[
+{g:"to",q:"“Sit down,” the teacher said to us. → The teacher told us ___.",a:"to sit down",w:["sit down","sitting down","to sitting down","sat down","that sit down","to sat down","for sit down"],why:"told + person + to + base verb.",zh:"told + 人 + to + 原形動詞。"},
+{g:"pron",q:"“Open your books,” the teacher said to us. → The teacher told us to open ___ books.",a:"our",w:["your","their","my","his","her","its","you"],why:"Change the pronoun: your (said to us) → our.",zh:"代名詞要轉:對「我們」講的 your → our。"},
+{g:"not",q:"“Don't talk,” the teacher said to us. → The teacher told us ___.",a:"not to talk",w:["don't talk","to not talking","not talk","to don't talk","didn't talk","not talking","no to talk"],why:"Negative = not to + base verb. Never write ‘don't’.",zh:"否定:not to + 原形動詞,永遠不寫 don't。"},
+{g:"there",q:"“Please wait here,” he said to me. → He asked me to wait ___.",a:"there",w:["here","where","at here","this","now","that","at there"],why:"Place words change: here → there.",zh:"地點要轉:here → there。"},
+{g:"req",q:"“Can you turn off the lights?” she said to me. → She asked me ___.",a:"to turn off the lights",w:["turn off the lights","can turn off the lights","turning off the lights","to turned off the lights","if turn off the lights","that turn off the lights","for turn off the lights"],why:"A request → asked + person + to + base verb.",zh:"請求 → asked + 人 + to + 原形動詞。"},
+{g:"asked",q:"“Please help me,” Mary said to me. → Mary ___ me to help her.",a:"asked",w:["said","spoke","talked","says","speaks","talk","say"],why:"‘Please …’ is a request → asked.",zh:"有 please 是請求 → 用 asked。"},
+{g:"time",q:"Last week the teacher said, “Bring your iPads tomorrow.” → The teacher told us to bring our iPads ___.",a:"the next day",w:["tomorrow","yesterday","the day before","that day","today","next tomorrow","the last day"],why:"Time words change: tomorrow → the next day.",zh:"時間要轉:tomorrow → the next day。"}
+];
+var TS=[
+{g:"ts1",q:"“I can't do it without your help,” she said. → She said she ___ do it without my help.",a:"couldn't",w:["can't","won't","doesn't","mustn't","shouldn't","isn't","haven't"],why:"Reported speech: can → could (can't → couldn't).",zh:"轉述:can → could(can't → couldn't)。"},
+{g:"ts2",q:"“I will lend you the money,” he said. → He said he ___ lend me the money.",a:"would",w:["will","can","shall","is going to","must","has","had"],why:"Reported speech: will → would.",zh:"轉述:will → would。"}
+];
+
+var TAG={voc:"Vocab · LE Unit 1",tns:"Tenses",t2:"Type 2 conditional",ri:"Reporting instructions",ts:"Reported speech · tense"};
+var SHORT={voc:"Vocab",tns:"Tense",t2:"Type 2",ri:"Reported",ts:"Tense"};
+var MODE={
+  voc:{n:"Vocab · LE Unit 1",make:function(){return pickUnique(VOC,10).map(function(q){return {q:q,part:"voc"};});}},
+  tns:{n:"Tenses",make:function(){return pickUnique(TNS,10).map(function(q){return {q:q,part:"tns"};});}},
+  mix:{n:"Mixed UT2",make:function(){
+    var a=pickUnique(VOC,6).map(function(q){return {q:q,part:"voc"};});
+    var b=pickUnique(TNS,6).map(function(q){return {q:q,part:"tns"};});
+    var c=pickUnique(T2,4).map(function(q){return {q:q,part:"t2"};});
+    var d=pickUnique(RI,3).map(function(q){return {q:q,part:"ri"};}).concat(pickUnique(TS,1).map(function(q){return {q:q,part:"ts"};}));
+    return a.concat(b,c,shuffle(d));
+  }}
+};
+
+function shuffle(a){a=a.slice();for(var k=a.length-1;k>0;k--){var j=Math.floor(Math.random()*(k+1));var t=a[k];a[k]=a[j];a[j]=t;}return a;}
+function pickUnique(pool,n){var out=[],seen={};shuffle(pool).forEach(function(q){if(out.length<n&&!seen[q.g]){seen[q.g]=1;out.push(q);}});return out;}
+function lenOf(s){return s.length;}
+function buildOpts(q){
+  if(q.fixed) return q.fixed.slice();
+  var best=null,bestScore=-1e9;
+  for(var t=0;t<40;t++){
+    var w=shuffle(q.w).slice(0,3), all=w.concat([q.a]);
+    var mx=Math.max.apply(null,all.map(lenOf)), mn=Math.min.apply(null,all.map(lenOf));
+    var wmax=Math.max.apply(null,w.map(lenOf));
+    var sc=(wmax>=q.a.length?10:0)-(mx/mn);
+    if(sc>bestScore){bestScore=sc;best=all;}
+    if(wmax>=q.a.length&&mx/mn<=1.6) break;
+  }
+  return shuffle(best);
+}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function fillHTML(q,pick,ok){
+  if(ok) return '<span class="fill ok">'+esc(pick)+'</span>';
+  return '<span class="fill bad">'+esc(pick)+'</span><span class="fill ok">'+esc(q.a)+'</span>';
+}
+function stemHTML(q,fill){
+  var h=esc(q.q);
+  if(h.indexOf("___")<0) return h;
+  return h.replace("___",fill==null?'<span class="blank">&nbsp;</span>':fill);
+}
+
+var mode="voc",set=[],i=0,score=0,answered=false;
+
+var cf=null;
+function show(id){
+  if(id!=="sEnd"&&cf&&cf.parentNode){cf.parentNode.removeChild(cf);cf=null;}
+  ["sStart","sNotes","sQ","sEnd"].forEach(function(s){$(s).classList.toggle("on",s===id);});
+  window.scrollTo(0,0);
+}
+function dots(){
+  var d=$("dots"); d.innerHTML="";
+  set.forEach(function(it,j){
+    var s=document.createElement("span");
+    s.className="dot"+(it.ok===true?" ok":it.ok===false?" no":(j===i?" cur":""));
+    d.appendChild(s);
+  });
+}
+function start(m){ mode=m; set=MODE[m].make(); i=0; score=0; ask(); }
+function ask(){
+  answered=false;
+  if(document.activeElement&&document.activeElement.blur) document.activeElement.blur();
+  var it=set[i], q=it.q;
+  $("qn").textContent="Question "+(i+1)+" / "+set.length;
+  $("qtag").className="tag "+it.part; $("qtag").textContent=TAG[it.part];
+  $("qt").innerHTML=stemHTML(q,null);
+  if(!it.opts) it.opts=buildOpts(q);
+  var box=$("ans"); box.innerHTML="";
+  it.opts.forEach(function(o,k){
+    var b=document.createElement("button"); b.type="button"; b.className="a a"+k;
+    b.innerHTML='<span class="lt">'+"ABCD".charAt(k)+'</span><span class="tx">'+esc(o)+'</span><span class="mk"></span>';
+    b.addEventListener("click",function(){pick(k);});
+    box.appendChild(b);
+  });
+  $("fb").className="fb"; $("fb").innerHTML="";
+  $("nx").style.visibility="hidden";
+  $("pill").textContent="Score "+score+" / "+i;
+  dots(); show("sQ");
+}
+function pick(k){
+  if(answered) return; answered=true;
+  var it=set[i], q=it.q, o=it.opts[k], ok=(o===q.a);
+  if(ok) score++;
+  it.pick=o; it.ok=ok;
+  var btns=$("ans").querySelectorAll(".a");
+  for(var j=0;j<btns.length;j++){
+    var b=btns[j], t=it.opts[j];
+    if(t===q.a){ b.classList.add("right"); b.querySelector(".mk").textContent="✓"; }
+    else if(j===k){ b.classList.add("wrong"); b.querySelector(".mk").textContent="✗"; }
+    else b.classList.add("dim");
+    b.disabled=true;
+  }
+  if(q.q.indexOf("___")>=0) $("qt").innerHTML=stemHTML(q,fillHTML(q,o,ok));
+  var fb=$("fb");
+  fb.className="fb on "+(ok?"good":"bad");
+  fb.innerHTML='<div class="fbh">'+(ok?"✓ Correct!":"✗ Not quite. Answer: "+esc(q.a))+'</div><div class="why">'+esc(q.why)+'</div><div class="zh">'+esc(q.zh)+'</div>';
+  $("nx").textContent=(i+1>=set.length)?"See my result →":"Next →";
+  $("nx").style.visibility="visible";
+  $("pill").textContent="Score "+score+" / "+(i+1);
+  dots();
+}
+function next(){ if(!answered) return; i++; if(i>=set.length) end(); else ask(); }
+function pad(x){return (x<10?"0":"")+x;}
+function end(){
+  var n=set.length, pct=Math.round(score/n*100);
+  $("rk").textContent="UT2 practice · "+MODE[mode].n;
+  $("rs").textContent=score+" / "+n; $("rp").textContent=pct+"%";
+  $("rt").className="target "+(pct>=80?"hit":"miss");
+  $("rt").textContent=pct>=80?"80% or above ✓":"Below 80% — read the reasons, then try a new round.";
+  var d=new Date();
+  $("rw").textContent="Completed "+d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+" "+pad(d.getHours())+":"+pad(d.getMinutes());
+  var rv=$("rv"); rv.innerHTML="";
+  set.forEach(function(it,j){
+    var q=it.q, li=document.createElement("li"), body;
+    li.className=it.ok?"ok":"no";
+    if(q.q.indexOf("___")>=0) body=stemHTML(q,fillHTML(q,it.pick,it.ok));
+    else body=esc(q.q)+" → "+fillHTML(q,it.pick,it.ok);
+    li.innerHTML='<span class="num">'+(j+1)+'.</span><span class="mk">'+(it.ok?"✓":"✗")+'</span><span class="rtag '+it.part+'">'+SHORT[it.part]+'</span><span class="rq">'+body+'</span>';
+    rv.appendChild(li);
+  });
+  $("pill").textContent="Score "+score+" / "+n;
+  show("sEnd");
+  if(pct>=80) confetti();
+}
+function confetti(){
+  var c=document.createElement("canvas"), W=window.innerWidth, H=window.innerHeight;
+  c.width=W; c.height=H; c.style.cssText="position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:50";
+  document.body.appendChild(c); cf=c;
+  var x=c.getContext("2d"), cols=["#1f6feb","#d42a3c","#b97800","#1a8a3a","#7a3fd1","#0b7f86"], P=[];
+  for(var k=0;k<140;k++) P.push({x:Math.random()*W,y:-20-Math.random()*H*0.5,vx:(Math.random()-0.5)*3,vy:2+Math.random()*4,r:4+Math.random()*5,c:cols[k%cols.length],a:Math.random()*6});
+  var t0=Date.now();
+  (function step(){
+    var t=Date.now()-t0; x.clearRect(0,0,W,H);
+    P.forEach(function(p){ p.x+=p.vx; p.y+=p.vy; p.a+=0.1; x.fillStyle=p.c; x.save(); x.translate(p.x,p.y); x.rotate(p.a); x.fillRect(-p.r,-p.r/2,p.r*2,p.r); x.restore(); });
+    if(t<2600) requestAnimationFrame(step); else if(c.parentNode) c.parentNode.removeChild(c);
+  })();
+}
+function wordList(){
+  var h='<tr><th>Word</th><th>Page</th><th>Meaning</th><th>中文</th></tr>';
+  WORDS.forEach(function(x){
+    if(x.c) h+='<tr class="cat"><td colspan="4">'+esc(x.c)+'</td></tr>';
+    h+='<tr><td class="w">'+esc(x.w)+'</td><td class="p">'+esc(x.p)+'</td><td>'+esc(x.m)+'</td><td>'+esc(x.zh)+'</td></tr>';
+  });
+  $("wl").innerHTML=h;
+}
+
+wordList();
+$("goVoc").addEventListener("click",function(){start("voc");});
+$("goTns").addEventListener("click",function(){start("tns");});
+$("goMix").addEventListener("click",function(){start("mix");});
+$("again").addEventListener("click",function(){start(mode);});
+$("home").addEventListener("click",function(){$("pill").textContent="4 parts";show("sStart");});
+$("nx").addEventListener("click",next);
+$("notesBtn").addEventListener("click",function(){show("sNotes");});
+$("notesBack").addEventListener("click",function(){show("sStart");});
+document.addEventListener("keydown",function(e){
+  if(!$("sQ").classList.contains("on")) return;
+  if(!answered&&/^[1-4]$/.test(e.key)){ var k=+e.key-1; if(set[i]&&k<set[i].opts.length) pick(k); }
+  else if(answered&&(e.key==="Enter"||e.key==="ArrowRight")){ e.preventDefault(); next(); }
+});
+})();
+</script>
+</body>
+</html>
