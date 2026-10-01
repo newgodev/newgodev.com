@@ -341,7 +341,7 @@ function end(){
   var n=set.length, pct=Math.round(score/n*100);
   $("rs").textContent=score+" / "+n; $("rp").textContent=pct+"%";
   $("rt").className="target "+(pct>=80?"hit":"miss");
-  $("rt").textContent=pct>=80?"Target 80% — reached ✓":"Target 80% — not yet. Try a new set.";
+  $("rt").textContent=pct>=80?"80% or above = +2 bonus marks from Mr Ma ✓ Screenshot this page and submit":"Below 80%: no bonus yet. Try a new set.";
   var d=new Date();
   $("rw").textContent="Completed "+d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+" "+pad(d.getHours())+":"+pad(d.getMinutes());
   var rv=$("rv"); rv.innerHTML="";
