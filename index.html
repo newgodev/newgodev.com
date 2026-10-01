@@ -97,8 +97,11 @@ a.tile.done:hover{opacity:.95}
 .fclear{font-family:inherit; font-weight:700; font-size:.74rem; color:var(--ink); background:#1b1610; border:1px solid var(--line); border-radius:9px; padding:6px 12px; cursor:pointer}
 .fclear:hover{border-color:var(--gold3)}
 .fg{display:flex; align-items:flex-start; gap:10px; padding:7px 0; border-top:1px solid rgba(44,36,26,.7)}
-.fl{flex:0 0 3.4em; font-family:"JetBrains Mono",monospace; font-size:.64rem; letter-spacing:1px; color:var(--dim); padding-top:7px}
+.fl{flex:0 0 7.2em; font-family:"JetBrains Mono",monospace; font-size:.64rem; letter-spacing:1px; color:var(--dim); padding-top:7px}
 .fc{display:flex; flex-wrap:wrap; gap:7px}
+.ftog{font-family:inherit; font-weight:700; font-size:.82rem; color:var(--ink); background:#1b1610; border:1px solid #3a3022; border-radius:999px; padding:8px 16px; cursor:pointer}
+.ftog:hover,.ftog[aria-expanded="true"]{border-color:var(--gold3); color:var(--gold2)}
+.filters[hidden]{display:none}
 .chip{font-family:inherit; font-weight:600; font-size:.74rem; color:var(--ink); background:#1b1610; border:1px solid #3a3022; border-radius:999px;
   padding:6px 13px; cursor:pointer; transition:border-color .12s, background .12s, color .12s; -webkit-tap-highlight-color:transparent}
 .chip:hover{border-color:var(--gold3)}
@@ -109,7 +112,7 @@ a.tile.done:hover{opacity:.95}
 .due{font-size:.7rem; color:var(--gold); font-family:"JetBrains Mono",monospace; margin-top:5px}
 .due.soon{color:var(--hot); font-weight:600}
 a.tile.done .due{color:var(--dim)}
-@media(max-width:520px){ .filters{padding:10px 10px 4px} .fg{gap:8px} .fl{flex-basis:2.6em} .chip{padding:5px 11px} }
+@media(max-width:520px){ .filters{padding:10px 10px 4px} .fg{gap:8px} .fl{flex-basis:5.2em} .chip{padding:5px 11px} }
 @media(max-width:520px){
   :root{font-size:18px}
   .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:11px}
@@ -126,19 +129,20 @@ a.tile.done .due{color:var(--dim)}
     </div>
     <label class="search">
       <svg viewBox="0 0 24 24"><path d="M21 20l-4.35-4.35a7.5 7.5 0 10-1.4 1.4L20 21zM5 10.5a5.5 5.5 0 1111 0 5.5 5.5 0 01-11 0z"/></svg>
-      <input id="q" type="search" placeholder="搜尋科目、功課、日期…" autocomplete="off">
+      <input id="q" type="search" placeholder="Search subject, homework, date…" autocomplete="off">
     </label>
+    <button type="button" class="ftog" id="ftog" aria-expanded="false">Filters ▾</button>
   </div>
 
-  <div class="filters" id="filters">
+  <div class="filters" id="filters" hidden>
     <div class="fhead">
-      <span class="ft">篩選</span>
-      <label class="fsort">排序
+      <span class="ft">Filters</span>
+      <label class="fsort">Sort
         <select id="fsort">
-          <option value="pri">最緊要先</option>
-          <option value="due">截止日最近先</option>
-          <option value="new">最新建立先</option>
-          <option value="old">最舊建立先</option>
+          <option value="pri">Most urgent first</option>
+          <option value="due">Due soonest first</option>
+          <option value="new">Newest first</option>
+          <option value="old">Oldest first</option>
         </select>
       </label>
       <span class="fsp"></span>
@@ -214,11 +218,12 @@ function tile(it){
 }
 
 function countBy(fn){ var m={}, order=[]; ITEMS.forEach(function(it){ var k=fn(it); if(!(k in m)){ m[k]=0; order.push(k); } m[k]++; }); return order.sort(function(a,b){ return m[b]-m[a]; }).map(function(k){ return [k,k,m[k]]; }); }
+var EN = {"英文":"English","中文":"Chinese","數學":"Math","音樂":"Music","地理":"Geography","中史":"Chinese History","歷史":"History","生物":"Biology","科學":"Science","教學片":"Video lesson","練習題":"Quiz","挑戰":"Challenge"};
 var GROUPS = [
-  { k:"subj", label:"科目", opts:function(){ return countBy(function(it){ return root(it.subject); }); } },
-  { k:"kind", label:"種類", opts:function(){ return countBy(function(it){ return it.kind; }); } },
-  { k:"pri",  label:"緊要", opts:function(){ return [["3","最緊要"],["2","緊要"],["1","普通"]]; } },
-  { k:"st",   label:"狀態", opts:function(){ return [["todo","未完成"],["soon","3 天內截止"],["done","已完成"]]; } }
+  { k:"subj", label:"Subject", opts:function(){ return countBy(function(it){ return root(it.subject); }).map(function(o){ return [o[0], EN[o[0]]||o[0], o[2]]; }); } },
+  { k:"kind", label:"Type", opts:function(){ return countBy(function(it){ return it.kind; }).map(function(o){ return [o[0], EN[o[0]]||o[0], o[2]]; }); } },
+  { k:"pri",  label:"Priority", opts:function(){ return [["3","Most urgent"],["2","Urgent"],["1","Normal"]]; } },
+  { k:"st",   label:"Status", opts:function(){ return [["todo","To do"],["soon","Due in 3 days"],["done","Done"]]; } }
 ];
 var F = {subj:{}, kind:{}, pri:{}, st:{}}, SORT = "pri";
 function on(g){ for(var k in F[g]) return true; return false; }
@@ -257,7 +262,7 @@ function render(){
   done.innerHTML = fin.map(tile).join("");
   doneh.style.display = fin.length ? "" : "none";
   donen.textContent = fin.length;
-  $("fcount").textContent = list.length + " / " + ITEMS.length + " 份";
+  $("fcount").textContent = list.length + " / " + ITEMS.length + " items";
 }
 
 function buildChips(){
@@ -288,6 +293,11 @@ $("fclear").addEventListener("click", function(){
   render();
 });
 q.addEventListener("input", render);
+(function(){ var fp=$("filters"), tb=$("ftog"), open=false;
+  try{ open = localStorage.getItem("hwFiltersOpen")==="1"; }catch(e){}
+  function set(v){ open=v; fp.hidden=!v; tb.setAttribute("aria-expanded", v?"true":"false"); tb.textContent = v ? "Filters ▴" : "Filters ▾";
+    try{ localStorage.setItem("hwFiltersOpen", v?"1":"0"); }catch(e){} }
+  tb.addEventListener("click", function(){ set(!open); }); set(open); })();
 buildChips();
 render();
 </script>
