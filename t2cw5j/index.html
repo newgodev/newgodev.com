@@ -196,6 +196,67 @@ function boot(){
 if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot); else boot();
 })();
 </script>
+<style>
+#lyrbtn{position:fixed;top:10px;right:12px;z-index:9998;padding:7px 14px;border:0;border-radius:999px;background:#c0392b;color:#fff;font:700 14px Arial,"Microsoft JhengHei",sans-serif;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+#lyrdlg{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center}
+#lyrdlg .in{width:min(640px,92vw);background:#fff;border-radius:12px;padding:18px 20px;font:15px/1.5 Arial,"Microsoft JhengHei",sans-serif;color:#222}
+#lyrdlg textarea{width:100%;height:220px;box-sizing:border-box;font-size:14px;padding:8px;border:1px solid #bbb;border-radius:8px}
+#lyrdlg button{margin:10px 8px 0 0;padding:8px 16px;font-size:15px;border:0;border-radius:8px;cursor:pointer}
+</style>
+<script>
+(function(){
+  var G=[
+    [/^\s*I\s*('d|would)?\s*(.+?)\s+out of bed/i,1],
+    [/^\s*And\s+(.+?)\s+what I wanted/i,0],
+    [/^\s*I\s*('d|would)?\s*(.+?)\s+it with who/i,1],
+    [/^\s*And\s+(?:I\s*('d|would)?\s*)?(.+?)\s+confronted/i,1],
+    [/^\s*I think I\s+(.+?)\s+understand/i,0],
+    [/^\s*I swear I\s*('d|would)?\s*(.+?)\s+a better man/i,1],
+    [/^\s*I\s*('d|would)?\s*(.+?)\s+to her\b/i,1],
+    [/^\s*I\s*('d|would)?\s*(.+?)\s+my phone/i,1],
+    [/^\s*(.+?)\s+everyone it'?s broken/i,0],
+    [/^\s*I\s*('d|would)?\s*(.+?)\s+myself first/i,1],
+    [/^\s*And\s+(.+?)\s+the rules as/i,0]
+  ];
+  function solve(text){
+    var lines=String(text||"").replace(/[‘’ʼ]/g,"'").split(/\r?\n/);
+    return G.map(function(g){
+      for(var i=0;i<lines.length;i++){
+        var m=lines[i].match(g[0]); if(!m) continue;
+        var aux=m.length>2?m[1]:null, body=(m.length>2?m[2]:m[1]).trim();
+        if(g[1]) body=(aux==='would'?'would ':"'d ")+body.replace(/^'d\s*/,'');
+        return body;
+      }
+      return null;
+    });
+  }
+  var saved=""; try{saved=localStorage.getItem('t2lyr')||"";}catch(e){}
+  var ANS=saved?solve(saved):[];
+  window.__t2fix=function(STEPS){
+    STEPS.forEach(function(s){(s.fills||[]).forEach(function(f){
+      var m=/^s(\d+)$/.exec(f.id); if(!m) return; var a=ANS[+m[1]-1]; if(!a) return;
+      f.text=a; f.zh=a; f.note='Gap '+m[1]+': '+a;
+    });});
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    var b=document.createElement('button'); b.id='lyrbtn';
+    var n=ANS.filter(Boolean).length;
+    b.textContent=n?('🎵 歌詞答案 '+n+'/11'):'🎵 貼歌詞出答案';
+    document.body.appendChild(b);
+    var d=document.createElement('div'); d.id='lyrdlg';
+    d.innerHTML='<div class="in"><b>把完整歌詞貼進來</b><br>按「出答案」之後，片裏工作紙上 11 格會用紅字顯示答案。歌詞只存在你這部機。<textarea id="lyrta" placeholder="Paste the full lyrics here"></textarea><br><button id="lyrok" style="background:#c0392b;color:#fff">出答案</button><button id="lyrno" style="background:#eee">關閉</button></div>';
+    document.body.appendChild(d);
+    document.getElementById('lyrta').value=saved;
+    b.onclick=function(){d.style.display='flex';};
+    document.getElementById('lyrno').onclick=function(){d.style.display='none';};
+    document.getElementById('lyrok').onclick=function(){
+      try{localStorage.setItem('t2lyr',document.getElementById('lyrta').value);}catch(e){}
+      location.reload();
+    };
+  });
+  window.__t2solve=solve;
+})();
+</script>
 </head>
 <body>
 <div class="top">
@@ -232,6 +293,7 @@ var TB={"tp": {"name": "Grammar Unit 12 \u00b7 the notes and the song", "boxes":
 var WB={"wp": {"name": "Type 2 worksheet (red = answer)", "marks": {"lb1": [0.094, 0.543, 0.207, 0.567], "lb2": [0.121, 0.571, 0.235, 0.595], "lb3": [0.094, 0.677, 0.207, 0.701], "lb4": [0.131, 0.706, 0.245, 0.73], "lb5": [0.15, 0.812, 0.264, 0.836], "lb6": [0.157, 0.866, 0.27, 0.89], "lb7": [0.532, 0.517, 0.645, 0.541], "lb8": [0.532, 0.703, 0.645, 0.727], "lb9": [0.522, 0.729, 0.636, 0.753], "lb10": [0.542, 0.809, 0.655, 0.833], "lb11": [0.57, 0.837, 0.683, 0.862]}}};
 var STEPS=[{"sec": "Start", "tag": "Start", "tb": "tp", "tbmark": [], "wb": "wp", "wbfocus": null, "say": "Type 2 worksheet. Part 1: three gaps in the notes; each answer comes from the example under it. Part A: a song with 11 gaps; I show you the grammar shape of every gap.", "say_zh": "Type 2 工作紙。第一部分：筆記有三個空格，答案都由下面的例句推出來；A 部分：一首歌 11 個空格，我逐格告訴你是甚麼文法形狀。", "fills": [], "teach": "Type 2 in one line: If + past tense, would + base verb. It talks about things that are NOT true now.", "teach_zh": "Type 2 一句講完：If + 過去式，would + 動詞原形；講「現在不是真的」的事。"}, {"sec": "Part 1", "tag": "Gap 1", "tb": "tp", "tbmark": ["e_snow", "e_rich"], "wb": "wp", "wbfocus": [0.04, 0.14, 0.96, 0.42], "say": "Gap 1. Read the two examples. Does it snow in Hong Kong? No. Am I rich? No. Both are not true now, so Type 2 gives the results of imaginary situations.", "say_zh": "第一格：看兩句例句。香港會下雪嗎？不會。我有錢嗎？沒有。兩句現在都不是真的，所以 Type 2 講想像情況的結果。", "fills": [{"id": "g1", "box": [0.205, 0.207, 0.486, 0.223], "text": "imaginary situations", "zh": "想像的情況（現在不是真的）", "q": "1", "note": "not true now → imaginary situations", "kind": "text", "from": "e_snow", "ex": {"why": "Both examples are not true now: it never snows in Hong Kong, and I am not rich. So Type 2 = results of imaginary situations.", "why_zh": "兩句例句現在都不是真的：香港不下雪，我也不是有錢人，所以 Type 2 講想像情況的結果。", "other": ["unreal situations", "hypothetical situations"], "avoid": [["real situations", "真實情況是 Type 1，不是 Type 2"]]}}], "teach": "Ask one question: is it true now? If the answer is no, the sentence is Type 2.", "teach_zh": "只問一句：現在是真的嗎？答案是「不是」，就是 Type 2。"}, {"sec": "Part 1", "tag": "The shape", "tb": "tp", "tbmark": ["e_snow", "e_rich"], "wb": "wp", "wbfocus": [0.04, 0.14, 0.96, 0.42], "say": "Look at the two lines. After 'if' the verb is past (snowed, were). The result part is would + base verb (would be, would buy).", "say_zh": "看這兩句。if 後面的動詞是過去式（snowed、were）；結果那半句是 would + 動詞原形（would be、would buy）。", "fills": [], "teach": "Trap 1: 'snowed' and 'were' look like past tense, but they talk about NOW. Past tense here means 'not real'. Trap 2: use 'were' for I / he / she too (If I were rich).", "teach_zh": "陷阱一：snowed、were 看似過去式，其實講現在；在這裏過去式＝「不是真的」。陷阱二：I / he / she 也用 were（If I were rich）。"}, {"sec": "Part 1", "tag": "Gap 2", "tb": "tp", "tbmark": ["e_andy"], "wb": "wp", "wbfocus": [0.04, 0.14, 0.96, 0.42], "say": "Gap 2. 'could / might' mean 'maybe'. Maybe Andy becomes famous, maybe not. So the result is less certain.", "say_zh": "第二格：could / might ＝「可能」。Andy 可能出名，也可能不會，所以結果「沒那麼肯定」。", "fills": [{"id": "g2", "box": [0.764, 0.275, 0.874, 0.291], "text": "certain", "zh": "肯定", "q": "2", "note": "could / might = maybe → less certain", "kind": "text", "from": "e_andy", "ex": {"why": "would shows a sure result; could / might show a maybe result. So could / might are used for results that are less certain.", "why_zh": "would 表示一定的結果；could / might 表示可能的結果，所以用來講「沒那麼肯定」的結果。", "other": ["likely", "sure"], "avoid": [["uncertain", "這格已經有 less 在前面，不要再用否定字"]]}}], "teach": "would = sure result. could / might = maybe result.", "teach_zh": "would＝一定會；could / might＝可能會。"}, {"sec": "Part 1", "tag": "Point 3", "tb": "tp", "tbmark": ["e_jane"], "wb": "wp", "wbfocus": [0.04, 0.14, 0.96, 0.42], "say": "Point 3 has no gap, but read it: 'could' can also mean 'would be able to'. If Jane had proper training, she would be able to become a dancer.", "say_zh": "第 3 點沒有空格，但要看：could 也可以是「會有能力 / 獲准去做」。Jane 如果受過訓練，就有能力做專業舞者。", "fills": [], "teach": "So 'could' has two jobs: maybe (point 2) and able to / allowed to (point 3). Check the example to see which one.", "teach_zh": "所以 could 有兩個用法：可能（第 2 點）和有能力 / 獲准（第 3 點），看例句就知道是哪一個。"}, {"sec": "Part 1", "tag": "Gap 4", "tb": "tp", "tbmark": ["e_you"], "wb": "wp", "wbfocus": [0.04, 0.14, 0.96, 0.42], "say": "Gap 4. 'If I were you, I would look for a better deal' is me telling someone what to do. That is advice.", "say_zh": "第四格：「如果我是你，我會找更抵的」即是教對方怎樣做，這就是勸告（advice）。", "fills": [{"id": "g4", "box": [0.5, 0.376, 0.771, 0.392], "text": "advice", "zh": "勸告、建議", "q": "4", "note": "if I were you = telling someone what to do → advice", "kind": "text", "from": "e_you", "ex": {"why": "I cannot really be you (not real), so 'If I were you' is only used to tell the other person what I think they should do.", "why_zh": "我不可能真的是你（不真實），所以 If I were you 只用來講「我覺得你應該怎樣做」。", "other": ["suggestions", "recommendations"], "avoid": [["orders", "不是命令，是給意見"]]}}], "teach": "'If I were you' is only used to tell someone what you think they should do. I can never really be you, so it is imaginary.", "teach_zh": "If I were you 只用來講「我覺得你應該這樣做」；我不可能真的是你，所以是想像。"}, {"sec": "Part A", "tag": "The song", "tb": "tp", "tbmark": ["song", "ifboy"], "wb": "wp", "wbfocus": [0.03, 0.44, 0.97, 0.93], "say": "Part A. The song title is 'If I were a boy', and the singer is not a boy. That is imaginary, so it is Type 2. The title line is the if-part, so every gap is the RESULT part.", "say_zh": "A 部分：歌名是 If I were a boy，唱歌的人不是男生，是想像，所以是 Type 2。歌名那句就是 if 那半句，所以每個空格都是「結果」那半句。", "fills": [], "teach": "The eleven gaps are words you hear in the song. The next steps tell you the SHAPE of each gap, so you know what to listen for.", "teach_zh": "十一個空格是歌裏唱出來的字；接下來每一步告訴你每格的「形狀」，你就知道要聽甚麼。"}, {"sec": "Part A", "tag": "Two words", "tb": "tp", "tbmark": ["ifboy"], "wb": "wp", "wbfocus": [0.03, 0.44, 0.97, 0.93], "say": "Gaps 1, 3, 6, 7 and 10 come right after 'I'. Each one is two words: 'd (would) + one base verb.", "say_zh": "第 1、3、6、7、10 格緊接在 I 後面，每格兩個字：'d（would）加一個動詞原形。", "fills": [{"id": "s1", "box": [0.103, 0.547, 0.198, 0.563], "text": "'d + verb", "zh": "'d + 動詞", "q": "1", "note": "Gap 1: 'd + base verb", "kind": "text", "ex": {"why": "The gap comes right after 'I', and the title line is the if-part, so the gap is the result part: 'd / would + base verb.", "why_zh": "空格緊接在 I 後面，歌名那句是 if 那半句，所以這格是結果那半句：'d / would + 動詞原形。", "avoid": [["a verb ending in -s / -ed / -ing", "一定是動詞原形，不加 -s、-ed、-ing"]]}}, {"id": "s3", "box": [0.103, 0.681, 0.198, 0.697], "text": "'d + verb", "zh": "'d + 動詞", "q": "3", "note": "Gap 3: 'd + base verb", "kind": "text", "ex": {"why": "The gap comes right after 'I', and the title line is the if-part, so the gap is the result part: 'd / would + base verb.", "why_zh": "空格緊接在 I 後面，歌名那句是 if 那半句，所以這格是結果那半句：'d / would + 動詞原形。", "avoid": [["a verb ending in -s / -ed / -ing", "一定是動詞原形，不加 -s、-ed、-ing"]]}}, {"id": "s6", "box": [0.166, 0.87, 0.261, 0.886], "text": "'d + verb", "zh": "'d + 動詞", "q": "6", "note": "Gap 6: 'd + base verb", "kind": "text", "ex": {"why": "The gap comes right after 'I', and the title line is the if-part, so the gap is the result part: 'd / would + base verb.", "why_zh": "空格緊接在 I 後面，歌名那句是 if 那半句，所以這格是結果那半句：'d / would + 動詞原形。", "avoid": [["a verb ending in -s / -ed / -ing", "一定是動詞原形，不加 -s、-ed、-ing"]]}}, {"id": "s7", "box": [0.541, 0.521, 0.636, 0.537], "text": "'d + verb", "zh": "'d + 動詞", "q": "7", "note": "Gap 7: 'd + base verb", "kind": "text", "ex": {"why": "The gap comes right after 'I', and the title line is the if-part, so the gap is the result part: 'd / would + base verb.", "why_zh": "空格緊接在 I 後面，歌名那句是 if 那半句，所以這格是結果那半句：'d / would + 動詞原形。", "avoid": [["a verb ending in -s / -ed / -ing", "一定是動詞原形，不加 -s、-ed、-ing"]]}}, {"id": "s10", "box": [0.551, 0.813, 0.646, 0.829], "text": "'d + verb", "zh": "'d + 動詞", "q": "10", "note": "Gap 10: 'd + base verb", "kind": "text", "ex": {"why": "The gap comes right after 'I', and the title line is the if-part, so the gap is the result part: 'd / would + base verb.", "why_zh": "空格緊接在 I 後面，歌名那句是 if 那半句，所以這格是結果那半句：'d / would + 動詞原形。", "avoid": [["a verb ending in -s / -ed / -ing", "一定是動詞原形，不加 -s、-ed、-ing"]]}}], "teach": "'d = would. It is short and quiet, it sounds like 'id'. Writing 'd or would are both correct.", "teach_zh": "'d 就是 would，很短很輕，聽起來像「id」；寫 'd 或 would 都對。", "wbmark": ["lb1", "lb3", "lb6", "lb7", "lb10"]}, {"sec": "Part A", "tag": "Three words", "tb": "tp", "tbmark": ["ifboy"], "wb": "wp", "wbfocus": [0.03, 0.44, 0.97, 0.93], "say": "Gaps 4 and 8 are three words. Gap 4: 'd + a word that means 'not ever' + a verb; that verb joins 'confronted' to make get + past participle. Gap 8: 'd / would + a verb + a small word, a phrasal verb like 'pick up'.", "say_zh": "第 4、8 格各有三個字。第 4 格：'d ＋ 一個「從來不」意思的字 ＋ 動詞，這個動詞和後面的 confronted 連成「get ＋ 過去分詞」。第 8 格：'d / would ＋ 動詞 ＋ 一個小字，是片語動詞，好像 pick up 那一種。", "fills": [{"id": "s4", "box": [0.14, 0.71, 0.236, 0.726], "text": "3 words", "zh": "三個字", "q": "4", "note": "Gap 4: three words", "kind": "text", "ex": {"why": "Still the result part, so it starts with 'd / would; the other two words are an adverb + verb (gap 4) or a verb + small word (gap 8).", "why_zh": "仍然是結果那半句，所以由 'd / would 開始；其餘兩個字，第 4 格是副詞 + 動詞，第 8 格是動詞 + 小字。", "avoid": [["a verb ending in -s / -ed / -ing", "一定是動詞原形，不加 -s、-ed、-ing"]]}}, {"id": "s8", "box": [0.541, 0.707, 0.636, 0.723], "text": "3 words", "zh": "三個字", "q": "8", "note": "Gap 8: three words", "kind": "text", "ex": {"why": "Still the result part, so it starts with 'd / would; the other two words are an adverb + verb (gap 4) or a verb + small word (gap 8).", "why_zh": "仍然是結果那半句，所以由 'd / would 開始；其餘兩個字，第 4 格是副詞 + 動詞，第 8 格是動詞 + 小字。", "avoid": [["a verb ending in -s / -ed / -ing", "一定是動詞原形，不加 -s、-ed、-ing"]]}}], "teach": "The gap line is short but the answer can be three words: count the words you hear before the printed words start.", "teach_zh": "空格線一樣長，答案卻可以有三個字：數一數印好的字出現之前，你聽到幾多個字。", "wbmark": ["lb4", "lb8"]}, {"sec": "Part A", "tag": "One word", "tb": "tp", "tbmark": ["ifboy"], "wb": "wp", "wbfocus": [0.03, 0.44, 0.97, 0.93], "say": "Gap 5 is only ONE word. 'understand' is already printed after the gap, so the gap is just the modal verb, and it is not 'd. It is the modal from Part 1 point 3 that means 'would be able to'.", "say_zh": "第 5 格只有一個字。understand 已經印在空格後面，所以空格只是一個情態動詞，而且不是 'd。它就是第一部分第 3 點學過、意思是「會有能力」的那個情態動詞。", "fills": [{"id": "s5", "box": [0.159, 0.816, 0.255, 0.832], "text": "modal", "zh": "情態動詞", "q": "5", "note": "Gap 5: one modal verb", "kind": "text", "ex": {"why": "The base verb is already printed, so only the modal is missing. Type 2 can use would, could or might; this one means 'able to'.", "why_zh": "動詞原形已經印好，只缺情態動詞。Type 2 可以用 would、could、might，這格是「有能力」的意思。", "avoid": [["a verb ending in -s / -ed / -ing", "一定是動詞原形，不加 -s、-ed、-ing"]]}}], "teach": "Modal + base verb: the base verb here is the printed 'understand'.", "teach_zh": "情態動詞 + 動詞原形：這裏的動詞原形就是印好的 understand。", "wbmark": ["lb5"]}, {"sec": "Part A", "tag": "No 'I'", "tb": "tp", "tbmark": ["ifboy"], "wb": "wp", "wbfocus": [0.03, 0.44, 0.97, 0.93], "say": "Gaps 2, 9 and 11 have no 'I' before them. They continue the same list, and 'would' was already said, so there is no 'd. Gap 2 is a verb + a small word (put clothes on quickly). Gaps 9 and 11 are one base verb each; gap 9 starts the line, so it needs a capital letter.", "say_zh": "第 2、9、11 格前面沒有 I，是同一串動作的下一個，would 前面已經講過，所以不用 'd。第 2 格是動詞 + 一個小字（意思是快快穿上衣服）。第 9、11 格各一個動詞原形；第 9 格在句頭，要大楷。", "fills": [{"id": "s2", "box": [0.13, 0.575, 0.226, 0.591], "text": "base verb", "zh": "動詞原形", "q": "2", "note": "Gap 2: no I → base verb", "kind": "text", "ex": {"why": "There is no 'I' before the gap, so it continues a list of imagined actions; 'would' was already said, so only the base verb is needed.", "why_zh": "空格前面沒有 I，是接著同一串想像動作；would 前面講過，所以只填動詞原形。", "avoid": [["a verb ending in -s / -ed / -ing", "一定是動詞原形，不加 -s、-ed、-ing"]]}}, {"id": "s9", "box": [0.531, 0.733, 0.627, 0.749], "text": "base verb", "zh": "動詞原形", "q": "9", "note": "Gap 9: no I → base verb", "kind": "text", "ex": {"why": "There is no 'I' before the gap, so it continues a list of imagined actions; 'would' was already said, so only the base verb is needed.", "why_zh": "空格前面沒有 I，是接著同一串想像動作；would 前面講過，所以只填動詞原形。", "avoid": [["a verb ending in -s / -ed / -ing", "一定是動詞原形，不加 -s、-ed、-ing"]]}}, {"id": "s11", "box": [0.579, 0.841, 0.674, 0.858], "text": "base verb", "zh": "動詞原形", "q": "11", "note": "Gap 11: no I → base verb", "kind": "text", "ex": {"why": "There is no 'I' before the gap, so it continues a list of imagined actions; 'would' was already said, so only the base verb is needed.", "why_zh": "空格前面沒有 I，是接著同一串想像動作；would 前面講過，所以只填動詞原形。", "avoid": [["a verb ending in -s / -ed / -ing", "一定是動詞原形，不加 -s、-ed、-ing"]]}}], "teach": "Same idea as: I'd wake up late and eat cake. 'would' is not said again before 'eat'.", "teach_zh": "好像：I'd wake up late and eat cake。eat 前面不用再講 would。", "wbmark": ["lb2", "lb9", "lb11"]}, {"sec": "Part A", "tag": "Where", "tb": "tp", "tbmark": [], "wb": "wp", "wbfocus": [0.03, 0.44, 0.97, 0.93], "say": "Where each answer is in the full lyrics. Count the lines inside each verse that starts with 'If I were a boy'. Verse 1: gap 1 is line 3, gap 2 line 4, gap 3 line 7, gap 4 line 8. Verse 2: gap 5 is line 2, gap 6 line 4, gap 7 line 5. Verse 3, the one after the first chorus: gap 8 is line 2, gap 9 line 3, gap 10 line 5, gap 11 line 6.", "say_zh": "每格答案在完整歌詞的位置：每一段由 If I were a boy 開始數行。第一段：第 1 格在第 3 行，第 2 格第 4 行，第 3 格第 7 行，第 4 格第 8 行。第二段：第 5 格在第 2 行，第 6 格第 4 行，第 7 格第 5 行。第三段，即是第一次副歌之後那段：第 8 格在第 2 行，第 9 格第 3 行，第 10 格第 5 行，第 11 格第 6 行。", "fills": [], "teach": "Open the lyrics next to this page, go to the line, and copy the words between 'I' and the printed words.", "teach_zh": "把歌詞放在這頁旁邊，去到那一行，抄下 I 和印好的字中間那幾個字。"}, {"sec": "Part A", "tag": "Check", "tb": "tp", "tbmark": ["ifboy"], "wb": "wp", "wbfocus": [0.03, 0.44, 0.97, 0.93], "say": "Check every gap: count the words (2, 3 or 1), make sure the verb is a base verb, and 'd only goes where there is an 'I' before the gap, except gap 5.", "say_zh": "每格都檢查：字數對不對（兩個、三個或一個），動詞是不是原形，'d 只放在前面有 I 的格，第 5 格例外。", "fills": []}, {"sec": "Done", "tag": "Done", "tb": "tp", "tbmark": [], "wb": "wp", "wbfocus": null, "say": "Done. Part 1: imaginary situations · certain · advice. Part A: two words, three words, one word, or base verb, and each answer's line is in the 'Where' step.", "say_zh": "完成。第一部分：imaginary situations · certain · advice；A 部分：分兩個字、三個字、一個字、動詞原形四種，每格在歌詞哪一行，看「Where」那一步。", "fills": []}];
 var LABEL={"e_snow": ["If it snowed in Hong Kong … (it never snows here)", ""], "e_rich": ["If I were rich … (I am not rich)", ""], "e_andy": ["could / might = maybe", ""], "e_jane": ["could = able to", ""], "e_you": ["If I were you = advice", ""], "song": ["The song for Part A", ""], "ifboy": ["The title line is the if-part → Type 2", ""], "lb1": ["Gap 1", ""], "lb2": ["Gap 2", ""], "lb3": ["Gap 3", ""], "lb4": ["Gap 4", ""], "lb5": ["Gap 5", ""], "lb6": ["Gap 6", ""], "lb7": ["Gap 7", ""], "lb8": ["Gap 8", ""], "lb9": ["Gap 9", ""], "lb10": ["Gap 10", ""], "lb11": ["Gap 11", ""]};
+if(window.__t2fix)window.__t2fix(STEPS);
 (function(){
  var $=function(i){return document.getElementById(i);};
  var cur=0,token=0,playing=false,timers=[],SPEED=1,paused=true,pauseAt=Date.now(),stepT0=Date.now();
@@ -427,65 +489,6 @@ var LABEL={"e_snow": ["If it snowed in Hong Kong … (it never snows here)", ""]
  try{setZh(localStorage.getItem("hwv_zh")==="1");}catch(e){setZh(false);}
  document.querySelectorAll(".stage img").forEach(function(im){im.addEventListener("load",function(){if(lastT)focusCam("tcam",lastT[0],lastT[1]);if(lastW)focusCam("wcam",lastW[0],lastW[1]);});});
  go(0);
-})();
-</script>
-
-<style>
-#ansbox{max-width:1100px;margin:28px auto 60px;padding:20px 22px;border:2px solid #c0392b;border-radius:12px;background:#fff;font-family:Arial,"Microsoft JhengHei",sans-serif;color:#222}
-#ansbox h2{margin:0 0 6px;font-size:22px;color:#c0392b}
-#ansbox p{margin:4px 0 10px;font-size:15px;line-height:1.5}
-#ansbox textarea{width:100%;height:150px;box-sizing:border-box;font-size:14px;padding:8px;border:1px solid #bbb;border-radius:8px}
-#ansbox button{margin-top:10px;padding:8px 18px;font-size:16px;border:0;border-radius:8px;background:#c0392b;color:#fff;cursor:pointer}
-#anslist{margin-top:14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px}
-#anslist div{border:1px solid #eee;border-radius:8px;padding:8px 10px;font-size:16px}
-#anslist b{display:inline-block;min-width:34px}
-#anslist .a{color:#c0392b;font-weight:700}
-#anslist .x{color:#999}
-</style>
-<div id="ansbox">
-<h2>全部答案 · All answers</h2>
-<p>把你手上那份完整歌詞貼進下面，按「出答案」，11 格答案會用紅字列出來。歌詞只在你這部機上對，不會上載。<br>Paste the full lyrics below and press the button; the 11 answers appear in red.</p>
-<textarea id="lyr" placeholder="Paste the full lyrics here"></textarea>
-<button id="go">出答案</button>
-<div id="anslist"></div>
-</div>
-<script>
-(function(){
-  // each gap: [regex on one line, add 'd if the worksheet has I before the gap and the song line does not]
-  var G=[
-    [/^\s*I\s*('d|would)?\s*(.+?)\s+out of bed/i,1],
-    [/^\s*And\s+(.+?)\s+what I wanted/i,0],
-    [/^\s*I\s*('d|would)?\s*(.+?)\s+it with who/i,1],
-    [/^\s*And\s+(?:I\s*('d|would)?\s*)?(.+?)\s+confronted/i,1],
-    [/^\s*I think I\s+(.+?)\s+understand/i,0],
-    [/^\s*I swear I\s*('d|would)?\s*(.+?)\s+a better man/i,1],
-    [/^\s*I\s*('d|would)?\s*(.+?)\s+to her\b/i,1],
-    [/^\s*I\s*('d|would)?\s*(.+?)\s+my phone/i,1],
-    [/^\s*(.+?)\s+everyone it'?s broken/i,0],
-    [/^\s*I\s*('d|would)?\s*(.+?)\s+myself first/i,1],
-    [/^\s*And\s+(.+?)\s+the rules as/i,0]
-  ];
-  function solve(text){
-    var lines=text.replace(/[‘’ʼ]/g,"'").split(/\r?\n/);
-    return G.map(function(g){
-      for(var i=0;i<lines.length;i++){
-        var m=lines[i].match(g[0]); if(!m) continue;
-        var aux=m.length>2?m[1]:null, body=(m.length>2?m[2]:m[1]).trim();
-        if(g[1]) body=(aux==='would'?'would ':"'d ")+body.replace(/^'d\s*/,'');
-        return body;
-      }
-      return null;
-    });
-  }
-  function show(){
-    var t=document.getElementById('lyr').value; try{localStorage.setItem('t2lyr',t);}catch(e){}
-    var r=solve(t), h='';
-    r.forEach(function(a,i){h+='<div><b>'+(i+1)+')</b> '+(a?'<span class="a">'+a.replace(/</g,'&lt;')+'</span>':'<span class="x">找不到這一行</span>')+'</div>';});
-    document.getElementById('anslist').innerHTML=h;
-  }
-  document.getElementById('go').onclick=show;
-  try{var s=localStorage.getItem('t2lyr'); if(s){document.getElementById('lyr').value=s; show();}}catch(e){}
-  window.__t2solve=solve;
 })();
 </script>
 </body>
