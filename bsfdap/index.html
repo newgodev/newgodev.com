@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>if(location.protocol==="http:")location.replace("https://"+location.host+location.pathname+location.search);</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Type 2 Conditionals &amp; Reported Instructions Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+HK:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#14171c;--muted:#5b6270;--blue:#1f6feb;--pur:#7a3fd1;--grn:#1a8a3a;--red:#d42a3c;--amb:#b97800;--soft:#f3f6fb;--line:#dfe5ee}
+*{box-sizing:border-box}
+html{color-scheme:light;background:#fff;font-size:20px;scrollbar-width:thin;scrollbar-color:#7ea6ec #eef3fb}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:#eef3fb;border-radius:999px}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#9cc0ff,#5d8fe8);border-radius:999px;border:2px solid #eef3fb}
+::-webkit-scrollbar-thumb:hover{background:#4a7fdc}
+::-webkit-scrollbar-button{display:none;width:0;height:0}
+::-webkit-scrollbar-corner{background:#eef3fb}
+body{margin:0;background:#fff;color:var(--ink);font-family:"Inter",Arial,"Noto Sans HK",sans-serif;min-height:100vh;overflow-x:hidden}
+button{font-family:inherit}
+.top{position:sticky;top:0;z-index:5;background:#fff;border-bottom:4px solid var(--blue);display:flex;align-items:center;gap:12px;padding:9px 18px}
+.brand{font-weight:900;color:var(--blue);font-size:.95rem;white-space:nowrap}
+.ttl{font-weight:700;font-size:.8rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp{flex:1}
+.pill{font-weight:900;background:var(--soft);color:var(--blue);border-radius:999px;padding:4px 12px;font-size:.8rem;white-space:nowrap}
+.wrap{max-width:920px;margin:0 auto;padding:18px 16px 40px}
+.screen{display:none}
+.screen.on{display:block;animation:in .3s}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.hero{text-align:center;padding:26px 6px 10px}
+.kicker{font-weight:700;color:var(--muted);font-size:.8rem;letter-spacing:.3px}
+h1{font-size:2rem;line-height:1.2;margin:10px 0 8px}
+.sub{color:var(--muted);margin:6px 0 16px;font-size:.95rem}
+.parts{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:10px 0 22px}
+.tag{display:inline-block;font-weight:900;font-size:.75rem;border-radius:999px;padding:4px 12px;white-space:nowrap}
+.tag.t2{background:#e7f0ff;color:var(--blue)}
+.tag.ri{background:#f1e9ff;color:var(--pur)}
+.tag.ts{background:#fff2d6;color:var(--amb)}
+.btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+.big{font-weight:900;font-size:1.05rem;border:0;border-radius:12px;padding:13px 32px;background:var(--blue);color:#fff;cursor:pointer;box-shadow:0 5px 0 #1450b0;transition:transform .08s}
+.big:active{transform:translateY(3px);box-shadow:0 2px 0 #1450b0}
+.ghost{font-weight:900;font-size:1rem;border:2px solid var(--blue);border-radius:12px;padding:11px 24px;background:#fff;color:var(--blue);cursor:pointer}
+.foot{text-align:center;color:var(--muted);font-size:.72rem;margin-top:26px}
+.qhead{display:flex;align-items:center;gap:10px;margin:4px 0 10px;flex-wrap:wrap}
+.qn{font-weight:900;color:var(--muted);font-size:.9rem}
+.dots{display:flex;gap:6px;margin:0 0 14px}
+.dot{flex:1;height:8px;border-radius:999px;background:#e8edf5}
+.dot.cur{background:#9cc0ff}
+.dot.ok{background:var(--grn)}
+.dot.no{background:var(--red)}
+.qbox{font-size:1.3rem;font-weight:700;line-height:1.55;padding:22px 20px;border-radius:14px;background:var(--soft);border:2px solid var(--line);min-height:96px}
+.blank{display:inline-block;min-width:4.2em;border-bottom:3px solid var(--ink);margin:0 4px;transform:translateY(-3px)}
+.fill{font-weight:900;border-radius:6px;padding:0 6px;margin:0 2px}
+.fill.ok{color:var(--grn);background:#e3f5e9}
+.fill.bad{color:var(--red);background:#fde8ea;text-decoration:line-through}
+.ans{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+@media (max-width:700px){.ans{grid-template-columns:1fr}h1{font-size:1.55rem}.qbox{font-size:1.12rem}}
+.a{position:relative;display:flex;align-items:center;gap:12px;text-align:left;border:2px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);font-weight:700;font-size:1rem;padding:14px 14px;min-height:66px;cursor:pointer;transition:transform .1s,background .2s,border-color .2s,opacity .2s}
+.a:hover{border-color:#9cc0ff;background:#f7faff}
+.a:active{transform:translateY(2px)}
+.a .lt{flex:none;width:34px;height:34px;border-radius:9px;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+.a0 .lt{background:#d42a3c}.a1 .lt{background:#1f6feb}.a2 .lt{background:#b97800}.a3 .lt{background:#1a8a3a}
+.a .tx{flex:1}
+.a .mk{flex:none;font-weight:900;font-size:1.2rem}
+.a.right{border-color:var(--grn);background:#e3f5e9;opacity:1}
+.a.wrong{border-color:var(--red);background:#fde8ea;animation:shake .4s}
+.a.dim{opacity:.45}
+.a:disabled{cursor:default}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.fb{display:none;margin-top:16px;border-radius:12px;padding:12px 16px;border-left:7px solid var(--grn);background:#f1faf4}
+.fb.on{display:block;animation:in .25s}
+.fb.bad{border-left-color:var(--red);background:#fff4f5}
+.fbh{font-weight:900;font-size:1.05rem;margin-bottom:4px}
+.fb.good .fbh{color:var(--grn)}
+.fb.bad .fbh{color:var(--red)}
+.why{font-size:.95rem;line-height:1.5}
+.zh{font-size:.92rem;color:var(--muted);margin-top:3px;line-height:1.5}
+.next{text-align:right;margin-top:14px;min-height:56px}
+.notes{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:760px){.notes{grid-template-columns:1fr}}
+.card{border:2px solid var(--line);border-radius:14px;padding:14px 16px;background:#fff}
+.card h2{font-size:1.05rem;margin:0 0 8px}
+.card.t2 h2{color:var(--blue)}
+.card.ri h2{color:var(--pur)}
+.card ul{margin:0;padding-left:1.1em}
+.card li{margin:6px 0;font-size:.88rem;line-height:1.45}
+.card li small{display:block;color:var(--muted);font-size:.8rem}
+.eg{font-weight:700}
+.res{text-align:center;padding:6px 0 4px}
+.scoreBig{font-size:2.6rem;font-weight:900;line-height:1.1;margin:6px 0 2px}
+.scoreBig small{font-size:1.2rem;color:var(--muted);margin-left:10px}
+.target{display:inline-block;font-weight:900;border-radius:999px;padding:5px 16px;font-size:.85rem}
+.target.hit{background:#e3f5e9;color:var(--grn)}
+.target.miss{background:#fff2d6;color:var(--amb)}
+.when{color:var(--muted);font-size:.72rem;margin-top:6px}
+.review{list-style:none;margin:12px 0 14px;padding:0}
+.review li{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;border-bottom:1px solid var(--line);font-size:.78rem;line-height:1.45}
+.review .num{flex:none;font-weight:900;color:var(--muted);width:1.6em}
+.review .mk{flex:none;font-weight:900;width:1.1em}
+.review li.ok .mk{color:var(--grn)}
+.review li.no .mk{color:var(--red)}
+.review .rtag{flex:none;font-weight:900;font-size:.62rem;border-radius:999px;padding:2px 8px;margin-top:2px;white-space:nowrap}
+.review .rtag.t2{background:#e7f0ff;color:var(--blue)}
+.review .rtag.ri{background:#f1e9ff;color:var(--pur)}
+.review .rtag.ts{background:#fff2d6;color:var(--amb)}
+.review .rq{flex:1}
+.review .fill{padding:0 4px}
+</style>
+</head>
+<body>
+<div class="top">
+  <span class="brand">English</span>
+  <span class="ttl">Type 2 Conditionals &amp; Reported Instructions</span>
+  <span class="sp"></span>
+  <span class="pill" id="pill">10 questions</span>
+</div>
+<div class="wrap">
+
+<section class="screen on" id="sStart">
+  <div class="hero">
+    <div class="kicker">AI-generated interactive quiz · 10 questions</div>
+    <h1>Type 2 Conditionals<br>&amp; Reported Instructions</h1>
+    <p class="sub">Tap an answer. You see the reason after every question.<br>每題答完即刻有解釋。</p>
+    <div class="parts">
+      <span class="tag t2">Part A · Type 2 conditionals × 5</span>
+      <span class="tag ri">Part B · Reported instructions × 5</span>
+    </div>
+    <div class="btns">
+      <button class="big" id="go" type="button">Start quiz</button>
+      <button class="ghost" id="notesBtn" type="button">Notes 先睇筆記</button>
+    </div>
+    <div class="foot">Every new attempt gives a different set of questions.</div>
+  </div>
+</section>
+
+<section class="screen" id="sNotes">
+  <div class="notes">
+    <div class="card t2">
+      <h2>Type 2 conditional 第二類條件句</h2>
+      <ul>
+        <li>An imaginary situation now or in the future — not real.<small>想像的情況,不是真的。</small></li>
+        <li><span class="eg">If + past simple, … would + verb</span><br>If I were rich, I would buy a yacht.</li>
+        <li>were for every person (was is also OK).<small>were 較正式。</small></li>
+        <li>could / might = maybe → less certain. could = can (ability).<small>could / might 表示「可能」;could 也可以表示「有能力」。</small></li>
+        <li>Advice: If I were you, I would …</li>
+        <li>Question: What would you do if you saw a ghost?</li>
+        <li>Swap the two parts → same meaning. Comma only when “if” comes first.</li>
+        <li>Not past perfect: “If I had been …” is Type 3.</li>
+      </ul>
+    </div>
+    <div class="card ri">
+      <h2>Reported instructions 轉述指令</h2>
+      <ul>
+        <li>Command → told. Request (please / can you) → asked.<small>命令用 told,請求用 asked。</small></li>
+        <li><span class="eg">told / asked + person + to + verb</span><br>“Sit down.” → The teacher told us to sit down.</li>
+        <li>Negative: not to + verb (never write don't).<br>“Don't talk.” → told us not to talk.</li>
+        <li>Change the words: your → our / my, here → there, this → that, tomorrow → the next day, today → that day.<small>代名詞、地點、時間都要轉。</small></li>
+        <li>Tenses in reported speech: am / is → was, will → would, can → could, has been → had been.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="btns" style="margin-top:18px">
+    <button class="big" id="notesGo" type="button">Start quiz</button>
+    <button class="ghost" id="notesBack" type="button">Back</button>
+  </div>
+</section>
+
+<section class="screen" id="sQ">
+  <div class="qhead">
+    <span class="qn" id="qn"></span>
+    <span class="tag" id="qtag"></span>
+  </div>
+  <div class="dots" id="dots"></div>
+  <div class="qbox" id="qt"></div>
+  <div class="ans" id="ans"></div>
+  <div class="fb" id="fb"></div>
+  <div class="next"><button class="big" id="nx" type="button" style="visibility:hidden">Next →</button></div>
+</section>
+
+<section class="screen" id="sEnd">
+  <div class="res">
+    <div class="kicker">Type 2 Conditionals &amp; Reported Instructions · AI-generated interactive quiz</div>
+    <div class="scoreBig"><span id="rs"></span><small id="rp"></small></div>
+    <div class="target" id="rt"></div>
+    <div class="when" id="rw"></div>
+  </div>
+  <ol class="review" id="rv"></ol>
+  <div class="btns">
+    <button class="big" id="again" type="button">New 10 questions</button>
+    <button class="ghost" id="notes2" type="button">Notes 筆記</button>
+  </div>
+</section>
+
+</div>
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id);};
+
+var T2=[
+{g:"were",q:"If I ___ rich, I would buy a yacht.",a:"were",w:["am","will be","had been","would be","have been","be","is"],why:"Type 2 = If + past simple. ‘were’ works for every person (more formal; ‘was’ is also OK).",zh:"第二類條件句:if 句用過去式;I 用 were 較正式(was 也可以)。"},
+{g:"would",q:"If it snowed in Hong Kong, I ___ very surprised.",a:"would be",w:["will be","am","would have been","are","had been","will have been","be","is"],why:"Main clause = would + base verb.",zh:"主句:would + 原形動詞。"},
+{g:"might",q:"If Andy uploaded his music, he ___ become famous. (Maybe — not sure.)",a:"might",w:["will","must","would have","can","shall","has to","is going to"],why:"could / might = maybe → the result is less certain.",zh:"could / might = 可能,結果沒那麼肯定。"},
+{g:"could",q:"If Jane had proper training, she ___ become a professional dancer. (She would be able to.)",a:"could",w:["can","will","must","shall","could have","has to","may"],why:"could in the main clause = would be able to (ability).",zh:"主句用 could = 有能力做到。"},
+{g:"advice",q:"“If I were you, I would look for a better deal.” What is this sentence for?",a:"giving advice",w:["a true fact","a past regret","making a promise","giving an order","a school rule","a real plan","a past event"],why:"If I were you, I would … = giving advice.",zh:"「如果我是你,我會……」= 給意見。"},
+{g:"question",q:"Which one is a correct Type 2 question?",a:"What would you do if you saw a ghost?",w:["What will you do if you saw a ghost?","What would you do if you see a ghost?","What would you do if you had seen a ghost?","What do you do if you saw a ghost?","What would you did if you saw a ghost?","What would you doing if you saw a ghost?","What will you do if you see a ghost?"],why:"Question: What would + subject + verb … if + past simple?",zh:"問句:What would + 主語 + 原形動詞……if + 過去式?"},
+{g:"cold",q:"It's cold today, so we won't go swimming. → Change it into Type 2.",a:"If it weren't cold, we would go swimming.",w:["If it isn't cold, we will go swimming.","If it hadn't been cold, we would go swimming.","If it weren't cold, we will go swimming.","If it weren't cold, we wouldn't go swimming.","If it weren't cold, we would have gone swimming.","If it isn't cold, we would go swimming.","If it is cold, we would go swimming."],why:"Turn the real situation around: cold → weren't cold; won't go → would go.",zh:"把事實反轉:cold → weren't cold;won't go → would go。"},
+{g:"spanish",q:"I don't speak Spanish, so I won't go to Spain. → Change it into Type 2.",a:"If I spoke Spanish, I would go to Spain.",w:["If I speak Spanish, I will go to Spain.","If I spoke Spanish, I will go to Spain.","If I had spoken Spanish, I would go to Spain.","If I spoke Spanish, I wouldn't go to Spain.","If I didn't speak Spanish, I would go to Spain.","If I spoke Spanish, I would have gone to Spain.","If I speak Spanish, I would go to Spain."],why:"don't speak → spoke (past simple); won't go → would go.",zh:"don't speak → spoke(過去式);won't go → would go。"},
+{g:"didnt",q:"Daisy does well in her exams because she works hard. → If Daisy ___ hard, she wouldn't do well in her exams.",a:"didn't work",w:["doesn't work","hadn't worked","wouldn't work","won't work","didn't worked","not worked","don't work"],why:"If-clause = past simple. Negative: didn't + base verb.",zh:"if 句用過去式;否定:didn't + 原形動詞。"},
+{g:"didnt",q:"If I ___ so much homework, I would go out tonight.",a:"didn't have",w:["don't have","haven't","hadn't had","wouldn't have","didn't had","won't have","haven't had"],why:"Past simple negative: didn't + have (base verb).",zh:"過去式否定:didn't + have(原形)。"},
+{g:"type",q:"“If I had been a boy, I would have …” — which type is this?",a:"Type 3",fixed:["Type 0","Type 1","Type 2","Type 3"],why:"had been = past perfect → Type 3 (the past). Type 2 is “If I were a boy, I would …”.",zh:"had been 是過去完成式 → 第三類(講過去)。第二類是 If I were a boy, I would……"},
+{g:"swap",q:"True or false? You can swap the if-clause and the main clause without changing the meaning.",a:"True",fixed:["True","False"],why:"Both orders mean the same. Put a comma only when the if-clause comes first.",zh:"兩部分可以對調,意思不變;if 句在前才加逗號。"},
+{g:"were",q:"True or false? “If I was rich …” is also OK, but “If I were rich …” is more formal.",a:"True",fixed:["True","False"],why:"Both are OK in Type 2; ‘were’ is the formal, traditional choice.",zh:"兩個都可以;were 較正式、傳統。"},
+{g:"andy",q:"Andy is ill, so he won't go hiking with us. → Change it into Type 2.",a:"If Andy weren't ill, he would go hiking with us.",w:["If Andy isn't ill, he will go hiking with us.","If Andy hadn't been ill, he would go hiking with us.","If Andy weren't ill, he will go hiking with us.","If Andy were ill, he would go hiking with us.","If Andy weren't ill, he would have gone hiking with us.","If Andy isn't ill, he would go hiking with us.","If he weren't ill, Andy would go hiking with us."],why:"is ill → weren't ill; won't go → would go. Write the name (Andy) before ‘he’.",zh:"is ill → weren't ill;won't go → would go;先寫名 Andy,後用 he。"},
+{g:"would",q:"If I won the lottery, ___",a:"I would travel around the world.",w:["I will travel around the world.","I would have travelled around the world.","I travel around the world.","I would travelled around the world.","I would travelling around the world.","I am travelling around the world.","I travelled around the world."],why:"Main clause = would + base verb (travel).",zh:"主句:would + 原形動詞(travel)。"},
+{g:"question",q:"If you saw a ghost, what ___?",a:"would you do",w:["will you do","would you did","do you do","would you done","did you do","would you doing","you would do"],why:"Question order: would + subject + base verb.",zh:"問句次序:would + 主語 + 原形動詞。"}
+];
+
+var RI=[
+{g:"to",q:"“Sit down,” the teacher said to us. → The teacher told us ___.",a:"to sit down",w:["sit down","sitting down","to sitting down","sat down","that sit down","to sat down","for sit down"],why:"told + person + to + base verb.",zh:"told + 人 + to + 原形動詞。"},
+{g:"pron",q:"“Open your books,” the teacher said to us. → The teacher told us to open ___ books.",a:"our",w:["your","their","my","his","her","its","you"],why:"Change the pronoun: your (said to us) → our.",zh:"代名詞要轉:對「我們」講的 your → our。"},
+{g:"not",q:"“Don't talk,” the teacher said to us. → The teacher told us ___.",a:"not to talk",w:["don't talk","to not talking","not talk","to don't talk","didn't talk","not talking","no to talk"],why:"Negative = not to + base verb. Never write ‘don't’.",zh:"否定:not to + 原形動詞,永遠不寫 don't。"},
+{g:"there",q:"“Please wait here,” he said to me. → He asked me to wait ___.",a:"there",w:["here","where","at here","this","now","that","at there"],why:"Place words change: here → there.",zh:"地點要轉:here → there。"},
+{g:"req",q:"“Can you turn off the lights?” she said to me. → She asked me ___.",a:"to turn off the lights",w:["turn off the lights","can turn off the lights","turning off the lights","to turned off the lights","if turn off the lights","that turn off the lights","for turn off the lights"],why:"A request → asked + person + to + base verb.",zh:"請求 → asked + 人 + to + 原形動詞。"},
+{g:"that",q:"“Take this book,” she said to me. → She told me to take ___ book.",a:"that",w:["this","these","those","them","which","what","it"],why:"this → that.",zh:"this → that。"},
+{g:"form",q:"“Leave the room!” the teacher said to Tom. Which report is correct?",a:"The teacher told Tom to leave the room.",w:["The teacher told to Tom leave the room.","The teacher said Tom to leave the room.","The teacher told Tom leave the room.","The teacher told Tom to left the room.","The teacher said to Tom leave the room.","The teacher told Tom that leave the room.","The teacher told Tom leaving the room."],why:"told + person (no ‘to’) + to + verb. Don't write ‘said + person’.",zh:"told 後面直接接人(不加 to),再接 to + 動詞;不可寫 said + 人。"},
+{g:"asked",q:"“Please help me,” Mary said to me. → Mary ___ me to help her.",a:"asked",w:["said","spoke","talked","says","speaks","talk","say"],why:"‘Please …’ is a request → asked.",zh:"有 please 是請求 → 用 asked。"},
+{g:"time",q:"Last week the teacher said, “Bring your iPads tomorrow.” → The teacher told us to bring our iPads ___.",a:"the next day",w:["tomorrow","yesterday","the day before","that day","today","next tomorrow","the last day"],why:"Time words change: tomorrow → the next day.",zh:"時間要轉:tomorrow → the next day。"},
+{g:"not",q:"“Don't sleep in class,” the teacher said to Terry. → The teacher told Terry ___ in class.",a:"not to sleep",w:["to not sleeping","don't sleep","not sleep","didn't sleep","not to slept","to don't sleep","not sleeping"],why:"not to + base verb (sleep).",zh:"not to + 原形動詞(sleep)。"},
+{g:"pron",q:"“Please put your iPads down,” the teacher said to us. → The teacher asked us to put ___ iPads down.",a:"our",w:["your","my","his","their","her","its","you"],why:"your (said to us) → our.",zh:"your → our。"},
+{g:"form",q:"Which sentence is a correct reported instruction?",a:"She told me to close the door.",w:["She told me close the door.","She said me to close the door.","She told to me close the door.","She told me closing the door.","She told me to closed the door.","She said me close the door.","She told me that close the door."],why:"Pattern: told + person + to + base verb.",zh:"句式:told + 人 + to + 原形動詞。"},
+{g:"not",q:"“Please don't be late,” she said to us. → She asked us ___ late.",a:"not to be",w:["don't be","not be","to not being","not to being","didn't be","to don't be","no to be"],why:"not to + be. Never write ‘don't’.",zh:"not to + be,永遠不寫 don't。"}
+];
+
+var TS=[
+{g:"ts1",q:"“I can't do it without your help,” she said. → She said she ___ do it without my help.",a:"couldn't",w:["can't","won't","doesn't","mustn't","shouldn't","isn't","haven't"],why:"Reported speech: can → could (can't → couldn't).",zh:"轉述:can → could(can't → couldn't)。"},
+{g:"ts2",q:"“I will lend you the money,” he said. → He said he ___ lend me the money.",a:"would",w:["will","can","shall","is going to","must","has","had"],why:"Reported speech: will → would.",zh:"轉述:will → would。"},
+{g:"ts3",q:"“He has been ill,” she told me. → She told me he ___ ill.",a:"had been",w:["has been","is","have been","was being","is being","has being","will be"],why:"Present perfect → past perfect: has been → had been.",zh:"現在完成式 → 過去完成式:has been → had been。"},
+{g:"ts4",q:"“I am working,” he said. → He said he ___ working.",a:"was",w:["is","has been","am","be","were","will be","had"],why:"Present continuous → past continuous: am working → was working.",zh:"現在進行式 → 過去進行式:am working → was working。"}
+];
+
+var TAG={t2:"Type 2 conditional",ri:"Reported instruction",ts:"Reported speech · tense"};
+var SHORT={t2:"Type 2",ri:"Reported",ts:"Tense"};
+
+function shuffle(a){a=a.slice();for(var k=a.length-1;k>0;k--){var j=Math.floor(Math.random()*(k+1));var t=a[k];a[k]=a[j];a[j]=t;}return a;}
+function pickUnique(pool,n){var out=[],seen={};shuffle(pool).forEach(function(q){if(out.length<n&&!seen[q.g]){seen[q.g]=1;out.push(q);}});return out;}
+function lenOf(s){return s.length;}
+function buildOpts(q){
+  if(q.fixed) return q.fixed.slice();
+  var best=null,bestScore=-1e9;
+  for(var t=0;t<40;t++){
+    var w=shuffle(q.w).slice(0,3), all=w.concat([q.a]);
+    var mx=Math.max.apply(null,all.map(lenOf)), mn=Math.min.apply(null,all.map(lenOf));
+    var wmax=Math.max.apply(null,w.map(lenOf));
+    var sc=(wmax>=q.a.length?10:0)-(mx/mn);
+    if(sc>bestScore){bestScore=sc;best=all;}
+    if(wmax>=q.a.length&&mx/mn<=1.6) break;
+  }
+  return shuffle(best);
+}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function fillHTML(q,pick,ok){
+  if(ok) return '<span class="fill ok">'+esc(pick)+'</span>';
+  return '<span class="fill bad">'+esc(pick)+'</span><span class="fill ok">'+esc(q.a)+'</span>';
+}
+function stemHTML(q,fill){
+  var h=esc(q.q);
+  if(h.indexOf("___")<0) return h;
+  return h.replace("___",fill==null?'<span class="blank">&nbsp;</span>':fill);
+}
+function makeSet(){
+  var a=pickUnique(T2,5), b=pickUnique(RI,4), c=pickUnique(TS,1);
+  var A=a.map(function(q){return {q:q,part:"t2"};});
+  var B=shuffle(b.map(function(q){return {q:q,part:"ri"};}).concat(c.map(function(q){return {q:q,part:"ts"};})));
+  return A.concat(B);
+}
+
+var set=[],i=0,score=0,answered=false,notesFrom="sStart";
+
+function show(id){
+  ["sStart","sNotes","sQ","sEnd"].forEach(function(s){$(s).classList.toggle("on",s===id);});
+  window.scrollTo(0,0);
+}
+function dots(){
+  var d=$("dots"); d.innerHTML="";
+  set.forEach(function(it,j){
+    var s=document.createElement("span");
+    s.className="dot"+(it.ok===true?" ok":it.ok===false?" no":(j===i?" cur":""));
+    d.appendChild(s);
+  });
+}
+function start(){ set=makeSet(); i=0; score=0; ask(); }
+function ask(){
+  answered=false;
+  if(document.activeElement&&document.activeElement.blur) document.activeElement.blur();
+  var it=set[i], q=it.q;
+  $("qn").textContent="Question "+(i+1)+" / "+set.length;
+  $("qtag").className="tag "+it.part; $("qtag").textContent=TAG[it.part];
+  $("qt").innerHTML=stemHTML(q,null);
+  if(!it.opts) it.opts=buildOpts(q);
+  var box=$("ans"); box.innerHTML="";
+  it.opts.forEach(function(o,k){
+    var b=document.createElement("button"); b.type="button"; b.className="a a"+k;
+    b.innerHTML='<span class="lt">'+"ABCD".charAt(k)+'</span><span class="tx">'+esc(o)+'</span><span class="mk"></span>';
+    b.addEventListener("click",function(){pick(k);});
+    box.appendChild(b);
+  });
+  $("fb").className="fb"; $("fb").innerHTML="";
+  $("nx").style.visibility="hidden";
+  $("pill").textContent="Score "+score+" / "+i;
+  dots(); show("sQ");
+}
+function pick(k){
+  if(answered) return; answered=true;
+  var it=set[i], q=it.q, o=it.opts[k], ok=(o===q.a);
+  if(ok) score++;
+  it.pick=o; it.ok=ok;
+  var btns=$("ans").querySelectorAll(".a");
+  for(var j=0;j<btns.length;j++){
+    var b=btns[j], t=it.opts[j];
+    if(t===q.a){ b.classList.add("right"); b.querySelector(".mk").textContent="✓"; }
+    else if(j===k){ b.classList.add("wrong"); b.querySelector(".mk").textContent="✗"; }
+    else b.classList.add("dim");
+    b.disabled=true;
+  }
+  if(q.q.indexOf("___")>=0) $("qt").innerHTML=stemHTML(q,fillHTML(q,o,ok));
+  var fb=$("fb");
+  fb.className="fb on "+(ok?"good":"bad");
+  fb.innerHTML='<div class="fbh">'+(ok?"✓ Correct!":"✗ Not quite. Answer: "+esc(q.a))+'</div><div class="why">'+esc(q.why)+'</div><div class="zh">'+esc(q.zh)+'</div>';
+  $("nx").textContent=(i+1>=set.length)?"See my result →":"Next →";
+  $("nx").style.visibility="visible";
+  $("pill").textContent="Score "+score+" / "+(i+1);
+  dots();
+}
+function next(){ if(!answered) return; i++; if(i>=set.length) end(); else ask(); }
+function pad(x){return (x<10?"0":"")+x;}
+function end(){
+  var n=set.length, pct=Math.round(score/n*100);
+  $("rs").textContent=score+" / "+n; $("rp").textContent=pct+"%";
+  $("rt").className="target "+(pct>=80?"hit":"miss");
+  $("rt").textContent=pct>=80?"Target 80% — reached ✓":"Target 80% — not yet. Try a new set.";
+  var d=new Date();
+  $("rw").textContent="Completed "+d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+" "+pad(d.getHours())+":"+pad(d.getMinutes());
+  var rv=$("rv"); rv.innerHTML="";
+  set.forEach(function(it,j){
+    var q=it.q, li=document.createElement("li"), body;
+    li.className=it.ok?"ok":"no";
+    if(q.q.indexOf("___")>=0) body=stemHTML(q,fillHTML(q,it.pick,it.ok));
+    else body=esc(q.q)+" → "+fillHTML(q,it.pick,it.ok);
+    li.innerHTML='<span class="num">'+(j+1)+'.</span><span class="mk">'+(it.ok?"✓":"✗")+'</span><span class="rtag '+it.part+'">'+SHORT[it.part]+'</span><span class="rq">'+body+'</span>';
+    rv.appendChild(li);
+  });
+  $("pill").textContent="Score "+score+" / "+n;
+  show("sEnd");
+  if(pct>=80) confetti();
+}
+function confetti(){
+  var c=document.createElement("canvas"), W=window.innerWidth, H=window.innerHeight;
+  c.width=W; c.height=H; c.style.cssText="position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:50";
+  document.body.appendChild(c);
+  var x=c.getContext("2d"), cols=["#1f6feb","#d42a3c","#b97800","#1a8a3a","#7a3fd1"], P=[];
+  for(var k=0;k<140;k++) P.push({x:Math.random()*W,y:-20-Math.random()*H*0.5,vx:(Math.random()-0.5)*3,vy:2+Math.random()*4,r:4+Math.random()*5,c:cols[k%cols.length],a:Math.random()*6});
+  var t0=Date.now();
+  (function step(){
+    var t=Date.now()-t0; x.clearRect(0,0,W,H);
+    P.forEach(function(p){ p.x+=p.vx; p.y+=p.vy; p.a+=0.1; x.fillStyle=p.c; x.save(); x.translate(p.x,p.y); x.rotate(p.a); x.fillRect(-p.r,-p.r/2,p.r*2,p.r); x.restore(); });
+    if(t<2600) requestAnimationFrame(step); else if(c.parentNode) c.parentNode.removeChild(c);
+  })();
+}
+
+$("go").addEventListener("click",start);
+$("notesGo").addEventListener("click",start);
+$("again").addEventListener("click",start);
+$("nx").addEventListener("click",next);
+$("notesBtn").addEventListener("click",function(){notesFrom="sStart";show("sNotes");});
+$("notes2").addEventListener("click",function(){notesFrom="sEnd";show("sNotes");});
+$("notesBack").addEventListener("click",function(){show(notesFrom);});
+document.addEventListener("keydown",function(e){
+  if(!$("sQ").classList.contains("on")) return;
+  if(!answered&&/^[1-4]$/.test(e.key)){ var k=+e.key-1; if(set[i]&&k<set[i].opts.length) pick(k); }
+  else if(answered&&(e.key==="Enter"||e.key==="ArrowRight")){ e.preventDefault(); next(); }
+});
+})();
+</script>
+</body>
+</html>
