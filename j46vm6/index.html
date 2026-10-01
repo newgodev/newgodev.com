@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>if(location.protocol==="http:")location.replace("https://"+location.host+location.pathname+location.search);</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WWI Vocabulary Kahoot · Dictation 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+HK:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#14171c;--muted:#5b6270;--blue:#1f6feb;--pur:#7a3fd1;--grn:#1a8a3a;--red:#d42a3c;--amb:#b97800;--soft:#f3f6fb;--line:#dfe5ee}
+*{box-sizing:border-box;touch-action:manipulation}
+html{color-scheme:light;background:#fff;font-size:20px;scrollbar-width:thin;scrollbar-color:#7ea6ec #eef3fb}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:#eef3fb;border-radius:999px}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#9cc0ff,#5d8fe8);border-radius:999px;border:2px solid #eef3fb}
+::-webkit-scrollbar-thumb:hover{background:#4a7fdc}
+::-webkit-scrollbar-button{display:none;width:0;height:0}
+::-webkit-scrollbar-corner{background:#eef3fb}
+body{margin:0;background:#fff;color:var(--ink);font-family:"Inter",Arial,"Noto Sans HK",sans-serif;min-height:100vh;overflow-x:hidden}
+button{font-family:inherit}
+.top{position:sticky;top:0;z-index:5;background:#fff;border-bottom:4px solid var(--blue);display:flex;align-items:center;gap:12px;padding:9px 18px}
+.brand{font-weight:900;color:var(--blue);font-size:.95rem;white-space:nowrap}
+.ttl{font-weight:700;font-size:.8rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp{flex:1}
+.pill{font-weight:900;background:var(--soft);color:var(--blue);border-radius:999px;padding:4px 12px;font-size:.8rem;white-space:nowrap}
+.wrap{max-width:920px;margin:0 auto;padding:18px 16px 40px}
+.screen{display:none}
+.screen.on{display:block;animation:in .3s}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.hero{text-align:center;padding:22px 6px 6px}
+.kicker{font-weight:700;color:var(--muted);font-size:.8rem;letter-spacing:.3px}
+h1{font-size:2rem;line-height:1.2;margin:10px 0 8px}
+.sub{color:var(--muted);margin:6px 0 16px;font-size:.92rem;line-height:1.5}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:12px 0 6px}
+@media (max-width:760px){.modes{grid-template-columns:1fr}}
+.mode{border:2px solid var(--line);border-radius:14px;padding:14px;background:#fff;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:5px;transition:border-color .15s,transform .1s}
+.mode:hover{border-color:#9cc0ff}
+.mode:active{transform:translateY(2px)}
+.mode .mt{font-weight:900;font-size:1rem;color:var(--blue)}
+.mode .md{font-size:.78rem;color:var(--muted);line-height:1.4}
+.mode.main{border-color:var(--blue);background:#f5f9ff}
+.tag{display:inline-block;font-weight:900;font-size:.75rem;border-radius:999px;padding:4px 12px;white-space:nowrap}
+.tag.k{background:#e7f0ff;color:var(--blue)}
+.btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.big{font-weight:900;font-size:1.05rem;border:0;border-radius:12px;padding:13px 30px;background:var(--blue);color:#fff;cursor:pointer;box-shadow:0 5px 0 #1450b0;transition:transform .08s}
+.big:active{transform:translateY(3px);box-shadow:0 2px 0 #1450b0}
+.ghost{font-weight:900;font-size:1rem;border:2px solid var(--blue);border-radius:12px;padding:11px 22px;background:#fff;color:var(--blue);cursor:pointer}
+.foot{text-align:center;color:var(--muted);font-size:.72rem;margin-top:18px}
+.qhead{display:flex;align-items:center;gap:10px;margin:4px 0 10px;flex-wrap:wrap}
+.qn{font-weight:900;color:var(--muted);font-size:.9rem}
+.dots{display:flex;gap:5px;margin:0 0 14px}
+.dot{flex:1;height:8px;border-radius:999px;background:#e8edf5}
+.dot.cur{background:#9cc0ff}
+.dot.ok{background:var(--grn)}
+.dot.no{background:var(--red)}
+.qbox{font-size:1.3rem;font-weight:700;line-height:1.55;padding:22px 20px;border-radius:14px;background:var(--soft);border:2px solid var(--line);min-height:96px}
+.blank{display:inline-block;min-width:4.2em;border-bottom:3px solid var(--ink);margin:0 4px;transform:translateY(-3px)}
+.fill{font-weight:900;border-radius:6px;padding:0 6px;margin:0 2px}
+.fill.ok{color:var(--grn);background:#e3f5e9}
+.fill.bad{color:var(--red);background:#fde8ea;text-decoration:line-through}
+.ans{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+@media (max-width:700px){.ans{grid-template-columns:1fr}h1{font-size:1.55rem}.qbox{font-size:1.12rem}}
+.a{position:relative;display:flex;align-items:center;gap:12px;text-align:left;border:2px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);font-weight:700;font-size:1rem;padding:14px 14px;min-height:66px;cursor:pointer;transition:transform .1s,background .2s,border-color .2s,opacity .2s}
+.a:hover{border-color:#9cc0ff;background:#f7faff}
+.a:active{transform:translateY(2px)}
+.a .lt{flex:none;width:34px;height:34px;border-radius:9px;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+.a0 .lt{background:#d42a3c}.a1 .lt{background:#1f6feb}.a2 .lt{background:#b97800}.a3 .lt{background:#1a8a3a}
+.a .tx{flex:1}
+.a .mk{flex:none;font-weight:900;font-size:1.2rem}
+.a.right{border-color:var(--grn);background:#e3f5e9;opacity:1}
+.a.wrong{border-color:var(--red);background:#fde8ea;animation:shake .4s}
+.a.dim{opacity:.45}
+.a:disabled{cursor:default}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.fb{display:none;margin-top:16px;border-radius:12px;padding:12px 16px;border-left:7px solid var(--grn);background:#f1faf4}
+.fb.on{display:block;animation:in .25s}
+.fb.bad{border-left-color:var(--red);background:#fff4f5}
+.fbh{font-weight:900;font-size:1.05rem;margin-bottom:4px}
+.fb.good .fbh{color:var(--grn)}
+.fb.bad .fbh{color:var(--red)}
+.why{font-size:.95rem;line-height:1.5}
+.zh{font-size:.92rem;color:var(--muted);margin-top:3px;line-height:1.5}
+.next{text-align:right;margin-top:14px;min-height:56px}
+.wl{width:100%;border-collapse:collapse;font-size:.8rem}
+.wl th{text-align:left;color:var(--muted);font-size:.72rem;border-bottom:2px solid var(--line);padding:6px 6px}
+.wl td{border-bottom:1px solid var(--line);padding:7px 6px;vertical-align:top;line-height:1.4}
+.wl td.n{color:var(--muted);font-weight:900;white-space:nowrap}
+.wl td.w{font-weight:900;color:var(--blue);white-space:nowrap}
+.wl td.t{color:var(--muted);font-size:.76rem}
+.res{text-align:center;padding:6px 0 4px}
+.scoreBig{font-size:2.6rem;font-weight:900;line-height:1.1;margin:6px 0 2px}
+.scoreBig small{font-size:1.2rem;color:var(--muted);margin-left:10px}
+.target{display:inline-block;font-weight:900;border-radius:999px;padding:5px 16px;font-size:.85rem}
+.target.hit{background:#e3f5e9;color:var(--grn)}
+.target.miss{background:#fff2d6;color:var(--amb)}
+.when{color:var(--muted);font-size:.72rem;margin-top:6px}
+.review{list-style:none;margin:12px 0 14px;padding:0}
+.review li{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;border-bottom:1px solid var(--line);font-size:.78rem;line-height:1.45}
+.review .num{flex:none;font-weight:900;color:var(--muted);width:1.8em}
+.review .mk{flex:none;font-weight:900;width:1.1em}
+.review li.ok .mk{color:var(--grn)}
+.review li.no .mk{color:var(--red)}
+.review .rq{flex:1}
+.review .fill{padding:0 4px}
+</style>
+</head>
+<body>
+<div class="top">
+  <span class="brand">History</span>
+  <span class="ttl">WWI Vocabulary · Dictation 1 · No. 1–17</span>
+  <span class="sp"></span>
+  <span class="pill" id="pill">17 words</span>
+</div>
+<div class="wrap">
+
+<section class="screen on" id="sStart">
+  <div class="hero">
+    <div class="kicker">3G 1st dictation · 2 Oct · Vocab no. 1–17</div>
+    <h1>WWI Vocabulary Kahoot</h1>
+    <p class="sub">Tap an answer. After every question you see the meaning, the Chinese and a spelling tip.<br>每題答完即刻有中文意思同串字方法。</p>
+  </div>
+  <div class="modes">
+    <button class="mode main" id="mMix" type="button"><span class="mt">Mixed · 10 questions</span><span class="md">Meaning, Chinese, spelling and story questions, all mixed.</span></button>
+    <button class="mode" id="mSpell" type="button"><span class="mt">Spelling drill · all 17</span><span class="md">Pick the correct spelling of every word — the dictation part.</span></button>
+    <button class="mode" id="mZh" type="button"><span class="mt">Chinese → English · all 17</span><span class="md">See the Chinese, pick the English term.</span></button>
+  </div>
+  <div class="btns">
+    <button class="ghost" id="notesBtn" type="button">Word list 生字表</button>
+  </div>
+  <div class="foot">Every new round mixes the questions again.</div>
+</section>
+
+<section class="screen" id="sNotes">
+  <table class="wl" id="wl"></table>
+  <div class="btns" style="margin-top:16px">
+    <button class="big" id="notesGo" type="button">Start mixed quiz</button>
+    <button class="ghost" id="notesBack" type="button">Back</button>
+  </div>
+</section>
+
+<section class="screen" id="sQ">
+  <div class="qhead">
+    <span class="qn" id="qn"></span>
+    <span class="tag k" id="qtag"></span>
+  </div>
+  <div class="dots" id="dots"></div>
+  <div class="qbox" id="qt"></div>
+  <div class="ans" id="ans"></div>
+  <div class="fb" id="fb"></div>
+  <div class="next"><button class="big" id="nx" type="button" style="visibility:hidden">Next →</button></div>
+</section>
+
+<section class="screen" id="sEnd">
+  <div class="res">
+    <div class="kicker" id="rk"></div>
+    <div class="scoreBig"><span id="rs"></span><small id="rp"></small></div>
+    <div class="target" id="rt"></div>
+    <div class="when" id="rw"></div>
+  </div>
+  <ol class="review" id="rv"></ol>
+  <div class="btns">
+    <button class="big" id="again" type="button">New round</button>
+    <button class="ghost" id="home" type="button">All modes</button>
+  </div>
+</section>
+
+</div>
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id);};
+
+// n = number on the teacher's list; w = spelling exactly as on the list
+var WORDS=[
+{n:1,w:"splendid isolation",zh:"光榮孤立",m:"Britain's policy of not joining any alliance in the late 1800s",ctx:"In the late 1800s, Britain did not join any alliance. This policy is called ___.",tip:"splen·did + i·so·la·tion — isolation sounds like island: Britain, an island, staying alone.",sp:["splendid isolasion","splended isolation","splendid isollation","splendit isolation","splendid isolaton","splendid isolition","spendid isolation"]},
+{n:2,w:"Franco-Prussian War",zh:"普法戰爭",m:"the war of 1870–71 in which Prussia defeated France; after it Germany became one country",ctx:"In the ___ (1870–71), Prussia defeated France and Germany became one country.",tip:"Franco = France, Prussian = Prussia; capital F, P, W and a hyphen.",sp:["Franco-Prusian War","Franko-Prussian War","Franco-Prussain War","Franco-Russian War","Franco-Prussian Wor","Frando-Prussian War","Franco-Prushian War"]},
+{n:3,w:"Slavs",zh:"斯拉夫人",m:"a group of peoples in Eastern Europe and the Balkans, such as Russians and Serbs",ctx:"Russians and Serbs are both ___.",tip:"S·L·A·V·S — capital S. Not ‘slaves’!",sp:["Slaves","Slavz","Slafs","Sclavs","Slvas","Slav's","Slabs"],ex:["Serbia","Pan-Slavism"]},
+{n:4,w:"Austria-Hungary",zh:"奧匈帝國",m:"a large empire in Central Europe with many peoples, including many Slavs",ctx:"___ was a big empire in Central Europe that ruled many Slavs.",tip:"Austria + hyphen + Hungary (H-u-n-g-a-r-y — not hungry!).",sp:["Austria-Hungry","Austira-Hungary","Austria-Hungery","Austria-Hangary","Austrai-Hungary","Austria-Hungray","Ostria-Hungary"]},
+{n:5,w:"Serbia",zh:"塞爾維亞",m:"a Slav country in the Balkans that was supported by Russia",ctx:"___, a Slav country in the Balkans, was supported by Russia.",tip:"Ser·bi·a — capital S, ends in -bia.",sp:["Serbai","Sirbia","Serbea","Sarbia","Serbbia","Surbia","Serbiya"],ex:["Slavs","Austria-Hungary"]},
+{n:6,w:"Extreme nationalism",zh:"極端民族主義",m:"too much love for your own nation, thinking it is better than others and hating them",ctx:"Too much pride in your own nation, and hating other nations, is called ___.",tip:"Ex·treme + na·tion·al·ism (nation + al + ism).",sp:["Extrem nationalism","Extreme nationalisim","Extreme nationlism","Extreame nationalism","Extreme nationalizm","Extreme natoinalism","Exterme nationalism"],ex:["Pan-Germanism","Pan-Slavism"]},
+{n:7,w:"Pan-Germanism",zh:"泛日耳曼主義",m:"the idea of uniting all German-speaking people into one great Germany",ctx:"The idea of uniting all German-speaking people is ___.",tip:"Pan- (= all) + German + ism; capital P and G, hyphen.",sp:["Pan-Germenism","Pan-Germanisim","Pan-Germansim","Pen-Germanism","Pan-Gernanism","Pan-Germanizm","Pan-Germamism"],ex:["Extreme nationalism"]},
+{n:8,w:"Pan-Slavism",zh:"泛斯拉夫主義",m:"the idea of uniting all Slavs; Russia saw itself as their protector",ctx:"The idea of uniting all Slavs, with Russia as their protector, is ___.",tip:"Pan- (= all) + Slav + ism; capital P and S, hyphen.",sp:["Pan-Slavisim","Pan-Slavizm","Pan-Slavsim","Pan-Salvism","Pen-Slavism","Pan-Slevism","Pan-Slavisme"],ex:["Extreme nationalism","Slavs"]},
+{n:9,w:"Balkan Peninsula",zh:"巴爾幹半島",m:"the region in south-eastern Europe called the ‘powder keg of Europe’",ctx:"The ___ in south-eastern Europe was called the ‘powder keg of Europe’.",tip:"Bal·kan + Pen·in·su·la (pen + in + su + la).",sp:["Balkan Peninsular","Balcan Peninsula","Balkan Penninsula","Balken Peninsula","Balkan Peninsola","Balkan Penisula","Bulkan Peninsula"]},
+{n:10,w:"revenge",zh:"復仇",m:"France wanted to hurt Germany back for losing the war of 1870–71 and Alsace-Lorraine",ctx:"After losing the war in 1871, France wanted ___ on Germany.",tip:"re·venge — r-e-v-e-n-g-e, small letters.",sp:["revange","reveng","rivenge","revenche","revenje","revvenge","revendge"]},
+{n:11,w:"Alsace-Lorraine",zh:"阿爾薩斯-洛林",m:"the French land that Germany took after the Franco-Prussian War (1871)",ctx:"Germany took ___ from France in 1871.",tip:"Al·sace (-sace) + hyphen + Lor·raine (double r).",sp:["Alsace-Loraine","Alsase-Lorraine","Alsac-Lorraine","Alsace-Lorrain","Alsace-Lorrane","Alsace-Lorriane","Elsace-Lorraine"]},
+{n:12,w:"Kaiser William II",zh:"德皇威廉二世",m:"the German emperor from 1888, with an aggressive foreign policy",ctx:"___ became the German emperor in 1888.",tip:"Kai·ser (= emperor) + William (double l) + II (Roman two).",sp:["Kaizer William II","Kaiser Wiliam II","Kaiser William 11","Keiser William II","Kaiser Willaim II","Kaiser Willam II","Kiaser William II"],ex:["Bismarck"]},
+{n:13,w:"alliance system",zh:"同盟制度",m:"countries joined groups and promised to help each other, so Europe split into two armed camps",ctx:"Countries joined groups and promised to help each other. This was the ___.",tip:"al·li·ance (double l, -ance) + sys·tem.",sp:["alliace system","aliance system","alliance sistem","allaince system","alliense system","alliance systom","alliances system"],ex:["Triple Alliance","Triple Entente","Three Emperor's League"]},
+{n:14,w:"Bismarck",zh:"俾斯麥",m:"the German Chancellor (1871–1890) who made alliances to keep France isolated",ctx:"___, the German Chancellor, made alliances to keep France alone.",tip:"Bis·marck — ends in -ck.",sp:["Bismark","Bismack","Bizmarck","Bismarch","Bismarc","Bissmarck","Bismerck"],ex:["Kaiser William II"]},
+{n:15,w:"Three Emperor's League",zh:"三帝同盟",m:"the alliance of Germany, Austria-Hungary and Russia (1873)",ctx:"In 1873, Germany, Austria-Hungary and Russia formed the ___.",tip:"Three + Emperor's (apostrophe s, like the list) + League (L-e-a-g-u-e).",sp:["Three Emperor's Leage","Three Emporer's League","Three Emperor's Legue","Three Emperor's Leauge","Tree Emperor's League","Three Empror's League","Three Emperer's League"],ex:["alliance system"]},
+{n:16,w:"Triple Alliance",zh:"三國同盟",m:"the alliance of Germany, Austria-Hungary and Italy (1882)",ctx:"In 1882, Germany, Austria-Hungary and Italy formed the ___.",tip:"Tri·ple + Al·li·ance (double l).",sp:["Triple Aliance","Tripple Alliance","Triple Alliace","Triple Allaince","Triple Alliense","Tripel Alliance","Triple Allience"],ex:["alliance system"]},
+{n:17,w:"Triple Entente",zh:"三國協約",m:"the agreement of Britain, France and Russia (1907)",ctx:"In 1907, Britain, France and Russia formed the ___.",tip:"Tri·ple + En·tente (French: agreement) — e-n-t-e-n-t-e.",sp:["Triple Entent","Triple Entante","Tripple Entente","Triple Ententa","Triple Entennte","Triple Entete","Triple Antente"],ex:["alliance system"]}
+];
+var TYPES={def:"Meaning",zh2en:"Chinese → English",en2zh:"English → Chinese",spell:"Spelling",ctx:"Story"};
+
+function others(x){ var ex=(x.ex||[]).concat([x.w]); return WORDS.filter(function(y){return ex.indexOf(y.w)<0;}).map(function(y){return y.w;}); }
+function make(x,t){
+  var base={g:x.w,t:t,why:x.w+" (No. "+x.n+") = "+x.m+".",zh:x.zh+"。串法:"+x.tip};
+  if(t==="def") { base.q="Which term means: “"+x.m+"”?"; base.a=x.w; base.w=others(x); }
+  if(t==="zh2en"){ base.q="“"+x.zh+"” — which English term?"; base.a=x.w; base.w=others(x); }
+  if(t==="en2zh"){ base.q="What does “"+x.w+"” mean?"; base.a=x.zh; base.w=WORDS.filter(function(y){return y.w!==x.w && (x.ex||[]).indexOf(y.w)<0;}).map(function(y){return y.zh;}); }
+  if(t==="spell"){ base.q="Which spelling is correct?  ("+x.zh+")"; base.a=x.w; base.w=x.sp.slice(); }
+  if(t==="ctx")  { base.q=x.ctx; base.a=x.w; base.w=others(x); }
+  return base;
+}
+var MODE={
+  mix:{n:"Mixed",make:function(){ var K=["def","zh2en","en2zh","spell","ctx"]; return shuffle(WORDS).slice(0,10).map(function(x){ return make(x,K[Math.floor(Math.random()*K.length)]); }); }},
+  spell:{n:"Spelling drill",make:function(){ return shuffle(WORDS).map(function(x){ return make(x,"spell"); }); }},
+  zh:{n:"Chinese → English",make:function(){ return shuffle(WORDS).map(function(x){ return make(x,"zh2en"); }); }}
+};
+
+function shuffle(a){a=a.slice();for(var k=a.length-1;k>0;k--){var j=Math.floor(Math.random()*(k+1));var t=a[k];a[k]=a[j];a[j]=t;}return a;}
+function lenOf(s){return s.length;}
+function buildOpts(q){
+  var best=null,bestScore=-1e9;
+  for(var t=0;t<40;t++){
+    var w=shuffle(q.w).slice(0,3), all=w.concat([q.a]);
+    var mx=Math.max.apply(null,all.map(lenOf)), mn=Math.min.apply(null,all.map(lenOf));
+    var wmax=Math.max.apply(null,w.map(lenOf));
+    var sc=(wmax>=q.a.length?10:0)-(mx/mn);
+    if(sc>bestScore){bestScore=sc;best=all;}
+    if(wmax>=q.a.length&&mx/mn<=1.6) break;
+  }
+  return shuffle(best);
+}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function fillHTML(q,pick,ok){
+  if(ok) return '<span class="fill ok">'+esc(pick)+'</span>';
+  return '<span class="fill bad">'+esc(pick)+'</span><span class="fill ok">'+esc(q.a)+'</span>';
+}
+function stemHTML(q,fill){ var h=esc(q.q); if(h.indexOf("___")<0) return h; return h.replace("___",fill==null?'<span class="blank">&nbsp;</span>':fill); }
+
+var mode="mix",set=[],i=0,score=0,answered=false,cf=null;
+function show(id){
+  if(id!=="sEnd"&&cf&&cf.parentNode){cf.parentNode.removeChild(cf);cf=null;}
+  ["sStart","sNotes","sQ","sEnd"].forEach(function(s){$(s).classList.toggle("on",s===id);});
+  window.scrollTo(0,0);
+}
+function dots(){
+  var d=$("dots"); d.innerHTML="";
+  set.forEach(function(it,j){ var s=document.createElement("span"); s.className="dot"+(it.ok===true?" ok":it.ok===false?" no":(j===i?" cur":"")); d.appendChild(s); });
+}
+function start(m){ mode=m; set=MODE[m].make().map(function(q){return {q:q};}); i=0; score=0; ask(); }
+function ask(){
+  answered=false;
+  if(document.activeElement&&document.activeElement.blur) document.activeElement.blur();
+  var it=set[i], q=it.q;
+  $("qn").textContent="Question "+(i+1)+" / "+set.length;
+  $("qtag").textContent=TYPES[q.t];
+  $("qt").innerHTML=stemHTML(q,null);
+  if(!it.opts) it.opts=buildOpts(q);
+  var box=$("ans"); box.innerHTML="";
+  it.opts.forEach(function(o,k){
+    var b=document.createElement("button"); b.type="button"; b.className="a a"+k;
+    b.innerHTML='<span class="lt">'+"ABCD".charAt(k)+'</span><span class="tx">'+esc(o)+'</span><span class="mk"></span>';
+    b.addEventListener("click",function(){pick(k);});
+    box.appendChild(b);
+  });
+  $("fb").className="fb"; $("fb").innerHTML=""; $("nx").style.visibility="hidden";
+  $("pill").textContent="Score "+score+" / "+i;
+  dots(); show("sQ");
+}
+function pick(k){
+  if(answered) return; answered=true;
+  var it=set[i], q=it.q, o=it.opts[k], ok=(o===q.a);
+  if(ok) score++;
+  it.pick=o; it.ok=ok;
+  var btns=$("ans").querySelectorAll(".a");
+  for(var j=0;j<btns.length;j++){
+    var b=btns[j], t=it.opts[j];
+    if(t===q.a){ b.classList.add("right"); b.querySelector(".mk").textContent="✓"; }
+    else if(j===k){ b.classList.add("wrong"); b.querySelector(".mk").textContent="✗"; }
+    else b.classList.add("dim");
+    b.disabled=true;
+  }
+  if(q.q.indexOf("___")>=0) $("qt").innerHTML=stemHTML(q,fillHTML(q,o,ok));
+  var fb=$("fb");
+  fb.className="fb on "+(ok?"good":"bad");
+  fb.innerHTML='<div class="fbh">'+(ok?"✓ Correct!":"✗ Not quite. Answer: "+esc(q.a))+'</div><div class="why">'+esc(q.why)+'</div><div class="zh">'+esc(q.zh)+'</div>';
+  $("nx").textContent=(i+1>=set.length)?"See my result →":"Next →";
+  $("nx").style.visibility="visible";
+  $("pill").textContent="Score "+score+" / "+(i+1);
+  dots();
+}
+function next(){ if(!answered) return; i++; if(i>=set.length) end(); else ask(); }
+function pad(x){return (x<10?"0":"")+x;}
+function end(){
+  var n=set.length, pct=Math.round(score/n*100);
+  $("rk").textContent="WWI Vocabulary · Dictation 1 · "+MODE[mode].n;
+  $("rs").textContent=score+" / "+n; $("rp").textContent=pct+"%";
+  $("rt").className="target "+(pct>=90?"hit":"miss");
+  $("rt").textContent=pct>=90?"90% or above = ready for the dictation ✓":"Below 90%: read the tips, then do a new round.";
+  var d=new Date();
+  $("rw").textContent="Completed "+d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+" "+pad(d.getHours())+":"+pad(d.getMinutes());
+  var rv=$("rv"); rv.innerHTML="";
+  set.forEach(function(it,j){
+    var q=it.q, li=document.createElement("li"), body;
+    li.className=it.ok?"ok":"no";
+    if(q.q.indexOf("___")>=0) body=stemHTML(q,fillHTML(q,it.pick,it.ok));
+    else body=esc(q.q)+" → "+fillHTML(q,it.pick,it.ok);
+    li.innerHTML='<span class="num">'+(j+1)+'.</span><span class="mk">'+(it.ok?"✓":"✗")+'</span><span class="rq">'+body+'</span>';
+    rv.appendChild(li);
+  });
+  $("pill").textContent="Score "+score+" / "+n;
+  show("sEnd");
+  if(pct>=90) confetti();
+}
+function confetti(){
+  var c=document.createElement("canvas"), W=window.innerWidth, H=window.innerHeight;
+  c.width=W; c.height=H; c.style.cssText="position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:50";
+  document.body.appendChild(c); cf=c;
+  var x=c.getContext("2d"), cols=["#1f6feb","#d42a3c","#b97800","#1a8a3a","#7a3fd1"], P=[];
+  for(var k=0;k<140;k++) P.push({x:Math.random()*W,y:-20-Math.random()*H*0.5,vx:(Math.random()-0.5)*3,vy:2+Math.random()*4,r:4+Math.random()*5,c:cols[k%cols.length],a:Math.random()*6});
+  var t0=Date.now();
+  (function step(){
+    var t=Date.now()-t0; x.clearRect(0,0,W,H);
+    P.forEach(function(p){ p.x+=p.vx; p.y+=p.vy; p.a+=0.1; x.fillStyle=p.c; x.save(); x.translate(p.x,p.y); x.rotate(p.a); x.fillRect(-p.r,-p.r/2,p.r*2,p.r); x.restore(); });
+    if(t<2600) requestAnimationFrame(step); else if(c.parentNode){ c.parentNode.removeChild(c); if(cf===c) cf=null; }
+  })();
+}
+function wordList(){
+  var h='<tr><th>No.</th><th>Word (spell it like this)</th><th>中文</th><th>Meaning · spelling tip</th></tr>';
+  WORDS.forEach(function(x){ h+='<tr><td class="n">'+x.n+'</td><td class="w">'+esc(x.w)+'</td><td>'+esc(x.zh)+'</td><td>'+esc(x.m)+'<div class="t">'+esc(x.tip)+'</div></td></tr>'; });
+  $("wl").innerHTML=h;
+}
+wordList();
+$("mMix").addEventListener("click",function(){start("mix");});
+$("mSpell").addEventListener("click",function(){start("spell");});
+$("mZh").addEventListener("click",function(){start("zh");});
+$("notesBtn").addEventListener("click",function(){show("sNotes");});
+$("notesGo").addEventListener("click",function(){start("mix");});
+$("notesBack").addEventListener("click",function(){show("sStart");});
+$("again").addEventListener("click",function(){start(mode);});
+$("home").addEventListener("click",function(){$("pill").textContent="17 words";show("sStart");});
+$("nx").addEventListener("click",next);
+var lastTap=0;
+document.addEventListener("touchend",function(e){ var now=Date.now(); if(now-lastTap<350 && !e.target.closest("button")){ e.preventDefault(); } lastTap=now; },{passive:false});
+document.addEventListener("keydown",function(e){
+  if(!$("sQ").classList.contains("on")) return;
+  if(!answered&&/^[1-4]$/.test(e.key)){ var k=+e.key-1; if(set[i]&&k<set[i].opts.length) pick(k); }
+  else if(answered&&(e.key==="Enter"||e.key==="ArrowRight")){ e.preventDefault(); next(); }
+});
+})();
+</script>
+</body>
+</html>
