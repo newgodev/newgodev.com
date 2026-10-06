@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>if(location.protocol==="http:")location.replace("https://"+location.host+location.pathname+location.search);</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Matilda Ch 2-3 Worksheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0b0c0c;--muted:#505a5f;--line:#b1b4b6;--blue:#1d4ed8;--red:#d4351c;--hi:#ffdd00}
+*{box-sizing:border-box}
+html{color-scheme:light;background:#fff;font-size:17px}
+body{margin:0;background:#fff;color:var(--ink);font-family:"Noto Sans HK",Arial,sans-serif;line-height:1.6}
+.top{background:#fff;border-bottom:6px solid #1d70b8;padding:9px 16px}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tag{font-weight:900;color:#fff;background:#1d70b8;border-radius:4px;padding:2px 12px}
+.sec{font-weight:900;color:#1d70b8}
+.num{color:var(--muted);font-size:.85rem}
+.legend{font-size:.86rem}
+.ctrl{margin-left:auto;display:flex;gap:8px}
+.ctrl button{font-family:inherit;font-size:.9rem;font-weight:700;padding:7px 13px;border:2px solid var(--ink);background:#fff;border-radius:4px;cursor:pointer}
+.ctrl button.main{background:var(--ink);color:#fff}
+#zhbtn.on{background:#b8860b;border-color:#b8860b;color:#fff}
+.say{font-size:1.1rem;font-weight:700;margin:7px 0 0;min-height:2.6em}
+.zh{display:none;color:#6b4e16;font-size:.9rem;font-weight:500;background:#fff8e6;border-radius:4px;padding:2px 8px;margin:3px 0}
+body.zhon .zh{display:block}
+.grid{display:grid;grid-template-columns:1.05fr 1.2fr .75fr;gap:12px;padding:10px 14px}
+.col{display:flex;flex-direction:column;min-height:0}
+.col h2{font-size:.92rem;font-weight:900;margin:0 0 6px}
+.col h2 span{font-weight:400;color:var(--muted);margin-left:6px;font-size:.8rem}
+.cam{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:6px;background:#eef0f1;min-height:360px}
+.stage{position:absolute;left:0;top:0;transform-origin:0 0;display:none;transition:width var(--tc,.8s) cubic-bezier(.4,0,.2,1),transform var(--tc,.8s) cubic-bezier(.4,0,.2,1)}
+.stage.on{display:block}
+.stage img{display:block;width:100%;height:auto}
+.box{position:absolute;border-radius:4px;border:3px solid transparent;transition:all .35s;pointer-events:none}
+.box.hl{border-color:var(--hi);background:rgba(255,221,0,.28);animation:pulse 1.2s infinite}
+.box.flash{border-color:#ff00aa;background:rgba(255,0,170,.2)}
+.box.hl,.box.flash{pointer-events:auto;cursor:pointer}.exgo{display:block;margin:6px 0 2px;border:2px solid var(--ink);background:#fff8e6;border-radius:6px;font-weight:800;padding:4px 8px;cursor:pointer;font-size:.85rem}.exgo:hover{background:#ffe9a8}
+.hot,.qhot{position:absolute;cursor:pointer;border-radius:4px}.qhot:hover{background:rgba(0,120,255,.05)}.hot:hover{background:rgba(0,120,255,.14);outline:2px dashed rgba(0,90,200,.6)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,221,0,0)}50%{box-shadow:0 0 0 7px rgba(255,221,0,.4)}}
+.ans{position:absolute;color:#d4001e;font-family:Arial,Helvetica,sans-serif;white-space:nowrap;line-height:1;display:flex;align-items:center;cursor:pointer;border-radius:3px}
+.ans:hover{background:rgba(255,246,207,.8)}
+.ans.circ{border:0;cursor:pointer}
+.ans.circ::after{content:"";position:absolute;inset:-6% -4%;border:2.5px solid #d4001e;border-radius:50%;opacity:0;transform:scale(.4);transition:opacity .35s,transform .45s}
+.ans.circ.on::after{opacity:1;transform:scale(1)}
+.ans.now{outline:3px solid #ff00aa;outline-offset:2px}
+.caret{display:inline-block;width:2px;height:.95em;background:var(--ink);margin-left:1px;animation:blink .8s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.teach{border:3px solid var(--red);border-radius:12px;padding:9px 12px;background:#fff;font-size:.98rem;min-height:120px;transition:box-shadow .3s;margin-bottom:10px;overflow:auto;max-height:42%}
+.teach .bh{font-weight:900;color:var(--red);font-size:.8rem;margin-bottom:3px}
+.teach.on{box-shadow:0 0 0 6px rgba(212,53,28,.18)}
+.board{border-radius:8px;padding:10px;background:#d9b98a;box-shadow:inset 0 0 0 3px #b8935f;display:flex;flex-direction:column;gap:9px;overflow:auto}
+.bempty{font-size:.86rem;color:#5a4526}
+.note{border-radius:4px;padding:6px 8px;box-shadow:0 3px 8px rgba(0,0,0,.22);font-size:.84rem;font-weight:700;line-height:1.4;cursor:pointer;background:#ffd9d3}
+.note:nth-child(odd){transform:rotate(-.8deg)}.note:nth-child(even){transform:rotate(.8deg)}
+.note i{font-style:normal;font-size:.68rem;color:#fff;background:var(--red);border-radius:3px;padding:0 5px;margin-right:5px}
+.fly{position:fixed;z-index:60;background:var(--hi);border:2px solid var(--ink);border-radius:5px;padding:4px 10px;font-size:.9rem;font-weight:700;max-width:320px;pointer-events:none;box-shadow:0 8px 20px rgba(0,0,0,.25);transition:left var(--tf,.9s) cubic-bezier(.5,0,.2,1),top var(--tf,.9s) cubic-bezier(.5,0,.2,1),opacity .3s}
+.expop{position:fixed;z-index:70;width:min(390px,92vw);background:#fff;border:3px solid var(--ink);border-radius:10px;padding:10px 14px 12px;box-shadow:0 12px 30px rgba(0,0,0,.25);font-size:.92rem;line-height:1.5}
+.exh{font-weight:900;color:#d4001e;margin-right:30px}
+.exl{font-size:.72rem;font-weight:900;color:var(--muted);margin-top:8px}
+.exl.bad{color:var(--red)}
+.exw{font-weight:700}
+.exz{color:#6b4e16;background:#fff8e6;border-radius:4px;padding:2px 6px;margin-top:3px;font-size:.88rem}
+.exo,.exa{margin:2px 0 0;padding-left:18px}.exo li{color:#00703c;font-weight:700}.exa li{color:var(--red)}
+.exzi{color:#6b4e16;font-weight:500}
+.exx{position:absolute;right:8px;top:6px;border:2px solid var(--ink);background:#fff;border-radius:4px;font-weight:900;cursor:pointer;font-family:inherit}
+.player{background:#0b0c0c;color:#fff;display:flex;align-items:center;gap:12px;padding:10px 16px}
+.player button{font-family:inherit;font-size:1rem;font-weight:900;width:42px;height:34px;border:0;border-radius:4px;background:#fff;color:#0b0c0c;cursor:pointer}
+.track{position:relative;flex:1;height:12px;background:#444;border-radius:999px;cursor:pointer}
+.fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--hi);border-radius:999px}
+.knob{position:absolute;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:#fff;border:3px solid var(--hi);left:0}
+.tick{position:absolute;top:-4px;width:2px;height:20px;background:#888}
+.tick span{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-size:.7rem;color:#ddd;font-weight:900}
+.ptime{font-size:.85rem;font-variant-numeric:tabular-nums;min-width:96px;text-align:right}
+.spdwrap{display:flex;align-items:center;gap:6px;font-size:.85rem;font-weight:900}
+.spdwrap input{width:120px;accent-color:#ffdd00;cursor:pointer}
+
+.zoom{position:fixed;z-index:70;background-repeat:no-repeat;background-color:#fff;border:5px solid var(--hi);border-radius:6px;box-shadow:0 14px 44px rgba(0,0,0,.45);pointer-events:none;
+  transition:left var(--tz,.6s) cubic-bezier(.4,0,.2,1),top var(--tz,.6s) cubic-bezier(.4,0,.2,1),width var(--tz,.6s) cubic-bezier(.4,0,.2,1),height var(--tz,.6s) cubic-bezier(.4,0,.2,1)}
+.zoomcap{position:fixed;z-index:71;background:#0b0c0c;color:#fff;font-weight:900;font-size:1.05rem;padding:6px 12px;border-radius:4px;pointer-events:none;transition:opacity .3s;max-width:700px}
+.zoomcap .zc{display:block;font-weight:500;font-size:.9rem;color:#ffe9a8}
+.note.ev{background:#fff3a3}
+.note .crop{width:100%;background-repeat:no-repeat;background-color:#fff;border:1px solid rgba(0,0,0,.2);border-radius:2px;margin-bottom:4px}
+.note .evz{display:block;font-weight:500;color:#6b4e16;font-size:.78rem}
+@media (min-width:1101px){
+  html,body{height:100%}
+  body{display:flex;flex-direction:column;height:100vh;overflow:hidden}
+  .top{flex:none}.grid{flex:1;min-height:0}.col{height:100%}
+  .cam,.board{flex:1;min-height:0}
+  .player{flex:none}
+}
+@media (max-width:1100px){.grid{grid-template-columns:1fr 1fr}}
+@media (max-width:720px){.grid{grid-template-columns:1fr}.cam{min-height:420px}}
+</style>
+<style id="dtap-css">*{touch-action:manipulation}</style>
+<script id="dtap-js">
+(function(){var last=0,lx=-99,ly=-99;
+document.addEventListener("touchend",function(e){
+ var t=Date.now(),p=e.changedTouches&&e.changedTouches[0],x=p?p.clientX:0,y=p?p.clientY:0,el=e.target,ptr=false;
+ try{ptr=!!(el&&el.nodeType===1&&(el.closest("button,a,input,select,textarea,label,[role=button],[onclick]")||getComputedStyle(el).cursor==="pointer"));}catch(_){}
+ if(t-last<350&&Math.abs(x-lx)<45&&Math.abs(y-ly)<45&&!ptr&&e.cancelable){e.preventDefault();}
+ last=t;lx=x;ly=y;},{passive:false});
+})();
+</script>
+<style id="ipadmode-css">
+#ipadsw{display:inline-flex;flex:none;border:2px solid #0b0c0c;border-radius:999px;overflow:hidden;cursor:pointer;user-select:none;-webkit-user-select:none;font-weight:900;font-size:.85rem;background:#fff;-webkit-tap-highlight-color:transparent;font-family:inherit;line-height:1.15}
+#ipadsw.float{position:fixed;z-index:2147483000;top:6px;left:50%;transform:translateX(-50%);box-shadow:0 2px 8px rgba(0,0,0,.28)}
+#ipadsw b{padding:6px 12px;color:#505a5f;white-space:nowrap;font-weight:900}
+#ipadsw b.pc{border-left:2px solid #0b0c0c}
+body:not(.ipadm) #ipadsw b.pc{background:#0b0c0c;color:#fff}
+body.ipadm #ipadsw b.ip{background:#1d70b8;color:#fff}
+body.ipadm #ipadsw b{padding:10px 15px;font-size:.95rem}
+html.ipadm-h,html.ipadm-h body{height:100%}
+body.ipadm{height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column;padding-bottom:0!important}
+body.ipadm .top{position:relative;top:auto;flex:none;padding:6px 10px}
+body.ipadm .row{gap:6px 8px}
+body.ipadm .legend{font-size:.78rem;margin-left:0}
+body.ipadm .ctrl button{font-size:1rem;padding:9px 14px}
+body.ipadm .say{min-height:0;margin:4px 0 0;font-size:1.06rem;line-height:1.45}
+body.ipadm .zh{margin:2px 0 0}
+body.ipadm .grid{flex:1;min-height:0;padding:8px 10px;gap:8px;align-items:stretch}
+body.ipadm .grid>.col{display:flex;flex-direction:column;min-height:0;min-width:0;height:100%;overflow:hidden}
+body.ipadm .col h2{flex:none;margin:0 0 4px;font-size:.84rem}
+body.ipadm .cam{flex:1.6 1 0;min-height:0}
+body.ipadm .brain{flex:1 1 0;min-height:0;margin-top:8px;overflow:auto}
+body.ipadm .paper{flex:1 1 0;min-height:0;overflow:auto}
+body.ipadm .board{position:relative;top:0;flex:1 1 0;max-height:none;min-height:0;overflow:auto}
+body.ipadm .teach{max-height:none;min-height:0;overflow:auto}
+body.ipadm .player{position:relative;left:auto;right:auto;bottom:auto;flex:none;padding:8px 12px;gap:10px}
+body.ipadm .player button{width:52px;height:44px;font-size:1.2rem}
+body.ipadm .track{height:18px}
+body.ipadm .knob{width:26px;height:26px;margin:-13px 0 0 -13px}
+body.ipadm .spdwrap input{width:150px;height:26px}
+body.ipadm:is(.lay-m3,.lay-e4,.lay-geo) .grid>.col:nth-child(1){grid-area:a}
+body.ipadm:is(.lay-m3,.lay-e4,.lay-geo) .grid>.col:nth-child(2){grid-area:b}
+body.ipadm:is(.lay-m3,.lay-e4,.lay-geo) .grid>.col:nth-child(3){grid-area:c}
+body.ipadm.lay-e4 .grid>.col:nth-child(4){grid-area:d}
+@media (orientation:portrait){
+ body.ipadm.lay-m3 .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1.25fr) minmax(0,1fr);grid-template-areas:"a b" "a c"}
+ body.ipadm.lay-e4 .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1.2fr) minmax(0,1fr);grid-template-areas:"b c" "a d"}
+ body.ipadm.lay-e4 .grid>.col:nth-child(1){display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);grid-template-rows:auto minmax(0,1fr);column-gap:8px;align-items:start}
+ body.ipadm.lay-e4 .grid>.col:nth-child(1)>h2{grid-column:1/-1}
+ body.ipadm.lay-e4 .grid>.col:nth-child(1)>.pic{grid-column:1;grid-row:2;max-height:100%}
+ body.ipadm.lay-e4 .grid>.col:nth-child(1)>.brain{grid-column:2;grid-row:2;margin-top:0;height:100%}
+ body.ipadm.lay-geo .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1.7fr) minmax(0,1fr);grid-template-areas:"a b" "c c"}
+ body.ipadm.lay-geo .grid>.col:nth-child(3){flex-direction:row;gap:8px}
+ body.ipadm.lay-geo .grid>.col:nth-child(3)>*{flex:1 1 0;margin:0;min-width:0}
+ body.ipadm.lay-gen .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-auto-rows:minmax(0,1fr)}
+}
+@media (orientation:landscape){
+ body.ipadm.lay-m3 .grid{grid-template-columns:minmax(0,1.1fr) minmax(0,1.2fr) minmax(0,.9fr);grid-template-rows:minmax(0,1fr);grid-template-areas:"a b c"}
+ body.ipadm.lay-e4 .grid{grid-template-columns:minmax(0,.95fr) minmax(0,1.1fr) minmax(0,1.15fr) minmax(0,.9fr);grid-template-rows:minmax(0,1fr);grid-template-areas:"a b c d"}
+ body.ipadm.lay-geo .grid{grid-template-columns:minmax(0,1.05fr) minmax(0,1.2fr) minmax(0,.8fr);grid-template-rows:minmax(0,1fr);grid-template-areas:"a b c"}
+ body.ipadm.lay-gen .grid{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
+}
+</style>
+<script id="ipadmode-js">
+(function(){
+function boot(){
+ var b=document.body,h=document.documentElement; if(!b||document.getElementById("ipadsw"))return;
+ var cols=document.querySelectorAll(".grid>.col").length, lay="lay-gen";
+ if(document.getElementById("tcam")) lay="lay-geo";
+ else if(cols===4) lay="lay-e4";
+ else if(cols===3&&document.getElementById("cam")) lay="lay-m3";
+ b.classList.add(lay);
+ var sw=document.createElement("span"); sw.id="ipadsw"; sw.setAttribute("role","button"); sw.tabIndex=0;
+ sw.title="iPad \u6a21\u5f0f\uff1a\u4e00\u500b\u756b\u9762\u770b\u5b8c\uff0c\u4e0d\u7528\u6372";
+ sw.innerHTML='<b class="ip">\uD83D\uDCF1 iPad</b><b class="pc">\uD83D\uDCBB \u96FB\u8166</b>';
+ var row=document.querySelector(".top .row");
+ if(row) row.insertBefore(sw,row.firstChild); else { sw.classList.add("float"); b.appendChild(sw); }
+ function apply(on,save){
+  b.classList.toggle("ipadm",!!on); h.classList.toggle("ipadm-h",!!on);
+  if(save){ try{localStorage.setItem("hw_ipad_mode",on?"1":"0");}catch(e){} }
+  setTimeout(function(){ window.dispatchEvent(new Event("resize")); },80);
+ }
+ var ua=navigator.userAgent, isTab=/iPad|iPhone|iPod|Android/.test(ua)||(/Macintosh/.test(ua)&&(navigator.maxTouchPoints||0)>1);
+ var saved=null; try{saved=localStorage.getItem("hw_ipad_mode");}catch(e){}
+ apply(saved===null?isTab:saved==="1",false);
+ var bd=document.getElementById("board");
+ if(bd&&window.MutationObserver){
+  var follow=function(n){ setTimeout(function(){
+   if(!b.classList.contains("ipadm")||n.style.visibility==="hidden"||!n.isConnected) return;
+   var top=n.offsetTop, bot=top+n.offsetHeight;
+   if(bot>bd.scrollTop+bd.clientHeight-4||top<bd.scrollTop) bd.scrollTop=Math.max(0,bot-bd.clientHeight+12);
+  },60); };
+  new MutationObserver(function(ms){ ms.forEach(function(m){
+   if(m.type==="childList") m.addedNodes.forEach(function(n){ if(n.nodeType===1&&n.classList.contains("note")) follow(n); });
+   else if(m.target.nodeType===1&&m.target.classList.contains("note")) follow(m.target);
+  }); }).observe(bd,{childList:true,subtree:true,attributes:true,attributeFilter:["style"]});
+ }
+ function flip(){ apply(!b.classList.contains("ipadm"),true); }
+ sw.addEventListener("click",flip);
+ sw.addEventListener("keydown",function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); flip(); } });
+}
+if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot); else boot();
+})();
+</script>
+<style id="m23-css">
+.c2 .cam{flex:1 1 0}
+.rw{border:3px solid #1d70b8;border-radius:8px;padding:7px 10px;overflow:auto;background:#fff;transition:box-shadow .3s;margin-top:8px;font-size:.86rem;line-height:1.45;cursor:pointer}
+@media (min-width:1101px){.c2 .rw{flex:0 0 43%;min-height:0}}
+body.ipadm .c2 .cam{flex:1.2 1 0!important}body.ipadm .c2 .rw{flex:1 1 0;min-height:0}
+body.ipadm .rw{font-size:.76rem;line-height:1.3;padding:5px 8px;margin-top:6px}body.ipadm .rwh{font-size:.78rem}body.ipadm .rwlab{margin-top:2px}body.ipadm .card{font-size:.74rem;padding:1px 6px}body.ipadm .rwai{font-size:.8rem;line-height:1.4}body.ipadm .rwmoves{margin:2px 0}body.ipadm .rwmoves span{font-size:.64rem;padding:0 6px}body.ipadm .rwres{font-size:.84rem}body.ipadm .rwchk{font-size:.76rem;margin-top:2px}
+.rw.on{box-shadow:0 0 0 5px rgba(29,112,184,.18)}
+.rwempty{color:var(--muted)}
+.rwh{font-weight:900;color:#1d70b8;font-size:.86rem}.rwh span{font-weight:400;color:var(--muted);font-size:.78rem;margin-left:6px}
+.rwmoves{display:flex;gap:5px;flex-wrap:wrap;margin:3px 0}
+.rwmoves span{font-size:.72rem;font-weight:900;padding:1px 8px;border-radius:999px;background:#eef0f2;color:#8a9196;transition:all .3s}
+.rwmoves span.on{background:#1d70b8;color:#fff}.rwmoves span.skip{text-decoration:line-through;opacity:.6}
+.rwlab{font-size:.68rem;font-weight:900;color:var(--muted);margin-top:4px}
+.rwai{font-size:.88rem;line-height:1.6;color:#1d4ed8}
+.rk{border-radius:3px;transition:all .4s}.rk.on{background:#ffe766;outline:2px solid #e0b800;font-weight:900;color:#0b0c0c}
+.rs{text-decoration:line-through;text-decoration-color:transparent;text-decoration-thickness:3px;transition:color .5s,text-decoration-color .5s}.rs.cut{color:#9aa0a6;text-decoration-color:var(--red)}
+.rwsw{display:flex;flex-direction:column;gap:3px;margin-top:3px}
+.card{display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:#f4f8ff;border:2px solid #cfe0ff;border-radius:7px;padding:2px 7px;font-size:.82rem;animation:cardin .45s}
+@keyframes cardin{from{transform:translateX(-30px);opacity:0}to{transform:none;opacity:1}}
+.card s{color:#9aa0a6}.card b{color:#d4001e}.card i{font-style:normal;font-weight:900;color:var(--red)}.card .zh{width:100%;margin:0}
+.rword{font-size:.84rem;font-weight:700}
+.rwres{font-size:.95rem;font-weight:700;color:#d4001e;min-height:1.4em}
+.rwchk{margin-top:4px;font-weight:900;font-size:.84rem;display:inline-block;padding:2px 10px;border-radius:999px}
+.rwchk:empty{display:none}.rwchk.good{background:#d6f5e0;color:#00703c}.rwchk.bad{background:#ffe0dc;color:var(--red)}
+.gw{border-bottom:2px dotted #b8860b;cursor:help}
+.gtip{position:fixed;z-index:95;background:#0b0c0c;color:#fff;font-size:.88rem;font-weight:700;padding:3px 9px;border-radius:4px;pointer-events:none;display:none}
+#qbtn{border-color:#1d70b8!important;color:#1d70b8}
+#qmenu{position:fixed;z-index:85;display:none;background:#fff;border:3px solid #0b0c0c;border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,.25);padding:6px;max-height:74vh;overflow:auto;width:min(380px,92vw)}
+#qmenu.open{display:block}
+#qmenu button{display:block;width:100%;text-align:left;border:0;background:#fff;font-family:inherit;font-size:.9rem;padding:5px 10px;border-radius:6px;cursor:pointer;font-weight:700;color:#0b0c0c}
+#qmenu button:hover{background:#eef4ff}#qmenu button.cur{background:#1d70b8;color:#fff}
+#qmenu .qh{font-size:.72rem;font-weight:900;color:var(--muted);padding:6px 10px 2px;text-transform:uppercase}
+#qmenu .qz{display:none;font-weight:500;font-size:.8rem;color:#6b4e16}body.zhon #qmenu .qz{display:block}#qmenu button.cur .qz{color:#ffe9a8}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="row">
+    <span class="tag" id="tag">Start</span><span class="sec" id="sec"></span><span class="num" id="num"></span>
+    <span class="legend">Red = your answer · click anything: why + other choices + 中文</span>
+    <div id="qmenu"></div><div class="ctrl"><button id="qbtn">☰ Questions</button><button id="zhbtn">中文</button><button id="prev">← Back</button><button id="play" class="main">▶ Play</button><button id="next">Next →</button></div>
+  </div>
+  <p class="say" id="say"></p>
+  <p class="zh" id="sayzh"></p>
+</div>
+<div class="grid">
+  <div class="col">
+    <h2>Matilda (your book)<span id="tbname"></span></h2>
+    <div class="cam" id="tcam"><div class="stage" id="st_t23"><img data-src="p/t23.jpg" alt="Book p.23"></div><div class="stage" id="st_t24"><img data-src="p/t24.jpg" alt="Book p.24"></div><div class="stage" id="st_t25"><img data-src="p/t25.jpg" alt="Book p.25"></div><div class="stage" id="st_t29"><img data-src="p/t29.jpg" alt="Book p.29"></div><div class="stage" id="st_t30"><img data-src="p/t30.jpg" alt="Book p.30"></div><div class="stage" id="st_t33"><img data-src="p/t33.jpg" alt="Book p.33"></div><div class="stage" id="st_t35"><img data-src="p/t35.jpg" alt="Book p.35"></div><div class="stage" id="st_t37"><img data-src="p/t37.jpg" alt="Book p.37"></div><div class="stage" id="st_t39"><img data-src="p/t39.jpg" alt="Book p.39"></div><div class="stage" id="st_t40"><img data-src="p/t40.jpg" alt="Book p.40"></div><div class="stage" id="st_t43"><img data-src="p/t43.jpg" alt="Book p.43"></div><div class="stage" id="st_t44"><img data-src="p/t44.jpg" alt="Book p.44"></div><div class="stage" id="st_t45"><img data-src="p/t45.jpg" alt="Book p.45"></div></div>
+  </div>
+  <div class="col c2">
+    <h2>Your worksheet<span id="wbname"></span></h2>
+    <div class="cam" id="wcam"><div class="stage" id="st_w3"><img data-src="p/w3.jpg" alt="Worksheet p.3"></div><div class="stage" id="st_w4"><img data-src="p/w4.jpg" alt="Worksheet p.4"></div></div>
+    <div class="rw" id="rw"></div>
+  </div>
+  <div class="col">
+    <div class="teach" id="teach"><div class="bh">Teacher says</div><div id="teachtext">Press Play. I'll show you where every answer comes from, one by one.</div><div class="zh" id="teachzh"></div></div>
+    <div class="board" id="board"><div class="bempty" id="bempty">Every answer gets a note here. Click a note to jump back to it.</div></div>
+  </div>
+</div>
+<div class="player">
+  <button id="pp">▶</button>
+  <div class="track" id="track"><div class="fill" id="fill"></div><div class="knob" id="knob"></div></div>
+  <span class="ptime" id="ptime">00:00 / 00:00</span>
+  <label class="spdwrap">Speed <input type="range" id="spd" min="0.5" max="10" step="0.25" value="1"><span id="spdv">1.00x</span></label>
+</div>
+<script>
+var TB={"t23": {"name": "Book p.23", "boxes": {"ch2t": [0.099, 0.1479, 0.891, 0.268]}}, "t24": {"name": "Book p.24", "boxes": {"twit": [0.1835, 0.1783, 0.877, 0.3373], "boast": [0.176, 0.3491, 0.87, 0.4182], "stupid": [0.156, 0.5917, 0.8505, 0.6737], "ignore": [0.1515, 0.7238, 0.8455, 0.7917]}}, "t25": {"name": "Book p.25", "boxes": {"grin": [0.354, 0.3383, 0.729, 0.3842], "honest": [0.124, 0.5108, 0.862, 0.5882], "looks": [0.127, 0.5955, 0.862, 0.8469]}}, "t29": {"name": "Book p.29", "boxes": {"cheat": [0.106, 0.5122, 0.8585, 0.6305], "dirty": [0.151, 0.7621, 0.789, 0.8016]}}, "t30": {"name": "Book p.30", "boxes": {"knees": [0.14, 0.4517, 0.8585, 0.5419]}}, "t33": {"name": "Book p.33", "boxes": {"told": [0.0805, 0.5772, 0.8245, 0.6955], "back": [0.0885, 0.7487, 0.821, 0.8746], "beast": [0.09, 0.8004, 0.8205, 0.8743]}}, "t35": {"name": "Book p.35", "boxes": {"hat": [0.095, 0.4783, 0.8505, 0.5617]}}, "t37": {"name": "Book p.37", "boxes": {"glue": [0.0945, 0.1766, 0.879, 0.3411], "allday": [0.0745, 0.7533, 0.87, 0.8826]}}, "t39": {"name": "Book p.39", "boxes": {"nestle": [0.2335, 0.1347, 0.818, 0.1769]}}, "t40": {"name": "Book p.40", "boxes": {"clutch": [0.135, 0.2663, 0.831, 0.3486]}}, "t43": {"name": "Book p.43", "boxes": {"sleep": [0.1365, 0.5491, 0.882, 0.674]}}, "t44": {"name": "Book p.44", "boxes": {"cut": [0.127, 0.1366, 0.806, 0.2627], "monk": [0.1255, 0.3083, 0.784, 0.4296], "patch": [0.12, 0.4276, 0.7715, 0.5601]}}, "t45": {"name": "Book p.45", "boxes": {"snap": [0.173, 0.6282, 0.723, 0.6789]}}};
+var WB={"w3": {"name": "Worksheet p.3", "marks": {}}, "w4": {"name": "Worksheet p.4", "marks": {}}};
+var STEPS=[{"sec": "Start", "tag": "Start", "tb": "t23", "tbmark": ["ch2t"], "wb": "w3", "wbfocus": null, "say": "Tonight: Matilda Chapters 2 and 3 (book pages 23 to 45). Part A = 4 boxes about Mr Wormwood, Part B = 4 questions, Part C = 8 words to match. Every answer comes from a yellow box in the book.", "say_zh": "今晚:Matilda 第二、三章(書第23至45頁)。A 部分 = 關於 Mr Wormwood 的四個格,B 部分 = 四條問題,C 部分 = 八個生字配對。每個答案都來自書上的黃色框。", "fills": [], "hot": [{"box": [0.121, 0.591, 0.088, 0.127], "title": "Chapter 2 + Chapter 3", "why": "This page is only about Chapters 2 and 3 = book pages 23 to 45. Chapter 2 is about Dad's car tricks, Chapter 3 is the hat and the Superglue.", "why_zh": "這頁只考第二、三章 = 書第23至45頁。第二章講爸爸賣車的騙術,第三章講帽子和強力膠。"}], "teach": "No marks are printed, so the lines decide: Q1 asks two things = 2 sentences. Q2, Q3, Q4 = 1 sentence each. Diagram boxes = short notes, not sentences.", "teach_zh": "工作紙沒有寫分數,就看橫線:Q1 問兩樣嘢 = 兩句。Q2、Q3、Q4 各一句。圖表格仔 = 短筆記,不用寫句子。", "menu": "Start: how this works", "menu_zh": "開始:怎樣用", "mgrp": ""}, {"sec": "A Diagram", "tag": "A1 Appearance", "tb": "t25", "tbmark": ["looks"], "wb": "w3", "wbfocus": [0.11, 0.205, 0.41, 0.375], "say": "Box 1: his appearance = what he looks like. Page 25 describes him in one go: small and ratty-looking, teeth sticking out, a thin moustache, loud jackets and ties.", "say_zh": "第一格:his appearance = 他的外表。第25頁一次過描寫他:矮小、像老鼠、牙齒凸出、小鬍子、花俏的外套和領帶。", "fills": [{"id": "a1", "text": "• small, rat-like man", "zh": "矮小、像老鼠的男人", "q": "A1", "note": "Appearance: small, rat-like", "kind": "text", "from": "looks", "ex": {"why": "p.25: 'a small ratty-looking man'. ratty-looking = looks like a rat. In a diagram, short notes are enough.", "why_zh": "第25頁:「一個矮小、樣子像老鼠的男人」。圖表裏寫短筆記就夠。", "other": [["• a short man who looks like a rat", "一個像老鼠的矮小男人"]], "avoid": [["Mr Wormwood was a small ratty-looking man (copied word for word)", "整句照抄書本,AI/抄襲風險高"], ["• ugly (too vague, the book doesn't say it)", "太含糊,書沒有這樣寫"]]}, "rw": {"pg": "p.25", "src": "Mr Wormwood was a small ratty-looking man", "src_zh": "Mr Wormwood 是一個矮小、樣子像老鼠的男人", "keep": ["small", "man"], "swaps": [["Mr Wormwood was a", "(cut: the circle already names him)", "Mr Wormwood 是一個", "刪走:圓圈已經寫了他的名字"], ["ratty-looking", "rat-like", "樣子像老鼠", "像老鼠"]], "order": "", "order_zh": ""}, "box": [0.137, 0.247, 0.396, 0.2658], "ml": 1, "fs": 0.0162, "lh": 0.0252}, {"id": "a2", "text": "• front teeth stick out, thin\n   moustache", "zh": "門牙凸出,小鬍子", "q": "A1", "note": "Appearance: teeth, moustache", "kind": "text", "from": "looks", "ex": {"why": "Same sentence: his front teeth 'stuck out underneath a thin ratty moustache'. Face = your second note.", "why_zh": "同一句:門牙在小鬍子下面凸出來。臉部 = 第二點。", "other": [["• teeth stick out; thin moustache", "牙齒凸出;小鬍子"]], "avoid": [["• big teeth (the book says they stick out, not that they are big)", "書說牙齒凸出,不是大"]]}, "rw": {"pg": "p.25", "src": "whose front teeth stuck out underneath a thin ratty moustache", "src_zh": "他的門牙在一撇像老鼠的小鬍子下面凸出來", "keep": ["front teeth", "thin", "moustache"], "swaps": [["whose", "(cut)", "他的", "刪走"], ["stuck out underneath a", "stick out,", "在…下面凸出", "凸出"], ["ratty", "(cut: we already said rat-like)", "像老鼠的", "刪走:上一點已講"]], "order": "", "order_zh": "", "out": "• front teeth stick out, thin moustache"}, "box": [0.137, 0.2688, 0.396, 0.3054], "ml": 1, "fs": 0.0162, "lh": 0.0252}, {"id": "a3", "text": "• bright checked jacket, green tie", "zh": "顏色鮮艷的格仔外套,綠色領帶", "q": "A1", "note": "Appearance: clothes", "kind": "text", "from": "looks", "ex": {"why": "Clothes: 'jackets with large brightly coloured checks' and ties 'yellow or pale green'. Page 37 says it again: 'his loud checked jacket and green tie'.", "why_zh": "衣着:顏色鮮艷的格仔外套,黃色或淺綠色領帶。第37頁又講一次:花俏格仔外套和綠色領帶。", "other": [["• loud checked jackets, yellow or green ties", "花俏格仔外套,黃或綠色領帶"]], "avoid": [["• wears a suit (the book never says suit)", "書沒有說西裝"]]}, "rw": {"pg": "p.25", "src": "He liked to wear jackets with large brightly coloured checks and he sported ties that were usually yellow or pale green.", "src_zh": "他喜歡穿有大格仔、顏色鮮艷的外套,打的領帶通常是黃色或淺綠色。", "keep": [], "swaps": [["He liked to wear", "(cut)", "他喜歡穿", "刪走"], ["jackets with large brightly coloured checks", "bright checked jacket", "有大格仔、顏色鮮艷的外套", "鮮艷格仔外套"], ["and he sported ties that were usually yellow or pale", "(cut: one colour is enough)", "他打的領帶通常是黃色或淺", "刪走:一種顏色就夠"], ["green.", "green tie", "綠色", "綠色領帶"]], "order": "Notes style: thing + describing word, joined with a comma.", "order_zh": "筆記格式:形容詞 + 東西,用逗號分開。"}, "box": [0.137, 0.3084, 0.396, 0.3272], "ml": 1, "fs": 0.0162, "lh": 0.0252}], "hot": [{"box": [0.121, 0.66, 0.152, 0.1695], "title": "Part A: the diagram", "why": "Fill the 4 boxes with short notes, not full sentences. 2 or 3 notes in each box is enough.", "why_zh": "四個格寫短筆記,不用完整句子。每格兩三點就夠。"}, {"box": [0.1496, 0.284, 0.2245, 0.2402], "title": "His appearance", "why": "Appearance = what he looks like: body, face, clothes.", "why_zh": "外表 = 他的樣子:身形、樣貌、衣着。", "fill": "a1"}, {"box": [0.4067, 0.5357, 0.4168, 0.4326], "title": "Mr Wormwood", "why": "The centre of the diagram = Matilda's father, the second-hand car dealer. All 4 boxes are about him.", "why_zh": "圖的中心 = Matilda 的爸爸,二手車商。四個格都講他。"}], "teach": "Appearance box = body + face + clothes. One short note for each, and you're done.", "teach_zh": "外表格 = 身形 + 樣貌 + 衣着,每樣一個短筆記就完成。", "menu": "A1  His appearance", "menu_zh": "A1 他的外表", "mgrp": "Part A - Diagram"}, {"sec": "A Diagram", "tag": "A2 Character", "tb": "t25", "tbmark": ["honest"], "wb": "w3", "wbfocus": [0.52, 0.205, 0.815, 0.375], "say": "Box 2: his character = what kind of person he is. On the same page he says: 'No one ever got rich being honest. Customers are there to be diddled.' diddled = cheated.", "say_zh": "第二格:his character = 他是怎樣的人。同一頁他說:「誠實的人從來發不了財,顧客就是用來騙的。」diddled = 被騙。", "fills": [{"id": "c1", "text": "• dishonest – cheats his customers", "zh": "不誠實,欺騙顧客", "q": "A2", "note": "Character: dishonest", "kind": "text", "from": "honest", "ex": {"why": "p.25: 'No one ever got rich being honest... Customers are there to be diddled.' He thinks cheating is normal, so: dishonest.", "why_zh": "第25頁:他覺得騙人很正常,所以是不誠實。", "other": [["• a cheat – tricks people who buy his cars", "騙子,欺騙買車的人"]], "avoid": [["• clever (he thinks so, but the book shows he is a cheat)", "他自以為聰明,但書寫的是他騙人"]]}, "rw": {"pg": "p.25", "src": "No one ever got rich being honest, the father said. Customers are there to be diddled.", "src_zh": "爸爸說:誠實的人從來發不了財。顧客就是用來騙的。", "keep": ["Customers"], "swaps": [["No one ever got rich being honest,", "dishonest –", "誠實的人從來發不了財", "不誠實"], ["the father said.", "(cut)", "爸爸說", "刪走"], ["are there to be diddled.", "cheats his", "就是用來被騙的", "欺騙他的"]], "order": "Character word first, proof after: 'dishonest – cheats his customers'.", "order_zh": "先寫性格詞,再寫證據。"}, "box": [0.543, 0.247, 0.802, 0.2658], "ml": 1, "fs": 0.0162, "lh": 0.0252}], "hot": [{"box": [0.5572, 0.6748, 0.2242, 0.2399], "title": "His character", "why": "Character = what kind of person he is. Write a describing word + a short proof.", "why_zh": "性格 = 他是怎樣的人。寫一個形容詞 + 簡短證據。", "fill": "c1"}], "teach": "Character = one describing word + proof. Turn what he SAYS into one word: 'no one got rich being honest' = dishonest.", "teach_zh": "性格 = 一個形容詞 + 證據。把他講的話變成一個詞:「誠實發不了財」= 不誠實。", "menu": "A2  His character", "menu_zh": "A2 他的性格", "mgrp": "Part A - Diagram"}, {"sec": "A Diagram", "tag": "A2 Character", "tb": "t24", "tbmark": ["boast"], "wb": "w3", "wbfocus": [0.52, 0.205, 0.815, 0.375], "say": "Second character note. Page 24 says it straight: 'he liked to boast'. Later (p.29) he says 'I invented that all by myself', proudly.", "say_zh": "第二個性格。第24頁直接講:「他喜歡吹噓」。第29頁他又很得意地說「全部是我自己發明的」。", "fills": [{"id": "c2", "text": "• boastful – proud of his tricks", "zh": "愛吹噓,為自己的騙術得意", "q": "A2", "note": "Character: boastful", "kind": "text", "from": "boast", "ex": {"why": "p.24: 'he liked to boast'. p.29: 'And to think I invented that all by myself, he added proudly.'", "why_zh": "第24頁:他喜歡吹噓。第29頁:他很得意地說全部是自己發明的。", "other": [["• a show-off", "愛炫耀的人"]], "avoid": [["• confident (not the same: boastful is a bad thing)", "自信不是同一意思,吹噓是負面的"]]}, "rw": {"pg": "p.24", "src": "She also knew that he liked to boast", "src_zh": "她也知道他喜歡吹噓", "keep": [], "swaps": [["She also knew that he", "(cut)", "她也知道他", "刪走"], ["liked to boast", "boastful – proud of his tricks", "喜歡吹噓", "愛吹噓 – 為騙術得意"]], "order": "", "order_zh": ""}, "box": [0.543, 0.2688, 0.802, 0.2876], "ml": 1, "fs": 0.0162, "lh": 0.0252}], "hot": [], "teach": "If the book TELLS you the character ('he liked to boast'), use it. Just change the word form: boast → boastful.", "teach_zh": "如果書直接講出性格(他喜歡吹噓),就用它,只要改詞性:boast → boastful。"}, {"sec": "A Diagram", "tag": "A3 Treats Matilda", "tb": "t24", "tbmark": ["twit"], "wb": "w3", "wbfocus": [0.125, 0.495, 0.425, 0.645], "say": "Box 3: how he treats Matilda. He calls her names. Page 24: 'you're an IGNORANT LITTLE TWIT'. On page 30 he calls her an 'IGNORANT LITTLE SQUIRT'.", "say_zh": "第三格:他怎樣對待 Matilda。他罵她。第24頁:「你是個無知的小蠢材」。第30頁又罵她「無知的小鬼」。", "fills": [{"id": "t1", "text": "• calls her names, e.g. 'twit'", "zh": "罵她,例如「蠢材」", "q": "A3", "note": "Treats her: name-calling", "kind": "text", "from": "twit", "ex": {"why": "p.24: 'you're an IGNORANT LITTLE TWIT'. p.30: 'an IGNORANT LITTLE SQUIRT'. Name-calling = how he treats her.", "why_zh": "第24頁、第30頁他都罵她。罵人 = 他對待她的方式。", "other": [["• insults her ('twit', 'squirt')", "侮辱她(蠢材、小鬼)"]], "avoid": [["• hits her (this never happens in the book)", "書中沒有打她"]]}, "rw": {"pg": "p.24", "src": "That's because you're an IGNORANT LITTLE TWIT, the father said.", "src_zh": "爸爸說:那是因為你是個無知的小蠢材。", "keep": ["TWIT"], "swaps": [["That's because you're an IGNORANT LITTLE", "calls her names, e.g.", "那是因為你是個無知的小", "罵她,例如"], ["the father said.", "(cut)", "爸爸說", "刪走"]], "order": "", "order_zh": ""}, "box": [0.151, 0.533, 0.41, 0.5518], "ml": 1, "fs": 0.0162, "lh": 0.0252}], "hot": [{"box": [0.1647, 0.3551, 0.513, 0.5287], "title": "How he treats Matilda", "why": "What he says and does TO her: rude names, calling her stupid, ignoring her.", "why_zh": "他對她說甚麼、做甚麼:罵她、說她蠢、不理她。", "fill": "t1"}], "teach": "'How he treats her' = what he SAYS and DOES to her. Rude words he shouts are the best proof.", "teach_zh": "「怎樣對待她」= 他對她說甚麼、做甚麼。他罵她的字就是最好的證據。", "menu": "A3  How he treats Matilda", "menu_zh": "A3 他怎樣對待 Matilda", "mgrp": "Part A - Diagram"}, {"sec": "A Diagram", "tag": "A3 Treats Matilda", "tb": "t24", "tbmark": ["stupid", "ignore"], "wb": "w3", "wbfocus": [0.125, 0.495, 0.425, 0.645], "say": "Same page: 'You're too stupid.' Then he turns to his son, 'ignoring Matilda'. So he puts her down and ignores her.", "say_zh": "同一頁:「你太蠢了。」然後他轉身跟兒子說話,不理睬 Matilda。所以他貶低她又不理她。", "fills": [{"id": "t2", "text": "• says she is stupid and ignores her", "zh": "說她蠢,又不理睬她", "q": "A3", "note": "Treats her: stupid, ignores", "kind": "text", "from": "stupid", "ex": {"why": "p.24: 'You're too stupid.' and 'Ignoring Matilda, he turned to his son'. Page 33 also says she is 'told constantly that she was ignorant and stupid'.", "why_zh": "第24頁:你太蠢了;不理睬 Matilda。第33頁也說她經常被說無知又愚蠢。", "other": [["• treats her as stupid; only talks to his son", "當她蠢,只跟兒子說話"]], "avoid": [["• loves her (the opposite)", "剛好相反"]]}, "rw": {"pg": "p.24", "src": "You're too stupid. ... Ignoring Matilda, he turned to his son", "src_zh": "你太蠢了。……他不理睬 Matilda,轉向兒子", "keep": ["stupid"], "swaps": [["You're too", "says she is", "你太", "說她"], ["Ignoring Matilda,", "and ignores her", "不理睬 Matilda", "又不理她"], ["he turned to his son", "(cut)", "他轉向兒子", "刪走"]], "order": "Join the two facts into one note with 'and'.", "order_zh": "用 and 把兩件事合成一點。"}, "box": [0.151, 0.5548, 0.41, 0.5736], "ml": 1, "fs": 0.0162, "lh": 0.0252}], "hot": [], "teach": "Two small facts from the same scene? Join them with 'and' to keep the box short.", "teach_zh": "同一場景有兩個小事實?用 and 合埋,格仔就夠位。"}, {"sec": "A Diagram", "tag": "A4 Matilda thinks", "tb": "t29", "tbmark": ["cheat", "dirty"], "wb": "w3", "wbfocus": [0.53, 0.495, 0.83, 0.645], "say": "Box 4: what Matilda thinks about him. Use HER words. Page 29: 'You're cheating people who trust you.' and 'It's dirty money... I hate it.'", "say_zh": "第四格:Matilda 怎樣看他。用她自己的話。第29頁:「你在欺騙信任你的人。」「這是骯髒錢……我討厭它。」", "fills": [{"id": "m1", "text": "• he is a cheat; his money is 'dirty'", "zh": "他是騙子;他的錢是「骯髒錢」", "q": "A4", "note": "She thinks: a cheat, dirty money", "kind": "text", "from": "dirty", "ex": {"why": "p.29: Matilda's own words, 'You're cheating people who trust you' and 'It's dirty money... I hate it.' Her own words = what she thinks.", "why_zh": "第29頁是 Matilda 自己講的話,所以代表她的想法。", "other": [["• she thinks he is dishonest and hates his money", "她覺得他不誠實,討厭他的錢"]], "avoid": [["• she is scared of him (the book says angry, not scared)", "書寫她生氣,不是害怕"]]}, "rw": {"pg": "p.29", "src": "You're cheating people who trust you. It's dirty money. I hate it.", "src_zh": "你在欺騙信任你的人。這是骯髒錢。我討厭它。", "keep": ["dirty", "money"], "swaps": [["You're cheating people who trust you.", "he is a cheat;", "你在欺騙信任你的人。", "他是騙子;"], ["It's", "his", "這是", "他的"], ["I hate it.", "(cut: one point per note)", "我討厭它。", "刪走:每點只講一樣"]], "order": "Move 'dirty' to the end: his money is 'dirty'.", "order_zh": "把 dirty 放到最後。"}, "box": [0.557, 0.555, 0.816, 0.5738], "ml": 1, "fs": 0.0162, "lh": 0.0252}], "hot": [{"box": [0.5723, 0.7923, 0.513, 0.5501], "title": "What Matilda thinks about him", "why": "Her opinion of him. Look for her own words (p.29) and her decision (p.33).", "why_zh": "她對他的看法。找她自己的話(第29頁)和她的決定(第33頁)。", "fill": "m1"}], "teach": "'What does X think?' Look for X's own words or X's decision. Then report it: 'You're cheating' → he is a cheat.", "teach_zh": "「X 怎樣想?」找 X 自己的話或者 X 的決定,再轉述:你在騙人 → 他是騙子。", "menu": "A4  What Matilda thinks about him", "menu_zh": "A4 Matilda 怎樣看他", "mgrp": "Part A - Diagram"}, {"sec": "A Diagram", "tag": "A4 Matilda thinks", "tb": "t33", "tbmark": ["told", "back"], "wb": "w3", "wbfocus": [0.53, 0.495, 0.83, 0.645], "say": "Page 33: she is sick of being called 'ignorant and stupid'. So she decides: every time he is beastly to her, she will get her own back = pay him back.", "say_zh": "第33頁:她受夠了被說「無知又愚蠢」。於是她決定:每次他對她惡劣,她都會報復。", "fills": [{"id": "m2", "text": "• he deserves to be punished", "zh": "他應該受懲罰", "q": "A4", "note": "She thinks: he deserves it", "kind": "text", "from": "back", "ex": {"why": "p.33: every time he is 'beastly' to her, 'she would get her own back'. get your own back = pay someone back. So she thinks he deserves it.", "why_zh": "第33頁:每次他對她惡劣,她都會報復。所以她覺得他應該受教訓。", "other": [["• she wants to pay him back", "她想報復他"]], "avoid": [["• she wants to run away (not in the book)", "書中沒有"]]}, "rw": {"pg": "p.33", "src": "She decided that every time her father or her mother was beastly to her, she would get her own back", "src_zh": "她決定每次爸爸或媽媽對她惡劣,她都會報復", "keep": [], "swaps": [["She decided that every time her father or her mother was beastly to her,", "(cut: we only need her opinion)", "她決定每次爸爸或媽媽對她惡劣", "刪走:只要她的看法"], ["she would get her own back", "he deserves to be punished", "她會報復", "他應該受懲罰"]], "order": "", "order_zh": ""}, "box": [0.557, 0.5768, 0.816, 0.5956], "ml": 1, "fs": 0.0162, "lh": 0.0252}], "hot": [], "teach": "A character's decision shows what they think. 'She will get her own back' = she thinks he deserves it.", "teach_zh": "角色的決定反映她的想法。「她會報復」= 她覺得他活該。"}, {"sec": "B Questions", "tag": "B1 Dinner", "tb": "t30", "tbmark": ["knees"], "wb": "w3", "wbfocus": [0.11, 0.72, 0.9, 0.815], "say": "Q1 has two parts. Part 1: how did the Wormwoods have dinner? Page 30: they ate their suppers on their knees in front of the telly. (supper = dinner, telly = TV)", "say_zh": "Q1 有兩部分。第一部分:Wormwood 一家怎樣吃晚飯?第30頁:他們把晚餐放在膝上,在電視前吃。", "fills": [{"id": "b1a", "text": "They ate their dinner on their laps while watching TV.", "zh": "他們一邊看電視,一邊把晚餐放在大腿上吃。", "q": "B1", "note": "Q1a: on laps, watching TV", "kind": "text", "from": "knees", "ex": {"why": "p.30: 'eating their suppers on their knees in front of the telly'. supper = dinner, knees → laps, telly = TV. Matilda also says on p.32: 'We never are' at the table.", "why_zh": "第30頁:在電視前把晚餐放在膝上吃。第32頁 Matilda 也說他們從來不在餐桌吃。", "other": [["They ate TV dinners on their knees in front of the television.", "他們在電視前把電視餐放在膝上吃。"]], "avoid": [["They ate together at the dining table. (wrong: Matilda says they never do)", "錯:Matilda 說他們從不在餐桌吃"], ["Copying 'eating their suppers on their knees in front of the telly'", "照抄書句"]]}, "rw": {"pg": "p.30", "src": "They were in the living room eating their suppers on their knees in front of the telly.", "src_zh": "他們在客廳裏,把晚餐放在膝上,在電視前吃。", "keep": ["They"], "swaps": [["were in the living room eating their suppers", "ate their dinner", "在客廳裏吃晚餐", "吃晚飯"], ["on their knees", "on their laps", "放在膝上", "放在大腿上"], ["in front of the telly.", "while watching TV.", "在電視前", "一邊看電視"]], "order": "", "order_zh": ""}, "box": [0.1569, 0.7496, 0.8841, 0.7729], "ml": 1, "fs": 0.0185, "lh": 0.03025}], "hot": [{"box": [0.121, 0.3672, 0.6864, 0.7037], "title": "Part B: comprehension", "why": "No marks are printed, so the lines tell you how much: Q1 asks two things = 2 sentences; Q2, Q3, Q4 = 1 sentence each.", "why_zh": "沒有分數,看橫線:Q1 兩部分 = 兩句;Q2 至 Q4 各一句。"}, {"box": [0.121, 0.8319, 0.7291, 0.7465], "title": "Q1: two questions in one", "why": "(1) How did the Wormwoods eat? (2) Does YOUR family eat the same way? One sentence for each.", "why_zh": "(1)他們怎樣吃?(2)你家是否一樣?每部分一句。", "fill": "b1a"}], "teach": "One question, two parts? Answer each part with its own sentence, in the same order as the question.", "teach_zh": "一條題目有兩部分?每部分各寫一句,次序跟題目一樣。", "menu": "B1  How did the Wormwoods have dinner?", "menu_zh": "B1 他們怎樣吃晚飯?", "mgrp": "Part B - Questions"}, {"sec": "B Questions", "tag": "B1 Your family", "tb": "t30", "tbmark": [], "wb": "w3", "wbfocus": [0.11, 0.72, 0.9, 0.815], "say": "Part 2 asks about YOUR family, so this sentence is your own words, not the book. Say Yes or No first, then how you eat. Write what is really true at home.", "say_zh": "第二部分問你自己的家,所以這句是你自己的話,不是書。先答 Yes 或 No,再講你家怎樣吃。寫真實情況。", "fills": [{"id": "b1b", "text": "No, my family eats dinner together at the table.", "zh": "不,我家一起在餐桌吃晚飯。", "q": "B1", "note": "Q1b: your own family (your words)", "kind": "text", "ex": {"why": "This half asks about YOU. Yes/No first, then how you eat. Change it to what is true for your family.", "why_zh": "這部分問你。先答 Yes/No,再講你家怎樣吃。按你家真實情況改。", "other": [["Yes, we sometimes eat while watching TV too.", "是,我們有時也一邊看電視一邊吃。"], ["No, we sit at the table and talk about our day.", "不,我們坐在餐桌旁聊天。"]], "avoid": [["A long story about your family (one sentence is enough)", "不用長篇,一句就夠"], ["Skipping this part (the question has two parts)", "不可以漏答,題目有兩部分"]]}, "box": [0.1569, 0.7708, 0.8841, 0.7941], "ml": 1, "fs": 0.0185, "lh": 0.03025}], "hot": [], "teach": "'Do you / Does your family...?' = a personal question. There is no book box. Answer Yes/No + one detail.", "teach_zh": "「你/你家……嗎?」= 個人問題,書上沒有答案。答 Yes/No + 一個細節。"}, {"sec": "B Questions", "tag": "B2 The lesson", "tb": "t35", "tbmark": ["hat"], "wb": "w3", "wbfocus": [0.11, 0.828, 0.9, 0.902], "say": "Q2: how did Matilda teach her father a lesson? Chapter 3 starts the next morning: Matilda takes the hat he wears to work every day. He is very proud of that hat.", "say_zh": "Q2:Matilda 怎樣教訓爸爸?第三章第二天早上:Matilda 拿走爸爸每天戴去返工的帽。他很得意那頂帽。", "fills": [], "hot": [], "teach": "'How did she...?' = describe the METHOD: what she did, then what happened.", "teach_zh": "「她怎樣……?」= 描述方法:她做了甚麼,結果怎樣。", "menu": "B2  How did Matilda teach him a lesson?", "menu_zh": "B2 Matilda 怎樣教訓爸爸?", "mgrp": "Part B - Questions"}, {"sec": "B Questions", "tag": "B2 The lesson", "tb": "t37", "tbmark": ["glue", "allday"], "wb": "w3", "wbfocus": [0.11, 0.828, 0.9, 0.902], "say": "Page 37: she squeezes Superglue all round the inside rim of the hat. At work he can't get it off, so he has to keep it on all day long.", "say_zh": "第37頁:她在帽邊內擠一圈強力膠。返到公司他除不下帽,要整天戴住。", "fills": [{"id": "b2", "text": "She secretly put Superglue inside the rim of his hat, so it got stuck on his head.", "zh": "她偷偷在他的帽邊內塗上強力膠,令帽子黐住他的頭。", "q": "B2", "note": "Q2: Superglue in his hat", "kind": "text", "from": "glue", "ex": {"why": "p.35: she takes his hat. p.37: she squeezes Superglue 'all round the inside rim of the hat', so he 'had to keep the hat on his head the whole day long'.", "why_zh": "第35頁她拿走帽,第37頁她在帽邊內塗強力膠,令他整天除不下帽。", "other": [["She put Superglue inside his hat, so he could not take it off.", "她在帽內塗強力膠,令他除不下帽。"]], "avoid": [["Telling the whole chapter (the finger story, the lice joke): not asked", "不用講整章,題目沒有問"], ["She glued his hat to the peg. (wrong: the glue was inside the hat)", "錯:膠是塗在帽內"]]}, "rw": {"pg": "p.37", "src": "Matilda, holding the hat in one hand and a thin tube of Superglue in the other, proceeded to squeeze a line of glue very neatly all round the inside rim of the hat.", "src_zh": "Matilda 一手拿帽,一手拿着一小支強力膠,很整齊地在帽邊內擠了一圈膠水。", "keep": ["Superglue", "rim"], "swaps": [["Matilda,", "She", "Matilda", "她"], ["holding the hat in one hand and a thin tube of", "secretly put", "一手拿帽,一手拿一小支", "偷偷塗"], ["in the other, proceeded to squeeze a line of glue very neatly all round the inside", "inside the", "另一隻手,很整齊地擠了一圈膠水在", "在…裏面"], ["of the hat.", "of his hat, so it got stuck on his head.", "帽的", "他的帽,令帽子黐住他的頭。"]], "order": "Add the result at the end with 'so': that is the 'lesson'.", "order_zh": "用 so 在句尾加上結果,這就是「教訓」。"}, "box": [0.1569, 0.8561, 0.8841, 0.8797], "ml": 1, "fs": 0.0185, "lh": 0.0305}], "hot": [{"box": [0.121, 0.4924, 0.8359, 0.8533], "title": "Q2: how did she teach him a lesson?", "why": "'How' = what she did. One sentence: action + result (Superglue in the hat → stuck on his head).", "why_zh": "「怎樣」= 她做了甚麼。一句:行動 + 結果。", "fill": "b2"}], "teach": "Method + result in one sentence: 'She did X, so Y happened.' 'so' links them.", "teach_zh": "一句包含方法 + 結果:她做了 X,so 結果 Y。"}, {"sec": "B Questions", "tag": "B3 Hat off", "tb": "t43", "tbmark": ["sleep"], "wb": "w4", "wbfocus": [0.11, 0.08, 0.9, 0.153], "say": "Q3: how did the hat come off? First, what did NOT work: pulling hurt too much, and the hat stayed on all night. Page 43: he even had to sleep in it.", "say_zh": "Q3:帽子怎樣除下來?先看甚麼方法不行:拉會好痛,帽子整晚都在。第43頁:他連睡覺都要戴住。", "fills": [], "hot": [], "teach": "Check what did NOT work first. Then the answer is the thing that finally worked.", "teach_zh": "先看甚麼方法不行,答案就是最後成功的那個方法。", "menu": "B3  How did the hat come off?", "menu_zh": "B3 帽子怎樣除下來?", "mgrp": "Part B - Questions"}, {"sec": "B Questions", "tag": "B3 Hat off", "tb": "t44", "tbmark": ["cut"], "wb": "w4", "wbfocus": [0.11, 0.08, 0.9, 0.153], "say": "Page 44: the next morning it still wasn't loose, so Mrs Wormwood took a pair of scissors and cut it off, bit by bit.", "say_zh": "第44頁:第二天早上帽子仍然沒有鬆,於是 Mrs Wormwood 拿較剪,一點一點把它剪走。", "fills": [{"id": "b3", "text": "Mrs Wormwood cut the hat off piece by piece with scissors.", "zh": "Mrs Wormwood 用較剪一塊一塊把帽剪走。", "q": "B3", "note": "Q3: Mum cut it off with scissors", "kind": "text", "from": "cut", "ex": {"why": "p.44: 'Mrs Wormwood took a pair of scissors and cut the thing off his head, bit by bit'. Pulling had not worked (p.38 to 43).", "why_zh": "第44頁:她用較剪一點一點剪走帽。之前拉都拉不下。", "other": [["His wife cut it off with scissors the next morning.", "第二天早上,他太太用較剪剪走帽。"]], "avoid": [["It fell off in the night. (wrong: p.44 says it wasn't loose by the morning)", "錯:第44頁說早上仍然沒鬆"], ["Mrs Wormwood pulled it off. (wrong: she tried and he screamed)", "錯:她試過拉,他痛到大叫"]]}, "rw": {"pg": "p.44", "src": "So Mrs Wormwood took a pair of scissors and cut the thing off his head, bit by bit, first the top and then the brim.", "src_zh": "於是 Mrs Wormwood 拿了一把較剪,把那東西一點一點從他頭上剪走,先剪頂部,再剪帽邊。", "keep": ["Mrs Wormwood", "scissors"], "swaps": [["So", "(cut)", "於是", "刪走"], ["took a pair of", "(cut)", "拿了一把", "刪走"], ["and cut the thing off his head,", "cut the hat off", "把那東西從他頭上剪走", "把帽剪走"], ["bit by bit,", "piece by piece", "一點一點", "一塊一塊"], ["first the top and then the brim.", "(cut: extra detail)", "先剪頂部,再剪帽邊", "刪走:多餘細節"]], "order": "Move 'scissors' to the end: '... with scissors'.", "order_zh": "把 scissors 放到句尾:用較剪。"}, "box": [0.1569, 0.1084, 0.8841, 0.1318], "ml": 1, "fs": 0.0185, "lh": 0.03025}], "hot": [{"box": [0.121, 0.3605, 0.088, 0.1054], "title": "Q3: how did the hat come off?", "why": "Who took it off and with what. It did not fall off by itself.", "why_zh": "誰除下來、用甚麼。帽子不是自己跌下來的。", "fill": "b3"}], "teach": "'How did it come off?' = WHO did it + WITH WHAT. Mrs Wormwood + scissors.", "teach_zh": "「怎樣除下來?」= 誰做 + 用甚麼。Mrs Wormwood + 較剪。"}, {"sec": "B Questions", "tag": "B4 His look", "tb": "t44", "tbmark": ["monk", "patch"], "wb": "w4", "wbfocus": [0.11, 0.165, 0.9, 0.24], "say": "Q4: what did he look like after that? Same page: the hair stuck to the band was chopped off, so he had a bald ring like a monk, and brown patches stayed on his forehead.", "say_zh": "Q4:之後他變成甚麼樣子?同一頁:黐住帽帶的頭髮要剪光,他頭上一圈禿了,像和尚;額頭還留下一塊塊啡色的東西。", "fills": [{"id": "b4", "text": "He looked like a monk, bald all the way round, with brown patches stuck to his\nforehead.", "zh": "他看起來像和尚,頭上一圈禿了,額頭還黐着一塊塊啡色的東西。", "q": "B4", "note": "Q4: like a monk + brown patches", "kind": "text", "from": "monk", "ex": {"why": "p.44: he 'finished up with a bald ring round his head, like some sort of a monk', and 'small patches of brown leathery stuff' stayed on the front.", "why_zh": "第44頁:頭上一圈禿了像和尚,額頭留下一塊塊啡色的東西。", "other": [["He was bald round his head like a monk and had brown bits on his forehead.", "他頭上一圈禿了像和尚,額頭有啡色碎片。"], ["... brown bits that looked like little insects (p.45)", "……看似小蟲的啡色碎片(第45頁)"]], "avoid": [["He looked handsome. (the opposite)", "剛好相反"], ["He had lice. (no: Matilda only says people will THINK so)", "不是:Matilda 只是說人家會以為他有頭蝨"]]}, "rw": {"pg": "p.44", "src": "she had to chop the hair off right to the skin so that he finished up with a bald ring round his head, like some sort of a monk. And in the front, where the band had stuck directly to the bare skin, there remained a whole lot of small patches of brown leathery stuff", "src_zh": "她要把頭髮剪到見皮,於是他頭上留下一圈禿頭,像和尚一樣。前面帽帶直接黐住皮膚的地方,留下很多一小塊一小塊啡色、像皮革的東西", "keep": ["monk", "brown"], "swaps": [["she had to chop the hair off right to the skin so that he finished up with a bald ring round his head,", "bald all the way round", "她要把頭髮剪到見皮,他頭上留下一圈禿頭", "一圈都禿了"], ["like some sort of a", "He looked like a", "像某種", "他看起來像"], ["And in the front, where the band had stuck directly to the bare skin, there remained a whole lot of small patches of", "with patches stuck to his forehead", "前面帽帶黐住皮膚的地方,留下很多一小塊", "額頭黐着一塊塊"], ["leathery stuff", "(cut)", "像皮革的東西", "刪走"]], "order": "Start with the big picture (like a monk), then add the details.", "order_zh": "先講整體(像和尚),再加細節。", "out": "He looked like a monk, bald all the way round, with brown patches stuck to his forehead."}, "box": [0.1569, 0.1938, 0.8841, 0.2389], "ml": 1, "fs": 0.0185, "lh": 0.0305}], "hot": [{"box": [0.121, 0.4054, 0.1734, 0.1908], "title": "Q4: what did he look like?", "why": "'Look like' = describe his head after the hat was cut off: bald like a monk + brown patches.", "why_zh": "「看起來」= 描述帽剪走後他的頭:像和尚的禿頭 + 啡色斑塊。", "fill": "b4"}], "teach": "'What did he look like?' = describe the picture. Start with one comparison (like a monk), then 1 or 2 details.", "teach_zh": "「他看起來怎樣?」= 描述畫面。先用一個比喻(像和尚),再加一兩個細節。", "menu": "B4  What did he look like after that?", "menu_zh": "B4 之後他變成甚麼樣子?", "mgrp": "Part B - Questions"}, {"sec": "C Vocabulary", "tag": "C1 boast", "tb": "t24", "tbmark": ["boast"], "wb": "w4", "wbfocus": [0.11, 0.25, 0.76, 0.52], "say": "1. boast. Find it in the book: page 24, 'he liked to boast'. He loves telling everyone how clever his tricks are. That is speaking too proudly of yourself = D.", "say_zh": "1. boast。在書中找:第24頁「他喜歡吹噓」。他很愛講自己的騙術有多聰明 = 太驕傲地講自己 = D。", "fills": [{"id": "v1", "text": "D", "zh": "吹噓 = D", "q": "C1", "note": "boast = D (speak too proudly of oneself)", "kind": "text", "from": "boast", "ex": {"why": "p.24 'he liked to boast': he shows off about his car tricks. D = speak too proudly of oneself.", "why_zh": "第24頁:他愛炫耀自己的騙術。D = 太驕傲地講自己。", "other": [], "avoid": [["F smile broadly (that is grin)", "F 是 grin"]]}, "box": [0.262, 0.3454, 0.306, 0.3612], "fs": 0.021}], "hot": [{"box": [0.1235, 0.2029, 0.3444, 0.3618], "title": "1. boast", "why": "p.24 'he liked to boast': he shows off about his car tricks. D = speak too proudly of oneself.", "why_zh": "第24頁:他愛炫耀自己的騙術。D = 太驕傲地講自己。", "fill": "v1"}, {"box": [0.4563, 0.7121, 0.4085, 0.42589999999999995], "title": "D. speak too proudly of oneself", "why": "D matches 'boast' (1). p.24 'he liked to boast': he shows off about his car tricks. D = speak too proudly of oneself.", "why_zh": "第24頁:他愛炫耀自己的騙術。D = 太驕傲地講自己。", "fill": "v1"}, {"box": [0.121, 0.3987, 0.2589, 0.3191], "title": "Part C: match the word with its meaning", "why": "Write ONE letter in each bracket. Each letter A to H is used once, so cross them off as you go.", "why_zh": "每個括號寫一個字母。A 至 H 每個只用一次,用完就劃走。", "fill": "v1"}], "teach": "Matching trick: find the word in the book, read the sentence, then try each meaning IN the sentence. The one that still makes sense wins.", "teach_zh": "配對技巧:在書中找到生字,讀那一句,把每個意思放進句子試,意思通順的就是答案。", "menu": "C1  boast", "menu_zh": "C1 吹噓", "mgrp": "Part C - Vocabulary"}, {"sec": "C Vocabulary", "tag": "C2 bulging", "tb": null, "tbmark": [], "wb": "w4", "wbfocus": [0.11, 0.25, 0.76, 0.52], "say": "2. bulging. This word is NOT on pages 23 to 45 of your copy, so use the word itself: a bulge = a round lump sticking out, like a bulging school bag. Only G describes a shape = G.", "say_zh": "2. bulging。你本書第23至45頁沒有這個字,就靠字本身:bulge = 凸出來的一團,好像塞爆的書包。只有 G 是講形狀 = G。", "fills": [{"id": "v2", "text": "G", "zh": "凸出的 = G", "q": "C2", "note": "bulging = G (sticking out in a round shape)", "kind": "text", "ex": {"why": "Not on the pages you have. bulge = a round lump sticking out (a bulging bag). G is the only meaning about a shape.", "why_zh": "你的頁數裏沒有這個字。bulge = 凸出來的一團。只有 G 講形狀。", "other": [], "avoid": [["A resting comfortably (that is nestle)", "A 是 nestle"]]}, "box": [0.262, 0.3668, 0.306, 0.3826], "fs": 0.021}], "hot": [{"box": [0.1235, 0.2176, 0.3658, 0.3832], "title": "2. bulging", "why": "Not on the pages you have. bulge = a round lump sticking out (a bulging bag). G is the only meaning about a shape.", "why_zh": "你的頁數裏沒有這個字。bulge = 凸出來的一團。只有 G 講形狀。", "fill": "v2"}, {"box": [0.4563, 0.715, 0.4726, 0.49], "title": "G. sticking out in a round shape", "why": "G matches 'bulging' (2). Not on the pages you have. bulge = a round lump sticking out (a bulging bag). G is the only meaning about a shape.", "why_zh": "你的頁數裏沒有這個字。bulge = 凸出來的一團。只有 G 講形狀。", "fill": "v2"}], "teach": "Word not in your pages? Picture it, then use elimination: cross out the meanings you already used.", "teach_zh": "書裏找不到?先想像畫面,再用刪去法:劃走已經用過的意思。", "menu": "C2  bulging", "menu_zh": "C2 凸出的", "mgrp": "Part C - Vocabulary"}, {"sec": "C Vocabulary", "tag": "C3 beastly", "tb": "t33", "tbmark": ["beast"], "wb": "w4", "wbfocus": [0.11, 0.25, 0.76, 0.52], "say": "3. beastly. Page 33: 'every time her father or her mother was beastly to her'. Page 35 even calls his garage 'beastly'. beastly = nasty, unkind = H.", "say_zh": "3. beastly。第33頁:「每次爸爸或媽媽對她惡劣」。第35頁連他的車行都叫 beastly。beastly = 惡劣、不友善 = H。", "fills": [{"id": "v3", "text": "H", "zh": "惡劣的 = H", "q": "C3", "note": "beastly = H (unkind, unpleasant)", "kind": "text", "from": "beast", "ex": {"why": "p.33 'beastly to her' and p.35 'his beastly second-hand car garage': nasty, unkind. H = unkind, unpleasant.", "why_zh": "第33頁、第35頁:惡劣、討厭。H = 不友善、令人不快。", "other": [], "avoid": [["C stupid person (that is a noun; beastly describes someone)", "C 是名詞,beastly 是形容詞"]]}, "box": [0.262, 0.3882, 0.306, 0.404], "fs": 0.021}], "hot": [{"box": [0.1235, 0.2159, 0.3872, 0.40459999999999996], "title": "3. beastly", "why": "p.33 'beastly to her' and p.35 'his beastly second-hand car garage': nasty, unkind. H = unkind, unpleasant.", "why_zh": "第33頁、第35頁:惡劣、討厭。H = 不友善、令人不快。", "fill": "v3"}, {"box": [0.4563, 0.6373, 0.494, 0.5114], "title": "H. unkind, unpleasant", "why": "H matches 'beastly' (3). p.33 'beastly to her' and p.35 'his beastly second-hand car garage': nasty, unkind. H = unkind, unpleasant.", "why_zh": "第33頁、第35頁:惡劣、討厭。H = 不友善、令人不快。", "fill": "v3"}], "menu": "C3  beastly", "menu_zh": "C3 惡劣的", "mgrp": "Part C - Vocabulary"}, {"sec": "C Vocabulary", "tag": "C4 nestle", "tb": "t39", "tbmark": ["nestle"], "wb": "w4", "wbfocus": [0.11, 0.25, 0.76, 0.52], "say": "4. nestle. Page 39: 'Matilda, nestling in her usual chair', watching Dad fight with the hat. She is sitting cosily = resting comfortably = A.", "say_zh": "4. nestle。第39頁:「Matilda 舒服地窩在她常坐的椅子」,看爸爸跟帽子搏鬥。舒服地坐着 = A。", "fills": [{"id": "v4", "text": "A", "zh": "舒服地窩着 = A", "q": "C4", "note": "nestle = A (resting comfortably)", "kind": "text", "from": "nestle", "ex": {"why": "p.39 'Matilda, nestling in her usual chair': sitting cosily while she watches. A = resting comfortably.", "why_zh": "第39頁:她舒服地窩在椅子上看戲。A = 舒服地休息。", "other": [], "avoid": [["E taking hold tightly (that is clutch)", "E 是 clutch"]]}, "box": [0.262, 0.4095, 0.306, 0.4253], "fs": 0.021}], "hot": [{"box": [0.1235, 0.2075, 0.4085, 0.42589999999999995], "title": "4. nestle", "why": "p.39 'Matilda, nestling in her usual chair': sitting cosily while she watches. A = resting comfortably.", "why_zh": "第39頁:她舒服地窩在椅子上看戲。A = 舒服地休息。", "fill": "v4"}, {"box": [0.4563, 0.639, 0.3444, 0.3618], "title": "A. resting comfortably", "why": "A matches 'nestle' (4). p.39 'Matilda, nestling in her usual chair': sitting cosily while she watches. A = resting comfortably.", "why_zh": "第39頁:她舒服地窩在椅子上看戲。A = 舒服地休息。", "fill": "v4"}], "menu": "C4  nestle", "menu_zh": "C4 舒服地窩着", "mgrp": "Part C - Vocabulary"}, {"sec": "C Vocabulary", "tag": "C5 clutch", "tb": "t40", "tbmark": ["clutch"], "wb": "w4", "wbfocus": [0.11, 0.25, 0.76, 0.52], "say": "5. clutch. Page 40: Dad is 'clutching the brim of his hat to stop anyone trying to pull it off'. He holds it tight = E.", "say_zh": "5. clutch。第40頁:爸爸「緊緊抓住帽邊,不讓人再拉」。抓得很緊 = E。", "fills": [{"id": "v5", "text": "E", "zh": "緊緊抓住 = E", "q": "C5", "note": "clutch = E (taking hold of something tightly)", "kind": "text", "from": "clutch", "ex": {"why": "p.40 'clutching the brim of his hat to stop anyone trying to pull it off': holding it tightly. E = taking hold of something tightly.", "why_zh": "第40頁:他緊緊抓住帽邊。E = 緊緊抓住。", "other": [], "avoid": [["A resting comfortably (he is not relaxed at all)", "他一點都不放鬆"]]}, "box": [0.262, 0.4309, 0.306, 0.4467], "fs": 0.021}], "hot": [{"box": [0.1235, 0.2071, 0.4299, 0.44730000000000003], "title": "5. clutch", "why": "p.40 'clutching the brim of his hat to stop anyone trying to pull it off': holding it tightly. E = taking hold of something tightly.", "why_zh": "第40頁:他緊緊抓住帽邊。E = 緊緊抓住。", "fill": "v5"}, {"box": [0.4563, 0.7365, 0.4299, 0.44730000000000003], "title": "E. taking hold of something tightly", "why": "E matches 'clutch' (5). p.40 'clutching the brim of his hat to stop anyone trying to pull it off': holding it tightly. E = taking hold of something tightly.", "why_zh": "第40頁:他緊緊抓住帽邊。E = 緊緊抓住。", "fill": "v5"}], "menu": "C5  clutch", "menu_zh": "C5 緊緊抓住", "mgrp": "Part C - Vocabulary"}, {"sec": "C Vocabulary", "tag": "C6 snap", "tb": "t45", "tbmark": ["snap"], "wb": "w4", "wbfocus": [0.11, 0.25, 0.76, 0.52], "say": "6. snap. Page 45: 'BE QUIET!' the father snapped. He says it angrily and suddenly = B. (Page 32 too: 'I WOULD MIND!' he snapped.)", "say_zh": "6. snap。第45頁:「閉嘴!」爸爸厲聲說。又惡又突然 = B。(第32頁也有。)", "fills": [{"id": "v6", "text": "B", "zh": "厲聲說 = B", "q": "C6", "note": "snap = B (said angrily and suddenly)", "kind": "text", "from": "snap", "ex": {"why": "p.45 'BE QUIET! the father snapped' (and p.32 'I WOULD MIND! he snapped'): said angrily and suddenly = B.", "why_zh": "第45頁、第32頁:又惡又突然地說 = B。", "other": [], "avoid": [["F smile broadly (he is angry, not smiling)", "他在生氣,不是笑"]]}, "box": [0.262, 0.4523, 0.306, 0.4681], "fs": 0.021}], "hot": [{"box": [0.1235, 0.1966, 0.4513, 0.4687], "title": "6. snap", "why": "p.45 'BE QUIET! the father snapped' (and p.32 'I WOULD MIND! he snapped'): said angrily and suddenly = B.", "why_zh": "第45頁、第32頁:又惡又突然地說 = B。", "fill": "v6"}, {"box": [0.4563, 0.6848, 0.3658, 0.3832], "title": "B. said angrily and suddenly", "why": "B matches 'snap' (6). p.45 'BE QUIET! the father snapped' (and p.32 'I WOULD MIND! he snapped'): said angrily and suddenly = B.", "why_zh": "第45頁、第32頁:又惡又突然地說 = B。", "fill": "v6"}], "menu": "C6  snap", "menu_zh": "C6 厲聲說", "mgrp": "Part C - Vocabulary"}, {"sec": "C Vocabulary", "tag": "C7 grin", "tb": "t25", "tbmark": ["grin"], "wb": "w4", "wbfocus": [0.11, 0.25, 0.76, 0.52], "say": "7. grin. Page 25: 'the father said, grinning', while he explains his sawdust trick. A big happy smile = F.", "say_zh": "7. grin。第25頁:「爸爸咧嘴笑着說」,一邊講他的木糠騙術。大大的笑容 = F。", "fills": [{"id": "v7", "text": "F", "zh": "咧嘴笑 = F", "q": "C7", "note": "grin = F (smile broadly)", "kind": "text", "from": "grin", "ex": {"why": "p.25 'the father said, grinning': a big smile while he talks about cheating. F = smile broadly.", "why_zh": "第25頁:他得意地咧嘴笑。F = 大大地笑。", "other": [], "avoid": [["B said angrily (he is happy here, not angry)", "他這裏很得意,不是生氣"]]}, "box": [0.262, 0.4736, 0.306, 0.4894], "fs": 0.021}], "hot": [{"box": [0.1235, 0.1899, 0.4726, 0.49], "title": "7. grin", "why": "p.25 'the father said, grinning': a big smile while he talks about cheating. F = smile broadly.", "why_zh": "第25頁:他得意地咧嘴笑。F = 大大地笑。", "fill": "v7"}, {"box": [0.4563, 0.5857, 0.4513, 0.4687], "title": "F. smile broadly", "why": "F matches 'grin' (7). p.25 'the father said, grinning': a big smile while he talks about cheating. F = smile broadly.", "why_zh": "第25頁:他得意地咧嘴笑。F = 大大地笑。", "fill": "v7"}], "menu": "C7  grin", "menu_zh": "C7 咧嘴笑", "mgrp": "Part C - Vocabulary"}, {"sec": "C Vocabulary", "tag": "C8 twit", "tb": "t24", "tbmark": ["twit"], "wb": "w4", "wbfocus": [0.11, 0.25, 0.76, 0.52], "say": "8. twit. Page 24: 'you're an IGNORANT LITTLE TWIT'. A rude word for a stupid person = C. Last one: C is the only letter left, so the elimination check works too.", "say_zh": "8. twit。第24頁:「你是個無知的小蠢材」。罵人蠢的字 = C。最後一個:剩下的字母就是 C,刪去法也對得上。", "fills": [{"id": "v8", "text": "C", "zh": "蠢材 = C", "q": "C8", "note": "twit = C (stupid person)", "kind": "text", "from": "twit", "ex": {"why": "p.24 'you're an IGNORANT LITTLE TWIT': twit = a stupid person (a rude word). C = stupid person.", "why_zh": "第24頁:twit = 蠢人(罵人的字)。C = 蠢人。", "other": [], "avoid": [["H unkind (that describes beastly; a twit is a person)", "H 是形容詞 beastly,twit 是人"]]}, "box": [0.262, 0.495, 0.306, 0.5108], "fs": 0.021}], "hot": [{"box": [0.1235, 0.1903, 0.494, 0.5114], "title": "8. twit", "why": "p.24 'you're an IGNORANT LITTLE TWIT': twit = a stupid person (a rude word). C = stupid person.", "why_zh": "第24頁:twit = 蠢人(罵人的字)。C = 蠢人。", "fill": "v8"}, {"box": [0.4563, 0.5915, 0.3872, 0.40459999999999996], "title": "C. stupid person", "why": "C matches 'twit' (8). p.24 'you're an IGNORANT LITTLE TWIT': twit = a stupid person (a rude word). C = stupid person.", "why_zh": "第24頁:twit = 蠢人(罵人的字)。C = 蠢人。", "fill": "v8"}], "menu": "C8  twit", "menu_zh": "C8 蠢材", "mgrp": "Part C - Vocabulary"}, {"sec": "Finish", "tag": "Finish", "tb": "t45", "tbmark": [], "wb": "w3", "wbfocus": null, "say": "Done. Copy the red answers onto your worksheet in your own handwriting. Click any red answer if you forget why it is right.", "say_zh": "完成。用你自己的字跡把紅字抄到工作紙上。忘記為甚麼這樣答,就撳那個紅字。", "fills": [], "hot": [], "teach": "Before you hand it in: 4 boxes with 2 to 3 short notes each; Q1 = 2 sentences; Q2, Q3, Q4 = 1 sentence each; Part C = D G H A E B F C, every letter used once.", "teach_zh": "交之前檢查:四個格各兩三點;Q1 兩句;Q2 至 Q4 各一句;C 部分 = D G H A E B F C,每個字母只用一次。", "menu": "Finish: check before you hand in", "menu_zh": "完成:交之前檢查", "mgrp": ""}];
+var LABEL={"ch2t": ["p.23: Chapter 2 starts here", "第23頁:第二章由這裏開始"], "twit": ["'IGNORANT LITTLE TWIT'", "「無知的小蠢材」"], "boast": ["'he liked to boast'", "「他喜歡吹噓」"], "stupid": ["'You're too stupid.'", "「你太蠢了。」"], "ignore": ["'Ignoring Matilda'", "「不理睬 Matilda」"], "grin": ["'the father said, grinning'", "「爸爸咧嘴笑着說」"], "honest": ["'No one ever got rich being honest'", "「誠實的人從來發不了財」"], "looks": ["How he looks: small, ratty, loud clothes", "他的樣子:矮小、像老鼠、衣着花俏"], "cheat": ["'You're cheating people who trust you.'", "「你在欺騙信任你的人。」"], "dirty": ["'It's dirty money ... I hate it.'", "「這是骯髒錢……我討厭它。」"], "knees": ["Suppers on their knees, in front of the telly", "把晚餐放在膝上,在電視前吃"], "told": ["Always told she is 'ignorant and stupid'", "經常被說「無知又愚蠢」"], "back": ["Her decision: 'get her own back'", "她的決定:報復"], "beast": ["'beastly to her'", "「對她很惡劣」"], "hat": ["She takes his work hat", "她拿走爸爸返工戴的帽"], "glue": ["Superglue round the inside rim", "帽邊內塗一圈強力膠"], "allday": ["Hat stuck on all day", "帽子整天黐住"], "nestle": ["'nestling in her usual chair'", "「舒服地窩在她常坐的椅子」"], "clutch": ["'clutching the brim of his hat'", "「緊緊抓住帽邊」"], "sleep": ["He even has to sleep in it", "他連睡覺都要戴住"], "cut": ["Mrs Wormwood cuts it off with scissors", "太太用較剪把帽剪走"], "monk": ["Bald ring, like a monk", "一圈禿頭,像和尚"], "patch": ["Brown patches on his forehead", "額頭上一塊塊啡色"], "snap": ["'BE QUIET!' the father snapped", "「閉嘴!」爸爸厲聲說"]};
+var CROPS={"ch2t": ["p/c_ch2t.jpg", 4.955], "twit": ["p/c_twit.jpg", 3.3133], "boast": ["p/c_boast.jpg", 7.6389], "stupid": ["p/c_stupid.jpg", 6.4327], "ignore": ["p/c_ignore.jpg", 7.8014], "grin": ["p/c_grin.jpg", 6.1475], "honest": ["p/c_honest.jpg", 7.1895], "looks": ["p/c_looks.jpg", 2.1956], "cheat": ["p/c_cheat.jpg", 4.5643], "dirty": ["p/c_dirty.jpg", 11.7021], "knees": ["p/c_knees.jpg", 6.044], "told": ["p/c_told.jpg", 4.5833], "back": ["p/c_back.jpg", 4.2471], "beast": ["p/c_beast.jpg", 7.2368], "hat": ["p/c_hat.jpg", 6.5868], "glue": ["p/c_glue.jpg", 3.5032], "allday": ["p/c_allday.jpg", 4.5082], "nestle": ["p/c_nestle.jpg", 10.4762], "clutch": ["p/c_clutch.jpg", 6.3584], "sleep": ["p/c_sleep.jpg", 4.4898], "cut": ["p/c_cut.jpg", 4.0441], "monk": ["p/c_monk.jpg", 4.0892], "patch": ["p/c_patch.jpg", 3.6913], "snap": ["p/c_snap.jpg", 8.1481]};
+var GLOSS={"ratty": "像老鼠的", "ratty-looking": "樣子像老鼠", "diddled": "被騙", "boast": "吹噓", "telly": "電視", "beastly": "惡劣的", "rim": "邊緣", "monk": "和尚", "patches": "一塊塊", "forehead": "額頭", "nestling": "舒服地窩着", "clutching": "緊緊抓住", "snapped": "厲聲說", "grinning": "咧嘴笑", "twit": "蠢材", "squirt": "小鬼", "superglue": "強力膠", "appearance": "外表", "character": "性格", "dishonest": "不誠實", "boastful": "愛吹噓的", "elimination": "刪去法", "scissors": "較剪", "bald": "禿頭", "lice": "頭蝨", "brim": "帽邊", "punished": "受懲罰", "moustache": "小鬍子", "suppers": "晚餐", "diagram": "圖表", "bulge": "凸起"};
+(function(){
+ var $=function(i){return document.getElementById(i);};
+ var cur=0,token=0,playing=false,timers=[],SPEED=1,paused=true,pauseAt=Date.now(),stepT0=Date.now();
+ function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+ var RWCUR=null;
+ function segHTML(ai,r){var marks=[];
+   function add(ph,type,i){var from=0,idx;while((idx=ai.indexOf(ph,from))>=0){var ov=false;for(var q=0;q<marks.length;q++){if(idx<marks[q][1]&&idx+ph.length>marks[q][0])ov=true;}if(!ov){marks.push([idx,idx+ph.length,type,i]);return;}from=idx+1;}}
+   (r.swaps||[]).forEach(function(s,i){add(s[0],"s",i);});(r.keep||[]).forEach(function(k){add(k,"k",0);});
+   marks.sort(function(a,b){return a[0]-b[0];});var h="",p=0;
+   marks.forEach(function(m){h+=esc(ai.slice(p,m[0]));var x=esc(ai.slice(m[0],m[1]));h+=m[2]==="k"?'<span class="rk">'+x+'</span>':'<span class="rs" data-i="'+m[3]+'">'+x+'</span>';p=m[1];});
+   return h+esc(ai.slice(p));}
+ function overlap3(a,b){function tk(s){return s.toLowerCase().match(/[a-z0-9']+/g)||[];}var A=tk(a),B=tk(b),G={},n=0,i;for(i=0;i+2<A.length;i++)G[A[i]+" "+A[i+1]+" "+A[i+2]]=1;for(i=0;i+2<B.length;i++)if(G[B[i]+" "+B[i+1]+" "+B[i+2]])n++;return n;}
+ function cardHTML(s){var z=s[2]?'<div class="zh">原:'+esc(s[2])+'　→　新:'+esc(s[3]||"")+'</div>':'';
+   if(s[1].indexOf("(cut")===0)return '<div class="card"><s>'+esc(s[0])+'</s> ✂ <i>'+esc(s[1].slice(1,-1))+'</i>'+z+'</div>';
+   return '<div class="card"><s>'+esc(s[0])+'</s> → <b>'+esc(s[1])+'</b>'+z+'</div>';}
+ function rwOut(f){return f.rw.out||f.text;}
+ function rwFrame(f){var r=f.rw;RWCUR=f;
+   $("rw").innerHTML='<div class="rwh">Rewrite board<span>book sentence → your own words</span></div><div class="rwmoves"><span id="mv1">1 Keep the facts</span><span id="mv2">2 Swap the words</span><span id="mv3">3 Change the order</span><span id="mv4">4 Check</span></div>'+
+     '<div class="rwlab">The book says ('+esc(r.pg||"")+')</div><div class="rwai">'+segHTML(r.src,r)+'</div><div class="zh">'+esc(r.src_zh||"")+'</div><div class="rwsw" id="rwsw"></div>'+
+     '<div class="rwlab" id="rwol" style="display:none">Order</div><div class="rword" id="rword"></div><div class="zh" id="rwordzh"></div>'+
+     '<div class="rwlab">Your words</div><div class="rwres" id="rwres"></div><div class="zh" id="rwreszh"></div><div class="rwchk" id="rwchk"></div>';
+   $("rw").className="rw on";$("rw").scrollTop=0;return r.src;}
+ function rwCheck(src,text){var n=overlap3(src,text),c=$("rwchk");c.className="rwchk "+(n?"bad":"good");c.textContent=n?("✗ "+n+" places still have 3 words in a row from the book"):"✓ 3 words in a row from the book: 0. These are your words.";}
+ function rwBottom(){var b=$("rw");b.scrollTop=b.scrollHeight;}
+ function closeRw(){RWCUR=null;$("rw").className="rw";$("rw").innerHTML='<div class="rwempty"><b style="color:#1d70b8">Rewrite board</b>: when an answer comes from a book sentence, it is rebuilt here first: 1 keep the facts · 2 swap the words · 3 change the order · 4 check (0 copied 3-word chunks).<div class="zh">改寫板:答案來自書中句子時,先在這裏改寫:保留事實、換字、調次序、檢查(沒有連續三個字跟書一樣)。</div></div>';}
+ function showRewrite(f,my,done){var r=f.rw,src=rwFrame(f),i=0,out=rwOut(f);function stop(){return my!==token;}
+   later(function(){if(stop())return;$("mv1").className="on";document.querySelectorAll("#rw .rk").forEach(function(k){k.classList.add("on");});
+     later(function(){if(stop())return;$("mv1").className="";$("mv2").className="on";nextSwap();},900);},600);
+   function nextSwap(){if(stop())return;if(i>=r.swaps.length){$("mv2").className="";afterSwaps();return;}
+     var s=r.swaps[i],el=document.querySelector('#rw .rs[data-i="'+i+'"]');if(el)el.classList.add("cut");$("rwsw").insertAdjacentHTML("beforeend",cardHTML(s));rwBottom();i++;later(nextSwap,1100);}
+   function afterSwaps(){if(r.order){$("mv3").className="on";$("rwol").style.display="";$("rword").textContent=r.order;$("rwordzh").textContent=r.order_zh||"";rwBottom();later(typeRes,1100);}else{$("mv3").className="skip";typeRes();}}
+   function typeRes(){if(stop())return;$("mv3").className=r.order?"":"skip";var el=$("rwres"),j=0;
+     (function tk(){if(stop())return;el.textContent=out.slice(0,++j);if(j%12===1)rwBottom();if(j<out.length)later(tk,22);else later(function(){if(stop())return;$("mv4").className="on";rwCheck(r.src,out);$("rwreszh").textContent=f.zh||"";rwBottom();later(function(){if(stop())return;done($("rwres"));},1300);},400);})();}}
+ function showRewriteStatic(f){var r=f.rw;rwFrame(f);["mv1","mv2","mv4"].forEach(function(id){$(id).className="on";});$("mv3").className=r.order?"on":"skip";
+   document.querySelectorAll("#rw .rk").forEach(function(k){k.classList.add("on");});document.querySelectorAll("#rw .rs").forEach(function(k){k.classList.add("cut");});
+   $("rwsw").innerHTML=r.swaps.map(cardHTML).join("");if(r.order){$("rwol").style.display="";$("rword").textContent=r.order;$("rwordzh").textContent=r.order_zh||"";}
+   $("rwres").textContent=rwOut(f);rwCheck(r.src,rwOut(f));$("rwreszh").textContent=f.zh||"";}
+ function rwT(f){var r=f.rw;return 0.6+0.9+r.swaps.length*1.1+(r.order?1.1:0)+rwOut(f).length*0.022+0.4+1.3;}
+ function flyRect(ra,f,my,done){var a=$("an_"+f.id);if(!a||!ra.width){done();return;}var rb=a.getBoundingClientRect();var fl=document.createElement("div");fl.className="fly";var tx=rwOut(f);fl.textContent=tx.length>36?tx.slice(0,36)+"…":tx;fl.style.left=ra.left+"px";fl.style.top=ra.top+"px";document.body.appendChild(fl);
+   setTimeout(function(){fl.style.left=Math.max(6,rb.left-8)+"px";fl.style.top=(rb.top-6)+"px";},40);later(function(){fl.style.opacity="0";},900);later(function(){fl.remove();if(my===token)done();},1120);}
+ function escRe(s){return s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");}
+ var GKEYS=Object.keys(GLOSS).sort(function(a,b){return b.length-a.length;});
+ var GRE=GKEYS.length?new RegExp("\\b("+GKEYS.map(escRe).join("|")+")\\b","gi"):null;
+ function gloss(x){var e=esc(x);if(!GRE)return e;return e.replace(GRE,function(m){var z=GLOSS[m.toLowerCase()];return z?'<span class="gw" data-zh="'+esc(z)+'">'+m+'</span>':m;});}
+ var gtip=null;function showTip(g){if(!gtip){gtip=document.createElement("div");gtip.className="gtip";document.body.appendChild(gtip);}gtip.textContent=g.getAttribute("data-zh");gtip.style.display="block";var r=g.getBoundingClientRect();gtip.style.left=Math.min(innerWidth-gtip.offsetWidth-8,Math.max(8,r.left))+"px";gtip.style.top=(r.bottom+4)+"px";}
+ function hideTip(){if(gtip)gtip.style.display="none";}
+ document.addEventListener("mouseover",function(e){var g=e.target.closest&&e.target.closest(".gw");if(g)showTip(g);else hideTip();});
+ document.addEventListener("click",function(e){var g=e.target.closest&&e.target.closest(".gw");if(g){e.stopPropagation();showTip(g);}else hideTip();},true);
+ // textbook boxes
+ Object.keys(TB).forEach(function(pid){var pg=TB[pid];Object.keys(pg.boxes).forEach(function(k){var b=pg.boxes[k],d=document.createElement("div");d.className="box";d.id="tb_"+k;
+   d.style.left=(b[0]*100)+"%";d.style.top=(b[1]*100)+"%";d.style.width=((b[2]-b[0])*100)+"%";d.style.height=((b[3]-b[1])*100)+"%";$("st_"+pid).appendChild(d);});});
+ // workbook marks and answers
+ Object.keys(WB).forEach(function(pid){var pg=WB[pid];Object.keys(pg.marks||{}).forEach(function(k){var b=pg.marks[k],d=document.createElement("div");d.className="box";d.id="wm_"+k;
+   d.style.left=(b[0]*100)+"%";d.style.top=(b[1]*100)+"%";d.style.width=((b[2]-b[0])*100)+"%";d.style.height=((b[3]-b[1])*100)+"%";$("st_"+pid).appendChild(d);});});
+ var FILLS={},FSTEP={};
+ STEPS.forEach(function(s,i){(s.fills||[]).forEach(function(f){FILLS[f.id]=f;FSTEP[f.id]=i;
+   var b=f.box,d=document.createElement("div");d.className="ans"+(f.kind==="circle"?" circ":"");d.id="an_"+f.id;
+   d.style.left=(b[0]*100)+"%";d.style.top=(b[1]*100)+"%";d.style.width=((b[2]-b[0])*100)+"%";d.style.height=((b[3]-b[1])*100)+"%";
+   if(f.kind!=="circle")d.innerHTML='<span class="at"></span>';
+   d.addEventListener("click",function(e){e.stopPropagation();showExplain(f.id,d);});
+   $("st_"+s.wb).appendChild(d);});});
+ function sizeAns(pid,pw){var st=$("st_"+pid);if(!st)return;st.style.setProperty("--sw",pw+"px");var img=st.querySelector("img"),asp=(img.naturalHeight||1400)/(img.naturalWidth||1000);
+   var ctx=sizeAns.c||(sizeAns.c=document.createElement("canvas").getContext("2d"));ctx.font="100px Arial";
+   st.querySelectorAll(".ans").forEach(function(a){if(a.classList.contains("circ"))return;var f=FILLS[a.id.slice(3)];if(!f)return;var tw=ctx.measureText(f.text).width||1;
+     var r=Math.min((f.box[2]-f.box[0])*98/tw,(f.box[3]-f.box[1])*asp*1.25);a.style.fontSize="calc(var(--sw) * "+r.toFixed(5)+")";if(f.fs)a.style.fontSize="calc(var(--sw) * "+f.fs+")";if(f.lh)a.style.lineHeight="calc(var(--sw) * "+f.lh+")";if(f.ml){a.style.whiteSpace="pre";a.style.alignItems="flex-start";}});}
+ function later(fn,ms){var t={rem:ms/SPEED,start:Date.now(),id:0};t.go=function(){t.start=Date.now();t.id=setTimeout(function(){var i=timers.indexOf(t);if(i>=0)timers.splice(i,1);fn();},Math.max(0,t.rem));};timers.push(t);if(!paused)t.go();}
+ function freeze(){if(paused)return;paused=true;pauseAt=Date.now();timers.forEach(function(t){clearTimeout(t.id);t.rem-=Date.now()-t.start;});}
+ function unfreeze(){if(!paused)return;paused=false;stepT0+=Date.now()-pauseAt;timers.slice().forEach(function(t){t.go();});}
+ function clearAll(){timers.forEach(function(t){clearTimeout(t.id);});timers=[];document.querySelectorAll(".caret,.fly,.zoom,.zoomcap").forEach(function(c){c.remove();});closeEx();document.querySelectorAll(".ans.now").forEach(function(a){a.classList.remove("now");});}
+ function need(pid){var st=$("st_"+pid);if(!st)return;var im=st.querySelector("img");if(im&&!im.getAttribute("src")&&im.getAttribute("data-src"))im.setAttribute("src",im.getAttribute("data-src"));}function showStage(cam,pid){need(pid);document.querySelectorAll("#"+cam+" .stage").forEach(function(s){s.classList.toggle("on",s.id==="st_"+pid);});var i=-1;for(var q=0;q<STEPS.length;q++){if(q>=cur&&(STEPS[q].tb===pid||STEPS[q].wb===pid)){i=q;break;}}if(i<0)i=cur;for(var j=i+1;j<STEPS.length&&j<i+4;j++){if(STEPS[j].tb)need(STEPS[j].tb);need(STEPS[j].wb);}}
+ function focusCam(cam,pid,region){
+   var c=$(cam),st=$("st_"+pid);if(!st)return;var img=st.querySelector("img"),cw=c.clientWidth,ch=c.clientHeight;if(!cw||!ch)return;
+   var a=(img.naturalHeight||1400)/(img.naturalWidth||1000),x0=0,y0=0,x1=1,y1=1;
+   if(region){x0=Math.max(0,region[0]-.03);y0=Math.max(0,region[1]-.03);x1=Math.min(1,region[2]+.03);y1=Math.min(1,region[3]+.03);}
+   var sFit=Math.min(1,ch/(cw*a)),s=region?Math.min(1/(x1-x0),ch/((y1-y0)*cw*a)):sFit;s=Math.max(sFit,Math.min(s,3.4));
+   var pw=cw*s,ph=pw*a,tx=cw/2-(x0+x1)/2*pw,ty=ch/2-(y0+y1)/2*ph;
+   tx=pw<=cw?(cw-pw)/2:Math.min(0,Math.max(cw-pw,tx));ty=ph<=ch?(ch-ph)/2:Math.min(0,Math.max(ch-ph,ty));
+   st.style.width=pw+"px";st.style.transform="translate("+tx+"px,"+ty+"px)";
+   sizeAns(pid,pw);
+ }
+ function union(list){if(!list.length)return null;var r=[1,1,0,0];list.forEach(function(b){r[0]=Math.min(r[0],b[0]);r[1]=Math.min(r[1],b[1]);r[2]=Math.max(r[2],b[2]);r[3]=Math.max(r[3],b[3]);});return r;}
+ var lastT=null,lastW=null;
+ function setView(s){
+   document.querySelectorAll(".box").forEach(function(b){b.classList.remove("hl");b.classList.remove("flash");});
+   if(s.tb){showStage("tcam",s.tb);$("tbname").textContent=TB[s.tb].name;for(var j=STEPS.indexOf(s)-1;j>=0&&STEPS[j].tb===s.tb;j--){(STEPS[j].tbmark||[]).forEach(function(k){var e=$("tb_"+k);if(e)e.classList.add("hl");});}var tbs=(s.tbmark||[]).map(function(k){var e=$("tb_"+k);if(e)e.classList.add("hl");return TB[s.tb].boxes[k];}).filter(Boolean);
+     lastT=[s.tb,s.tbfocus||union(tbs)];focusCam("tcam",lastT[0],lastT[1]);}
+   (s.wbmark||[]).forEach(function(k){var e=$("wm_"+k);if(e)e.classList.add("hl");});
+   showStage("wcam",s.wb);$("wbname").textContent=WB[s.wb].name;lastW=[s.wb,s.wbfocus||union((s.fills||[]).map(function(f){return f.box;}))];focusCam("wcam",lastW[0],lastW[1]);
+ }
+ window.addEventListener("resize",function(){if(lastT)focusCam("tcam",lastT[0],lastT[1]);if(lastW)focusCam("wcam",lastW[0],lastW[1]);});
+ function putAns(f,full){var a=$("an_"+f.id);if(!a)return;if(f.kind==="circle"){a.classList.toggle("on",!!full);}else{a.querySelector(".at").textContent=full?f.text:"";}}
+ function fillInstant(n){Object.keys(FILLS).forEach(function(id){putAns(FILLS[id],FSTEP[id]<n);});}
+ var onBoard={};
+ function clearBoard(){Object.keys(onBoard).forEach(function(k){onBoard[k].remove();});onBoard={};$("bempty").style.display="";}
+ function addNote(f){if(onBoard[f.id])return;$("bempty").style.display="none";var n=document.createElement("div");n.className="note";
+   n.innerHTML='<i>'+esc(f.q||"")+'</i>'+esc(f.note||f.text);n.onclick=function(){locate(f.id);};$("board").appendChild(n);onBoard[f.id]=n;var bd=$("board");bd.scrollTop=bd.scrollHeight;}
+ function boardUpTo(n){clearBoard();for(var i=0;i<n;i++){var s=STEPS[i];(s.tbmark||[]).concat(s.wbmark||[]).forEach(function(k){if(MSTEP[k]===i)addEv(k,false);});(s.fills||[]).forEach(addNote);}}
+ function teach(text,zh,my,done){var t=$("teach"),tt=$("teachtext");t.classList.add("on");tt.textContent="";$("teachzh").textContent=zh||"";var i=0;
+   (function tk(){if(my!==token){t.classList.remove("on");return;}tt.textContent=text.slice(0,++i);if(i<text.length)later(tk,20);else later(function(){t.classList.remove("on");done();},900);})();}
+ function flyTo(fromEl,f,my,done){
+   var a=$("an_"+f.id);if(!fromEl||!a){done();return;}var ra=fromEl.getBoundingClientRect(),rb=a.getBoundingClientRect();if(!ra.width||!rb.width){done();return;}
+   var fl=document.createElement("div");fl.className="fly";fl.textContent=f.text.length>36?f.text.slice(0,36)+"…":f.text;fl.style.left=ra.left+"px";fl.style.top=ra.top+"px";document.body.appendChild(fl);
+   setTimeout(function(){fl.style.left=Math.max(6,rb.left-8)+"px";fl.style.top=(rb.top-6)+"px";},40);
+   later(function(){fl.style.opacity="0";},900);later(function(){fl.remove();if(my===token)done();},1120);
+ }
+ function typeAns(f,my,done){var a=$("an_"+f.id);if(!a){done();return;}a.classList.add("now");
+   if(f.kind==="circle"){a.classList.add("on");later(function(){a.classList.remove("now");done();},900);return;}
+   var sp=a.querySelector(".at"),i=0,caret=document.createElement("span");caret.className="caret";sp.after(caret);sp.textContent="";
+   (function tk(){if(my!==token){caret.remove();return;}sp.textContent=f.text.slice(0,++i);if(i<f.text.length)later(tk,f.text.length>40?14:45);else{caret.remove();later(function(){a.classList.remove("now");done();},300);}})();}
+
+ var KEYPAGE={};Object.keys(TB).forEach(function(pid){Object.keys(TB[pid].boxes).forEach(function(k){KEYPAGE[k]=[pid,TB[pid].boxes[k]];});});
+ Object.keys(WB).forEach(function(pid){Object.keys(WB[pid].marks||{}).forEach(function(k){KEYPAGE[k]=[pid,WB[pid].marks[k]];});});
+ var MSTEP={};STEPS.forEach(function(s,i){(s.tbmark||[]).concat(s.wbmark||[]).forEach(function(k){if(!(k in MSTEP))MSTEP[k]=i;});});
+ function markEl(k){return $("tb_"+k)||$("wm_"+k);}
+ function regionOf(k){need(KEYPAGE[k][0]);var kp=KEYPAGE[k],b=kp[1],img=$("st_"+kp[0]).querySelector("img"),w=b[2]-b[0],h=b[3]-b[1];
+   return {img:img,x:b[0],y:b[1],w:w,h:h,aspect:(w*(img.naturalWidth||1000))/(h*(img.naturalHeight||1400))};}
+ function paint(el,k){var cc=CROPS[k];if(cc){el.style.backgroundImage="url("+cc[0]+")";el.style.backgroundSize="100% 100%";el.style.backgroundPosition="0 0";return {aspect:cc[1]};}var r=regionOf(k);el.style.backgroundImage="url("+r.img.src+")";el.style.backgroundSize=(100/r.w)+"% auto";
+   el.style.backgroundPosition=(r.w>=1?0:r.x/(1-r.w)*100)+"% "+(r.h>=1?0:r.y/(1-r.h)*100)+"%";return r;}
+ function addEv(k,hidden){var id="ev_"+k;if(onBoard[id])return onBoard[id];$("bempty").style.display="none";
+   var n=document.createElement("div");n.className="note ev";var c=document.createElement("div");c.className="crop";var r=paint(c,k);c.style.paddingTop=(100/r.aspect)+"%";n.appendChild(c);
+   var L=LABEL[k]||[k,""];var lb=document.createElement("div");lb.innerHTML='<i style="background:#0b0c0c">book</i>'+esc(L[0])+(L[1]?'<span class="evz">'+esc(L[1])+'</span>':"");n.appendChild(lb);
+   if(hidden)n.style.visibility="hidden";n.onclick=function(){locateMark(k);};$("board").appendChild(n);onBoard[id]=n;return n;}
+ function zoomNote(k,my,done){
+   var bx=markEl(k),note=addEv(k,true),sr=bx?bx.getBoundingClientRect():null;
+   if(!sr||!sr.width){note.style.visibility="visible";done();return;}
+   var z=document.createElement("div");z.className="zoom";var r=paint(z,k);z.style.left=sr.left+"px";z.style.top=sr.top+"px";z.style.width=sr.width+"px";z.style.height=sr.height+"px";document.body.appendChild(z);
+   var W=Math.min(760,innerWidth*0.62),H=W/r.aspect;if(H>innerHeight*0.45){H=innerHeight*0.45;W=H*r.aspect;}
+   var L=LABEL[k]||[k,""];var cap=document.createElement("div");cap.className="zoomcap";cap.innerHTML=esc(L[0])+(L[1]?'<span class="zc">'+esc(L[1])+'</span>':"");cap.style.opacity="0";document.body.appendChild(cap);
+   setTimeout(function(){z.style.left=((innerWidth-W)/2)+"px";z.style.top=(innerHeight*0.2)+"px";z.style.width=W+"px";z.style.height=H+"px";},40);
+   later(function(){cap.style.left=((innerWidth-W)/2)+"px";cap.style.top=(innerHeight*0.2+H+14)+"px";cap.style.opacity="1";},600);
+   later(function(){cap.style.opacity="0";var bd=$("board");bd.scrollTop=note.offsetTop-bd.clientHeight+note.offsetHeight+20;var c=note.querySelector(".crop").getBoundingClientRect();
+     z.style.left=c.left+"px";z.style.top=c.top+"px";z.style.width=c.width+"px";z.style.height=c.height+"px";},2300);
+   later(function(){z.remove();cap.remove();note.style.visibility="visible";if(my===token)done();},2950);
+ }
+ function locateMark(k){setPlay(false);var kp=KEYPAGE[k];var cam=kp[0].charAt(0)==="t"?"tcam":"wcam";showStage(cam,kp[0]);
+   if(cam==="tcam"){lastT=[kp[0],kp[1]];$("tbname").textContent=TB[kp[0]].name;}else{lastW=[kp[0],kp[1]];$("wbname").textContent=WB[kp[0]].name;}
+   focusCam(cam,kp[0],kp[1]);var e=markEl(k);if(e){e.classList.add("flash");setTimeout(function(){e.classList.remove("flash");},5000);}}
+ function run(n,onDone){
+   clearAll();token++;var my=token;cur=Math.max(0,Math.min(STEPS.length-1,n));stepT0=Date.now();if(paused)pauseAt=stepT0;
+   var s=STEPS[cur];
+   $("tag").textContent=s.tag;$("sec").textContent=s.sec||"";$("say").innerHTML=gloss(s.say);$("sayzh").textContent=s.say_zh||"";$("num").textContent=cur+" / "+(STEPS.length-1);
+   $("prev").disabled=cur===0;$("next").disabled=cur===STEPS.length-1;
+   fillInstant(cur);boardUpTo(cur);setView(s);closeRw();if(typeof markMenu==="function")markMenu();$("teachtext").textContent=s.teach?"":"Watch the yellow box on the left, then see where the answer goes.";$("teachzh").textContent=s.teach?"":"留意左邊黃色框,再看答案去哪一格。";
+   later(function(){
+     if(my!==token)return;var k=0,fills=s.fills||[];
+     function finish(){if(onDone)later(function(){if(my===token)onDone();},1400);}
+     function nextFill(){
+       if(my!==token)return;if(k>=fills.length){finish();return;}
+       var f=fills[k++];
+       var go=function(){typeAns(f,my,function(){addNote(f);later(nextFill,250);});};
+       var fly=function(){if(f.rw){showRewrite(f,my,function(res){flyRect(res.getBoundingClientRect(),f,my,go);});return;}var from=f.from?($("tb_"+f.from)||$("wm_"+f.from)):null;if(from)flyTo(from,f,my,go);else go();};
+       if(f.teach)teach(f.teach,f.teach_zh,my,fly);else fly();
+     }
+     var nk=(s.tbmark||[]).concat(s.wbmark||[]).filter(function(k){return MSTEP[k]===cur&&LABEL[k];}),ni=0;
+     function nextZoom(){if(my!==token)return;if(ni<nk.length){zoomNote(nk[ni++],my,function(){later(nextZoom,200);});return;}if(s.teach)teach(s.teach,s.teach_zh,my,nextFill);else nextFill();}
+     nextZoom();
+   },900);
+ }
+ function closeEx(){var d=$("expop");if(d)d.remove();}
+ function showExplain(id,anchor){
+   var f=FILLS[id],ex=f.ex||{};if(FSTEP[id]>=cur&&!(FSTEP[id]===cur&&(f.kind==="circle"?anchor.classList.contains("on"):anchor.textContent))){closeEx();return;}
+   setPlay(false);closeEx();var d=document.createElement("div");d.className="expop";d.id="expop";
+   var h='<button class="exx" id="exx">✕</button><div class="exh">'+esc(f.q?f.q+": ":"")+esc(f.text)+'</div>';
+   if(f.zh)h+='<div class="exz">中文:'+esc(f.zh)+'</div>';
+   if(ex.why)h+='<div class="exl">Why this</div><div class="exw">'+esc(ex.why)+'</div>';
+   if(ex.why_zh)h+='<div class="exz">'+esc(ex.why_zh)+'</div>';
+   function li(o){return '<li>'+(Array.isArray(o)?esc(o[0])+' <span class="exzi">'+esc(o[1])+'</span>':esc(o))+'</li>';}
+   if(ex.other&&ex.other.length)h+='<div class="exl">Other choices (also OK)</div><ul class="exo">'+ex.other.map(li).join("")+'</ul>';
+   if(ex.avoid&&ex.avoid.length)h+='<div class="exl bad">Don\'t use</div><ul class="exa">'+ex.avoid.map(li).join("")+'</ul>';
+   d.innerHTML=h;document.body.appendChild(d);
+   var r=anchor.getBoundingClientRect(),W=d.offsetWidth,H=d.offsetHeight,x=Math.min(innerWidth-W-10,Math.max(10,r.left)),y=r.bottom+8;if(y+H>innerHeight-70)y=Math.max(10,r.top-H-8);
+   d.style.left=x+"px";d.style.top=y+"px";$("exx").onclick=function(e){e.stopPropagation();closeEx();};
+   if(f.rw)showRewriteStatic(f);
+   if(f.from){var e=$("tb_"+f.from)||$("wm_"+f.from);if(e){e.classList.add("flash");setTimeout(function(){e.classList.remove("flash");},4000);}}
+ }
+ document.addEventListener("click",function(e){var d=$("expop");if(d&&!d.contains(e.target))closeEx();});
+ function showMark(k,anchor){
+   setPlay(false);closeEx();var L=LABEL[k]||[k,""];
+   var uses=Object.keys(FILLS).map(function(i){return FILLS[i];}).filter(function(f){return f.from===k;});
+   var d=document.createElement("div");d.className="expop";d.id="expop";
+   var h='<button class="exx" id="exx">✕</button><div class="exh" style="color:#0b0c0c">'+esc(L[0])+'</div>';
+   if(L[1])h+='<div class="exz">中文:'+esc(L[1])+'</div>';
+   STEPS.forEach(function(ss){var mx=ss.markex&&ss.markex[k];if(mx){h+='<div class="exl">About this line 這一句</div><div class="exw">'+esc(mx.why)+'</div>'+(mx.why_zh?'<div class="exz">'+esc(mx.why_zh)+'</div>':'');}});var cs=STEPS[cur];if(cs&&(cs.tbmark||[]).concat(cs.wbmark||[]).indexOf(k)>=0)h+='<div class="exl">In this step</div><div class="exw">'+esc(cs.say||"")+'</div>'+(cs.say_zh?'<div class="exz">'+esc(cs.say_zh)+'</div>':"");
+   h+='<div class="exl">Answers that come from here</div>';
+   if(uses.length){uses.forEach(function(f){var ex=f.ex||{};
+     h+='<div class="exw">→ '+esc(f.q||"")+': <span style="color:#d4001e">'+esc(f.text)+'</span></div>'+(ex.why?'<div>'+esc(ex.why)+'</div>':'')+(ex.why_zh?'<div class="exz">'+esc(ex.why_zh)+'</div>':'')+'<button class="exgo" data-id="'+f.id+'">Show me this answer 看這個答案</button>';});}
+   else h+='<div class="exw">This is the part the question is about. Look here first, then read the question again.</div><div class="exz">這是題目在問的地方。先看這裡,再讀一次題目。</div>';
+   d.innerHTML=h;document.body.appendChild(d);
+   var r=anchor.getBoundingClientRect(),W=d.offsetWidth,H=d.offsetHeight,x=Math.min(innerWidth-W-10,Math.max(10,r.left)),y=r.bottom+8;if(y+H>innerHeight-70)y=Math.max(10,r.top-H-8);
+   d.style.left=x+"px";d.style.top=y+"px";$("exx").onclick=function(e){e.stopPropagation();closeEx();};
+   d.querySelectorAll(".exgo").forEach(function(b){b.onclick=function(e){e.stopPropagation();var id=b.getAttribute("data-id");closeEx();locate(id);};});
+ }
+ document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".box.hl,.box.flash");if(b)showMark(b.id.slice(3),b);});
+ function setBox(d,b){d.style.left=(b[0]*100)+"%";d.style.top=(b[2]*100)+"%";d.style.width=((b[1]-b[0])*100)+"%";d.style.height=((b[3]-b[2])*100)+"%";}
+ function placePop(d,anchor){document.body.appendChild(d);var r=anchor.getBoundingClientRect(),W=d.offsetWidth,H=d.offsetHeight,x=Math.min(innerWidth-W-10,Math.max(10,r.left)),y=r.bottom+8;if(y+H>innerHeight-70)y=Math.max(10,r.top-H-8);
+   d.style.left=x+"px";d.style.top=y+"px";var xb=d.querySelector("#exx");if(xb)xb.onclick=function(e){e.stopPropagation();closeEx();};
+   d.querySelectorAll(".exgo").forEach(function(b){b.onclick=function(e){e.stopPropagation();var id=b.getAttribute("data-id");closeEx();locate(id);};});}
+ function fillBlock(f){var ex=f.ex||{};return '<div class="exl">Answer '+esc(f.q||"")+'</div><div class="exw" style="color:#d4001e">'+esc(f.text)+'</div>'+(ex.why?'<div>'+esc(ex.why)+'</div>':'')+(ex.why_zh?'<div class="exz">'+esc(ex.why_zh)+'</div>':'')+'<button class="exgo" data-id="'+f.id+'">Show me this answer 看這個答案</button>';}
+ function showQ(si,anchor){setPlay(false);closeEx();var s=STEPS[si],d=document.createElement("div");d.className="expop";d.id="expop";
+   var h='<button class="exx" id="exx">✕</button><div class="exh" style="color:#0b0c0c">'+esc(s.tag)+'</div><div class="exw">'+esc(s.say||"")+'</div>'+(s.say_zh?'<div class="exz">'+esc(s.say_zh)+'</div>':"");
+   if(s.teach)h+='<div class="exl">Teacher says</div><div>'+esc(s.teach)+'</div>'+(s.teach_zh?'<div class="exz">'+esc(s.teach_zh)+'</div>':"");
+   (s.fills||[]).forEach(function(f){h+=fillBlock(f);});d.innerHTML=h;placePop(d,anchor);}
+ function showHot(si,hi,anchor){setPlay(false);closeEx();var hh=STEPS[si].hot[hi],f=hh.fill?FILLS[hh.fill]:null,d=document.createElement("div");d.className="expop";d.id="expop";
+   var h='<button class="exx" id="exx">✕</button><div class="exh" style="color:#0b0c0c">'+esc(hh.title)+'</div>';
+   if(hh.why)h+='<div class="exw">'+esc(hh.why)+'</div>'+(hh.why_zh?'<div class="exz">'+esc(hh.why_zh)+'</div>':"");
+   if(f)h+=fillBlock(f);d.innerHTML=h;placePop(d,anchor);}
+ STEPS.forEach(function(s,si){(s.hot||[]).forEach(function(hh,hi){var st=$("st_"+s.wb);if(!st)return;var d=document.createElement("div");d.className="hot";setBox(d,hh.box);d.setAttribute("data-si",si);d.setAttribute("data-hi",hi);st.querySelector("img").after(d);});});
+ STEPS.forEach(function(s,si){return;var st=$("st_"+s.wb);if(!st)return;var d=document.createElement("div");d.className="qhot";setBox(d,[s.wbfocus[0],s.wbfocus[2],s.wbfocus[1],s.wbfocus[3]]);d.setAttribute("data-si",si);st.querySelector("img").after(d);});
+ document.addEventListener("click",function(e){var t=e.target;if(!t.closest)return;var h=t.closest(".hot");if(h){showHot(+h.getAttribute("data-si"),+h.getAttribute("data-hi"),h);return;}var q=t.closest(".qhot");if(q)showQ(+q.getAttribute("data-si"),q);});
+ function locate(id){setPlay(false);var i=FSTEP[id];if(i>=cur)go(i+1);else{var s=STEPS[i];setView(s);}var a=$("an_"+id);if(a)setTimeout(function(){showExplain(id,a);},450);}
+ var ended=false;
+ function onStepDone(){if(cur>=STEPS.length-1){ended=true;setPlay(false);return;}go(cur+1);}
+ function go(n){ended=false;run(n,onStepDone);}
+ function setPlay(on){playing=on;$("play").textContent=on?"❚❚ Pause":"▶ Play";$("pp").textContent=on?"❚❚":"▶";if(on)unfreeze();else freeze();}
+ $("play").onclick=function(){if(playing)setPlay(false);else{if(ended)go(0);setPlay(true);}};
+ $("next").onclick=function(){go(cur+1);};$("prev").onclick=function(){go(cur-1);};
+ document.addEventListener("keydown",function(e){if(e.key==="ArrowRight")go(cur+1);if(e.key==="ArrowLeft")go(cur-1);if(e.key===" "){e.preventDefault();$("play").onclick();}});
+ var EST=STEPS.map(function(s,si){var t=2.3;(s.tbmark||[]).concat(s.wbmark||[]).forEach(function(k){if(MSTEP[k]===si&&LABEL[k])t+=3.15;});if(s.teach)t+=s.teach.length*0.02+0.9;(s.fills||[]).forEach(function(f){t+=0.25+(f.kind==="circle"?0.9:f.text.length*(f.text.length>40?0.014:0.045)+0.3);if(f.rw)t+=rwT(f)+1.15;else if(f.from)t+=1.12;if(f.teach)t+=f.teach.length*0.02+0.9;});t+=1.4;return Math.max(t,3.2);});
+ var START=[],TOTAL=0;EST.forEach(function(e){START.push(TOTAL);TOTAL+=e;});
+ var lastSec="";STEPS.forEach(function(s,i){if(!i)return;var k=document.createElement("div");k.className="tick";k.style.left=(START[i]/TOTAL*100)+"%";if(s.sec&&s.sec!==lastSec){var sp=document.createElement("span");sp.textContent=s.sec.charAt(0);k.appendChild(sp);k.style.background="#ffdd00";lastSec=s.sec;}$("track").appendChild(k);});
+ function fmt(s){s=Math.max(0,Math.floor(s));return("0"+Math.floor(s/60)).slice(-2)+":"+("0"+(s%60)).slice(-2);}
+ function nowT(){return START[cur]+Math.min(EST[cur],((paused?pauseAt:Date.now())-stepT0)/1000*SPEED);}
+ setInterval(function(){var t=nowT();$("fill").style.width=(t/TOTAL*100)+"%";$("knob").style.left=(t/TOTAL*100)+"%";$("ptime").textContent=fmt(t)+" / "+fmt(TOTAL);},200);
+ function seekFrac(f){var t=f*TOTAL,i=0;for(var j=0;j<START.length;j++)if(START[j]<=t)i=j;return i;}
+ var dragging=false;
+ function fracOf(e){var r=$("track").getBoundingClientRect();return Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));}
+ $("track").addEventListener("pointerdown",function(e){dragging=true;$("track").setPointerCapture(e.pointerId);var f=fracOf(e);$("knob").style.left=(f*100)+"%";});
+ $("track").addEventListener("pointermove",function(e){if(!dragging)return;var f=fracOf(e);$("knob").style.left=(f*100)+"%";$("ptime").textContent=fmt(f*TOTAL)+" / "+fmt(TOTAL);});
+ $("track").addEventListener("pointerup",function(e){if(!dragging)return;dragging=false;go(seekFrac(fracOf(e)));});
+ $("pp").onclick=function(){$("play").onclick();};
+ function setSpeed(v){var t=nowT();SPEED=v;stepT0=Date.now()-(t-START[cur])*1000/SPEED;if(paused)pauseAt=Date.now();
+   document.documentElement.style.setProperty("--tf",(0.9/SPEED)+"s");document.documentElement.style.setProperty("--tz",(0.6/SPEED)+"s");document.documentElement.style.setProperty("--tc",(0.8/SPEED)+"s");$("spd").value=String(v);$("spdv").textContent=v.toFixed(2)+"x";
+   try{localStorage.setItem("geo1_spd",String(v));}catch(e){}}
+ $("spd").oninput=function(){setSpeed(parseFloat($("spd").value));};
+ try{var sv=parseFloat(localStorage.getItem("geo1_spd"));if(sv>0)setSpeed(sv);}catch(e){}
+ function setZh(on){document.body.classList.toggle("zhon",on);$("zhbtn").classList.toggle("on",on);$("zhbtn").textContent=on?"中文 ✓":"中文";try{localStorage.setItem("hwv_zh",on?"1":"0");}catch(e){}}
+ $("zhbtn").onclick=function(){setZh(!document.body.classList.contains("zhon"));};
+ try{setZh(localStorage.getItem("hwv_zh")==="1");}catch(e){setZh(false);}
+ document.querySelectorAll(".stage img").forEach(function(im){im.addEventListener("load",function(){if(lastT)focusCam("tcam",lastT[0],lastT[1]);if(lastW)focusCam("wcam",lastW[0],lastW[1]);});});
+
+ var MENU=[];STEPS.forEach(function(s,i){if(s.menu)MENU.push([s.menu,s.menu_zh||"",i,s.mgrp||""]);});
+ function buildMenu(){var h="",g="";MENU.forEach(function(m,j){if(m[3]!==g){g=m[3];if(g)h+='<div class="qh">'+esc(g)+'</div>';}h+='<button data-i="'+m[2]+'" data-j="'+j+'">'+esc(m[0])+'<span class="qz">'+esc(m[1])+'</span></button>';});$("qmenu").innerHTML=h;
+   $("qmenu").querySelectorAll("button").forEach(function(b){b.onclick=function(e){e.stopPropagation();$("qmenu").classList.remove("open");go(+b.getAttribute("data-i"));setPlay(true);};});}
+ function markMenu(){var k=-1;MENU.forEach(function(m,j){if(m[2]<=cur)k=j;});$("qmenu").querySelectorAll("button").forEach(function(b){b.classList.toggle("cur",+b.getAttribute("data-j")===k);});}
+ buildMenu();
+ $("qbtn").onclick=function(e){e.stopPropagation();var m=$("qmenu");if(m.classList.contains("open")){m.classList.remove("open");return;}closeEx();markMenu();m.classList.add("open");var r=$("qbtn").getBoundingClientRect();m.style.top=(r.bottom+6)+"px";m.style.left=Math.max(8,Math.min(innerWidth-m.offsetWidth-8,r.left))+"px";var c=m.querySelector("button.cur");if(c)m.scrollTop=Math.max(0,c.offsetTop-60);};
+ document.addEventListener("click",function(e){var m=$("qmenu");if(m.classList.contains("open")&&!m.contains(e.target)&&e.target!==$("qbtn"))m.classList.remove("open");});
+ function showRwHelp(anchor){setPlay(false);closeEx();var d=document.createElement("div");d.className="expop";d.id="expop";
+   d.innerHTML='<button class="exx" id="exx">✕</button><div class="exh" style="color:#1d70b8">Rewrite board</div><div class="exw">Any answer taken from a book sentence is rebuilt here, so you never copy the book word for word:</div><div>1 Keep the facts (names, things) · 2 Swap the other words · 3 Change the order · 4 Check: no 3 words in a row the same as the book.</div><div class="exz">從書拿的句子都在這裏改寫:保留事實、換其他字、調次序、檢查沒有連續三個字跟書一樣。這樣老師不會覺得你照抄。</div>';
+   placePop(d,anchor);}
+ $("rw").addEventListener("click",function(e){if(e.target.closest&&e.target.closest(".gw"))return;e.stopPropagation();if(RWCUR&&$("an_"+RWCUR.id)&&$("an_"+RWCUR.id).textContent){var f=RWCUR;showExplain(f.id,$("rw"));}else showRwHelp($("rw"));});
+ closeRw();
+ go(0);
+})();
+</script>
+</body>
+</html>
