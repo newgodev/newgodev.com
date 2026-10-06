@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script>if(location.protocol==="http:")location.replace("https://"+location.host+location.pathname+location.search);</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feeling Good Vocabulary Quiz · 26 yellow words</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+HK:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#14171c;--muted:#5b6270;--blue:#1f6feb;--pur:#7a3fd1;--grn:#1a8a3a;--red:#d42a3c;--amb:#b97800;--soft:#f3f6fb;--line:#dfe5ee}
+*{box-sizing:border-box;touch-action:manipulation}
+html{color-scheme:light;background:#fff;font-size:20px;scrollbar-width:thin;scrollbar-color:#7ea6ec #eef3fb}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:#eef3fb;border-radius:999px}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#9cc0ff,#5d8fe8);border-radius:999px;border:2px solid #eef3fb}
+::-webkit-scrollbar-thumb:hover{background:#4a7fdc}
+::-webkit-scrollbar-button{display:none;width:0;height:0}
+::-webkit-scrollbar-corner{background:#eef3fb}
+body{margin:0;background:#fff;color:var(--ink);font-family:"Inter",Arial,"Noto Sans HK",sans-serif;min-height:100vh;overflow-x:hidden}
+button{font-family:inherit}
+.top{position:sticky;top:0;z-index:5;background:#fff;border-bottom:4px solid var(--blue);display:flex;align-items:center;gap:12px;padding:9px 18px}
+.brand{font-weight:900;color:var(--blue);font-size:.95rem;white-space:nowrap}
+.ttl{font-weight:700;font-size:.8rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp{flex:1}
+.pill{font-weight:900;background:var(--soft);color:var(--blue);border-radius:999px;padding:4px 12px;font-size:.8rem;white-space:nowrap}
+.wrap{max-width:920px;margin:0 auto;padding:18px 16px 40px}
+.screen{display:none}
+.screen.on{display:block;animation:in .3s}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.hero{text-align:center;padding:22px 6px 6px}
+.kicker{font-weight:700;color:var(--muted);font-size:.8rem;letter-spacing:.3px}
+h1{font-size:2rem;line-height:1.2;margin:10px 0 8px}
+.sub{color:var(--muted);margin:6px 0 16px;font-size:.92rem;line-height:1.5}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:12px 0 6px}
+@media (max-width:760px){.modes{grid-template-columns:1fr}}
+.mode{border:2px solid var(--line);border-radius:14px;padding:14px;background:#fff;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:5px;transition:border-color .15s,transform .1s}
+.mode:hover{border-color:#9cc0ff}
+.mode:active{transform:translateY(2px)}
+.mode .mt{font-weight:900;font-size:1rem;color:var(--blue)}
+.mode .md{font-size:.78rem;color:var(--muted);line-height:1.4}
+.mode.main{border-color:var(--blue);background:#f5f9ff}
+.tag{display:inline-block;font-weight:900;font-size:.75rem;border-radius:999px;padding:4px 12px;white-space:nowrap}
+.tag.k{background:#e7f0ff;color:var(--blue)}
+.btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.big{font-weight:900;font-size:1.05rem;border:0;border-radius:12px;padding:13px 30px;background:var(--blue);color:#fff;cursor:pointer;box-shadow:0 5px 0 #1450b0;transition:transform .08s}
+.big:active{transform:translateY(3px);box-shadow:0 2px 0 #1450b0}
+.ghost{font-weight:900;font-size:1rem;border:2px solid var(--blue);border-radius:12px;padding:11px 22px;background:#fff;color:var(--blue);cursor:pointer}
+.foot{text-align:center;color:var(--muted);font-size:.72rem;margin-top:18px}
+.qhead{display:flex;align-items:center;gap:10px;margin:4px 0 10px;flex-wrap:wrap}
+.qn{font-weight:900;color:var(--muted);font-size:.9rem}
+.dots{display:flex;gap:5px;margin:0 0 14px}
+.dot{flex:1;height:8px;border-radius:999px;background:#e8edf5}
+.dot.cur{background:#9cc0ff}
+.dot.ok{background:var(--grn)}
+.dot.no{background:var(--red)}
+.qbox{font-size:1.3rem;font-weight:700;line-height:1.55;padding:22px 20px;border-radius:14px;background:var(--soft);border:2px solid var(--line);min-height:96px}
+.blank{display:inline-block;min-width:4.2em;border-bottom:3px solid var(--ink);margin:0 4px;transform:translateY(-3px)}
+.fill{font-weight:900;border-radius:6px;padding:0 6px;margin:0 2px}
+.fill.ok{color:var(--grn);background:#e3f5e9}
+.fill.bad{color:var(--red);background:#fde8ea;text-decoration:line-through}
+.ans{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+@media (max-width:700px){.ans{grid-template-columns:1fr}h1{font-size:1.55rem}.qbox{font-size:1.12rem}}
+.a{position:relative;display:flex;align-items:center;gap:12px;text-align:left;border:2px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);font-weight:700;font-size:1rem;padding:14px 14px;min-height:66px;cursor:pointer;transition:transform .1s,background .2s,border-color .2s,opacity .2s}
+.a:hover{border-color:#9cc0ff;background:#f7faff}
+.a:active{transform:translateY(2px)}
+.a .lt{flex:none;width:34px;height:34px;border-radius:9px;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+.a0 .lt{background:#d42a3c}.a1 .lt{background:#1f6feb}.a2 .lt{background:#b97800}.a3 .lt{background:#1a8a3a}
+.a .tx{flex:1}
+.a .mk{flex:none;font-weight:900;font-size:1.2rem}
+.a.right{border-color:var(--grn);background:#e3f5e9;opacity:1}
+.a.wrong{border-color:var(--red);background:#fde8ea;animation:shake .4s}
+.a.dim{opacity:.45}
+.a:disabled{cursor:default}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.fb{display:none;margin-top:16px;border-radius:12px;padding:12px 16px;border-left:7px solid var(--grn);background:#f1faf4}
+.fb.on{display:block;animation:in .25s}
+.fb.bad{border-left-color:var(--red);background:#fff4f5}
+.fbh{font-weight:900;font-size:1.05rem;margin-bottom:4px}
+.fb.good .fbh{color:var(--grn)}
+.fb.bad .fbh{color:var(--red)}
+.why{font-size:.95rem;line-height:1.5}
+.zh{font-size:.92rem;color:var(--muted);margin-top:3px;line-height:1.5}
+.next{text-align:right;margin-top:14px;min-height:56px}
+.wl{width:100%;border-collapse:collapse;font-size:.8rem}
+.wl th{text-align:left;color:var(--muted);font-size:.72rem;border-bottom:2px solid var(--line);padding:6px 6px}
+.wl td{border-bottom:1px solid var(--line);padding:7px 6px;vertical-align:top;line-height:1.4}
+.wl td.n{color:var(--muted);font-weight:900;white-space:nowrap}
+.wl td.w{font-weight:900;color:var(--blue);white-space:nowrap}
+.wl td.t{color:var(--muted);font-size:.76rem}
+.res{text-align:center;padding:6px 0 4px}
+.scoreBig{font-size:2.6rem;font-weight:900;line-height:1.1;margin:6px 0 2px}
+.scoreBig small{font-size:1.2rem;color:var(--muted);margin-left:10px}
+.target{display:inline-block;font-weight:900;border-radius:999px;padding:5px 16px;font-size:.85rem}
+.target.hit{background:#e3f5e9;color:var(--grn)}
+.target.miss{background:#fff2d6;color:var(--amb)}
+.when{color:var(--muted);font-size:.72rem;margin-top:6px}
+.review{list-style:none;margin:12px 0 14px;padding:0}
+.review li{display:flex;align-items:flex-start;gap:8px;padding:6px 8px;border-bottom:1px solid var(--line);font-size:.78rem;line-height:1.45}
+.review .num{flex:none;font-weight:900;color:var(--muted);width:1.8em}
+.review .mk{flex:none;font-weight:900;width:1.1em}
+.review li.ok .mk{color:var(--grn)}
+.review li.no .mk{color:var(--red)}
+.review .rq{flex:1}
+.review .fill{padding:0 4px}
+</style>
+</head>
+<body>
+<div class="top">
+  <span class="brand">English</span>
+  <span class="ttl">Longman Edge Unit 1 Feeling Good · yellow words only</span>
+  <span class="sp"></span>
+  <span class="pill" id="pill">26 words</span>
+</div>
+<div class="wrap">
+
+<section class="screen on" id="sStart">
+  <div class="hero">
+    <div class="kicker">English UT2 · Thu 8 Oct · Longman Edge Unit 1 “Feeling Good” · 26 yellow words</div>
+    <h1>Feeling Good Vocabulary Quiz</h1>
+    <p class="sub">Tap an answer. Wrong? You see why your choice is wrong, then the answer, the meaning and a spelling tip.<br>答錯即刻講你揀嗰個錯喺邊,再講答案、中文意思同串字方法。</p>
+  </div>
+  <div class="modes">
+    <button class="mode main" id="mMix" type="button"><span class="mt">Mixed · 10 questions</span><span class="md">Meaning, Chinese, spelling and sentence questions, all mixed.</span></button>
+    <button class="mode" id="mSpell" type="button"><span class="mt">Spelling drill · all 26</span><span class="md">Pick the correct spelling of every word — the quiz wants the full word, spelled right.</span></button>
+    <button class="mode" id="mZh" type="button"><span class="mt">Chinese → English · all 26</span><span class="md">See the Chinese, pick the English term.</span></button>
+  </div>
+  <div class="btns">
+    <button class="ghost" id="notesBtn" type="button">Word list 生字表</button>
+  </div>
+  <div class="foot">Every new round mixes the questions again. Write the words exactly like the list (e.g. drive someone nuts, a vicious cycle).</div>
+</section>
+
+<section class="screen" id="sNotes">
+  <table class="wl" id="wl"></table>
+  <div class="btns" style="margin-top:16px">
+    <button class="big" id="notesGo" type="button">Start mixed quiz</button>
+    <button class="ghost" id="notesBack" type="button">Back</button>
+  </div>
+</section>
+
+<section class="screen" id="sQ">
+  <div class="qhead">
+    <span class="qn" id="qn"></span>
+    <span class="tag k" id="qtag"></span>
+  </div>
+  <div class="dots" id="dots"></div>
+  <div class="qbox" id="qt"></div>
+  <div class="ans" id="ans"></div>
+  <div class="fb" id="fb"></div>
+  <div class="next"><button class="big" id="nx" type="button" style="visibility:hidden">Next →</button></div>
+</section>
+
+<section class="screen" id="sEnd">
+  <div class="res">
+    <div class="kicker" id="rk"></div>
+    <div class="scoreBig"><span id="rs"></span><small id="rp"></small></div>
+    <div class="target" id="rt"></div>
+    <div class="when" id="rw"></div>
+  </div>
+  <ol class="review" id="rv"></ol>
+  <div class="btns">
+    <button class="big" id="again" type="button">New round</button>
+    <button class="ghost" id="home" type="button">All modes</button>
+  </div>
+</section>
+
+</div>
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id);};
+
+// n = number on the teacher's list; w = spelling exactly as on the list
+var WORDS=[
+{
+"n": 1,
+"w": "confused",
+"pos": "adj.",
+"gr": "adj",
+"zh": "困惑的;搞不清楚的",
+"m": "not able to understand something or think clearly",
+"clue": "睇唔明、搞唔清楚",
+"ctx": "I read the question three times but I still didn't understand it. I was totally ___.",
+"tip": "con · fus · ed — con + fuse + d — only ONE s; starts with con-, not com-.",
+"sp": [
+"confussed",
+"comfused",
+"confued",
+"confuesd",
+"confusd",
+"confuzed",
+"conffused"
+],
+"spr": {
+"confussed": "多咗一個 s:con-fu-s-ed 只有一個 s",
+"comfused": "開頭係 con-,唔係 com-",
+"confued": "漏咗 s",
+"confuesd": "e 同 s 調轉咗位",
+"confusd": "漏咗 e:fuse 個 e 要留",
+"confuzed": "中間係 s,唔係 z",
+"conffused": "多咗一個 f"
+},
+"ex": [
+"frustrated",
+"stressed",
+"frazzled",
+"overwhelmed",
+"depressed",
+"down in the dumps"
+]
+},
+{
+"n": 2,
+"w": "depressed",
+"pos": "adj.",
+"gr": "adj",
+"zh": "抑鬱的;非常沮喪的",
+"m": "very unhappy for a long time, with no hope or energy",
+"clue": "長時間好唔開心、冇希望冇精神",
+"ctx": "Since his dog died, he has felt ___ for months and has lost interest in everything.",
+"tip": "de · press · ed — de + press + ed — press has double s; starts with de-.",
+"sp": [
+"depresed",
+"dipressed",
+"depresssed",
+"depressd",
+"deppressed",
+"depreesed",
+"depressid"
+],
+"spr": {
+"depresed": "漏咗一個 s:press 有兩個 s",
+"dipressed": "開頭係 de-,唔係 di-",
+"depresssed": "三個 s,多咗一個",
+"depressd": "漏咗 e",
+"deppressed": "多咗一個 p",
+"depreesed": "e 同 s 錯咗位",
+"depressid": "尾係 -ed,唔係 -id"
+},
+"ex": [
+"down in the dumps",
+"worthless",
+"pessimistic",
+"stressed",
+"overwhelmed",
+"frustrated",
+"frazzled",
+"confused"
+]
+},
+{
+"n": 6,
+"w": "frazzled",
+"pos": "adj.",
+"gr": "adj",
+"zh": "疲憊不堪的;身心交瘁、心煩意亂的",
+"m": "tired and nervous because you have too much to do",
+"clue": "做嘢太多,攰到神經緊張",
+"ctx": "After a long day of tests, rehearsals and tutoring, she came home looking tired and ___.",
+"tip": "fra · zz · led — f-r-a-z-z-l-e-d — double z, like a tired brain going ‘zz’.",
+"sp": [
+"frazled",
+"frazzeled",
+"frassled",
+"frazzlled",
+"frizzled",
+"frazzld",
+"fazzled"
+],
+"spr": {
+"frazled": "漏咗一個 z:要兩個 z",
+"frazzeled": "多咗 e:係 -zzled,唔係 -zzeled",
+"frassled": "係 zz,唔係 ss",
+"frazzlled": "多咗一個 l",
+"frizzled": "係 fra-,唔係 fri-",
+"frazzld": "漏咗 e",
+"fazzled": "漏咗 r"
+},
+"ex": [
+"stressed",
+"overwhelmed",
+"depressed",
+"frustrated",
+"confused",
+"down in the dumps",
+"worthless",
+"pessimistic"
+]
+},
+{
+"n": 7,
+"w": "frustrated",
+"pos": "adj.",
+"gr": "adj",
+"zh": "沮喪的;挫敗、氣餒的",
+"m": "annoyed or upset because you cannot do or get what you want",
+"clue": "想做做唔到,好煩好氣",
+"ctx": "He tried ten times but still couldn't solve the puzzle, so he felt ___ and threw it on the floor.",
+"tip": "frus · trat · ed — frus + trat + ed — TWO r's: fRus-tRat-ed.",
+"sp": [
+"frustated",
+"fustrated",
+"frustraited",
+"frustratd",
+"frusterated",
+"frustreted",
+"frrustrated"
+],
+"spr": {
+"frustated": "漏咗中間個 r:frus-TRAT-ed",
+"fustrated": "漏咗第一個 r:FRus-",
+"frustraited": "係 -trated,唔係 -traited",
+"frustratd": "漏咗 e",
+"frusterated": "冇 e:frus-trat-ed,唔係 frus-ter-ated",
+"frustreted": "係 trat,唔係 tret",
+"frrustrated": "多咗一個 r"
+},
+"ex": [
+"stressed",
+"frazzled",
+"confused",
+"depressed",
+"overwhelmed",
+"down in the dumps",
+"worthless",
+"pessimistic"
+]
+},
+{
+"n": 8,
+"w": "grateful",
+"pos": "adj.",
+"gr": "adj",
+"zh": "感激的;感恩的",
+"m": "feeling thankful for something someone has done or given",
+"clue": "感謝、感恩",
+"ctx": "My classmates helped me a lot when I broke my arm. I am very ___ to them.",
+"tip": "grate · ful — grate + ful — NOT ‘great’; -ful has only one l.",
+"sp": [
+"greatful",
+"gratefull",
+"graitful",
+"gratful",
+"greatfull",
+"gratefel",
+"grateflu"
+],
+"spr": {
+"greatful": "唔係 great:係 g-r-a-t-e",
+"gratefull": "-ful 得一個 l",
+"graitful": "係 grate,唔係 grait",
+"gratful": "漏咗中間個 e",
+"greatfull": "兩樣都錯:grate + ful",
+"gratefel": "尾係 -ful",
+"grateflu": "尾 u 同 l 調轉咗"
+},
+"ex": [
+"empathetic",
+"optimistic"
+]
+},
+{
+"n": 9,
+"w": "optimistic",
+"pos": "adj.",
+"gr": "adj",
+"zh": "樂觀的",
+"m": "believing that good things will happen in the future",
+"clue": "覺得將來會好",
+"ctx": "Even though we lost the first game, our captain stayed ___ and believed we could still win the league.",
+"tip": "op · ti · mis · tic — opti + mis + tic — you OPT for the good side; ends in -tic.",
+"sp": [
+"optimestic",
+"optomistic",
+"optimistik",
+"optimisitc",
+"optmistic",
+"optimisstic",
+"optimystic"
+],
+"spr": {
+"optimestic": "係 -mis-,唔係 -mes-",
+"optomistic": "係 opti-,唔係 opto-",
+"optimistik": "尾係 -tic",
+"optimisitc": "尾 t 同 i 調轉咗",
+"optmistic": "漏咗 i",
+"optimisstic": "多咗一個 s",
+"optimystic": "係 i,唔係 y"
+},
+"ex": [
+"grateful",
+"empathetic"
+]
+},
+{
+"n": 10,
+"w": "overwhelmed",
+"pos": "adj.",
+"gr": "adj",
+"zh": "不知所措的;(事情太多)應付不了的",
+"m": "having so much to deal with that you cannot cope",
+"clue": "太多嘢,應付唔嚟",
+"ctx": "With five tests and two projects in the same week, I felt ___ and didn't know where to start.",
+"tip": "over · whelm · ed — over + w-h-e-l-m + ed — don't forget the h after w.",
+"sp": [
+"overwelmed",
+"overwhelmd",
+"overhwelmed",
+"overwhellmed",
+"overwhelemed",
+"overwhemled",
+"overwealmed"
+],
+"spr": {
+"overwelmed": "漏咗 h:w-h-elm",
+"overwhelmd": "漏咗 e",
+"overhwelmed": "h 同 w 調轉咗",
+"overwhellmed": "多咗一個 l",
+"overwhelemed": "多咗一個 e",
+"overwhemled": "l 同 m 調轉咗",
+"overwealmed": "係 whelm,唔係 wealm"
+},
+"ex": [
+"stressed",
+"frazzled",
+"confused",
+"frustrated",
+"depressed",
+"pessimistic",
+"down in the dumps"
+]
+},
+{
+"n": 11,
+"w": "pessimistic",
+"pos": "adj.",
+"gr": "adj",
+"zh": "悲觀的",
+"m": "expecting bad things to happen",
+"clue": "覺得將來會差、凡事諗最壞",
+"ctx": "He always expects the worst. Before every test he says, ‘I'm going to fail.’ He is very ___.",
+"tip": "pes · si · mis · tic — pe + ss + i + mis + tic — double s at the start, single m.",
+"sp": [
+"pesimistic",
+"pessimestic",
+"pessamistic",
+"pessimistik",
+"pessimmistic",
+"pesimmistic",
+"pessimisitc"
+],
+"spr": {
+"pesimistic": "漏咗一個 s:pe-ss-i",
+"pessimestic": "係 -mis-,唔係 -mes-",
+"pessamistic": "係 i,唔係 a",
+"pessimistik": "尾係 -tic",
+"pessimmistic": "多咗一個 m",
+"pesimmistic": "s 同 m 數量調轉咗:兩個 s,一個 m",
+"pessimisitc": "尾 t 同 i 調轉咗"
+},
+"ex": [
+"depressed",
+"stressed",
+"worthless",
+"down in the dumps",
+"confused",
+"overwhelmed",
+"frazzled",
+"frustrated"
+]
+},
+{
+"n": 13,
+"w": "stressed",
+"pos": "adj.",
+"gr": "adj",
+"zh": "有壓力的;緊張的",
+"m": "worried and nervous because of problems or pressure",
+"clue": "有壓力、擔心緊張",
+"ctx": "Many students feel ___ out because of the pressure of exams.",
+"tip": "stress · ed — s-t-r-e-s-s (double s) + ed.",
+"sp": [
+"stresed",
+"stressd",
+"stresst",
+"streesed",
+"stresssed",
+"strassed",
+"sterssed"
+],
+"spr": {
+"stresed": "漏咗一個 s:stress 有兩個 s",
+"stressd": "漏咗 e",
+"stresst": "尾係 -ed,唔係 -t",
+"streesed": "係 e-ss,唔係 ee-s",
+"stresssed": "三個 s,多咗一個",
+"strassed": "係 e,唔係 a",
+"sterssed": "r 同 e 調轉咗"
+},
+"ex": [
+"overwhelmed",
+"frazzled",
+"frustrated",
+"depressed",
+"confused"
+]
+},
+{
+"n": 14,
+"w": "worthless",
+"pos": "adj.",
+"gr": "adj",
+"zh": "毫無價值的;(覺得自己)沒用的",
+"m": "feeling you have no value or are not useful",
+"clue": "覺得自己冇價值、冇用",
+"ctx": "When nobody wanted him in their group, he felt ___, as if he was no good at anything.",
+"tip": "worth · less — worth + less (= without worth) — two s at the end.",
+"sp": [
+"worthles",
+"wortless",
+"worthlass",
+"worthlees",
+"worhtless",
+"wothless",
+"werthless"
+],
+"spr": {
+"worthles": "-less 要兩個 s",
+"wortless": "漏咗 h:wor-TH",
+"worthlass": "係 -less,唔係 -lass",
+"worthlees": "係 -less,唔係 -lees",
+"worhtless": "h 同 t 調轉咗",
+"wothless": "漏咗 r",
+"werthless": "係 o,唔係 e"
+},
+"ex": [
+"depressed",
+"down in the dumps",
+"frustrated",
+"pessimistic",
+"stressed"
+]
+},
+{
+"n": 15,
+"w": "count your blessings",
+"pos": "phrase",
+"gr": "verb",
+"zh": "數算自己擁有的福氣;想想自己幸運的地方",
+"m": "think about the good things you have instead of complaining",
+"clue": "諗吓自己擁有嘅好嘢,唔好淨係抱怨",
+"ctx": "Instead of complaining about what you don't have, you should ___ and think of all the good things in your life.",
+"tip": "count · your · bless · ings — bless + ings — double s, and blessings ends in -s (many good things).",
+"sp": [
+"count your blesings",
+"count your blessing",
+"count you blessings",
+"count your blesssings",
+"cont your blessings",
+"count your blessins",
+"count your blessigns"
+],
+"spr": {
+"count your blesings": "漏咗一個 s:bless 有兩個 s",
+"count your blessing": "漏咗尾個 s:要眾數 blessings",
+"count you blessings": "係 your,唔係 you",
+"count your blesssings": "三個 s,多咗一個",
+"cont your blessings": "漏咗 u:c-o-u-n-t",
+"count your blessins": "漏咗 g",
+"count your blessigns": "g 同 n 調轉咗"
+},
+"ex": [
+"meditate",
+"spend time in nature",
+"look forward to"
+]
+},
+{
+"n": 18,
+"w": "engage in physical activities",
+"pos": "phrase",
+"gr": "verb",
+"zh": "參與體能活動;做運動",
+"m": "do sports and exercise that move your body",
+"clue": "做運動、郁身體",
+"ctx": "Doctors say teenagers should ___ such as running, swimming or basketball for at least an hour a day.",
+"tip": "en · gage / in / phys · i · cal / ac · tiv · i · ties — physical = ph (f sound) + y; activity → activities (y → ies); preposition in.",
+"sp": [
+"engage in physical activitys",
+"engage in phisical activities",
+"engage in fysical activities",
+"engage on physical activities",
+"engauge in physical activities",
+"engage in physcial activities",
+"engage in physical activity"
+],
+"spr": {
+"engage in physical activitys": "activity 變眾數:y → ies",
+"engage in phisical activities": "係 ph-y-,唔係 ph-i-",
+"engage in fysical activities": "係 ph,唔係 f",
+"engage on physical activities": "介詞係 in",
+"engauge in physical activities": "engage 冇 u",
+"engage in physcial activities": "i 同 c 調轉咗:phys-i-cal",
+"engage in physical activity": "漏咗眾數:字表寫 activities"
+},
+"ex": [
+"spend time in nature",
+"meditate",
+"unwind"
+]
+},
+{
+"n": 20,
+"w": "meditate",
+"pos": "v.",
+"gr": "verb",
+"zh": "冥想;靜坐",
+"m": "sit quietly and relax your mind, often focusing on your breathing",
+"clue": "靜靜坐低、專心呼吸、清空個腦",
+"ctx": "Every morning my aunt sits quietly with her eyes closed and focuses on her breathing. She likes to ___.",
+"tip": "med · i · tate — med + i + tate — not ‘mediate’ (調解): there's a t after medi-.",
+"sp": [
+"mediate",
+"medetate",
+"meditait",
+"meditat",
+"medditate",
+"meditte",
+"maditate"
+],
+"spr": {
+"mediate": "漏咗 t:mediate 係另一個字(調解)",
+"medetate": "係 medi-,唔係 mede-",
+"meditait": "尾係 -tate",
+"meditat": "漏咗尾個 e",
+"medditate": "多咗一個 d",
+"meditte": "漏咗 a",
+"maditate": "係 e,唔係 a"
+},
+"ex": [
+"unwind",
+"count your blessings",
+"spend time in nature",
+"alleviate"
+]
+},
+{
+"n": 21,
+"w": "spend time in nature",
+"pos": "phrase",
+"gr": "verb",
+"zh": "走進大自然;在大自然中度過時間",
+"m": "be outdoors in places like parks, forests, beaches or mountains",
+"clue": "去公園、山、海灘等大自然地方",
+"ctx": "To feel calmer, you can ___: go hiking in the country parks or walk along the beach.",
+"tip": "spend / time / in / na · ture — nature = na + ture (like picture); no ‘the’ before nature.",
+"sp": [
+"spend time in the nature",
+"spend time at nature",
+"spend time in natur",
+"spend time in natrue",
+"spend times in nature",
+"spand time in nature",
+"spend time on nature"
+],
+"spr": {
+"spend time in the nature": "nature 前面唔加 the",
+"spend time at nature": "介詞係 in",
+"spend time in natur": "漏咗尾個 e:-ture",
+"spend time in natrue": "u 同 r 調轉咗",
+"spend times in nature": "time 唔加 s(唔可數)",
+"spand time in nature": "係 spend,唔係 spand",
+"spend time on nature": "介詞係 in"
+},
+"ex": [
+"engage in physical activities",
+"meditate",
+"unwind",
+"count your blessings"
+]
+},
+{
+"n": 23,
+"w": "a vicious cycle",
+"pos": "collocation",
+"gr": "noun",
+"zh": "惡性循環",
+"m": "a situation where one bad thing causes another, which then makes the first one worse",
+"clue": "一件壞事引起另一件,再令第一件更差,轉來轉去",
+"ctx": "I'm stressed, so I can't sleep; because I can't sleep, I'm even more stressed. It's ___.",
+"tip": "a / vi · cious / cy · cle — vicious = vi + cious (like delicious); cycle = c-y-c-l-e (like bicycle); keep ‘a’.",
+"sp": [
+"a viscious cycle",
+"a vicious cicle",
+"a vicous cycle",
+"a vicious cylce",
+"a vicius cycle",
+"a visious cycle",
+"vicious cycle"
+],
+"spr": {
+"a viscious cycle": "冇 s:vi-cious",
+"a vicious cicle": "係 cy,唔係 ci(同 bicycle 一樣)",
+"a vicous cycle": "漏咗 i:-cious",
+"a vicious cylce": "l 同 c 調轉咗:cy-cle",
+"a vicius cycle": "漏咗 o",
+"a visious cycle": "係 c,唔係 s",
+"vicious cycle": "漏咗 a:字表寫 a vicious cycle"
+},
+"ex": []
+},
+{
+"n": 25,
+"w": "down in the dumps",
+"pos": "collocation",
+"gr": "adj",
+"zh": "悶悶不樂;情緒低落",
+"m": "feeling sad and unhappy (informal)",
+"clue": "今日唔開心、情緒低落",
+"ctx": "Cheer up! Why are you so ___ today? Did something bad happen?",
+"tip": "down / in / the / dumps — four words: down in the dumps — dumps ends in -s.",
+"sp": [
+"down in the dump",
+"down in a dumps",
+"down at the dumps",
+"down in the dumbs",
+"down in dumps",
+"dawn in the dumps",
+"down in the damps"
+],
+"spr": {
+"down in the dump": "漏咗尾個 s:dumps",
+"down in a dumps": "係 the,唔係 a",
+"down at the dumps": "介詞係 in",
+"down in the dumbs": "係 p,唔係 b",
+"down in dumps": "漏咗 the",
+"dawn in the dumps": "係 down(低落),唔係 dawn(黎明)",
+"down in the damps": "係 u,唔係 a"
+},
+"ex": [
+"depressed",
+"stressed",
+"worthless",
+"frustrated",
+"pessimistic",
+"confused",
+"overwhelmed",
+"frazzled"
+]
+},
+{
+"n": 26,
+"w": "drive someone nuts",
+"pos": "collocation",
+"gr": "verb",
+"zh": "令某人抓狂;煩到發瘋",
+"m": "make someone very annoyed",
+"clue": "好煩、煩到抓狂",
+"ctx": "My little brother keeps tapping his pencil on the table while I study. It is enough to ___.",
+"tip": "drive / some · one / nuts — someone is ONE word; nuts ends in -s.",
+"sp": [
+"drive some one nuts",
+"drive somone nuts",
+"drive someone nut",
+"drive someone nots",
+"derive someone nuts",
+"drive sameone nuts",
+"drive someone nutts"
+],
+"spr": {
+"drive some one nuts": "someone 係一個字,中間冇空格",
+"drive somone nuts": "漏咗 e:some + one",
+"drive someone nut": "漏咗尾個 s:nuts",
+"drive someone nots": "係 u,唔係 o",
+"derive someone nuts": "係 drive,唔係 derive(得出)",
+"drive sameone nuts": "係 o,唔係 a",
+"drive someone nutts": "得一個 t"
+},
+"ex": [
+"put someone on edge"
+]
+},
+{
+"n": 29,
+"w": "put someone on edge",
+"pos": "collocation",
+"gr": "verb",
+"zh": "令某人緊張不安",
+"m": "make someone nervous and unable to relax",
+"clue": "令人緊張、唔安樂",
+"ctx": "The strange footsteps outside the window late at night were enough to ___.",
+"tip": "put / some · one / on / edge — edge = e-d-g-e (like bridge); on edge, no ‘the’.",
+"sp": [
+"put someone on egde",
+"put someone on the edge",
+"put someone in edge",
+"put somone on edge",
+"put some one on edge",
+"put someone at edge",
+"put someone on eage"
+],
+"spr": {
+"put someone on egde": "d 同 g 調轉咗:e-d-g-e",
+"put someone on the edge": "冇 the:on edge",
+"put someone in edge": "介詞係 on",
+"put somone on edge": "漏咗 e:some + one",
+"put some one on edge": "someone 係一個字",
+"put someone at edge": "介詞係 on",
+"put someone on eage": "係 dge,唔係 age"
+},
+"ex": [
+"drive someone nuts"
+]
+},
+{
+"n": 30,
+"w": "alleviate",
+"pos": "v.",
+"gr": "verb",
+"zh": "減輕;紓緩",
+"m": "make pain, stress or a problem less serious",
+"clue": "減輕(痛、壓力、問題)",
+"ctx": "This medicine can ___ the pain in your back, but it can't cure the problem.",
+"tip": "al · le · vi · ate — a + ll + e + vi + ate — double l, then e: all-e-vi-ate.",
+"sp": [
+"aleviate",
+"alliviate",
+"alleveate",
+"alleviat",
+"elleviate",
+"allievate",
+"alleviete"
+],
+"spr": {
+"aleviate": "漏咗一個 l:a-ll-e",
+"alliviate": "第二格係 e,唔係 i:all-E-viate",
+"alleveate": "係 vi,唔係 ve",
+"alleviat": "漏咗尾個 e",
+"elleviate": "開頭係 a",
+"allievate": "次序錯咗:all-e-vi-ate",
+"alleviete": "係 -ate,唔係 -ete"
+},
+"ex": [
+"unwind",
+"meditate"
+]
+},
+{
+"n": 33,
+"w": "unwind",
+"pos": "v.",
+"gr": "verb",
+"zh": "放鬆;鬆弛下來",
+"m": "relax after work or stress",
+"clue": "做完嘢 / 有壓力之後放鬆",
+"ctx": "After a long, busy week, I like to ___ by taking a hot bath and watching a film.",
+"tip": "un · wind — un + wind (like the wind) — six letters.",
+"sp": [
+"unwine",
+"unwhind",
+"unwin",
+"unwinde",
+"onwind",
+"unwiend",
+"unwynd"
+],
+"spr": {
+"unwine": "係 wind,唔係 wine",
+"unwhind": "冇 h",
+"unwin": "漏咗 d",
+"unwinde": "尾冇 e",
+"onwind": "係 un-,唔係 on-",
+"unwiend": "冇 e:w-i-n-d",
+"unwynd": "係 i,唔係 y"
+},
+"ex": [
+"meditate",
+"spend time in nature",
+"engage in physical activities",
+"count your blessings"
+]
+},
+{
+"n": 35,
+"w": "look forward to",
+"pos": "phrasal v.",
+"gr": "verb",
+"zh": "期待;盼望",
+"m": "feel happy and excited about something that is going to happen",
+"clue": "好想將來件事快啲嚟",
+"ctx": "I can't wait for the school trip next week! I really ___ it.",
+"tip": "look / for · ward / to — forward = for + ward (no s); then to + noun / -ing.",
+"sp": [
+"look foward to",
+"look forword to",
+"look forwards to",
+"look forward",
+"look froward to",
+"look forward too",
+"luck forward to"
+],
+"spr": {
+"look foward to": "漏咗 r:for-ward",
+"look forword to": "係 -ward,唔係 -word",
+"look forwards to": "forward 冇 s",
+"look forward": "漏咗 to",
+"look froward to": "r 同 o 調轉咗",
+"look forward too": "係 to,唔係 too",
+"luck forward to": "係 look,唔係 luck"
+},
+"ex": []
+},
+{
+"n": 42,
+"w": "strategies",
+"pos": "n.",
+"gr": "noun",
+"zh": "策略;方法(strategy 的眾數)",
+"m": "plans or ways of doing something to reach a goal",
+"clue": "方法、計劃(眾數)",
+"ctx": "Taking deep breaths and making a to-do list are two useful ___ for coping with stress.",
+"tip": "strat · e · gies — strategy → strategies (y → ies); strat + e + gies.",
+"sp": [
+"stratigies",
+"strategys",
+"stratergies",
+"strageties",
+"stategies",
+"strategeis",
+"strattegies"
+],
+"spr": {
+"stratigies": "係 strat-e-gies,唔係 -i-",
+"strategys": "y 變 ies",
+"stratergies": "冇 r:strat-e-gies",
+"strageties": "g 同 t 調轉咗",
+"stategies": "漏咗 r:STR-ategies",
+"strategeis": "尾 i 同 e 調轉咗:-gies",
+"strattegies": "得一個 t"
+},
+"ex": []
+},
+{
+"n": 46,
+"w": "attainable",
+"pos": "adj.",
+"gr": "adj",
+"zh": "可達到的;做得到的",
+"m": "possible to achieve",
+"clue": "做得到、達得到",
+"ctx": "Don't set goals that are impossible. Set goals that are ___, such as studying for 30 minutes a day.",
+"tip": "at · tain · a · ble — a + tt + ain + able: double t; attain + able (not -ible).",
+"sp": [
+"atainable",
+"attainible",
+"attanable",
+"attainabel",
+"attaineble",
+"atteinable",
+"attainble"
+],
+"spr": {
+"atainable": "漏咗一個 t:a-tt-ain",
+"attainible": "尾係 -able,唔係 -ible",
+"attanable": "漏咗 i:-tain-",
+"attainabel": "尾 l 同 e 調轉咗",
+"attaineble": "係 -able,唔係 -eble",
+"atteinable": "係 ai,唔係 ei",
+"attainble": "漏咗 a:attain + able"
+},
+"ex": []
+},
+{
+"n": 49,
+"w": "empathetic",
+"pos": "adj.",
+"gr": "adj",
+"zh": "有同理心的;體諒別人感受的",
+"m": "able to understand and share other people's feelings",
+"clue": "明白、體諒人哋嘅感受",
+"ctx": "She always listens carefully and understands how her friends feel. She is very ___.",
+"tip": "em · pa · thet · ic — empathy → empa + thet + ic; not ‘emphatic’ (強調的).",
+"sp": [
+"emphatic",
+"empathatic",
+"empathetik",
+"empethetic",
+"empatetic",
+"empathettic",
+"emphathetic"
+],
+"spr": {
+"emphatic": "emphatic 係另一個字(強調的)",
+"empathatic": "係 -thetic,唔係 -thatic",
+"empathetik": "尾係 -tic",
+"empethetic": "係 pa,唔係 pe",
+"empatetic": "漏咗 h:-thetic",
+"empathettic": "得一個 t",
+"emphathetic": "多咗一個 h:em-pa,唔係 em-pha"
+},
+"ex": [
+"grateful",
+"optimistic"
+]
+},
+{
+"n": 51,
+"w": "hilarious",
+"pos": "adj.",
+"gr": "adj",
+"zh": "非常好笑的;爆笑的",
+"m": "extremely funny",
+"clue": "好好笑、笑到停唔到",
+"ctx": "The film was so ___ that the whole cinema couldn't stop laughing.",
+"tip": "hi · lar · i · ous — hi + lar + i + ous — one l, one r; ends in -ious.",
+"sp": [
+"hillarious",
+"hilarous",
+"hilarius",
+"hilerious",
+"hilarios",
+"hilariuos",
+"hylarious"
+],
+"spr": {
+"hillarious": "得一個 l",
+"hilarous": "漏咗 i:-ious",
+"hilarius": "漏咗 o:-ious",
+"hilerious": "係 a,唔係 e",
+"hilarios": "漏咗 u",
+"hilariuos": "尾 o 同 u 調轉咗",
+"hylarious": "係 i,唔係 y"
+},
+"ex": []
+},
+{
+"n": 54,
+"w": "susceptible",
+"pos": "adj.",
+"gr": "adj",
+"zh": "易受影響的;容易患(病)的",
+"m": "easily affected or harmed by something",
+"clue": "容易受影響 / 容易病(+ to)",
+"ctx": "People who don't get enough sleep are more ___ to colds and flu.",
+"tip": "sus · cep · ti · ble — sus + cep + ti + ble — sc in the middle, ends in -tible (not -table).",
+"sp": [
+"susceptable",
+"suseptible",
+"suscepible",
+"susceptibel",
+"succeptible",
+"susseptible",
+"susceptile"
+],
+"spr": {
+"susceptable": "尾係 -tible,唔係 -table",
+"suseptible": "漏咗 c:sus-Cep",
+"suscepible": "漏咗 t:-tible",
+"susceptibel": "尾 l 同 e 調轉咗",
+"succeptible": "係 sus-,唔係 suc-",
+"susseptible": "係 sc,唔係 ss",
+"susceptile": "漏咗 b"
+},
+"ex": []
+}
+];
+var TYPES={def:"Meaning",zh2en:"Chinese → English",en2zh:"English → Chinese",spell:"Spelling",ctx:"Sentence"};
+var GRZH={adj:"形容詞",verb:"動詞(片語)",noun:"名詞"};
+function byW(w){for(var k=0;k<WORDS.length;k++)if(WORDS[k].w===w)return WORDS[k];return null;}
+function byZh(z){for(var k=0;k<WORDS.length;k++)if(WORDS[k].zh===z)return WORDS[k];return null;}
+function reason(q,o){var x=byW(q.g),y;
+ if(q.t==="spell"){return (x.spr[o]||"串法唔啱")+"。正確串法:"+x.w+"("+x.tip.split(" — ")[0]+")。";}
+ if(q.t==="en2zh"){y=byZh(o);return "嗰個係「"+y.w+"」嘅意思("+y.m+")。"+x.w+" 解「"+x.zh+"」。";}
+ y=byW(o);var s="「"+y.w+"」解「"+y.zh+"」("+y.m+")。";
+ if(q.t==="def")s+="但題目講嘅係「"+x.clue+"」,即係 "+x.w+"。";
+ if(q.t==="zh2en")s+="「"+x.zh+"」對應嘅英文係 "+x.w+"。";
+ if(q.t==="ctx"){s+="但呢句講嘅係「"+x.clue+"」,所以要用 "+x.w+"。";if(y.gr&&x.gr&&y.gr!==x.gr)s+="而且文法唔夾:呢個空格要"+GRZH[x.gr]+","+y.w+" 係"+GRZH[y.gr]+"。";}
+ return s;}
+
+function others(x){ var ex=(x.ex||[]).concat([x.w]); return WORDS.filter(function(y){return ex.indexOf(y.w)<0;}).map(function(y){return y.w;}); }
+function make(x,t){
+  var base={g:x.w,t:t,why:x.w+" ("+x.pos+", No. "+x.n+") = "+x.m+".",zh:x.zh+"。串法:"+x.tip};
+  if(t==="def") { base.q="Which term means: “"+x.m+"”?"; base.a=x.w; base.w=others(x); }
+  if(t==="zh2en"){ base.q="“"+x.zh+"” — which English term?"; base.a=x.w; base.w=others(x); }
+  if(t==="en2zh"){ base.q="What does “"+x.w+"” mean?"; base.a=x.zh; base.w=WORDS.filter(function(y){return y.w!==x.w && (x.ex||[]).indexOf(y.w)<0;}).map(function(y){return y.zh;}); }
+  if(t==="spell"){ base.q="Which spelling is correct?  ("+x.zh+")"; base.a=x.w; base.w=x.sp.slice(); }
+  if(t==="ctx")  { base.q=x.ctx; base.a=x.w; base.w=others(x); }
+  return base;
+}
+var MODE={
+  mix:{n:"Mixed",make:function(){ var K=["def","zh2en","en2zh","spell","ctx"]; return shuffle(WORDS).slice(0,10).map(function(x){ return make(x,K[Math.floor(Math.random()*K.length)]); }); }},
+  spell:{n:"Spelling drill",make:function(){ return shuffle(WORDS).map(function(x){ return make(x,"spell"); }); }},
+  zh:{n:"Chinese → English",make:function(){ return shuffle(WORDS).map(function(x){ return make(x,"zh2en"); }); }}
+};
+
+function shuffle(a){a=a.slice();for(var k=a.length-1;k>0;k--){var j=Math.floor(Math.random()*(k+1));var t=a[k];a[k]=a[j];a[j]=t;}return a;}
+function lenOf(s){return s.length;}
+function buildOpts(q){
+  var best=null,bestScore=-1e9;
+  for(var t=0;t<40;t++){
+    var w=shuffle(q.w).slice(0,3), all=w.concat([q.a]);
+    var mx=Math.max.apply(null,all.map(lenOf)), mn=Math.min.apply(null,all.map(lenOf));
+    var wmax=Math.max.apply(null,w.map(lenOf));
+    var sc=(wmax>=q.a.length?10:0)-(mx/mn);
+    if(sc>bestScore){bestScore=sc;best=all;}
+    if(wmax>=q.a.length&&mx/mn<=1.6) break;
+  }
+  return shuffle(best);
+}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function fillHTML(q,pick,ok){
+  if(ok) return '<span class="fill ok">'+esc(pick)+'</span>';
+  return '<span class="fill bad">'+esc(pick)+'</span><span class="fill ok">'+esc(q.a)+'</span>';
+}
+function stemHTML(q,fill){ var h=esc(q.q); if(h.indexOf("___")<0) return h; return h.replace("___",fill==null?'<span class="blank">&nbsp;</span>':fill); }
+
+var mode="mix",set=[],i=0,score=0,answered=false,cf=null;
+function show(id){
+  if(id!=="sEnd"&&cf&&cf.parentNode){cf.parentNode.removeChild(cf);cf=null;}
+  ["sStart","sNotes","sQ","sEnd"].forEach(function(s){$(s).classList.toggle("on",s===id);});
+  window.scrollTo(0,0);
+}
+function dots(){
+  var d=$("dots"); d.innerHTML="";
+  set.forEach(function(it,j){ var s=document.createElement("span"); s.className="dot"+(it.ok===true?" ok":it.ok===false?" no":(j===i?" cur":"")); d.appendChild(s); });
+}
+function start(m){ mode=m; set=MODE[m].make().map(function(q){return {q:q};}); i=0; score=0; ask(); }
+function ask(){
+  answered=false;
+  if(document.activeElement&&document.activeElement.blur) document.activeElement.blur();
+  var it=set[i], q=it.q;
+  $("qn").textContent="Question "+(i+1)+" / "+set.length;
+  $("qtag").textContent=TYPES[q.t];
+  $("qt").innerHTML=stemHTML(q,null);
+  if(!it.opts) it.opts=buildOpts(q);
+  var box=$("ans"); box.innerHTML="";
+  it.opts.forEach(function(o,k){
+    var b=document.createElement("button"); b.type="button"; b.className="a a"+k;
+    b.innerHTML='<span class="lt">'+"ABCD".charAt(k)+'</span><span class="tx">'+esc(o)+'</span><span class="mk"></span>';
+    b.addEventListener("click",function(){pick(k);});
+    box.appendChild(b);
+  });
+  $("fb").className="fb"; $("fb").innerHTML=""; $("nx").style.visibility="hidden";
+  $("pill").textContent="Score "+score+" / "+i;
+  dots(); show("sQ");
+}
+function pick(k){
+  if(answered) return; answered=true;
+  var it=set[i], q=it.q, o=it.opts[k], ok=(o===q.a);
+  if(ok) score++;
+  it.pick=o; it.ok=ok;
+  var btns=$("ans").querySelectorAll(".a");
+  for(var j=0;j<btns.length;j++){
+    var b=btns[j], t=it.opts[j];
+    if(t===q.a){ b.classList.add("right"); b.querySelector(".mk").textContent="✓"; }
+    else if(j===k){ b.classList.add("wrong"); b.querySelector(".mk").textContent="✗"; }
+    else b.classList.add("dim");
+    b.disabled=true;
+  }
+  if(q.q.indexOf("___")>=0) $("qt").innerHTML=stemHTML(q,fillHTML(q,o,ok));
+  var fb=$("fb");
+  fb.className="fb on "+(ok?"good":"bad");
+  it.rs=ok?"":reason(q,o);
+  fb.innerHTML=ok?('<div class="fbh">✓ Correct!</div><div class="why">'+esc(q.why)+'</div><div class="zh">'+esc(q.zh)+'</div>')
+    :('<div class="fbh">✗ 你揀了「'+esc(o)+'」</div><div class="why">'+esc(it.rs)+'</div><div class="fbh" style="margin-top:8px;font-size:.95rem">Answer: '+esc(q.a)+'</div><div class="why">'+esc(q.why)+'</div><div class="zh">'+esc(q.zh)+'</div>');
+  $("nx").textContent=(i+1>=set.length)?"See my result →":"Next →";
+  $("nx").style.visibility="visible";
+  $("pill").textContent="Score "+score+" / "+(i+1);
+  dots();
+}
+function next(){ if(!answered) return; i++; if(i>=set.length) end(); else ask(); }
+function pad(x){return (x<10?"0":"")+x;}
+function end(){
+  var n=set.length, pct=Math.round(score/n*100);
+  $("rk").textContent="Feeling Good Vocabulary · "+MODE[mode].n;
+  $("rs").textContent=score+" / "+n; $("rp").textContent=pct+"%";
+  $("rt").className="target "+(pct>=90?"hit":"miss");
+  $("rt").textContent=pct>=90?"90% or above = ready for the quiz ✓":"Below 90%: read why, then do a new round.";
+  var d=new Date();
+  $("rw").textContent="Completed "+d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+" "+pad(d.getHours())+":"+pad(d.getMinutes());
+  var rv=$("rv"); rv.innerHTML="";
+  set.forEach(function(it,j){
+    var q=it.q, li=document.createElement("li"), body;
+    li.className=it.ok?"ok":"no";
+    if(q.q.indexOf("___")>=0) body=stemHTML(q,fillHTML(q,it.pick,it.ok));
+    else body=esc(q.q)+" → "+fillHTML(q,it.pick,it.ok);
+    li.innerHTML='<span class="num">'+(j+1)+'.</span><span class="mk">'+(it.ok?"✓":"✗")+'</span><span class="rq">'+body+(it.ok?'':'<div class="t" style="color:#5b6270;font-size:.72rem">你揀了「'+esc(it.pick)+'」:'+esc(it.rs||"")+'</div>')+'</span>';
+    rv.appendChild(li);
+  });
+  $("pill").textContent="Score "+score+" / "+n;
+  show("sEnd");
+  if(pct>=90) confetti();
+}
+function confetti(){
+  var c=document.createElement("canvas"), W=window.innerWidth, H=window.innerHeight;
+  c.width=W; c.height=H; c.style.cssText="position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:50";
+  document.body.appendChild(c); cf=c;
+  var x=c.getContext("2d"), cols=["#1f6feb","#d42a3c","#b97800","#1a8a3a","#7a3fd1"], P=[];
+  for(var k=0;k<140;k++) P.push({x:Math.random()*W,y:-20-Math.random()*H*0.5,vx:(Math.random()-0.5)*3,vy:2+Math.random()*4,r:4+Math.random()*5,c:cols[k%cols.length],a:Math.random()*6});
+  var t0=Date.now();
+  (function step(){
+    var t=Date.now()-t0; x.clearRect(0,0,W,H);
+    P.forEach(function(p){ p.x+=p.vx; p.y+=p.vy; p.a+=0.1; x.fillStyle=p.c; x.save(); x.translate(p.x,p.y); x.rotate(p.a); x.fillRect(-p.r,-p.r/2,p.r*2,p.r); x.restore(); });
+    if(t<2600) requestAnimationFrame(step); else if(c.parentNode){ c.parentNode.removeChild(c); if(cf===c) cf=null; }
+  })();
+}
+function wordList(){
+  var h='<tr><th>No.</th><th>Word (spell it like this)</th><th>中文</th><th>Meaning · spelling tip</th></tr>';var ORD=[13, 10, 6, 7, 1, 26, 29, 25, 2, 14, 11, 23, 54, 9, 8, 15, 35, 51, 49, 42, 30, 33, 20, 18, 21, 46];
+  WORDS.slice().sort(function(a,b){return a.n-b.n;}).forEach(function(x){ h+='<tr><td class="n">'+x.n+'</td><td class="w">'+esc(x.w)+'<div class="t">'+esc(x.pos)+'</div></td><td>'+esc(x.zh)+'</td><td>'+esc(x.m)+'<div class="t">'+esc(x.tip)+'</div></td></tr>'; });
+  $("wl").innerHTML=h;
+}
+wordList();
+$("mMix").addEventListener("click",function(){start("mix");});
+$("mSpell").addEventListener("click",function(){start("spell");});
+$("mZh").addEventListener("click",function(){start("zh");});
+$("notesBtn").addEventListener("click",function(){show("sNotes");});
+$("notesGo").addEventListener("click",function(){start("mix");});
+$("notesBack").addEventListener("click",function(){show("sStart");});
+$("again").addEventListener("click",function(){start(mode);});
+$("home").addEventListener("click",function(){$("pill").textContent="26 words";show("sStart");});
+$("nx").addEventListener("click",next);
+var lastTap=0;
+document.addEventListener("touchend",function(e){ var now=Date.now(); if(now-lastTap<350 && !e.target.closest("button")){ e.preventDefault(); } lastTap=now; },{passive:false});
+document.addEventListener("keydown",function(e){
+  if(!$("sQ").classList.contains("on")) return;
+  if(!answered&&/^[1-4]$/.test(e.key)){ var k=+e.key-1; if(set[i]&&k<set[i].opts.length) pick(k); }
+  else if(answered&&(e.key==="Enter"||e.key==="ArrowRight")){ e.preventDefault(); next(); }
+});
+})();
+</script>
+</body>
+</html>
