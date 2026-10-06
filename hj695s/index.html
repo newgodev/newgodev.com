@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<script>if(location.protocol==="http:")location.replace("https://"+location.host+location.pathname+location.search);</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adelaide 版 · Feeling Good 26 字 · 50 題</title>
+<style>
+:root{--ink:#14171c;--muted:#5b6270;--blue:#1f6feb;--acc:#2563eb;--pur:#7a3fd1;--grn:#1a8a3a;--red:#d42a3c;--amb:#b97800;--teal:#0f8b8d;--soft:#f3f6fb;--line:#dfe5ee}
+*{box-sizing:border-box}
+html{color-scheme:light;background:#fff;font-size:20px;scrollbar-width:thin;scrollbar-color:#93c5fd #eef4fd}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:#eef4fd;border-radius:999px}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#93c5fd,#3b82f6);border-radius:999px;border:2px solid #eef4fd}
+::-webkit-scrollbar-button{display:none;width:0;height:0}
+body{margin:0;background:#fff;color:var(--ink);font-family:"Segoe UI","Inter",Arial,"Microsoft JhengHei","Noto Sans HK","Noto Sans CJK TC","PMingLiU-ExtB","MingLiU-ExtB",sans-serif;min-height:100vh;overflow-x:hidden}
+button{font-family:inherit}
+.nm{color:var(--acc);font-weight:900}
+.top{position:sticky;top:0;z-index:5;background:#fff;border-bottom:4px solid var(--acc);display:flex;align-items:center;gap:12px;padding:9px 18px}
+.brand{font-weight:900;color:var(--acc);font-size:.95rem;white-space:nowrap}
+.ttl{font-weight:700;font-size:.8rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp{flex:1}
+.pill{font-weight:900;background:#e0ecff;color:var(--acc);border-radius:999px;padding:4px 12px;font-size:.8rem;white-space:nowrap}
+.wrap{max-width:940px;margin:0 auto;padding:18px 16px 40px}
+.screen{display:none}
+.screen.on{display:block;animation:in .3s}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.hero{text-align:center;padding:10px 6px 6px}
+.kicker{font-weight:700;color:var(--muted);font-size:.8rem}
+h1{font-size:1.9rem;line-height:1.25;margin:10px 0 6px}
+.sub{color:var(--muted);margin:4px 0 14px;font-size:.92rem;line-height:1.5}
+.bounce{display:flex;justify-content:center;gap:14px;font-size:1.7rem;margin:4px 0 2px}
+.bounce span{display:inline-block;animation:hop 1.6s ease-in-out infinite}
+@keyframes hop{0%,100%{transform:translateY(0)}30%{transform:translateY(-12px) rotate(-6deg)}60%{transform:translateY(0) rotate(4deg)}}
+.levels{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:14px 0 6px}
+@media (max-width:760px){.levels{grid-template-columns:1fr 1fr}}
+.lv{border:2px solid var(--line);border-radius:14px;padding:12px;background:#fff;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:4px;transition:border-color .15s,transform .1s}
+.lv:hover{border-color:#93c5fd;transform:translateY(-2px)}
+.lv:active{transform:translateY(2px)}
+.lv .ln{font-weight:900;font-size:.72rem;color:var(--muted)}
+.lv .lt{font-weight:900;font-size:.95rem}
+.lv .lb{font-size:.72rem;color:var(--muted)}
+.lv.l1 .lt{color:var(--blue)}.lv.l2 .lt{color:var(--teal)}.lv.l3 .lt{color:var(--pur)}.lv.l4 .lt{color:var(--amb)}.lv.boss .lt{color:var(--acc)}
+.lv .best{font-weight:900;font-size:.75rem;color:var(--grn)}
+.gchips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0 2px}
+.gchip{font-weight:900;font-size:.75rem;border:2px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;cursor:pointer;color:var(--ink)}
+.gchip:hover{border-color:#93c5fd}
+.gchip.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.big{font-weight:900;font-size:1.05rem;border:0;border-radius:12px;padding:13px 28px;background:var(--acc);color:#fff;cursor:pointer;box-shadow:0 5px 0 #1e40af;transition:transform .08s}
+.big:active{transform:translateY(3px);box-shadow:0 2px 0 #1e40af}
+.ghost{font-weight:900;font-size:1rem;border:2px solid var(--acc);border-radius:12px;padding:11px 22px;background:#fff;color:var(--acc);cursor:pointer}
+.ghost:disabled{opacity:.35;cursor:default}
+/* learning cards */
+.card{border:2px solid var(--line);border-radius:16px;padding:20px 22px;background:#fff;min-height:360px}
+.card .cn{font-weight:900;font-size:.75rem;color:var(--muted)}
+.card h2{font-size:1.5rem;margin:6px 0 4px;color:var(--blue)}
+.card h2 .pos{font-size:.8rem;color:var(--muted);font-weight:700;margin-left:8px}
+.card h2 .wzh{display:block;font-size:1rem;color:var(--ink);margin-top:4px}
+.card p{margin:8px 0;line-height:1.6;font-size:.98rem}
+.card .mean{color:var(--muted);font-size:.92rem;margin:2px 0 10px}
+.card .eg{display:block;border-left:5px solid #93c5fd;padding:6px 12px;margin:12px 0 4px;font-size:1rem;line-height:1.55;background:#f5f9ff;border-radius:0 10px 10px 0}
+.card .eg b.hw{color:var(--blue);background:#e7f0ff;border-radius:5px;padding:0 4px}
+.card .egzh{color:var(--muted);font-size:.88rem;margin:2px 0 10px 17px}
+.card table{border-collapse:collapse;width:100%;font-size:.86rem;margin-top:8px}
+.card td,.card th{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left}
+.card th{color:var(--muted);font-size:.75rem}
+.tipb{background:#fff8e6;border-radius:10px;padding:8px 12px;font-size:.86rem;margin-top:10px;line-height:1.5}
+.dotsl{display:flex;gap:4px;justify-content:center;margin:12px 0 0;flex-wrap:wrap}
+.dotsl i{width:8px;height:8px;border-radius:50%;background:#dbe4f0}
+.dotsl i.on{background:var(--acc)}
+/* root breakdown */
+.rootbox{border-radius:14px;padding:12px 14px;margin:6px 0;background:#f2fbf4;border:2px solid #cdebd5}
+.rootbox.k-origin{background:#fff8e6;border-color:#f2dca5}
+.rootbox.k-memo{background:#f6f0ff;border-color:#dccbf7}
+.rh{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.kb{font-weight:900;font-size:.72rem;border-radius:999px;padding:3px 10px;background:var(--grn);color:#fff}
+.k-origin .kb{background:var(--amb)}.k-memo .kb{background:var(--pur)}
+.rh .q{font-weight:900;font-size:.85rem}
+.replay{margin-left:auto;font-weight:900;font-size:.72rem;border:2px solid var(--line);background:#fff;border-radius:999px;padding:3px 10px;cursor:pointer;color:var(--muted)}
+.snap{display:flex;align-items:stretch;justify-content:center;flex-wrap:wrap;gap:0;min-height:62px;padding:6px 0}
+.pc{display:flex;flex-direction:column;align-items:center;justify-content:center;background:#fff;border:2px solid #9fd3ad;border-radius:12px;padding:6px 12px;opacity:0;transition:border-radius .35s,margin .35s,box-shadow .35s}
+.k-origin .pc{border-color:#e8c46a}.k-memo .pc{border-color:#b89be8}
+.pc b{font-size:1.15rem;color:var(--ink);font-family:Consolas,"Segoe UI",monospace}
+.pc i{font-style:normal;font-size:.7rem;color:var(--muted);margin-top:2px;text-align:center;max-width:12em}
+.plus{align-self:center;font-weight:900;color:var(--muted);margin:0 8px;max-width:30px;overflow:hidden;opacity:0;transition:all .35s}
+.snap.go .pc{animation:fly .65s cubic-bezier(.2,1.5,.45,1) forwards}
+.snap.go .plus{animation:fadeIn .3s forwards}
+@keyframes fly{0%{opacity:0;transform:translate(var(--dx),var(--dy)) rotate(var(--r)) scale(.6)}100%{opacity:1;transform:none}}
+@keyframes fadeIn{to{opacity:1}}
+.snap.joined .plus{max-width:0;margin:0;opacity:0}
+.snap.joined .pc{border-radius:0;margin:0 -1px;box-shadow:0 0 0 3px rgba(26,138,58,.12);animation:none;opacity:1}
+.snap.joined .pc:first-of-type{border-radius:12px 0 0 12px}
+.snap.joined .pc.last{border-radius:0 12px 12px 0}
+.snap .eq{align-self:center;font-weight:900;font-size:1.1rem;margin-left:12px;opacity:0;transform:scale(.4);transition:opacity .35s .25s,transform .45s cubic-bezier(.2,1.6,.45,1) .25s;color:var(--blue)}
+.snap.joined .eq{opacity:1;transform:none}
+.snap.joined .eq::after{content:" ✨"}
+.logic,.rnote,.rmemo{opacity:0;transition:opacity .5s}
+.rootbox.done .logic,.rootbox.done .rnote,.rootbox.done .rmemo{opacity:1}
+.logic{font-weight:700;font-size:.92rem;line-height:1.55;margin-top:6px}
+.rnote{font-size:.8rem;color:var(--muted);line-height:1.5;margin-top:4px}
+.rmemo{font-size:.8rem;color:var(--pur);font-weight:700;margin-top:4px}
+/* scenes */
+.scene{position:relative;overflow:hidden;border-radius:14px;height:250px;margin:8px 0 12px;background:linear-gradient(180deg,#e6f0ff,#fff)}
+.scene.sA{background:linear-gradient(180deg,#ffead6,#fff6ef)}
+.scene.sB{background:linear-gradient(180deg,#cfd8e6,#eef2f7)}
+.scene.sC{background:linear-gradient(180deg,#fff2b8,#fffbe9)}
+.scene.sD{background:linear-gradient(180deg,#d6f2dc,#f3fbf4)}
+.emos{position:absolute;top:22px;left:0;right:0;display:flex;justify-content:center;gap:34px;font-size:2.6rem}
+.emos span{display:inline-block;animation:hop 1.8s ease-in-out infinite}
+.sA .emos span{animation:shakeE .9s ease-in-out infinite}
+@keyframes shakeE{0%,100%{transform:rotate(0)}25%{transform:rotate(-12deg) translateY(-4px)}75%{transform:rotate(12deg) translateY(-4px)}}
+.sC .emos span:first-child{animation:spin 6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.drop{position:absolute;top:-20px;width:2px;height:14px;background:#7d93b8;border-radius:2px;animation:rain 1.1s linear infinite}
+@keyframes rain{to{transform:translateY(280px)}}
+.leaf{position:absolute;top:-20px;font-size:1.1rem;animation:leaf 5s linear infinite}
+@keyframes leaf{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(30px,140px) rotate(180deg)}100%{transform:translate(-10px,290px) rotate(360deg)}}
+.badge{position:absolute;left:50%;top:96px;transform:translateX(-50%);background:#fff;border:3px solid var(--acc);color:var(--acc);font-weight:900;border-radius:999px;padding:4px 18px;font-size:1rem;animation:pop .6s cubic-bezier(.2,1.6,.4,1) both .2s;white-space:nowrap}
+@keyframes pop{0%{transform:translateX(-50%) scale(0)}100%{transform:translateX(-50%) scale(1)}}
+.story{position:absolute;left:0;right:0;top:142px;text-align:center;padding:0 16px}
+.story p{margin:4px 0;font-weight:700;font-size:.95rem;opacity:0;animation:rise .6s forwards}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.gwords{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.gwords span{background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:.8rem;font-weight:700;opacity:0;animation:rise .4s forwards}
+/* quiz */
+.qhead{display:flex;align-items:center;gap:10px;margin:4px 0 10px;flex-wrap:wrap}
+.qn{font-weight:900;color:var(--muted);font-size:.9rem}
+.tag{display:inline-block;font-weight:900;font-size:.75rem;border-radius:999px;padding:4px 12px;white-space:nowrap}
+.tag.l1{background:#e7f0ff;color:var(--blue)}.tag.l2{background:#e2f4f4;color:var(--teal)}.tag.l3{background:#f1e9ff;color:var(--pur)}.tag.l4{background:#fff3d9;color:var(--amb)}.tag.boss{background:#e0ecff;color:var(--acc)}
+.dots{display:flex;gap:5px;margin:0 0 14px}
+.dot{flex:1;height:8px;border-radius:999px;background:#e6ebf2}
+.dot.cur{background:#93c5fd}.dot.ok{background:var(--grn)}.dot.no{background:var(--red)}
+.qbox{font-size:1.22rem;font-weight:700;line-height:1.55;padding:22px 20px;border-radius:14px;background:var(--soft);border:2px solid var(--line);min-height:96px}
+.blank{display:inline-block;min-width:4.2em;border-bottom:3px solid var(--ink);margin:0 4px;transform:translateY(-3px)}
+.fill{font-weight:900;border-radius:6px;padding:0 6px;margin:0 2px}
+.fill.ok{color:var(--grn);background:#e3f5e9}
+.fill.bad{color:var(--red);background:#fdecea;text-decoration:line-through}
+.ans{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+@media (max-width:700px){.ans{grid-template-columns:1fr}h1{font-size:1.5rem}.qbox{font-size:1.05rem}}
+.a{position:relative;display:flex;align-items:center;gap:12px;text-align:left;border:2px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);font-weight:700;font-size:.98rem;padding:14px;min-height:66px;cursor:pointer;transition:transform .1s,background .2s,border-color .2s,opacity .2s}
+.a:hover{border-color:#93c5fd;background:#f5f9ff}
+.a:active{transform:translateY(2px)}
+.a .lt{flex:none;width:34px;height:34px;border-radius:9px;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;font-size:.9rem}
+.a0 .lt{background:#d42a3c}.a1 .lt{background:#1f6feb}.a2 .lt{background:#b97800}.a3 .lt{background:#1a8a3a}
+.a .tx{flex:1}
+.a .mk{flex:none;font-weight:900;font-size:1.2rem}
+.a.right{border-color:var(--grn);background:#e3f5e9;opacity:1}
+.a.right.picked{animation:yay .5s}
+@keyframes yay{40%{transform:scale(1.05)}}
+.a.wrong{border-color:var(--red);background:#fdecea;animation:shake .4s}
+.a.dim{opacity:.45}
+.a:disabled{cursor:default}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+.fb{display:none;margin-top:16px;border-radius:12px;padding:12px 16px;border-left:7px solid var(--grn);background:#f1faf4}
+.fb.on{display:block;animation:in .25s}
+.fb.bad{border-left-color:var(--red);background:#fff5f3}
+.fbh{font-weight:900;font-size:1.05rem;margin-bottom:4px}
+.fb.good .fbh{color:var(--grn)}
+.fb.bad .fbh{color:var(--red)}
+.why{font-size:.95rem;line-height:1.5}
+.why.ww{font-weight:700;color:#b3122c}
+.zhx{font-size:.92rem;color:var(--muted);margin-top:3px;line-height:1.5}
+.fbroot{margin-top:10px}
+.fbrt{font-weight:900;font-size:.82rem;color:var(--muted);margin-bottom:2px}
+.next{text-align:right;margin-top:14px;min-height:56px}
+.burst{position:fixed;pointer-events:none;z-index:60;font-size:1.3rem;animation:burst .9s ease-out forwards}
+@keyframes burst{0%{transform:translate(0,0) scale(.4);opacity:1}100%{transform:translate(var(--bx),var(--by)) scale(1.2) rotate(var(--br));opacity:0}}
+.res{text-align:center;padding:6px 0 4px}
+.scoreBig{font-size:2.6rem;font-weight:900;line-height:1.1;margin:6px 0 2px}
+.scoreBig small{font-size:1.2rem;color:var(--muted);margin-left:10px}
+.msg{display:inline-block;font-weight:900;border-radius:12px;padding:8px 16px;font-size:.9rem;background:#e0ecff;color:var(--acc);margin-top:6px;line-height:1.5}
+.review{list-style:none;margin:12px 0 14px;padding:0}
+.review li{display:flex;align-items:flex-start;gap:8px;padding:7px 8px;border-bottom:1px solid var(--line);font-size:.8rem;line-height:1.45}
+.review .num{flex:none;font-weight:900;color:var(--muted);width:1.8em}
+.review .mk{flex:none;font-weight:900;width:1.1em}
+.review li.ok .mk{color:var(--grn)}
+.review li.no .mk{color:var(--red)}
+.review .rq{flex:1}
+.review .rw{display:block;color:var(--muted);font-size:.76rem;margin-top:2px}
+.review .fill{padding:0 4px}
+</style>
+</head>
+<body>
+<div class="top">
+  <span class="brand">Adelaide 版</span>
+  <span class="ttl">Feeling Good · 26 個生字 · 50 題</span>
+  <span class="sp"></span>
+  <span class="pill" id="pill">50 題</span>
+</div>
+<div class="wrap">
+
+<section class="screen on" id="sStart">
+  <div class="hero">
+    <div class="bounce"><span>🥁</span><span style="animation-delay:.2s">📚</span><span style="animation-delay:.4s">☀️</span><span style="animation-delay:.6s">🌳</span><span style="animation-delay:.8s">✨</span></div>
+    <div class="kicker">26 個字 · 50 題 · 5 關 · 每個字都拆開字根,告訴你「為甚麼」</div>
+    <h1>Feeling Good 26 字<br><span class="nm">Adelaide 版</span></h1>
+    <p class="sub">每一句的主角都是Adelaide。先看學習卡(每張都有字根拼合動畫),再由第 1 關打到第 5 關大魔王。<br>Every word has a reason. Once you know the parts, you won't forget the meaning.</p>
+  </div>
+  <div class="levels" id="levels"></div>
+  <div class="btns">
+    <button class="big" id="learnBtn" type="button">先看 31 張學習卡</button>
+    <button class="ghost" id="goL1" type="button">直接由第 1 關開始</button>
+  </div>
+  <div class="gchips" id="gStart"></div>
+</section>
+
+<section class="screen" id="sLearn">
+  <div class="gchips" id="gLearn" style="margin:0 0 10px"></div>
+  <div class="card" id="lc"></div>
+  <div class="dotsl" id="ld"></div>
+  <div class="btns">
+    <button class="ghost" id="lPrev" type="button">← 上一張</button>
+    <button class="big" id="lNext" type="button">下一張 →</button>
+  </div>
+  <div class="btns"><button class="ghost" id="lHome" type="button">返回主頁</button></div>
+</section>
+
+<section class="screen" id="sQ">
+  <div class="qhead">
+    <span class="qn" id="qn"></span>
+    <span class="tag" id="qtag"></span>
+  </div>
+  <div class="dots" id="dots"></div>
+  <div class="qbox" id="qt"></div>
+  <div class="ans" id="ans"></div>
+  <div class="fb" id="fb"></div>
+  <div class="next"><button class="big" id="nx" type="button" style="visibility:hidden">Next →</button></div>
+</section>
+
+<section class="screen" id="sEnd">
+  <div class="res">
+    <div class="kicker" id="rk"></div>
+    <div class="scoreBig"><span id="rs"></span><small id="rp"></small></div>
+    <div class="msg" id="rm"></div>
+  </div>
+  <ol class="review" id="rv"></ol>
+  <div class="btns">
+    <button class="big" id="nextLv" type="button">下一關 →</button>
+    <button class="ghost" id="redoWrong" type="button">只做錯的</button>
+    <button class="ghost" id="home" type="button">返回主頁</button>
+  </div>
+</section>
+
+</div>
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id);};
+var D={"W":[
+{"id":"stressed","g":"A","w":"stressed","pos":"adj.","zh":"有壓力的;緊張的","m":"worried and nervous because of pressure or problems","kind":"root","parts":[["stress","拉緊、壓迫"],["-ed","感到……的"]],"logic":"stress 來自拉丁文 strictus「拉緊」(和 strict「嚴格」同一家族)→ 人像一條被拉得很緊的繩 → 有壓力的","note":"同一家族:strict 嚴格、restrict 限制 —— 都有「拉緊、收緊」的意思。","eg":"Before every drum exam, Adelaide gets stressed and takes three slow, deep breaths.","egzh":"每次考鼓試前,Adelaide都會感到緊張,所以會慢慢深呼吸三次。","forms":[["stress (n. / v.)","壓力;使有壓力"],["stressful (adj.)","令人有壓力的(形容事情)"],["stressed out","壓力很大"]],"tip":"s-t-r-e-ss + ed:stress 有兩個 s。人感到壓力 → stressed;事情令人有壓力 → stressful。","hl":"stressed"},
+{"id":"overwhelmed","g":"A","w":"overwhelmed","pos":"adj.","zh":"不知所措的;(事情太多)應付不了的","m":"having so much to deal with that you cannot cope","kind":"root","parts":[["over","在上面、從頭頂"],["whelm","翻轉、蓋住"],["-ed","被……的"]],"logic":"whelm 是中古英文,解「翻轉、蓋住」→ 像一個大浪從頭頂翻下來把你蓋住 → 被淹沒 → 事情太多,應付不了","note":"overwhelm 最早(十四世紀)解「翻轉」,後來才變成「完全淹沒」。","eg":"With a test, a project and band practice on the same day, Adelaide felt overwhelmed and wrote a to-do list.","egzh":"同一天要應付測驗、專題和樂隊練習,Adelaide感到不知所措,於是寫了一張待辦清單。","forms":[["overwhelm (v.)","使應付不了"],["overwhelming (adj.)","排山倒海的(形容事情)"]],"tip":"over + w-h-elm + ed:w 後面有 h,不要寫成 overwelmed。","hl":"overwhelmed"},
+{"id":"frazzled","g":"A","w":"frazzled","pos":"adj.","zh":"疲憊不堪的;身心交瘁的","m":"tired and nervous because you have too much to do","kind":"origin","parts":[["frazzle","(布)磨損、散開線頭"],["-ed","被……的"]],"logic":"frazzle 原指布邊被磨得起毛、散開線頭 → 人被一整天的事情磨得「散開」→ 疲憊不堪、心煩意亂","note":"真實來源:frazzle 約在 1820 年代出現,大概來自英國方言 fazle(把線弄亂、散開),再受 fray「磨損」影響;確切來源未能完全肯定。","memo":"記憶法:中間兩個 z,像累得「zz」打瞌睡。","eg":"After two tests and a long drum lesson, Adelaide came home frazzled and fell asleep on the sofa.","egzh":"考完兩個測驗,又上完一堂很長的鼓課,Adelaide回家時已經筋疲力盡,在沙發上睡着了。","forms":[["feel / look frazzled","感到 / 看起來疲憊不堪"]],"tip":"f-r-a-zz-l-e-d:兩個 z,一個 l。重點是「累」。","hl":"frazzled"},
+{"id":"frustrated","g":"A","w":"frustrated","pos":"adj.","zh":"沮喪的;挫敗、氣餒的","m":"annoyed or upset because you cannot do or get what you want","kind":"root","parts":[["frustr","白費、落空(拉丁文 frustra)"],["-ate","使……(動詞)"],["-ed","感到……的"]],"logic":"拉丁文 frustra 解「白費」→ frustrate 使努力白費 → 試了很多次也做不到 → 感到氣餒","note":"frustrated 的重點是「想做卻做不到」。","eg":"Adelaide felt frustrated after missing the same drum beat again and again, but tried once more.","egzh":"Adelaide一次又一次打錯同一個鼓拍,感到很氣餒,但仍然再試了一次。","forms":[["frustrate (v.)","使氣餒"],["frustrating (adj.)","令人氣餒的(形容事情)"],["frustration (n.)","挫敗感"]],"tip":"f-R-us-t-R-ated:有兩個 r,不要漏掉。","hl":"frustrated"},
+{"id":"confused","g":"A","w":"confused","pos":"adj.","zh":"困惑的;弄不清楚的","m":"not able to understand something or think clearly","kind":"root","parts":[["con-","一起"],["fus","倒(拉丁文 fundere)"],["-ed","被……的"]],"logic":"把東西倒在一起 → 全部混在一起 → 腦裏一團混亂 → 困惑的","note":"同一字根:transfusion 輸血(把血「倒」過去)。","eg":"Adelaide was confused by the new timetable and asked the class monitor to explain it.","egzh":"Adelaide看不明白新的時間表,於是請班長解釋。","forms":[["confuse (v.)","使困惑"],["confusing (adj.)","令人困惑的(形容事情)"],["confusion (n.)","困惑"]],"tip":"con-fus-ed:開頭是 con,不是 com;只有一個 s。","hl":"confused"},
+{"id":"nuts","g":"A","w":"drive someone nuts","pos":"collocation","zh":"令某人煩得抓狂","m":"make someone very annoyed","kind":"origin","parts":[["drive","驅趕、逼到某種狀態"],["someone","某人"],["nuts","瘋了(俚語)"]],"logic":"把某人「逼」到「瘋了」的狀態 → 煩得抓狂","note":"真實來源:十九世紀的英文俚語用 nut 指「頭」,off one's nut 就是「頭腦出了問題」,所以 nuts 後來解作「瘋了」。drive 也用在 drive someone mad / crazy。","eg":"The broken air-conditioner in the music room buzzed all afternoon. It was enough to drive someone nuts, but Adelaide kept practising.","egzh":"音樂室壞了的冷氣機整個下午嗡嗡作響,足以令人煩得抓狂,但Adelaide繼續練習。","forms":[["It drives me nuts.","日常說法:煩死我了"],["測驗按字表寫","drive someone nuts"]],"tip":"someone 是一個字;nuts 有 s。重點是「煩」(annoyed)。","hl":"drive someone nuts"},
+{"id":"edge","g":"A","w":"put someone on edge","pos":"collocation","zh":"令某人緊張不安","m":"make someone nervous and unable to relax","kind":"memo","parts":[["put","放、使處於"],["someone","某人"],["on edge","在邊緣上"]],"logic":"把人放在懸崖「邊緣」上 → 好像隨時會跌下去 → 神經繃緊、放鬆不了","note":"真實資料:edge 來自古英文 ecg「刀口、邊緣」。on edge 解作「緊張」已有很長歷史,但確切來源說法不一,所以上面的懸崖畫面只是記憶法。","memo":"記憶法:站在懸崖邊 → 緊張(這是幫助記憶的畫面,不是字源)。","eg":"The silence before the drum contest results were announced put everyone on edge, even Adelaide.","egzh":"宣布鼓樂比賽結果前的那一陣沉默,令所有人都緊張不安,連Adelaide也不例外。","forms":[["be on edge","很緊張"],["測驗按字表寫","put someone on edge"]],"tip":"e-d-g-e(像 bridge);on edge 沒有 the。重點是「緊張」(nervous),不是「煩」。","hl":"put everyone on edge"},
+{"id":"dumps","g":"B","w":"down in the dumps","pos":"collocation","zh":"悶悶不樂;情緒低落","m":"feeling sad and unhappy (informal)","kind":"origin","parts":[["down","向下、情緒低落"],["in the","在……之中"],["dumps","憂鬱(十六世紀英文)"]],"logic":"情緒「向下」,陷在憂鬱之中 → 悶悶不樂","note":"真實來源:dumps 在十六世紀的英文解作「憂鬱、發呆」,可能來自荷蘭語 domp(霧氣)或德語 dumpf(沉悶)。它和「垃圾場 dump」原本沒有關係。","memo":"記憶法:心情像被一團灰霧籠罩。","eg":"Adelaide was a bit down in the dumps after losing a favourite pair of drumsticks, but cheered up by dinner.","egzh":"Adelaide弄丟了最喜歡的鼓棍,有點悶悶不樂,但到晚飯時已經開心起來。","forms":[["feel / look down in the dumps","感到 / 看起來悶悶不樂"],["比 depressed 輕微","口語、通常是短暫的"]],"tip":"四個字:down in the dumps;dumps 有 s。","hl":"down in the dumps"},
+{"id":"depressed","g":"B","w":"depressed","pos":"adj.","zh":"抑鬱的;非常沮喪的","m":"very unhappy for a long time, with no hope or energy","kind":"root","parts":[["de-","向下"],["press","壓"],["-ed","被……的"]],"logic":"被壓下去 → 心情被壓得很低,很久也起不來 → 抑鬱的","note":"同一字根:press 按、pressure 壓力。","eg":"When Adelaide's classmate felt depressed for weeks, Adelaide suggested talking to the school counsellor.","egzh":"Adelaide的同學一連幾個星期都很抑鬱,Adelaide鼓勵這位同學找學校的輔導老師談談。","forms":[["depress (v.)","使沮喪"],["depressing (adj.)","令人沮喪的(形容事情)"],["depression (n.)","抑鬱(症)"]],"tip":"de + press + ed:press 有兩個 s;開頭是 de-。比 down in the dumps 嚴重、長久。","hl":"depressed"},
+{"id":"worthless","g":"B","w":"worthless","pos":"adj.","zh":"毫無價值的;(覺得自己)沒用的","m":"feeling you have no value or are not useful","kind":"root","parts":[["worth","價值"],["-less","沒有"]],"logic":"沒有價值 → 覺得自己沒用","note":"-less = 沒有:careless 不小心(沒有小心)、homeless 無家可歸。","eg":"After a low mark in dictation, Adelaide remembered that one mark does not make anyone worthless.","egzh":"Adelaide默書分數低的時候提醒自己:一個分數不會令任何人變得毫無價值。","forms":[["worth (n.)","價值"],["≠ valuable / worthwhile","有價值的"]],"tip":"worth + less:尾有兩個 s;worth 有 h。","hl":"worthless"},
+{"id":"pessimistic","g":"B","w":"pessimistic","pos":"adj.","zh":"悲觀的","m":"expecting bad things to happen","kind":"root","parts":[["pessim","最壞(拉丁文 pessimus)"],["-ist","……的人"],["-ic","……的"]],"logic":"總是想到「最壞」的人 → 悲觀的","note":"拉丁文:malus 壞 → pejor 較壞 → pessimus 最壞。剛好和 optimus「最好」相反。","eg":"Before the inter-school drum contest, Adelaide's bandmate was pessimistic, but Adelaide said, “Let's just do our best.”","egzh":"校際鼓樂比賽前,Adelaide的隊友很悲觀,但Adelaide說:「我們盡力就好。」","forms":[["pessimist (n.)","悲觀的人"],["pessimism (n.)","悲觀"],["≠ optimistic","樂觀的"]],"tip":"pe-ss-i-m-istic:兩個 s,一個 m;尾是 -tic。","hl":"pessimistic"},
+{"id":"vicious","g":"B","w":"a vicious cycle","pos":"collocation","zh":"惡性循環","m":"a situation where one bad thing causes another, which then makes the first one worse","kind":"root","parts":[["vicious","壞的、有毛病的(拉丁文 vitium)"],["cycle","圓圈、輪(希臘文 kyklos)"]],"logic":"一個「壞的圓圈」:壞事引起另一件壞事,再轉回來令第一件更壞 → 惡性循環","note":"cycle 和 bicycle(bi 兩 + cycle 輪)同一字根。vicious 今天多數解「兇惡」,但在這裏是「壞的、有害的」。","eg":"Adelaide's friend stayed up late revising, felt tired the next day, worked slowly and stayed up late again. Adelaide called it a vicious cycle.","egzh":"Adelaide的朋友熬夜溫習,第二天很累,做事很慢,結果又要熬夜。Adelaide說這是惡性循環。","forms":[["break a vicious cycle","打破惡性循環"],["be caught in a vicious cycle","陷入惡性循環"]],"tip":"vicious 像 delicious(-cious,沒有 s);cycle 像 bicycle;記得前面的 a。","hl":"a vicious cycle"},
+{"id":"susceptible","g":"B","w":"susceptible","pos":"adj.","zh":"易受影響的;容易患(病)的","m":"easily affected or harmed by something","kind":"root","parts":[["sus-","由下面(= sub-)"],["cept","拿、接收(拉丁文 capere)"],["-ible","可以……的"]],"logic":"可以從下面「接收」進來 → 病菌、壓力很容易走進來 → 容易受影響的","note":"同一字根:accept 接受、except 除外 —— 都有 cept「拿」。","eg":"Adelaide is more susceptible to colds without enough sleep, so Adelaide goes to bed before eleven.","egzh":"Adelaide知道自己睡眠不足時較容易感冒,所以Adelaide十一點前便上床睡覺。","forms":[["susceptible to sth","容易受……影響(後面用 to)"]],"tip":"sus-c-ep-tible:中間有 sc;尾是 -tible,不是 -table。","hl":"susceptible"},
+{"id":"optimistic","g":"C","w":"optimistic","pos":"adj.","zh":"樂觀的","m":"believing that good things will happen","kind":"root","parts":[["optim","最好(拉丁文 optimus)"],["-ist","……的人"],["-ic","……的"]],"logic":"總是想到「最好」的人 → 樂觀的","note":"optimus「最好」↔ pessimus「最壞」。同一字根:optimum 最佳。","eg":"Even when Sports Day was cancelled because of rain, Adelaide stayed optimistic: “We can run next week!”","egzh":"即使陸運會因下雨取消,Adelaide仍然很樂觀:「我們下星期再跑吧!」","forms":[["optimist (n.)","樂觀的人"],["optimism (n.)","樂觀"],["≠ pessimistic","悲觀的"]],"tip":"op-ti-mis-tic:開頭 opti,尾是 -tic。","hl":"optimistic"},
+{"id":"grateful","g":"C","w":"grateful","pos":"adj.","zh":"感激的;感恩的","m":"feeling thankful for something someone has done or given","kind":"root","parts":[["grate","感激、令人高興(拉丁文 gratus)"],["-ful","充滿"]],"logic":"充滿感激 → 感激的","note":"grate 和 gratitude 感激、grace 恩典同一家族,和 great「偉大」沒有關係。","eg":"Adelaide was grateful to a teammate for helping to carry the heavy drum case up the stairs.","egzh":"隊友幫Adelaide把沉重的鼓箱搬上樓梯,Adelaide很感激。","forms":[["grateful to sb for sth","為某事感激某人"],["gratitude (n.)","感激"]],"tip":"g-r-a-t-e-ful:不是 great;-ful 只有一個 l。","hl":"grateful"},
+{"id":"blessings","g":"C","w":"count your blessings","pos":"phrase","zh":"想想自己擁有的福氣","m":"think about the good things you have instead of complaining","kind":"root","parts":[["count","數(拉丁文 computare 計算)"],["your","你的"],["bless","祝福"],["-ings","很多件福氣"]],"logic":"把你擁有的福氣一件一件「數」出來 → 想想自己幸運的地方,不要只顧抱怨","note":"computare 也是 computer(電腦)的來源。這個說法因一首 1897 年的英文詩歌《Count Your Blessings》而更加流行。","eg":"Adelaide often tells friends, “When things go wrong, count your blessings: we still have music and good friends.”","egzh":"Adelaide常常對朋友說:「事情不順利時,想想自己擁有的福氣:我們還有音樂和好朋友。」","forms":[["blessing (n.)","福氣、好事"],["count my / our blessings","按人稱改(測驗按字表寫 your)"]],"tip":"ble-ss-ings:兩個 s,尾也有 s(很多件福氣)。","hl":"count your blessings"},
+{"id":"forward","g":"C","w":"look forward to","pos":"phrasal v.","zh":"期待;盼望","m":"feel happy and excited about something that is going to happen","kind":"root","parts":[["look","看"],["fore","前面"],["-ward","向"],["to","向著(介詞)"]],"logic":"向「前面」(將來)看 → 期待","note":"to 在這裏是介詞,所以後面用名詞或 -ing:look forward to seeing,不是 to see。","eg":"Adelaide is looking forward to the band concert on Sunday.","egzh":"Adelaide很期待星期日的樂隊音樂會。","forms":[["look forward to + 名詞 / -ing","期待某事 / 期待做某事"],["I'm looking forward to …","我很期待……"]],"tip":"for-ward 沒有 s;不要漏掉 to。","hl":"looking forward to"},
+{"id":"hilarious","g":"C","w":"hilarious","pos":"adj.","zh":"非常好笑的;爆笑的","m":"extremely funny","kind":"root","parts":[["hilar","開心(希臘文 hilaros)"],["-ious","充滿……的"]],"logic":"充滿歡樂 → 令人笑個不停 → 非常好笑的","note":"同一家族:hilarity 歡鬧。","eg":"Adelaide's band teacher told a hilarious story, and the whole band couldn't stop laughing.","egzh":"Adelaide的樂隊老師講了一個非常好笑的故事,整隊樂隊都笑個不停。","forms":[["a hilarious film / joke","非常好笑的電影 / 笑話"],["hilarity (n.)","歡鬧"]],"tip":"hi-l-a-r-ious:一個 l,一個 r;尾是 -ious。","hl":"hilarious"},
+{"id":"empathetic","g":"C","w":"empathetic","pos":"adj.","zh":"有同理心的;體諒別人感受的","m":"able to understand and share other people's feelings","kind":"root","parts":[["em-","在裏面(= en-)"],["path","感受(希臘文 pathos)"],["-etic","……的"]],"logic":"走進別人的感受「裏面」→ 明白別人的感受 → 有同理心的","note":"empathy 在 1908 年被創造出來,用來翻譯德文 Einfühlung「感受進去」。同一字根:sympathy 同情。","eg":"When a new drummer felt nervous, Adelaide was empathetic and said, “I was nervous at first too.”","egzh":"新來的鼓手很緊張,Adelaide很體諒對方,說:「我起初也很緊張。」","forms":[["empathy (n.)","同理心"],["empathise (v.)","有同感"]],"tip":"em-pa-thet-ic:不是 emphatic(強調的)。","hl":"empathetic"},
+{"id":"strategies","g":"D","w":"strategies","pos":"n.","zh":"策略;方法(strategy 的眾數)","m":"plans or ways of doing something to reach a goal","kind":"root","parts":[["strat","軍隊(希臘文 stratos)"],["eg","帶領(希臘文 agein)"],["-ies","眾數(y → ies)"]],"logic":"將軍「帶領軍隊」的計劃 → 策略、方法","note":"希臘文 stratēgos = 將軍(帶領軍隊的人)。","eg":"Adelaide has two strategies for revision: a clear timetable and a ten-minute break every hour.","egzh":"Adelaide溫習有兩個策略:一張清楚的時間表,以及每小時休息十分鐘。","forms":[["strategy","單數:一個策略"],["strategic (adj.)","策略上的"],["coping strategies","應對壓力的方法"]],"tip":"strat-e-g-ies:y 變 ies;中間是 e,不是 i。","hl":"strategies"},
+{"id":"alleviate","g":"D","w":"alleviate","pos":"v.","zh":"減輕;紓緩","m":"make pain, stress or a problem less serious","kind":"root","parts":[["al-","使、向(= ad-)"],["levi","輕(拉丁文 levis)"],["-ate","動詞"]],"logic":"使(壓力、痛)變「輕」→ 減輕、紓緩","note":"ad- 碰上 l 便變成 al-,所以有兩個 l。同一家族:levitate 懸浮(輕得浮起來)。","eg":"Drumming for twenty minutes helps Adelaide alleviate stress after a long school day.","egzh":"漫長的上學日過後,打鼓二十分鐘能幫Adelaide減輕壓力。","forms":[["alleviate stress / pain","減輕壓力 / 痛楚(後面要有受詞)"],["alleviates / alleviated","第三身 / 過去式"]],"tip":"a-ll-e-vi-ate:兩個 l,然後是 e。","hl":"alleviate"},
+{"id":"unwind","g":"D","w":"unwind","pos":"v.","zh":"放鬆;鬆弛下來","m":"relax after work or stress","kind":"root","parts":[["un-","相反、解開"],["wind","捲、纏繞(讀 /waɪnd/)"]],"logic":"把捲得緊緊的東西鬆開 → 人放鬆下來","note":"這個 wind 讀 /waɪnd/(捲),不是讀 /wɪnd/ 的「風」。","eg":"On Sunday afternoons, Adelaide unwinds by playing slow songs on the drums.","egzh":"星期日下午,Adelaide會用鼓打慢歌來放鬆。","forms":[["unwind → unwound","過去式(不是 unwinded)"],["後面不用受詞","unwind after school"]],"tip":"un + w-i-n-d,只有六個字母。","hl":"unwinds"},
+{"id":"meditate","g":"D","w":"meditate","pos":"v.","zh":"冥想;靜坐","m":"sit quietly and relax your mind, often focusing on your breathing","kind":"root","parts":[["medit","思考、反覆想(拉丁文 meditari)"],["-ate","動詞"]],"logic":"靜下來反覆思考 → 靜坐、冥想","note":"小心:mediate(調解)來自 medius「中間」,是另一個字,少了 t。","eg":"Before each drum exam, Adelaide meditates for five minutes to calm down.","egzh":"考鼓試前,Adelaide會靜坐五分鐘,讓心情平靜下來。","forms":[["meditation (n.)","冥想"],["meditated / meditating","過去式 / -ing"]],"tip":"med-i-t-ate:medi 後面有 t。","hl":"meditates"},
+{"id":"engage","g":"D","w":"engage in physical activities","pos":"phrase","zh":"參與體能活動;做運動","m":"do sports and exercise that move your body","kind":"root","parts":[["en-","使、放入"],["gage","承諾、抵押"],["physic","身體、自然(希臘文 physis)"],["activ","做(拉丁文 agere)"]],"logic":"把自己「放入」(承諾投入)身體的活動 → 投入做運動","note":"gage 和 wage(工資)同一家族;physis 也是 physics(物理)的來源。","eg":"To stay healthy during exam season, Adelaide engages in physical activities such as badminton.","egzh":"為了在考試季節保持健康,Adelaide會參與羽毛球等體能活動。","forms":[["engage in + 名詞 / -ing","參與……"],["activity → activities","眾數 y → ies"],["Engaging in … is …","放在句子開頭作主語"]],"tip":"ph-y-sical(ph 讀 f 音,後面是 y);activity → activities;介詞是 in。","hl":"engages in physical activities"},
+{"id":"nature","g":"D","w":"spend time in nature","pos":"phrase","zh":"走進大自然","m":"be outdoors in places like parks, forests, beaches or mountains","kind":"root","parts":[["spend","付出(拉丁文 expendere)"],["time","時間"],["in","在……之中"],["nature","大自然(natura,來自 nasci 出生)"]],"logic":"把時間「付出」在大自然之中 → 到郊外、公園、海邊去","note":"nature 來自 nasci「出生」:與生俱來的一切 → 大自然。同一字根:native 本地出生的。","eg":"Last Sunday Adelaide spent time in nature, hiking in Sai Kung with family.","egzh":"上星期日,Adelaide和家人到西貢遠足,走進大自然。","forms":[["spend → spent","過去式"],["nature 前面不加 the","spend time in nature"]],"tip":"na-ture(像 picture);nature 前面不加 the;介詞是 in。","hl":"spent time in nature"},
+{"id":"attainable","g":"D","w":"attainable","pos":"adj.","zh":"可達到的;做得到的","m":"possible to achieve","kind":"root","parts":[["at-","向(= ad-)"],["tain","觸摸(拉丁文 tangere)"],["-able","可以……的"]],"logic":"可以伸手「觸摸」得到的 → 做得到、達得到的","note":"ad- 碰上 t 便變成 at-,所以有兩個 t。tangere 也是 tangible(摸得到的)的來源。","eg":"Adelaide sets attainable goals, like practising the drums for fifteen minutes a day.","egzh":"Adelaide會訂立做得到的目標,例如每天練鼓十五分鐘。","forms":[["attain (v.)","達到"],["≠ unattainable","達不到的"],["an attainable goal","做得到的目標"]],"tip":"a-tt-ain-able:兩個 t;尾是 -able,不是 -ible。","hl":"attainable"}
+],
+"G":[{"g":"A","en":"When stress hits","zh":"壓力來襲","emo":["📚","⏰","🥁"],"cls":"sA","story":["星期一,Adelaide同一天有三個測驗。","放學後,Adelaide還要到音樂室練鼓。","這一組的字,都是壓力來襲時的感覺。"]},{"g":"B","en":"Feeling low","zh":"心情低落","emo":["🌧️","📝","☂️"],"cls":"sB","story":["下雨的星期三,Adelaide的默書分數不太理想。","Adelaide整個下午都有點悶悶不樂。","不過Adelaide知道,低落的心情總會過去。"]},{"g":"C","en":"Feeling good","zh":"開心正面","emo":["☀️","😂","🎵"],"cls":"sC","story":["星期日早上,陽光很好。","Adelaide和朋友看了一段影片,笑得停不下來。","這一組的字,都是開心、正面的感覺。"]},{"g":"D","en":"Ways to cope","zh":"如何應對","emo":["🏸","🌳","🧘"],"cls":"sD","story":["考試週前,Adelaide寫下幾個減壓方法:","做運動、到郊外走走、靜坐五分鐘。","這一組的字,教你怎樣應對壓力。"]}],
+"ORDER":{"A":["stressed","overwhelmed","frazzled","frustrated","confused","nuts","edge"],"B":["dumps","depressed","worthless","pessimistic","vicious","susceptible"],"C":["optimistic","grateful","blessings","forward","hilarious","empathetic"],"D":["strategies","alleviate","unwind","meditate","engage","nature","attainable"]},
+"LV":[
+{"n":"第 1 關","t":"意思配對","c":"l1","tag":"Meaning · 意思","Q":[
+{"w":["frazzled"],"q":"After three tests and a two-hour drum lesson, Adelaide came home frazzled. What does frazzled mean here?","a":"very tired and nervous from doing too much · 疲憊不堪","o":["very happy and full of energy · 精力充沛","angry because someone was rude · 被人冒犯而生氣","bored because nothing happened · 無聊"],"why":"Too much to do + tired and nervous = frazzled.","zh":"事情太多 → 疲憊又緊張 = frazzled。","wx":{"very happy and full of energy · 精力充沛":"Adelaide考了三個測驗又上了兩小時鼓課,不可能精力充沛;frazzled 是「累到散開」。","angry because someone was rude · 被人冒犯而生氣":"句子沒有人對Adelaide無禮;原因是事情太多、太累。","bored because nothing happened · 無聊":"Adelaide一整天都很忙,不是無事可做。"}},
+{"w":["nuts"],"q":"The classroom clock ticked loudly during the whole test. “It's enough to drive someone nuts,” Adelaide whispered after the bell. What does Adelaide mean?","a":"It makes people very annoyed · 令人煩得抓狂","o":["It makes people very nervous · 令人緊張不安","It makes people want to drive a car · 令人想開車","It makes people laugh · 令人發笑"],"why":"drive someone nuts = make someone very annoyed.","zh":"drive someone nuts = 把人逼到發瘋 → 煩得抓狂。","wx":{"It makes people very nervous · 令人緊張不安":"「令人緊張」是 put someone on edge;nuts =「瘋了」,重點是煩,不是怕。","It makes people want to drive a car · 令人想開車":"drive 在這裏不是開車,而是「逼到某種狀態」,例如 drive someone mad。","It makes people laugh · 令人發笑":"滴答聲令人煩,不是好笑。"}},
+{"w":["edge"],"q":"Waiting outside the exam room before the drum exam put Adelaide on edge. How did Adelaide feel?","a":"nervous and unable to relax · 緊張不安","o":["very annoyed · 非常煩厭","very sleepy · 很睏","excited and happy · 興奮開心"],"why":"put someone on edge = make someone nervous.","zh":"put someone on edge = 令人緊張不安。","wx":{"very annoyed · 非常煩厭":"「很煩」是 drive someone nuts;on edge 是緊張、放鬆不了。","very sleepy · 很睏":"on edge 不是睏,是神經繃緊。","excited and happy · 興奮開心":"on edge 是不安,不是開心。"}},
+{"w":["dumps"],"q":"Adelaide's friend lost a new phone and was down in the dumps all afternoon. How did the friend feel?","a":"sad and low · 悶悶不樂","o":["very angry · 非常憤怒","dirty after visiting a rubbish dump · 去過垃圾場,弄得很髒","very excited · 非常興奮"],"why":"down in the dumps = feeling sad and unhappy (informal).","zh":"down in the dumps = 悶悶不樂(口語)。","wx":{"very angry · 非常憤怒":"down in the dumps 是低落,不是憤怒。","dirty after visiting a rubbish dump · 去過垃圾場,弄得很髒":"dumps 在這個片語裏解「憂鬱」(十六世紀英文),和垃圾場無關。","very excited · 非常興奮":"「向下」(down)是低落,不是興奮。"}},
+{"w":["vicious"],"q":"Adelaide's friend drank bubble tea at night, couldn't sleep, felt tired the next day and drank more bubble tea to stay awake. What is this?","a":"a vicious cycle","o":["a coping strategy","an attainable goal","a hilarious story"],"why":"One bad thing causes another, which makes the first worse = a vicious cycle.","zh":"壞事引起壞事,再令第一件更壞 = 惡性循環。","wx":{"a coping strategy":"coping strategy 是應對壓力的好方法;這裏的情況越來越差。","an attainable goal":"attainable goal 是做得到的目標;這裏沒有目標。","a hilarious story":"這件事不好笑,而且一直變差。"}},
+{"w":["susceptible"],"q":"Which word means “easily affected or harmed by something”? Example: A tired Adelaide is more ___ to colds.","a":"susceptible","o":["grateful","attainable","empathetic"],"why":"susceptible (to sth) = easily affected or harmed.","zh":"susceptible to = 容易受……影響 / 容易患……。","wx":{"grateful":"grateful 是感激的,和容易生病無關。","attainable":"attainable 是做得到的,形容目標。","empathetic":"empathetic 是有同理心的,形容待人。"}},
+{"w":["blessings"],"q":"Adelaide's drum lesson was cancelled. Instead of complaining, Adelaide said, “Let's count our blessings.” What does Adelaide want to do?","a":"think about the good things they have · 想想自己幸運的地方","o":["count how many lessons are left · 數數還剩多少堂課","count their money · 數數有多少錢","complain to the teacher · 向老師投訴"],"why":"count your blessings = think about the good things you have.","zh":"count your blessings = 想想自己擁有的福氣,不只顧抱怨。","wx":{"count how many lessons are left · 數數還剩多少堂課":"count 在這個片語裏不是數課堂,而是數「福氣」。","count their money · 數數有多少錢":"blessings 是福氣、好事,不是錢。","complain to the teacher · 向老師投訴":"Adelaide說「不要抱怨」,正好相反。"}},
+{"w":["hilarious"],"q":"Adelaide's classmate did a hilarious impression of a robot playing the drums. How did the class react?","a":"They couldn't stop laughing · 笑個不停","o":["They felt scared · 覺得害怕","They felt bored · 覺得沉悶","They felt sorry for him · 覺得他可憐"],"why":"hilarious = extremely funny.","zh":"hilarious = 非常好笑。","wx":{"They felt scared · 覺得害怕":"hilarious 是非常好笑,不是可怕。","They felt bored · 覺得沉悶":"hilarious 一點也不沉悶。","They felt sorry for him · 覺得他可憐":"hilarious 令人大笑,不是令人同情。"}},
+{"w":["empathetic"],"q":"A new student cried on the first day of school. Adelaide sat nearby and said, “I felt the same on my first day.” Adelaide was being…","a":"empathetic","o":["pessimistic","hilarious","frazzled"],"why":"Understanding and sharing someone's feelings = empathetic.","zh":"明白、體諒別人的感受 = empathetic。","wx":{"pessimistic":"pessimistic 是悲觀;Adelaide是在體諒別人。","hilarious":"hilarious 是好笑;這裏是安慰人。","frazzled":"frazzled 是疲憊不堪;Adelaide在明白別人的感受。"}},
+{"w":["attainable"],"q":"Adelaide's goal is to learn one new drum pattern a week. Adelaide's teacher says the goal is attainable. This means the goal is…","a":"possible to achieve · 做得到","o":["too difficult · 太難","not important · 不重要","already finished · 已經完成"],"why":"attainable = possible to achieve.","zh":"attainable = 可以達到的、做得到的。","wx":{"too difficult · 太難":"相反了:attainable 是做得到,「太難」是 unattainable。","not important · 不重要":"attainable 講能否做到,不是講重不重要。","already finished · 已經完成":"attainable 是「可以」達到,還未達到。"}}
+]},
+{"n":"第 2 關","t":"填充:Adelaide 的一星期","c":"l2","tag":"Fill in the blank · 填充","Q":[
+{"w":["overwhelmed"],"q":"On Monday Adelaide had a test, a project and band practice. Adelaide felt ___ and didn't know where to start.","a":"overwhelmed","o":["grateful","attainable","hilarious"],"why":"So much to do + didn't know where to start = overwhelmed.","zh":"事情太多、不知從何開始 = overwhelmed。","wx":{"grateful":"grateful 是感激;事情太多不會令人感激。","attainable":"attainable 形容目標「做得到」,不形容人的感覺。","hilarious":"hilarious 是好笑;句子講事情太多、不知從何開始。"}},
+{"w":["worthless"],"q":"Adelaide told a friend, “One bad mark doesn't make you ___. Everyone has their own strengths.”","a":"worthless","o":["grateful","optimistic","empathetic"],"why":"Has no value = worthless. One mark doesn't take away your value.","zh":"一個分數不會令你沒有價值 → worthless。","wx":{"grateful":"grateful 是感激;句意是「不會令你變得沒有價值」。","optimistic":"optimistic 是樂觀,是好事;句子說一個分數「不會令你」變成某種壞狀態。","empathetic":"empathetic 是有同理心,是優點,不合句意。"}},
+{"w":["pessimistic"],"q":"Adelaide's teammate always expects the worst: “We'll lose for sure.” He is very ___.","a":"pessimistic","o":["optimistic","grateful","hilarious"],"why":"Always expects the worst = pessimistic.","zh":"凡事想最壞 = pessimistic。","wx":{"optimistic":"相反了!optimistic 是樂觀;「肯定輸」是想最壞 → pessimistic。","grateful":"grateful 是感激,和「想最壞」無關。","hilarious":"hilarious 是好笑;他是在說喪氣話。"}},
+{"w":["grateful"],"q":"Adelaide is ___ to the coach for staying late to help with practice.","a":"grateful","o":["susceptible","worthless","pessimistic"],"why":"be grateful to someone for something = thankful.","zh":"grateful to sb for sth = 為某事感激某人。","wx":{"susceptible":"susceptible to 也接 to,但解「容易受……影響」;句意是感謝教練。","worthless":"worthless 是沒有價值,不合「感謝」的句意。","pessimistic":"pessimistic 是悲觀,和感謝無關。"}},
+{"w":["blessings"],"q":"Adelaide always tells friends, “When something goes wrong, ___ — think about all the good things you have.”","a":"count your blessings","o":["drive someone nuts","put someone on edge","look forward to"],"why":"Think about the good things you have = count your blessings.","zh":"想想自己擁有的好事 = count your blessings。","wx":{"drive someone nuts":"drive someone nuts 是令人煩得抓狂,不是安慰人的話。","put someone on edge":"put someone on edge 是令人緊張,不合句意。","look forward to":"look forward to 後面要有期待的事,而且意思是「期待」,不是「想想擁有的好事」。"}},
+{"w":["strategies"],"q":"A clear timetable and short breaks are Adelaide's two favourite revision ___.","a":"strategies","o":["strategy","blessings","dumps"],"why":"Ways of doing something (plural, ‘two’) = strategies.","zh":"方法(two → 眾數)= strategies。","wx":{"strategy":"two 後面要眾數:strategy → strategies。","blessings":"blessings 是福氣;時間表和休息是「方法」。","dumps":"dumps 只用在 down in the dumps(悶悶不樂)。"}},
+{"w":["alleviate"],"q":"Deep breathing helps Adelaide ___ the stress before a big performance.","a":"alleviate","o":["unwind","meditate","look forward to"],"why":"alleviate + something (stress / pain) = make it less serious.","zh":"alleviate + 受詞 = 減輕(壓力、痛楚)。","wx":{"unwind":"unwind 後面不接受詞(unwind the stress ✗);要減輕某樣東西,用 alleviate + 受詞。","meditate":"meditate 是靜坐,不能直接接 the stress 作受詞。","look forward to":"look forward to the stress = 期待壓力?意思不通。"}},
+{"w":["unwind"],"q":"After a long week of tests, Adelaide likes to ___ on the sofa with some favourite songs.","a":"unwind","o":["alleviate","susceptible","pessimistic"],"why":"Relax after work or stress (no object) = unwind.","zh":"放鬆下來(不用受詞)= unwind。","wx":{"alleviate":"alleviate 後面一定要有受詞(alleviate stress);這裏沒有受詞。","susceptible":"susceptible 是形容詞,而且要接 to;likes to 後面要動詞。","pessimistic":"pessimistic 是形容詞;likes to 後面要動詞。"}},
+{"w":["meditate"],"q":"Every night before bed, Adelaide sits quietly with closed eyes, focusing on slow breathing. Adelaide likes to ___.","a":"meditate","o":["mediate","alleviate","engage"],"why":"Sit quietly and focus on your breathing = meditate.","zh":"靜坐、專注呼吸 = meditate。","wx":{"mediate":"mediate 是「調解」(來自 medius 中間),少了 t,是另一個字。","alleviate":"alleviate 要有受詞,而且是「減輕」,不是靜坐。","engage":"engage 要接 in + 事情,單獨一個字不完整。"}},
+{"w":["engage"],"q":"Adelaide plays badminton and goes jogging every week. Doctors say teenagers should ___ like these.","a":"engage in physical activities","o":["count your blessings","meditate","look forward to"],"why":"Badminton and jogging = physical activities.","zh":"羽毛球、跑步 = 體能活動 → engage in physical activities。","wx":{"count your blessings":"count your blessings 是想想擁有的福氣,和打羽毛球、跑步無關。","meditate":"meditate 是靜坐,不是運動;而且 like these 前面要有名詞。","look forward to":"look forward to 後面要接期待的事,這裏講的是做運動。"}}
+]},
+{"n":"第 3 關","t":"詞性與變形","c":"l3","tag":"Word forms · 變形","Q":[
+{"w":["confused"],"q":"The new timetable was hard to read, so Adelaide was ___ about which room to go to.","a":"confused","o":["confusing","confuse","confusion"],"why":"A person feels → -ed: confused. A thing → -ing: confusing.","zh":"人感到困惑 → confused;事情令人困惑 → confusing。","wx":{"confusing":"confusing 形容「事情」令人困惑(the timetable was confusing);講人自己的感覺要用 confused。","confuse":"confuse 是動詞;was 後面要形容詞。","confusion":"confusion 是名詞;was ___ about 要形容詞。"}},
+{"w":["stressed"],"q":"Adelaide always gets ___ before a drum exam and takes three deep breaths.","a":"stressed","o":["stressful","stress","stressing"],"why":"get stressed = the person feels pressure.","zh":"get stressed = 人感到壓力。","wx":{"stressful":"stressful 形容事情(a stressful exam);人感到壓力要用 stressed。","stress":"stress 是名詞 / 動詞;gets 後面要形容詞。","stressing":"gets stressing 不是正確說法;要用 -ed 形容人的感覺。"}},
+{"w":["frustrated"],"q":"Adelaide felt ___ when the drum kept going out of tune.","a":"frustrated","o":["frustrating","frustrate","frustration"],"why":"felt + -ed adjective: frustrated.","zh":"felt + 形容人的 -ed:frustrated。","wx":{"frustrating":"frustrating 形容事情令人氣餒(the drum was frustrating);人自己的感覺要用 frustrated。","frustrate":"frustrate 是動詞;felt 後面要形容詞。","frustration":"frustration 是名詞;felt 後面要形容詞。"}},
+{"w":["depressed"],"q":"If someone feels ___ for months, Adelaide says they should talk to a counsellor.","a":"depressed","o":["depressing","depress","depression"],"why":"feel depressed = the person is very unhappy for a long time.","zh":"feel depressed = 人長時間非常沮喪。","wx":{"depressing":"depressing 形容事情令人沮喪;人自己的感覺要用 depressed。","depress":"depress 是動詞;feels 後面要形容詞。","depression":"depression 是名詞(抑鬱症);feels 後面要形容詞。"}},
+{"w":["optimistic"],"q":"Adelaide is always ___ about the band's chances in the contest.","a":"optimistic","o":["optimism","optimist","pessimism"],"why":"be optimistic about something (adjective).","zh":"be optimistic about = 對……樂觀(形容詞)。","wx":{"optimism":"optimism 是名詞(樂觀);is always ___ about 要形容詞。","optimist":"optimist 是名詞(樂觀的人),而且前面要有 an;這裏要形容詞。","pessimism":"pessimism 是名詞,而且意思相反(悲觀)。"}},
+{"w":["forward"],"q":"Adelaide is looking forward to ___ Grandma and Grandpa on Sunday.","a":"seeing","o":["see","saw","seen"],"why":"look forward to + noun / -ing → looking forward to seeing.","zh":"look forward to + 名詞 / -ing → seeing。","wx":{"see":"to 在 look forward to 裏是介詞,後面不用原形動詞:to see ✗。","saw":"saw 是過去式;介詞 to 後面要 -ing。","seen":"seen 是過去分詞;介詞 to 後面要 -ing。"}},
+{"w":["nature"],"q":"Adelaide feels calmer after a chance to ___, for example by walking along the beach.","a":"spend time in nature","o":["spend time in the nature","spend times in nature","spend time at nature"],"why":"spend time in nature — no ‘the’, ‘time’ without s, preposition ‘in’.","zh":"spend time in nature:不加 the,time 不加 s,介詞用 in。","wx":{"spend time in the nature":"nature(大自然)前面不加 the。","spend times in nature":"time 在這裏不可數,不加 s。","spend time at nature":"介詞是 in:in nature。"}},
+{"w":["attainable"],"q":"Practising for fifteen minutes a day is an ___ goal for Adelaide.","a":"attainable","o":["attain","attaining","attainment"],"why":"an attainable goal = a goal you can reach (adjective, -able).","zh":"an attainable goal(形容詞 -able = 可以……的)。","wx":{"attain":"attain 是動詞;goal 前面要形容詞。","attaining":"an attaining goal 不是正確說法;要用 -able「可以……的」。","attainment":"attainment 是名詞;goal 前面要形容詞。"}},
+{"w":["susceptible"],"q":"Adelaide catches colds easily when tired. Adelaide is susceptible ___ colds.","a":"to","o":["of","with","for"],"why":"susceptible to something.","zh":"固定搭配:susceptible to + 東西。","wx":{"of":"susceptible 後面用 to,不用 of。","with":"susceptible 後面用 to,不用 with。","for":"susceptible 後面用 to,不用 for。"}},
+{"w":["empathetic"],"q":"Adelaide is very ___ towards new members of the band.","a":"empathetic","o":["empathy","emphatic","empathise"],"why":"be empathetic towards someone (adjective).","zh":"be empathetic towards sb(形容詞)。","wx":{"empathy":"empathy 是名詞(同理心);is very ___ 要形容詞。","emphatic":"emphatic 是另一個字,解「強調的」,小心看清楚。","empathise":"empathise 是動詞;is very ___ 要形容詞。"}}
+]},
+{"n":"第 4 關","t":"串字挑戰","c":"l4","tag":"Spelling · 串字","Q":[
+{"w":["overwhelmed"],"q":"Adelaide felt ___ by all the homework this week. Which spelling is correct?","a":"overwhelmed","o":["overwelmed","overwhelmd","overhwelmed"],"why":"over + w-h-elm + ed.","zh":"over + whelm + ed:w 後面有 h。","wx":{"overwelmed":"漏了 h:over-w-h-elm。","overwhelmd":"漏了 e:-elmed。","overhwelmed":"h 和 w 調轉了:是 wh。"}},
+{"w":["frustrated"],"q":"Adelaide was ___ when the drum pedal broke again. Which spelling is correct?","a":"frustrated","o":["frustated","fustrated","frusterated"],"why":"Two r's: f-R-us-t-R-ated.","zh":"有兩個 r:frus + trat + ed。","wx":{"frustated":"漏了中間的 r:frus-TRAT-ed。","fustrated":"漏了第一個 r:FRus-。","frusterated":"多了 e:是 frus-trat-ed,不是 frus-ter-ated。"}},
+{"w":["worthless"],"q":"Adelaide told a friend, “You are not ___.” Which spelling is correct?","a":"worthless","o":["worthles","wortless","worthlass"],"why":"worth + less.","zh":"worth + less:兩個 s。","wx":{"worthles":"-less 要兩個 s。","wortless":"漏了 h:wor-TH。","worthlass":"是 -less(沒有),不是 -lass。"}},
+{"w":["grateful"],"q":"Adelaide is ___ to Mum and Dad for the lift to band practice. Which spelling is correct?","a":"grateful","o":["greatful","gratefull","greatfull"],"why":"grate (thankful) + ful.","zh":"grate + ful:不是 great,-ful 只有一個 l。","wx":{"greatful":"不是 great:grate 來自拉丁文 gratus(感激)。","gratefull":"-ful 只有一個 l。","greatfull":"兩處都錯:是 grate + ful。"}},
+{"w":["hilarious"],"q":"The comedy Adelaide watched on Sunday was ___. Which spelling is correct?","a":"hilarious","o":["hillarious","hilarous","hilarius"],"why":"hi-l-a-r-ious.","zh":"一個 l,一個 r,尾是 -ious。","wx":{"hillarious":"只有一個 l。","hilarous":"漏了 i:尾是 -ious。","hilarius":"漏了 o:尾是 -ious。"}},
+{"w":["alleviate"],"q":"Drumming helps Adelaide ___ stress. Which spelling is correct?","a":"alleviate","o":["aleviate","alliviate","alleveate"],"why":"al (ad-) + levi (light) + ate.","zh":"al + levi + ate:兩個 l。","wx":{"aleviate":"漏了一個 l:ad- 碰上 l 變 al-,所以是 all-。","alliviate":"第二個音節是 e,不是 i:all-E-viate。","alleveate":"是 levi(輕),不是 leve。"}},
+{"w":["meditate"],"q":"Adelaide likes to ___ for five minutes before bed. Which spelling is correct?","a":"meditate","o":["mediate","medetate","meditait"],"why":"med-i-t-ate.","zh":"medi 後面有 t:meditate。","wx":{"mediate":"mediate 是另一個字(調解),少了 t。","medetate":"是 medi-,不是 mede-。","meditait":"尾是 -tate。"}},
+{"w":["strategies"],"q":"Adelaide has some great ___ for remembering new words. Which spelling is correct?","a":"strategies","o":["stratigies","strategys","stratergies"],"why":"strategy → strategies (y → ies).","zh":"strategy → strategies(y 變 ies)。","wx":{"stratigies":"中間是 e,不是 i:strat-e-gies。","strategys":"y 要變 ies。","stratergies":"沒有 r:strat-e-gies。"}},
+{"w":["forward"],"q":"Adelaide can't wait for the school picnic. Adelaide is really ___ it. Which spelling is correct?","a":"looking forward to","o":["looking foward to","looking forword to","looking forwards to"],"why":"for + ward + to.","zh":"fore(前面)+ ward(向):forward 沒有 s。","wx":{"looking foward to":"漏了 r:for-ward。","looking forword to":"是 -ward(向),不是 -word。","looking forwards to":"forward 沒有 s(按字表寫 look forward to)。"}},
+{"w":["engage"],"q":"To stay healthy, Adelaide tries to ___ every day. Which spelling is correct?","a":"engage in physical activities","o":["engage in physical activitys","engage in phisical activities","engage in physcial activities"],"why":"physical (ph + y) + activities (y → ies).","zh":"physical 是 ph + y;activity → activities。","wx":{"engage in physical activitys":"activity 變眾數:y → ies。","engage in phisical activities":"是 ph-y-,不是 ph-i-。","engage in physcial activities":"i 和 c 調轉了:phys-i-cal。"}}
+]},
+{"n":"第 5 關","t":"大魔王","c":"boss","tag":"Boss · 混合","Q":[
+{"w":["nuts","edge"],"q":"Two feelings for Adelaide: loud drilling next door during revision would ___; the silence before the contest results would ___.","a":"drive someone nuts … put someone on edge","o":["put someone on edge … drive someone nuts","drive someone nuts … drive someone nuts","put someone on edge … put someone on edge"],"why":"Annoyed → drive someone nuts. Nervous → put someone on edge.","zh":"煩 → drive someone nuts;緊張 → put someone on edge。","wx":{"put someone on edge … drive someone nuts":"調轉了:鑽牆聲是「煩」(nuts),等結果是「緊張」(on edge)。","drive someone nuts … drive someone nuts":"第二格錯:等結果是緊張,不是煩 → put someone on edge。","put someone on edge … put someone on edge":"第一格錯:鑽牆聲是煩,不是緊張 → drive someone nuts。"}},
+{"w":["dumps","depressed"],"q":"Adelaide was ___ for one afternoon after losing a pair of drumsticks. But someone who feels ___ for months, with no hope or energy, should get help.","a":"down in the dumps … depressed","o":["depressed … down in the dumps","depressing … depressed","down in the dumps … depressing"],"why":"Short and mild → down in the dumps. Long and serious → depressed.","zh":"短暫、輕微 → down in the dumps;長久、嚴重 → depressed。","wx":{"depressed … down in the dumps":"調轉了:一個下午的小低落 = down in the dumps;幾個月沒有希望 = depressed(較嚴重)。","depressing … depressed":"depressing 形容事情;人自己的感覺要用 -ed。","down in the dumps … depressing":"第二格錯:feels 後面講人的感覺,要用 depressed,不是 depressing。"}},
+{"w":["pessimistic","optimistic"],"q":"Before the match, Adelaide's teammate said, “We'll lose.” Adelaide said, “We trained hard. We can win!” The teammate is ___; Adelaide is ___.","a":"pessimistic … optimistic","o":["optimistic … pessimistic","pessimism … optimism","pessimistic … optimism"],"why":"Expects the worst → pessimistic (pessimus = worst). Expects the best → optimistic (optimus = best).","zh":"想最壞 → pessimistic(pessimus 最壞);想最好 → optimistic(optimus 最好)。","wx":{"optimistic … pessimistic":"調轉了:說「會輸」的是悲觀(pessimistic),Adelaide是樂觀(optimistic)。","pessimism … optimism":"兩個都是名詞;is ___ 要形容詞。","pessimistic … optimism":"第二格是名詞 optimism;is ___ 要形容詞 optimistic。"}},
+{"w":["frazzled"],"q":"After three tests, a band rehearsal and a long bus ride, Adelaide came home tired, nervous and worn out. Which word fits best?","a":"frazzled","o":["frustrated","confused","susceptible"],"why":"Tired + nervous + too much to do = frazzled.","zh":"累 + 緊張 + 事情太多 = frazzled。","wx":{"frustrated":"frustrated 的重點是「想做卻做不到」;這裏的重點是「累」。","confused":"confused 是不明白;句子沒有講看不懂甚麼。","susceptible":"susceptible 要接 to,意思是容易受影響,不是累。"}},
+{"w":["confused"],"q":"Adelaide read the science project instructions three times and still didn't understand them, so Adelaide asked the teacher to explain. Adelaide was ___.","a":"confused","o":["confusing","frustrating","depressed"],"why":"Not able to understand + a person's feeling (-ed) = confused.","zh":"看不明白 + 形容人(-ed)= confused。","wx":{"confusing":"confusing 形容事情(the instructions were confusing);人的感覺要用 confused。","frustrating":"frustrating 形容事情;而且重點是「不明白」→ confused。","depressed":"depressed 是長時間非常沮喪;這裏只是看不明白。"}},
+{"w":["vicious"],"q":"Adelaide gives you a puzzle: which situation is a vicious cycle?","a":"Adelaide's friend worries and can't sleep; the lack of sleep then causes even more worry.","o":["Adelaide practises and improves; the improvement makes practising more fun.","Adelaide feels tired, goes to bed early and wakes up fresh.","Adelaide worries about a test, revises hard and passes it."],"why":"A vicious cycle goes round and gets worse each time.","zh":"惡性循環 = 轉來轉去,而且越來越壞。","wx":{"Adelaide practises and improves; the improvement makes practising more fun.":"這是一個「好的」循環(越來越好),vicious cycle 是越來越壞。","Adelaide feels tired, goes to bed early and wakes up fresh.":"這件事沒有循環,而且結果是好的。","Adelaide worries about a test, revises hard and passes it.":"這件事解決了問題,沒有越來越壞。"}},
+{"w":["stressed","unwind"],"q":"Before the exam, Adelaide felt ___ out. After it, Adelaide went home to ___ with some music.","a":"stressed … unwind","o":["stressful … unwind","stressed … alleviate","stressful … alleviate"],"why":"feel stressed out (person) + unwind (relax, no object).","zh":"stressed out(人)+ unwind(放鬆,不用受詞)。","wx":{"stressful … unwind":"stressful 形容事情;felt ___ out 是人的感覺 → stressed out。","stressed … alleviate":"alleviate 後面一定要有受詞(alleviate stress);to alleviate with some music 不完整。","stressful … alleviate":"兩格都錯:人感到壓力是 stressed;沒有受詞的「放鬆」是 unwind。"}},
+{"w":["nature"],"q":"Last Sunday, Adelaide ___, hiking in Sai Kung with family.","a":"spent time in nature","o":["spend time in nature","spent time in the nature","spent times in nature"],"why":"Past: spend → spent; ‘in nature’ with no ‘the’.","zh":"過去式 spent;in nature 不加 the。","wx":{"spend time in nature":"Last Sunday 是過去,要用過去式 spent。","spent time in the nature":"nature 前面不加 the。","spent times in nature":"time 在這裏不可數,不加 s。"}},
+{"w":["depressed"],"q":"Adelaide spots one mistake in these sentences. Which sentence is WRONG?","a":"Adelaide felt depressing after the match.","o":["Adelaide felt frustrated after the match.","Adelaide found the long match tiring and stressful.","Adelaide was confused by the referee's decision."],"why":"A person feels depressed (-ed). ‘Depressing’ describes a thing.","zh":"人的感覺要用 depressed;depressing 形容事情。","wx":{"Adelaide felt frustrated after the match.":"這句是對的:人的感覺用 frustrated。題目要你選錯的一句。","Adelaide found the long match tiring and stressful.":"這句是對的:stressful 形容「比賽」這件事。題目要你選錯的一句。","Adelaide was confused by the referee's decision.":"這句是對的:人的感覺用 confused。題目要你選錯的一句。"}},
+{"w":["optimistic"],"q":"Last question! You finished all 50. Adelaide believes you will do even better next time. Adelaide is ___ about your next test.","a":"optimistic","o":["pessimistic","worthless","susceptible"],"why":"Believes good things will happen = optimistic. (And you really did work hard.)","zh":"相信會更好 = optimistic。(你真的很努力。)","wx":{"pessimistic":"pessimistic 是悲觀;Adelaide相信你會更好 → optimistic。","worthless":"worthless 是沒有價值,完全不合句意。","susceptible":"susceptible 要接 to,解「容易受影響」,不合句意。"}}
+]}
+]};
+var N="Adelaide";
+var WBY={}; D.W.forEach(function(w){WBY[w.id]=w;});
+var LV=D.LV, G=D.G;
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");}
+function nm(s){return esc(s).split(N).join('<span class="nm">'+N+'</span>');}
+function shuffle(a){a=a.slice();for(var k=a.length-1;k>0;k--){var j=Math.floor(Math.random()*(k+1));var t=a[k];a[k]=a[j];a[j]=t;}return a;}
+
+/* ---------- root breakdown ---------- */
+var DIRS=[[-140,-70,-28],[10,-95,18],[140,-60,26],[-110,80,-18],[120,85,22]];
+var KL={root:"字根拆解",origin:"真實來源",memo:"記憶法"};
+function rootHTML(w,mini){
+  var n=w.parts.length, h='<div class="rootbox k-'+w.kind+'" data-n="'+n+'"><div class="rh"><span class="kb">'+KL[w.kind]+'</span>'+(mini?'<span class="q">為甚麼 '+esc(w.w)+' 是這個意思?</span>':'')+'<button class="replay" type="button">▶ 再看一次</button></div><div class="snap">';
+  w.parts.forEach(function(p,i){
+    var d=DIRS[i%DIRS.length];
+    h+='<span class="pc'+(i===n-1?' last':'')+'" style="--dx:'+d[0]+'px;--dy:'+d[1]+'px;--r:'+d[2]+'deg;animation-delay:'+(i*(mini?0.18:0.38)).toFixed(2)+'s"><b>'+esc(p[0])+'</b><i>'+esc(p[1])+'</i></span>';
+    if(i<n-1) h+='<span class="plus">+</span>';
+  });
+  h+='<span class="eq">= '+esc(w.w)+'</span></div><div class="logic">→ '+nm(w.logic)+'</div>';
+  if(w.note) h+='<div class="rnote">'+nm(w.note)+'</div>';
+  if(w.memo) h+='<div class="rmemo">💡 '+nm(w.memo)+'</div>';
+  return h+'</div>';
+}
+function playSnap(box,mini){
+  var s=box.querySelector(".snap"), n=+box.getAttribute("data-n");
+  if(box._t) clearTimeout(box._t);
+  box.classList.remove("done"); s.classList.remove("go","joined"); void s.offsetWidth; s.classList.add("go");
+  box._t=setTimeout(function(){ s.classList.add("joined"); box._t=setTimeout(function(){box.classList.add("done");},450); }, (n-1)*(mini?180:380)+(mini?550:750));
+}
+function wireRoots(container,mini){
+  Array.prototype.forEach.call(container.querySelectorAll(".rootbox"),function(b){
+    b.querySelector(".replay").addEventListener("click",function(){playSnap(b,mini);});
+    playSnap(b,mini);
+  });
+}
+
+/* ---------- learning cards ---------- */
+var CARDS=[];
+G.forEach(function(g){ CARDS.push({t:"scene",g:g}); D.ORDER[g.g].forEach(function(id){CARDS.push({t:"word",w:WBY[id],g:g});}); });
+CARDS.push({t:"sum"});
+function sceneHTML(g){
+  var h='<div class="scene '+g.cls+'">';
+  if(g.cls==="sB") for(var k=0;k<18;k++) h+='<i class="drop" style="left:'+(3+k*5.5)+'%;animation-delay:'+((k*0.37)%1.1).toFixed(2)+'s"></i>';
+  if(g.cls==="sD") for(var k2=0;k2<7;k2++) h+='<span class="leaf" style="left:'+(6+k2*14)+'%;animation-delay:'+(k2*0.7).toFixed(1)+'s">🍃</span>';
+  h+='<div class="emos">'+g.emo.map(function(e,i){return '<span style="animation-delay:'+(i*0.25)+'s">'+e+'</span>';}).join("")+'</div>';
+  h+='<div class="badge">'+N+'</div><div class="story">'+g.story.map(function(l,i){return '<p style="animation-delay:'+(0.7+i*0.9).toFixed(1)+'s">'+nm(l)+'</p>';}).join("")+'</div></div>';
+  var ws=D.ORDER[g.g];
+  h+='<div class="gwords">'+ws.map(function(id,i){return '<span style="animation-delay:'+(3.4+i*0.12).toFixed(2)+'s">'+esc(WBY[id].w)+'</span>';}).join("")+'</div>';
+  return h;
+}
+function egHTML(w){
+  var s=nm(w.eg), hl=esc(w.hl); return s.replace(hl,'<b class="hw">'+hl+'</b>');
+}
+function wordHTML(w){
+  var h='<h2>'+esc(w.w)+'<span class="pos">'+esc(w.pos)+'</span><span class="wzh">'+esc(w.zh)+'</span></h2><div class="mean">'+esc(w.m)+'</div>';
+  h+=rootHTML(w,false);
+  h+='<span class="eg">'+egHTML(w)+'</span><div class="egzh">'+nm(w.egzh)+'</div>';
+  h+='<table><tr><th>相關形式 / 搭配</th><th>意思</th></tr>'+w.forms.map(function(f){return '<tr><td><b>'+esc(f[0])+'</b></td><td>'+esc(f[1])+'</td></tr>';}).join("")+'</table>';
+  h+='<div class="tipb">✏️ 串字:'+esc(w.tip)+'</div>';
+  return h;
+}
+function sumHTML(){
+  var rows=[["de-","向下","depressed"],["con-","一起","confused"],["un-","相反、解開","unwind"],["over","在上面","overwhelmed"],["ad- → al- / at-","向、使(所以 ll、tt)","alleviate, attainable"],["sus- (sub-)","由下面","susceptible"],["em- (en-)","在裏面","empathetic"],["optim / pessim","最好 / 最壞","optimistic / pessimistic"],["-less","沒有","worthless"],["-ful","充滿","grateful"],["-able / -ible","可以……的","attainable, susceptible"],["-ed ↔ -ing","人的感覺 ↔ 事情令人……","confused ↔ confusing"]];
+  return '<h2>總結:字根小抄</h2><p>認得這些部件,新字也能估到意思。<span class="nm">'+N+'</span>溫習時也是先拆開,再拼回去。</p><table><tr><th>部件</th><th>意思</th><th>例子</th></tr>'+rows.map(function(r){return '<tr><td><b>'+esc(r[0])+'</b></td><td>'+esc(r[1])+'</td><td>'+esc(r[2])+'</td></tr>';}).join("")+'</table><div class="tipb">記住:depressed / confused / frustrated / stressed 講「人」的感覺;depressing / confusing / frustrating / stressful 講「事情」。</div>';
+}
+var card=0;
+function gchips(id,onClick,cur){
+  var h=G.map(function(g){return '<button class="gchip'+(g.g===cur?' on':'')+'" type="button" data-g="'+g.g+'">'+g.g+' · '+esc(g.zh)+'</button>';}).join("");
+  $(id).innerHTML=h;
+  Array.prototype.forEach.call($(id).querySelectorAll(".gchip"),function(b){b.addEventListener("click",function(){onClick(b.getAttribute("data-g"));});});
+}
+function gotoGroup(g){ for(var k=0;k<CARDS.length;k++){ if(CARDS[k].t==="scene"&&CARDS[k].g.g===g){card=k;break;} } showCard(); }
+function showCard(){
+  var C=CARDS[card], lc=$("lc"), head='<div class="cn">卡 '+(card+1)+' / '+CARDS.length+(C.g?' · '+C.g.g+' '+esc(C.g.en)+' '+esc(C.g.zh):'')+'</div>';
+  if(C.t==="scene") lc.innerHTML=head+'<h2>'+C.g.g+' · '+esc(C.g.en)+'<span class="wzh">'+esc(C.g.zh)+'('+D.ORDER[C.g.g].length+' 個字)</span></h2>'+sceneHTML(C.g);
+  else if(C.t==="word") lc.innerHTML=head+wordHTML(C.w);
+  else lc.innerHTML=head+sumHTML();
+  lc.className="card c-"+C.t;
+  wireRoots(lc,false);
+  $("ld").innerHTML=CARDS.map(function(_,k){return '<i'+(k===card?' class="on"':'')+'></i>';}).join("");
+  $("lPrev").disabled=(card===0);
+  $("lNext").textContent=(card===CARDS.length-1)?"開始第 1 關 →":"下一張 →";
+  gchips("gLearn",gotoGroup,C.g?C.g.g:null);
+  show("sLearn");
+}
+
+/* ---------- quiz ---------- */
+var KEY="adl_vocab4_feelinggood_v1", best={};
+try{ best=JSON.parse(localStorage.getItem(KEY)||"{}")||{}; }catch(e){ best={}; }
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(best)); }catch(e){} }
+function opts(q){ var o=q.o.slice(); o.push(q.a); return q.keep?o:shuffle(o); }
+function fillHTML(q,pick,ok){
+  if(ok) return '<span class="fill ok">'+nm(pick)+'</span>';
+  return '<span class="fill bad">'+nm(pick)+'</span><span class="fill ok">'+nm(q.a)+'</span>';
+}
+function stemHTML(q,fill){ var h=nm(q.q); if(h.indexOf("___")<0) return h;
+  if(fill==null) return h.split("___").join('<span class="blank">&nbsp;</span>');
+  // two-blank questions: split the pair answer on " … "
+  var parts=h.split("___"); if(parts.length===2) return parts[0]+fill+parts[1];
+  return h.replace(/___/g,'<span class="blank">&nbsp;</span>');
+}
+var lvl=0,set=[],i=0,score=0,answered=false,cf=null,redo=false;
+function show(id){
+  if(id!=="sEnd"&&cf&&cf.parentNode){cf.parentNode.removeChild(cf);cf=null;}
+  ["sStart","sLearn","sQ","sEnd"].forEach(function(s){$(s).classList.toggle("on",s===id);});
+  window.scrollTo(0,0);
+}
+function levels(){
+  var h="";
+  LV.forEach(function(L,k){
+    var b=best[k];
+    h+='<button class="lv '+L.c+'" type="button" data-k="'+k+'"><span class="ln">'+L.n+'</span><span class="lt">'+nm(L.t)+'</span><span class="lb">10 題</span>'+(b!=null?'<span class="best">最好 '+b+' / 10</span>':'')+'</button>';
+  });
+  $("levels").innerHTML=h;
+  Array.prototype.forEach.call(document.querySelectorAll("#levels .lv"),function(b){ b.addEventListener("click",function(){ startLevel(+b.getAttribute("data-k")); }); });
+  var tot=0,any=false; for(var k in best){ tot+=best[k]; any=true; }
+  $("pill").textContent=any?("最好合共 "+tot+" / 50"):"50 題";
+  gchips("gStart",gotoGroup,null);
+}
+function startLevel(k,only){
+  lvl=k; redo=!!only; var Q=LV[k].Q;
+  var list=only?only:Q.map(function(_,j){return j;});
+  set=list.map(function(j){return {q:Q[j],j:j};}); i=0; score=0; ask();
+}
+function dots(){
+  var d=$("dots"); d.innerHTML="";
+  set.forEach(function(it,j){ var s=document.createElement("span"); s.className="dot"+(it.ok===true?" ok":it.ok===false?" no":(j===i?" cur":"")); d.appendChild(s); });
+}
+function ask(){
+  answered=false;
+  if(document.activeElement&&document.activeElement.blur) document.activeElement.blur();
+  var it=set[i], q=it.q, L=LV[lvl];
+  $("qn").textContent=L.n+" · "+L.t+" · 第 "+(i+1)+" / "+set.length+" 題";
+  $("qtag").className="tag "+L.c; $("qtag").textContent=L.tag;
+  $("qt").innerHTML=stemHTML(q,null);
+  it.opts=opts(q);
+  var box=$("ans"); box.innerHTML="";
+  it.opts.forEach(function(o,k){
+    var b=document.createElement("button"); b.type="button"; b.className="a a"+k;
+    b.innerHTML='<span class="lt">'+"ABCD".charAt(k)+'</span><span class="tx">'+nm(o)+'</span><span class="mk"></span>';
+    b.addEventListener("click",function(){pick(k);});
+    box.appendChild(b);
+  });
+  $("fb").className="fb"; $("fb").innerHTML=""; $("nx").style.visibility="hidden";
+  $("pill").textContent="Score "+score+" / "+i;
+  dots(); show("sQ");
+}
+var CHEER=["Nice! 🥁","Great! ✨","Correct! 🎉","Yes! ⭐","Perfect! 🎵"];
+function burst(el){
+  var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2, E=["⭐","✨","🎉","🥁","💙","🎵"];
+  for(var k=0;k<12;k++){
+    var s=document.createElement("span"); s.className="burst"; s.textContent=E[k%E.length];
+    var ang=k/12*Math.PI*2, dist=70+Math.random()*60;
+    s.style.left=(cx-10)+"px"; s.style.top=(cy-12)+"px";
+    s.style.setProperty("--bx",Math.cos(ang)*dist+"px"); s.style.setProperty("--by",Math.sin(ang)*dist-30+"px"); s.style.setProperty("--br",(Math.random()*120-60)+"deg");
+    document.body.appendChild(s);
+    (function(n){setTimeout(function(){if(n.parentNode)n.parentNode.removeChild(n);},950);})(s);
+  }
+}
+function rootsFor(q){ return q.w.map(function(id){return '<div class="fbroot">'+rootHTML(WBY[id],true)+'</div>';}).join(""); }
+function pick(k){
+  if(answered) return; answered=true;
+  var it=set[i], q=it.q, o=it.opts[k], ok=(o===q.a);
+  if(ok) score++;
+  it.pick=o; it.ok=ok;
+  var btns=$("ans").querySelectorAll(".a");
+  for(var j=0;j<btns.length;j++){
+    var b=btns[j], t=it.opts[j];
+    if(t===q.a){ b.classList.add("right"); if(j===k) b.classList.add("picked"); b.querySelector(".mk").textContent="✓"; }
+    else if(j===k){ b.classList.add("wrong"); b.querySelector(".mk").textContent="✗"; }
+    else b.classList.add("dim");
+    b.disabled=true;
+  }
+  if(q.q.indexOf("___")>=0 && q.q.split("___").length===2) $("qt").innerHTML=stemHTML(q,fillHTML(q,o,ok));
+  var fb=$("fb");
+  fb.className="fb on "+(ok?"good":"bad");
+  if(ok){fb.innerHTML='<div class="fbh">✓ '+CHEER[Math.floor(Math.random()*CHEER.length)]+'</div><div class="why">'+nm(q.why)+'</div><div class="zhx">'+nm(q.zh)+'</div>'+rootsFor(q); burst(btns[k]);}
+  else{fb.innerHTML='<div class="fbh">✗ 你選了「'+nm(o)+'」</div><div class="why ww">為甚麼不對:'+nm(q.wx[o]||"")+'</div><div class="why" style="margin-top:6px">答案:<b>'+nm(q.a)+'</b> —— '+nm(q.why)+'</div><div class="zhx">'+nm(q.zh)+'</div>'+rootsFor(q);}
+  wireRoots(fb,true);
+  $("nx").textContent=(i+1>=set.length)?"看結果 →":"Next →";
+  $("nx").style.visibility="visible";
+  $("pill").textContent="Score "+score+" / "+(i+1);
+  dots();
+}
+function next(){ if(!answered) return; i++; if(i>=set.length) end(); else ask(); }
+function end(){
+  var n=set.length, L=LV[lvl], full=!redo;
+  if(full){ if(best[lvl]==null||score>best[lvl]) best[lvl]=score; save(); }
+  $("rk").innerHTML=L.n+" · "+nm(L.t)+(full?"":" · 只做錯的");
+  $("rs").textContent=score+" / "+n; $("rp").textContent=Math.round(score/n*100)+"%";
+  var r=score/n;
+  $("rm").innerHTML = r>=0.9 ? "Amazing! "+nm(N)+" would be impressed. 這一關你已經掌握了 🎉"
+    : r>=0.6 ? "Not bad! 把做錯的再做一次 —— "+nm(N)+"練鼓時也會把難的節拍再練一遍。"
+    : "先回去看看學習卡的字根,再試一次。"+nm(N)+"遇到難的節拍也從不放棄。";
+  var rv=$("rv"); rv.innerHTML="";
+  set.forEach(function(it,j){
+    var q=it.q, li=document.createElement("li"); li.className=it.ok?"ok":"no";
+    var oneBlank=q.q.split("___").length===2;
+    var body=oneBlank?stemHTML(q,fillHTML(q,it.pick,it.ok)):nm(q.q)+" → "+fillHTML(q,it.pick,it.ok);
+    li.innerHTML='<span class="num">'+(j+1)+'.</span><span class="mk">'+(it.ok?"✓":"✗")+'</span><span class="rq">'+body+(it.ok?'':'<span class="rw">'+(q.wx[it.pick]?('你選的「'+nm(it.pick)+'」:'+nm(q.wx[it.pick])):nm(q.zh))+'</span>')+'</span>';
+    rv.appendChild(li);
+  });
+  var wrong=set.filter(function(it){return !it.ok;});
+  $("redoWrong").style.display=wrong.length?"":"none";
+  $("nextLv").style.display=(lvl<LV.length-1)?"":"none";
+  $("pill").textContent="Score "+score+" / "+n;
+  show("sEnd");
+  if(r>=0.9) confetti();
+}
+function confetti(){
+  var c=document.createElement("canvas"), W=window.innerWidth, H=window.innerHeight;
+  c.width=W; c.height=H; c.style.cssText="position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:50";
+  document.body.appendChild(c); cf=c;
+  var x=c.getContext("2d"), cols=["#2563eb","#93c5fd","#1f6feb","#7a3fd1","#1a8a3a","#b97800"], P=[];
+  for(var k=0;k<150;k++) P.push({x:Math.random()*W,y:-20-Math.random()*H*0.5,vx:(Math.random()-0.5)*3,vy:2+Math.random()*4,r:4+Math.random()*5,c:cols[k%cols.length],a:Math.random()*6});
+  var t0=Date.now();
+  (function step(){
+    var t=Date.now()-t0; x.clearRect(0,0,W,H);
+    P.forEach(function(p){ p.x+=p.vx; p.y+=p.vy; p.a+=0.1; x.fillStyle=p.c; x.save(); x.translate(p.x,p.y); x.rotate(p.a); x.fillRect(-p.r,-p.r/2,p.r*2,p.r); x.restore(); });
+    if(t<2600) requestAnimationFrame(step); else if(c.parentNode){ c.parentNode.removeChild(c); if(cf===c) cf=null; }
+  })();
+}
+
+$("learnBtn").addEventListener("click",function(){card=0;showCard();});
+$("goL1").addEventListener("click",function(){startLevel(0);});
+$("lPrev").addEventListener("click",function(){ if(card>0){card--;showCard();} });
+$("lNext").addEventListener("click",function(){ if(card<CARDS.length-1){card++;showCard();} else startLevel(0); });
+$("lHome").addEventListener("click",function(){levels();show("sStart");});
+$("nx").addEventListener("click",next);
+$("nextLv").addEventListener("click",function(){ if(lvl<LV.length-1) startLevel(lvl+1); });
+$("redoWrong").addEventListener("click",function(){ var w=set.filter(function(it){return !it.ok;}).map(function(it){return it.j;}); if(w.length) startLevel(lvl,w); });
+$("home").addEventListener("click",function(){levels();show("sStart");});
+document.addEventListener("keydown",function(e){
+  if($("sLearn").classList.contains("on")){
+    if(e.key==="ArrowRight"){ $("lNext").click(); } else if(e.key==="ArrowLeft"){ $("lPrev").click(); }
+    return;
+  }
+  if(!$("sQ").classList.contains("on")) return;
+  if(!answered&&/^[1-4]$/.test(e.key)){ var k=+e.key-1; if(set[i]&&k<set[i].opts.length) pick(k); }
+  else if(answered&&(e.key==="Enter"||e.key==="ArrowRight")){ e.preventDefault(); next(); }
+});
+levels();
+})();
+</script>
+</body>
+</html>
