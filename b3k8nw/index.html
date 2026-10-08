@@ -1,396 +1,187 @@
-<!DOCTYPE html>
-<html lang="zh-HK">
+<!doctype html>
+<html lang="zh-Hant">
 <head>
-<script>if(location.protocol==="http:")location.replace("https://"+location.host+location.pathname+location.search);</script>
 <meta charset="utf-8">
-<meta name="hwv-kind" content="physics">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>物理 HW1 畫光線 點樣畫</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;700;900&display=swap" rel="stylesheet">
+<title>物理 HW1 畫光線</title>
 <style>
-:root{--ink:#0b0c0c;--muted:#505a5f;--line:#b1b4b6;--blue:#1d70b8;--red:#d4351c;--hi:#ffdd00;--ok:#00703c}
-*{box-sizing:border-box}
-html{background:#fff;font-size:17px}
-body{margin:0;background:#fff;color:var(--ink);font-family:"Noto Sans HK",Arial,sans-serif;line-height:1.6;padding-bottom:78px}
-.top{position:sticky;top:0;z-index:30;background:#fff;border-bottom:6px solid var(--blue);padding:10px 16px}
-.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.tag{font-weight:900;color:#fff;background:var(--blue);border-radius:4px;padding:2px 12px}
-.num{color:var(--muted);font-size:.85rem}
-.legend{font-size:.85rem}.legend b.c{color:var(--blue)}.legend b.o{color:var(--red)}
-.qmbtn{font-family:inherit;font-weight:900;font-size:.95rem;padding:6px 14px;border:2px solid var(--blue);background:var(--blue);color:#fff;border-radius:999px;cursor:pointer}
-#qmenu{position:fixed;z-index:95;background:#fff;border:3px solid var(--blue);border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.3);padding:6px;max-height:75vh;overflow:auto;min-width:280px;display:none}
-#qmenu.on{display:block}
-#qmenu button{display:flex;gap:10px;width:100%;text-align:left;font-family:inherit;font-size:.95rem;font-weight:700;padding:8px 10px;border:0;border-bottom:1px solid #e3e3e3;background:#fff;cursor:pointer}
-#qmenu button.on,#qmenu button:hover{background:#eef4fb}
-.ctrl{margin-left:auto;display:flex;gap:8px}
-.ctrl button{font-family:inherit;font-size:.95rem;font-weight:700;padding:7px 14px;border:2px solid var(--ink);background:#fff;border-radius:4px;cursor:pointer}
-.ctrl button.main{background:var(--ink);color:#fff}
-.say{font-size:1.12rem;font-weight:700;margin:8px 0 0;min-height:1.6em}
-.caret{display:inline-block;width:2px;height:1.05em;background:var(--ink);vertical-align:-2px;margin-left:2px;animation:blink .8s steps(1) infinite}
-@keyframes blink{50%{opacity:0}}
-.grid{display:grid;grid-template-columns:1.35fr .85fr;gap:16px;padding:14px 16px 24px;align-items:start}
-.stage{border:2px solid var(--ink);border-radius:8px;min-height:420px;background:#fff;position:relative;overflow:hidden}
-.scene{display:none;padding:8px 12px 16px}
-.scene.on{display:block;animation:fade .45s}
-@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-svg{width:100%;height:auto;display:block}
-.draw{stroke-dasharray:800;stroke-dashoffset:800}
-.scene.on .draw{animation:ink 1.15s ease forwards}
-.scene.on .d2{animation-delay:.45s}
-.scene.on .d3{animation-delay:.9s}
-.scene.on .d4{animation-delay:1.35s}
-@keyframes ink{to{stroke-dashoffset:0}}
-.popin{opacity:0;transform:scale(.86)}
-.scene.on .popin{animation:popin .45s ease forwards}
-.scene.on .p2{animation-delay:.7s}
-.scene.on .p3{animation-delay:1.2s}
-@keyframes popin{to{opacity:1;transform:none}}
-.pulse{animation:pulse 1.2s infinite}
-@keyframes pulse{0%,100%{filter:drop-shadow(0 0 0 rgba(255,221,0,0))}50%{filter:drop-shadow(0 0 6px rgba(255,180,0,.9))}}
-.side{display:flex;flex-direction:column;gap:12px}
-.brain{border:3px solid var(--red);border-radius:14px;padding:10px 12px;min-height:150px;background:#fff}
-.brain.on{box-shadow:0 0 0 6px rgba(212,53,28,.18)}
-.bh{font-weight:900;color:var(--red);font-size:.85rem}
-.bt{font-size:1.02rem;font-weight:700;white-space:pre-line;min-height:4.2em}
-.paper{border:2px solid var(--ink);border-radius:6px;padding:10px 12px 14px;min-height:220px;background:#fff}
-.paper h2{margin:0 0 6px;font-size:.95rem}
-.paper h2 span{font-weight:400;color:var(--muted)}
-.line{font-weight:900;font-size:1.05rem;margin:4px 0}
-.line b{color:var(--red)}
-.ans{margin-top:8px;background:var(--hi);border:2px solid var(--ink);border-radius:6px;padding:8px 10px;font-weight:900}
-.fly{position:fixed;z-index:60;background:var(--hi);border:2px solid var(--ink);border-radius:6px;padding:6px 12px;font-weight:900;pointer-events:none;box-shadow:0 8px 20px rgba(0,0,0,.25);transition:left .7s cubic-bezier(.5,0,.2,1),top .7s cubic-bezier(.5,0,.2,1),transform .7s}
-.player{position:fixed;left:0;right:0;bottom:0;z-index:40;background:#0b0c0c;color:#fff;display:flex;align-items:center;gap:12px;padding:10px 16px}
-.player button{font-family:inherit;font-size:1rem;font-weight:900;width:48px;height:36px;border:0;border-radius:4px;background:#fff;color:#0b0c0c;cursor:pointer}
-.track{position:relative;flex:1;height:14px;background:#444;border-radius:999px;cursor:pointer}
-.fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--hi);border-radius:999px}
-.knob{position:absolute;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:#fff;border:3px solid var(--hi);left:0}
-.ptime{font-size:.85rem;min-width:92px;text-align:right;font-variant-numeric:tabular-nums}
-.spd{display:flex;align-items:center;gap:6px;font-size:.85rem;font-weight:900}
-.spd input{width:110px;accent-color:#ffdd00}
-@media(max-width:900px){.grid{grid-template-columns:1fr}}
+:root { color-scheme: light; }
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: #fff; color: #111; font-family: "Microsoft JhengHei", sans-serif; }
+body { display: flex; flex-direction: column; overflow: hidden; }
+.top { display: flex; gap: 10px; align-items: center; padding: 8px 12px; position: relative; }
+.qmbtn { background: #1a73e8; color: #fff; border: 0; border-radius: 999px; padding: 8px 14px; font-size: 16px; cursor: pointer; }
+#qmenu { display: none; position: absolute; top: 48px; left: 12px; background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; min-width: 240px; z-index: 8; box-shadow: 0 10px 28px rgba(0,0,0,.12); padding: 6px; }
+#qmenu button { display: block; width: 100%; text-align: left; background: #fff; border: 0; border-radius: 8px; padding: 9px 12px; font-size: 16px; cursor: pointer; }
+#qmenu button.on { color: #1a73e8; font-weight: 700; background: #f3f8ff; }
+.stage { flex: 1; display: flex; min-height: 0; gap: 12px; padding: 0 12px 8px; }
+.cam { flex: 1.15; overflow: hidden; border: 1px solid #eee; border-radius: 12px; background: #fff; }
+.cam img { width: 100%; display: block; transform-origin: 50% 0; transition: transform .45s ease; }
+.side { flex: .85; overflow: auto; padding-right: 4px; }
+.k { font-size: 13px; color: #888; }
+.brain { background: #fff5f5; border-left: 4px solid #d33; padding: 8px 10px; margin: 8px 0; font-size: 16px; }
+.say { font-size: 20px; line-height: 1.55; min-height: 5em; }
+.ans { font-size: 22px; font-weight: 700; margin-top: 8px; }
+.player { height: 64px; display: flex; align-items: center; gap: 10px; padding: 0 12px; border-top: 1px solid #eee; }
+button.ctl { border: 1px solid #ddd; background: #fff; border-radius: 8px; padding: 6px 10px; cursor: pointer; }
+#seek { flex: 1; }
+#spd { width: 120px; }
+@media (max-width: 1100px) {
+  body { overflow: auto; height: auto; }
+  .stage { flex-direction: column; }
+  .cam { max-height: 52vh; }
+}
 </style>
 </head>
 <body>
 <div class="top">
-  <div class="row">
-    <span class="tag" id="tag">開場</span>
-    <span class="num" id="num">1 / 1</span>
-    <button type="button" class="qmbtn" id="qmbtn">目錄 ▾</button>
-    <span class="legend"><b class="c">藍字</b>＝點解　<b class="o">紅字</b>＝你要寫落去</span>
-    <div class="ctrl">
-      <button type="button" id="prev">← 上一步</button>
-      <button type="button" class="main" id="playtop">▶ 播放</button>
-      <button type="button" id="next">下一步 →</button>
-    </div>
-  </div>
-  <p class="say" id="say"></p>
+  <button class="qmbtn" id="qmbtn" type="button">目錄：開場 ▾</button>
+  <button class="ctl" id="ipad" type="button">手機模式</button>
+  <div id="qmenu"></div>
 </div>
-<div class="grid">
-  <div class="stage" id="stage">
-
-    <div class="scene" id="sc-open">
-      <svg viewBox="0 0 760 420">
-        <text x="40" y="90" font-size="42" font-weight="900">物理 HW1</text>
-        <text x="40" y="145" font-size="32" font-weight="700" fill="#1d70b8">畫光線，先畫虛線</text>
-        <text x="40" y="200" font-size="22">Book 3A 第 1 章　第 1 至 5 題</text>
-        <line class="draw" x1="80" y1="300" x2="680" y2="300" stroke="#0b0c0c" stroke-width="8"/>
-        <line x1="380" y1="120" x2="380" y2="300" stroke="#1d70b8" stroke-width="4" stroke-dasharray="10 8"/>
-        <text class="popin p3" x="396" y="180" font-size="22" fill="#1d70b8" font-weight="700">法線</text>
-      </svg>
-    </div>
-
-    <div class="scene" id="sc-rule">
-      <svg viewBox="0 0 760 420">
-        <line x1="60" y1="280" x2="700" y2="280" stroke="#0b0c0c" stroke-width="8"/>
-        <text x="60" y="320" font-size="22" font-weight="700">鏡面</text>
-        <line x1="380" y1="60" x2="380" y2="280" stroke="#1d70b8" stroke-width="4" stroke-dasharray="10 8"/>
-        <text class="popin" x="396" y="90" font-size="24" fill="#1d70b8" font-weight="900">虛線，法線，零度由呢度計</text>
-        <path class="draw d2" d="M380 280 L560 140" stroke="#d4351c" stroke-width="4"/>
-        <text class="popin p2" x="500" y="200" font-size="20" fill="#d4351c" font-weight="700">呢個角先唔好當入射</text>
-        <path class="draw d3" d="M380 200 A80 80 0 0 1 300 140" fill="none" stroke="#1d70b8" stroke-width="4"/>
-        <text class="popin p3" x="230" y="180" font-size="22" fill="#1d70b8" font-weight="900">入射角</text>
-        <text x="60" y="380" font-size="26" font-weight="900">鏡面角 + 法線角 = 90°</text>
-      </svg>
-    </div>
-
-    <div class="scene" id="sc-how">
-      <svg viewBox="0 0 760 420">
-        <line x1="60" y1="300" x2="700" y2="300" stroke="#0b0c0c" stroke-width="8"/>
-        <line class="draw" x1="380" y1="40" x2="380" y2="300" stroke="#1d70b8" stroke-width="4" stroke-dasharray="10 8"/>
-        <text class="popin" x="250" y="40" font-size="20" fill="#1d70b8" font-weight="900">1 畫虛線</text>
-        <path class="draw d2" d="M180 80 L380 300" stroke="#d4351c" stroke-width="5"/>
-        <polygon class="popin p2" points="250,168 268,150 258,186" fill="#d4351c"/>
-        <path class="draw d2" d="M380 210 A70 70 0 0 1 330 156" fill="none" stroke="#d4351c" stroke-width="4"/>
-        <text class="popin p2" x="250" y="190" font-size="20" fill="#d4351c" font-weight="900">2 入射角</text>
-        <path class="draw d3" d="M380 300 L590 90" stroke="#00703c" stroke-width="5"/>
-        <polygon class="popin p3" points="500,168 518,186 490,176" fill="#00703c"/>
-        <path class="draw d3" d="M380 210 A70 70 0 0 0 432 158" fill="none" stroke="#00703c" stroke-width="4"/>
-        <text class="popin p3" x="470" y="150" font-size="20" fill="#00703c" font-weight="900">3 另一邊同一個角</text>
-        <text x="60" y="370" font-size="26" font-weight="900">反射角 = 入射角　箭咀跟住光行方向</text>
-      </svg>
-    </div>
-
-    <div class="scene" id="sc-q1">
-      <svg viewBox="0 0 760 420">
-        <circle class="pulse" cx="160" cy="150" r="54" fill="#ffdd00" stroke="#0b0c0c" stroke-width="4"/>
-        <text x="128" y="158" font-size="28" font-weight="900">太陽</text>
-        <rect x="300" y="110" width="28" height="120" fill="none" stroke="#0b0c0c" stroke-width="4"/>
-        <text x="280" y="270" font-size="22" font-weight="700">筆</text>
-        <rect x="500" y="100" width="70" height="130" rx="16" fill="none" stroke="#0b0c0c" stroke-width="4"/>
-        <text x="490" y="270" font-size="22" font-weight="700">水樽</text>
-        <text class="popin p2" x="80" y="340" font-size="26" font-weight="900" fill="#d4351c">淨係太陽自己會光　答案 A</text>
-      </svg>
-    </div>
-
-    <div class="scene" id="sc-q2">
-      <svg viewBox="0 0 760 420">
-        <polyline points="80,80 280,250 680,80" fill="none" stroke="#0b0c0c" stroke-width="8"/>
-        <path class="draw" d="M130 130 L250 210 L500 130" fill="none" stroke="#d4351c" stroke-width="5"/>
-        <text class="popin" x="150" y="190" font-size="32" font-weight="900">40°</text>
-        <text class="popin p2" x="430" y="190" font-size="32" font-weight="900" fill="#d4351c">α</text>
-        <text x="300" y="310" font-size="32" font-weight="900">120°</text>
-        <text class="popin p3" x="80" y="380" font-size="28" font-weight="900">α = 180 - 120 - 40 = 20°　揀 A</text>
-      </svg>
-    </div>
-
-    <div class="scene" id="sc-q3">
-      <svg viewBox="0 0 760 420">
-        <rect x="90" y="90" width="40" height="180" fill="none" stroke="#1d70b8" stroke-width="4"/>
-        <text x="70" y="300" font-size="22" font-weight="700">野</text>
-        <circle cx="620" cy="180" r="36" fill="none" stroke="#0b0c0c" stroke-width="4"/>
-        <circle cx="632" cy="172" r="7" fill="#0b0c0c"/>
-        <text x="590" y="250" font-size="22" font-weight="700">眼</text>
-        <path class="draw" d="M130 90 L590 168" stroke="#d4351c" stroke-width="4"/>
-        <path class="draw d2" d="M130 270 L590 192" stroke="#d4351c" stroke-width="4"/>
-        <polygon class="popin p2" points="560,160 578,172 548,176" fill="#d4351c"/>
-        <polygon class="popin p3" points="560,198 578,188 548,204" fill="#d4351c"/>
-        <text class="popin p3" x="70" y="370" font-size="24" font-weight="900">最上同最下各一條去眼　箭咀指向眼</text>
-      </svg>
-    </div>
-
-    <div class="scene" id="sc-q4a">
-      <svg viewBox="0 0 760 420">
-        <path d="M140 300 A240 240 0 0 1 620 300" fill="none" stroke="#0b0c0c" stroke-width="3"/>
-        <line x1="380" y1="60" x2="380" y2="300" stroke="#1d70b8" stroke-width="3" stroke-dasharray="8 6"/>
-        <text x="392" y="80" font-size="22" fill="#1d70b8" font-weight="900">0°</text>
-        <line x1="150" y1="300" x2="610" y2="300" stroke="#0b0c0c" stroke-width="8"/>
-        <text x="90" y="330" font-size="20">90°</text>
-        <text x="630" y="330" font-size="20">90°</text>
-        <path class="draw pulse" d="M250 110 L380 300" stroke="#d4351c" stroke-width="5"/>
-        <text class="popin p2" x="180" y="150" font-size="28" font-weight="900" fill="#d4351c">30°</text>
-        <text class="popin p3" x="80" y="390" font-size="26" font-weight="900">入射 30°　反射 30°</text>
-      </svg>
-    </div>
-
-    <div class="scene" id="sc-q4b">
-      <svg viewBox="0 0 760 420">
-        <line x1="80" y1="280" x2="680" y2="280" stroke="#0b0c0c" stroke-width="8"/>
-        <line x1="380" y1="60" x2="380" y2="280" stroke="#1d70b8" stroke-width="3" stroke-dasharray="8 6"/>
-        <path class="draw" d="M200 150 L380 280" stroke="#d4351c" stroke-width="5"/>
-        <text class="popin" x="200" y="250" font-size="26" font-weight="900">50° 同鏡</text>
-        <text class="popin p2" x="400" y="180" font-size="26" font-weight="900" fill="#1d70b8">90 - 50 = 40°</text>
-        <text class="popin p3" x="80" y="370" font-size="28" font-weight="900">入射 40°　反射 40°</text>
-      </svg>
-    </div>
-
-    <div class="scene" id="sc-q4c">
-      <svg viewBox="0 0 760 420">
-        <line x1="80" y1="300" x2="680" y2="300" stroke="#0b0c0c" stroke-width="8"/>
-        <line x1="380" y1="70" x2="380" y2="300" stroke="#1d70b8" stroke-width="3" stroke-dasharray="8 6"/>
-        <path class="draw" d="M180 120 L380 300" stroke="#d4351c" stroke-width="5"/>
-        <path class="draw d2" d="M380 300 L600 130" stroke="#00703c" stroke-width="5"/>
-        <path class="draw d3" d="M300 175 A90 90 0 0 1 470 175" fill="none" stroke="#0b0c0c" stroke-width="3"/>
-        <text class="popin p3" x="330" y="150" font-size="28" font-weight="900">110°</text>
-        <text class="popin p3" x="70" y="380" font-size="26" font-weight="900">110 除 2　入射 55°　反射 55°</text>
-      </svg>
-    </div>
-
-    <div class="scene" id="sc-q4d">
-      <svg viewBox="0 0 760 420">
-        <line x1="80" y1="280" x2="680" y2="280" stroke="#0b0c0c" stroke-width="8"/>
-        <line x1="380" y1="40" x2="380" y2="280" stroke="#1d70b8" stroke-width="3" stroke-dasharray="8 6"/>
-        <path class="draw" d="M380 40 L380 280" stroke="#d4351c" stroke-width="5"/>
-        <path class="draw d2" d="M392 280 L392 70" stroke="#00703c" stroke-width="5"/>
-        <rect x="380" y="250" width="28" height="28" fill="none" stroke="#0b0c0c" stroke-width="3"/>
-        <text class="popin p2" x="420" y="120" font-size="24" font-weight="900">貼住法線，直角</text>
-        <text class="popin p3" x="80" y="370" font-size="28" font-weight="900">入射 0°　反射 0°　光彈返同一條線</text>
-      </svg>
-    </div>
-
-    <div class="scene" id="sc-q5">
-      <svg viewBox="0 0 760 420">
-        <polyline points="70,40 230,250 700,250" fill="none" stroke="#0b0c0c" stroke-width="8"/>
-        <text x="70" y="32" font-size="24" font-weight="900">M1</text>
-        <text x="640" y="240" font-size="24" font-weight="900">M2</text>
-        <text x="280" y="290" font-size="24" font-weight="900">120°</text>
-        <path class="draw" d="M120 70 L250 190" stroke="#d4351c" stroke-width="5"/>
-        <text class="popin" x="90" y="130" font-size="22" font-weight="900">30° 同鏡</text>
-        <path class="draw d2" d="M250 190 L470 190" stroke="#00703c" stroke-width="5"/>
-        <path class="draw d3" d="M470 190 L620 80" stroke="#1d70b8" stroke-width="5"/>
-        <text class="popin p3" x="80" y="370" font-size="24" font-weight="900">M1 入射 60° 反射 60°　M2 都係 60° 同 60°</text>
-      </svg>
-    </div>
-
-    <div class="scene" id="sc-end">
-      <svg viewBox="0 0 760 420">
-        <text x="40" y="70" font-size="32" font-weight="900">抄呢度</text>
-        <text x="40" y="130" font-size="26">Q1 A</text>
-        <text x="40" y="170" font-size="26">Q2 A，20°</text>
-        <text x="40" y="210" font-size="26">Q3 每幅由野兩頭畫去眼</text>
-        <text x="40" y="250" font-size="26">Q4 (a) 30°，30°</text>
-        <text x="40" y="290" font-size="26">Q4 (b) 40°，40°</text>
-        <text x="40" y="330" font-size="26">Q4 (c) 55°，55°　(d) 0°，0°</text>
-        <text x="40" y="380" font-size="26">Q5 M1 60° 同 60°，M2 60° 同 60°</text>
-      </svg>
-    </div>
-
-  </div>
+<div class="stage">
+  <div class="cam"><img id="page" alt="工作紙原相" src="p/q12.jpg"></div>
   <div class="side">
-    <div class="brain" id="brain"><div class="bh">點解</div><div class="bt" id="braintext"></div></div>
-    <div class="paper"><h2>而家寫落去 <span>紅字先唔好抄，聽完先</span></h2><div id="work"></div></div>
+    <div class="k" id="kicker">物理 HW1 · Book 3A Chapter 1</div>
+    <div class="brain" id="brain"></div>
+    <div class="say" id="say"></div>
+    <div class="ans" id="ans"></div>
   </div>
 </div>
-<div id="qmenu"></div>
 <div class="player">
-  <button type="button" id="play" aria-label="播放">▶</button>
-  <div class="track" id="track"><div class="fill" id="fill"></div><div class="knob" id="knob"></div></div>
-  <div class="ptime" id="ptime">0:00</div>
-  <label class="spd">快慢 <input id="spd" type="range" min="0.7" max="1.6" step="0.1" value="1"><span id="spdl">1.0x</span></label>
+  <button class="ctl" id="play" type="button">暫停</button>
+  <input id="seek" type="range" min="0" max="12" value="0">
+  <span id="clock">1 / 13</span>
+  <span>速度</span>
+  <input id="spd" type="range" min="0.5" max="10" step="0.1" value="1">
+  <span id="spdv">1.0x</span>
 </div>
 <script>
-var BEATS = [
-{menu:"開場", tag:"開場", scene:"sc-open", say:"今日唔係背答案。係學點畫條光線。撳播放，我帶你由第一題做到尾。", brain:"難唔係計數。\n難係知道度數由邊條線起計。", work:"", hold:4200},
-{menu:"法線", tag:"法線", scene:"sc-rule", say:"先記一句。度數由虛線計，唔係由鏡計。虛線叫法線，垂直鏡面。", brain:"鏡面個角加法線個角，一定係 90。\n見到貼住鏡嘅度數，先用 90 減佢。", work:"", hold:4600},
-{menu:"點畫", tag:"畫法", scene:"sc-how", say:"三步。畫虛線。由虛線量入射角。另一邊量同一個角，畫反射線。", brain:"箭咀跟住光行方向。\n入射線指向鏡，反射線指向走開。", work:"反射角 = 入射角", hold:4800},
-{menu:"Q1", tag:"Q1", scene:"sc-q1", say:"第一題。邊樣自己會光？太陽會。筆同水樽要靠第二個光，唔算。", brain:"發光物件等如太陽、燈火、螢幕。\n筆同水樽唔會自己光。", work:"Q1 A", ans:"Q1 A", hold:4200},
-{menu:"Q2", tag:"Q2", scene:"sc-q2", say:"第二題。40度同 α 都係光線貼住鏡面個角，唔係法線角。三個角加埋 180。", brain:"兩塊鏡中間 120。\nα = 180 - 120 - 40。", work:"Q2 A，20°", ans:"20°", hold:4800},
-{menu:"Q3", tag:"Q3", scene:"sc-q3", say:"第三題要畫光錐。由野最上同最下，各畫一條直線去眼。箭咀指向眼。三幅圖一樣。", brain:"(a) 香蕉上下去眼。\n(b) 飛機頭尾去眼。\n(c) 樹頂同樹腳去眼。", work:"Q3 兩條線去眼", hold:5000},
-{menu:"Q4 (a)", tag:"Q4a", scene:"sc-q4a", say:"量角器個 0 係虛線。條光線係虛線左邊第三格，即係 30。反射同入射一樣。", brain:"由 0 數過去。\n10、20、30。唔好由鏡面嘅 90 數起。", work:"Q4 (a) 入射 30°，反射 30°", ans:"30° , 30°", hold:4600},
-{menu:"Q4 (b)", tag:"Q4b", scene:"sc-q4b", say:"50 度係光線同鏡面。入射角要用 90 減佢。", brain:"鏡面角 50，法線角就係 40。\n反射角跟入射角一樣。", work:"Q4 (b) 入射 40°，反射 40°", ans:"40° , 40°", hold:4200},
-{menu:"Q4 (c)", tag:"Q4c", scene:"sc-q4c", say:"110 度係兩條光線中間，唔係同鏡。入射加反射等如 110，兩邊一樣，所以除二。", brain:"唔好當 110 係入射角。\n110 除 2 等如 55。", work:"Q4 (c) 入射 55°，反射 55°", ans:"55° , 55°", hold:4600},
-{menu:"Q4 (d)", tag:"Q4d", scene:"sc-q4d", say:"有個直角，光線貼住法線打落去。角度係 0，光彈返同一條線。", brain:"入射 0，反射都係 0。\n唔係 90。", work:"Q4 (d) 入射 0°，反射 0°", ans:"0° , 0°", hold:4200},
-{menu:"Q5", tag:"Q5", scene:"sc-q5", say:"30 度係同鏡面。M1 入射先轉做 60。然後用三角形計 M2，同鏡面都係 30，所以入射都係 60。", brain:"M1：90 - 30 = 60，反射 60。\n同 M2 嘅鏡面角 = 180 - 120 - 30 = 30。\nM2 入射都係 60，反射 60。", work:"Q5 M1 60° 同 60°，M2 60° 同 60°", ans:"60° , 60°", hold:5600},
-{menu:"抄答案", tag:"抄", scene:"sc-end", say:"抄呢度。畫線記得先畫虛線，再量角。", brain:"每次先問：呢個度數係同鏡，定係同虛線？\n同鏡就用 90 減。同虛線就照抄。", work:"", hold:4000}
+var STEPS = [
+  { menu:"開場", img:"p/q12.jpg", z:"scale(1)", o:"50% 0",
+    brain:"你的腦這樣想：角度由 normal（虛線，同鏡面成 90°）量出嚞。",
+    say:"今日工作紙就係你影嘅呢張。我唔會自己畫過第二張圖。先記住：angle of incidence 同 angle of reflection 一定由虛線量，唔係由鏡面量。",
+    ans:"" },
+  { menu:"Q1 發光", img:"p/q12.jpg", z:"scale(1.45)", o:"42% 6%",
+    brain:"luminous object 係自己發光。反射光唔算。",
+    say:"(1) The Sun 自己發光。(2) A pen 同 (3) A water bottle 要有光照住先見到。所以淨係得 (1)。",
+    ans:"填 A" },
+  { menu:"Q2 兩塊鏡", img:"p/q12.jpg", z:"scale(1.55)", o:"48% 58%",
+    brain:"同一種角（光線貼住鏡面）先加埋。三角形內角加埋 180°。",
+    say:"40° 係入射線貼住左鏡，120° 係兩塊鏡中間，α 都係貼住右鏡。三角形：40 + 120 + α = 180，α = 20。",
+    ans:"填 A，20°" },
+  { menu:"Q3 光錐", img:"p/q3.jpg", z:"scale(1)", o:"50% 0",
+    brain:"要見到成件物件，就由物件嘅頂同底，各畫一條線入眼，箭嘴指住眼。",
+    say:"cone of rays。每件野都係兩條線，一條由頂，一條由底，入呢隻眼。",
+    ans:"" },
+  { menu:"Q3(a) 香蕉", img:"p/q3.jpg", z:"scale(1.7)", o:"45% 8%",
+    brain:"一隻眼，一個光錐。",
+    say:"由香蕉頂畫一條入佬眼，由香蕉底再畫一條入同一隻眼。箭嘴都指住眼。",
+    ans:"兩條線，箭嘴指住眼" },
+  { menu:"Q3(b) 飛機", img:"p/q3.jpg", z:"scale(1.7)", o:"50% 36%",
+    brain:"飛機嘅頭同尾，就係物件嘅兩頭。",
+    say:"一條由機頭入眼，一條由機尾入同一隻眼。",
+    ans:"兩條線，箭嘴指住眼" },
+  { menu:"Q3(c) 樹", img:"p/q3.jpg", z:"scale(1.65)", o:"48% 72%",
+    brain:"兩隻眼，每隻眼自己一個光錐。",
+    say:"上便隻眼由樹頂同樹底各入一條。下便隻眼再由樹頂同樹底各入一條。一共四條。",
+    ans:"四條線，每隻眼兩條" },
+  { menu:"Q4(a) 量角器", img:"p/q4.jpg", z:"scale(1.85)", o:"58% 4%",
+    brain:"0° 嗰條虛線就係 normal。90° 喺鏡面。由 0 數落去光線。",
+    say:"光線由左上落嚞。由頂部 0° 數，10、20、30。angle of incidence 係 30°。反射角等如入射角。",
+    ans:"(i) 30°   (ii) 30°" },
+  { menu:"Q4(b) 50°", img:"p/q4.jpg", z:"scale(1.8)", o:"52% 34%",
+    brain:"貼住鏡面嘅角，加埋由 normal 量嘅角，一定係 90°。",
+    say:"50° 係光線貼住 mirror。入射角 = 90 − 50 = 40。反射角都係 40。",
+    ans:"(i) 40°   (ii) 40°" },
+  { menu:"Q4(c) 110°", img:"p/q4.jpg", z:"scale(1.9)", o:"28% 62%",
+    brain:"入射線同反射線中間嘅角 = 2 × 入射角。",
+    say:"110° 係兩條光線中間。除以 2，入射角同反射角都係 55°。",
+    ans:"(i) 55°   (ii) 55°" },
+  { menu:"Q4(d) 直射", img:"p/q4.jpg", z:"scale(1.9)", o:"32% 86%",
+    brain:"光線沿住 normal 落嚞，入射角係 0。",
+    say:"個直角話佢沿住虛線打落鏡。入射角 0°，反射角 0°，光沿原路反彈。",
+    ans:"(i) 0°   (ii) 0°" },
+  { menu:"Q5 畫路", img:"p/q5.jpg", z:"scale(1.35)", o:"50% 8%",
+    brain:"from the mirror surface 係貼住鏡面，唔係 normal。入射角 = 90 − 貼鏡角。",
+    say:"M1 貼住鏡面 30°，所以入射角 60°，反射角 60°。兩塊鏡中間 120°。三角形入面貼 M2 都係 30°，所以 M2 入射角同反射角都係 60°。畫：打落 M1，彈去 M2，再彈出嚞。",
+    ans:"M1  60° / 60°\nM2  60° / 60°" },
+  { menu:"抄答案", img:"p/q12.jpg", z:"scale(1)", o:"50% 0",
+    brain:"一格一句。唔好加解釋。",
+    say:"Q1 填 A。Q2 填 A。Q4(a) 30° 同 30°。(b) 40° 同 40°。(c) 55° 同 55°。(d) 0° 同 0°。Q5 兩塊鏡都係 60° 同 60°。Q3 同 Q5(a) 要畫線。",
+    ans:"照住工作紙抄" }
 ];
-var i = 0, playing = false, speed = 1, token = 0, timers = [];
-var say = document.getElementById("say");
-var brain = document.getElementById("brain");
-var braintext = document.getElementById("braintext");
-var work = document.getElementById("work");
-var tag = document.getElementById("tag");
-var num = document.getElementById("num");
-var fill = document.getElementById("fill");
-var knob = document.getElementById("knob");
-var ptime = document.getElementById("ptime");
+var i = 0, paused = false, speed = 1, token = 0, timers = [];
+var sayEl = document.getElementById("say");
+var brainEl = document.getElementById("brain");
+var ansEl = document.getElementById("ans");
+var page = document.getElementById("page");
 var menu = document.getElementById("qmenu");
-var playBtn = document.getElementById("play");
-var playTop = document.getElementById("playtop");
+var btn = document.getElementById("qmbtn");
+function clearTimers(){ timers.forEach(clearTimeout); timers = []; }
 function later(fn, ms){
-  var my = token;
-  var id = setTimeout(function(){ if(my!==token) return; fn(); }, ms / speed);
-  timers.push(id);
+  var my = token, left = ms;
+  function tick(){
+    if (my !== token) return;
+    if (paused){ timers.push(setTimeout(tick, 80)); return; }
+    left -= 40 * speed;
+    if (left <= 0) fn();
+    else timers.push(setTimeout(tick, 40));
+  }
+  timers.push(setTimeout(tick, 40));
 }
-function stopTimers(){ timers.forEach(clearTimeout); timers = []; token++; }
-function clock(ms){ var s=Math.round(ms/1000); return Math.floor(s/60)+":"+(s%60<10?"0":"")+(s%60); }
-var total = BEATS.reduce(function(a,b){ return a + b.hold; }, 0);
-function at(n){ var t=0; for(var k=0;k<n;k++) t += BEATS[k].hold; return t; }
 function typeInto(el, text, done){
   el.textContent = "";
-  var c = document.createElement("span"); c.className = "caret"; el.appendChild(c);
   var n = 0;
-  (function tick(){
-    n++;
-    el.textContent = text.slice(0, n);
-    el.appendChild(c);
-    if(n < text.length) later(tick, 28); else later(function(){ c.remove(); done(); }, 80);
+  (function step(){
+    if (n >= text.length){ if (done) done(); return; }
+    later(function(){ el.textContent += text.charAt(n); n++; step(); }, 28);
   })();
 }
-function setWork(text){
-  if(!text){ return; }
-  var row = document.createElement("div");
-  row.className = "line";
-  work.appendChild(row);
-  typeInto(row, text, function(){});
-}
-function fly(text){
-  var paper = document.querySelector(".paper");
-  var f = document.createElement("div");
-  f.className = "fly"; f.textContent = text;
-  f.style.left = "38%"; f.style.top = "42%";
-  document.body.appendChild(f);
-  var r = paper.getBoundingClientRect();
-  requestAnimationFrame(function(){ requestAnimationFrame(function(){
-    f.style.left = (r.left + 16) + "px";
-    f.style.top = (r.top + 36) + "px";
-    f.style.transform = "scale(.9)";
-  }); });
-  later(function(){ f.style.opacity = "0"; }, 900);
-  later(function(){ f.remove(); }, 1300);
-}
 function show(n){
-  stopTimers();
-  i = Math.max(0, Math.min(BEATS.length-1, n));
-  var b = BEATS[i];
-  tag.textContent = b.tag;
-  num.textContent = (i+1) + " / " + BEATS.length;
-  document.querySelectorAll(".scene").forEach(function(s){ s.classList.remove("on"); });
-  var sc = document.getElementById(b.scene);
-  void sc.offsetWidth;
-  sc.classList.add("on");
-  brain.classList.add("on");
-  var pos = at(i) / total * 100;
-  fill.style.width = pos + "%";
-  knob.style.left = pos + "%";
-  ptime.textContent = clock(at(i)) + " / " + clock(total);
-  Array.prototype.forEach.call(menu.children, function(btn, k){ btn.classList.toggle("on", k===i); });
-  typeInto(say, b.say, function(){
-    typeInto(braintext, b.brain, function(){
-      brain.classList.remove("on");
-      if(b.work){
-        var lines = work.querySelectorAll(".line");
-        var last = lines.length ? lines[lines.length-1].textContent : "";
-        if(last !== b.work) setWork(b.work);
-      }
-      if(b.ans) fly(b.ans);
-      if(playing) later(function(){ if(i < BEATS.length-1) show(i+1); else { playing=false; paintPlay(); } }, b.hold);
-    });
+  token++; clearTimers();
+  i = n;
+  var s = STEPS[n];
+  page.src = s.img;
+  page.style.transform = s.z;
+  page.style.transformOrigin = s.o;
+  brainEl.textContent = s.brain;
+  ansEl.textContent = "";
+  btn.textContent = "目錄：" + s.menu + " ▾";
+  document.getElementById("seek").value = n;
+  document.getElementById("clock").textContent = (n + 1) + " / " + STEPS.length;
+  menu.querySelectorAll("button").forEach(function(b, k){ b.className = k === n ? "on" : ""; });
+  typeInto(sayEl, s.say, function(){
+    later(function(){ ansEl.textContent = s.ans; }, 200);
+    if (!paused && n < STEPS.length - 1) later(function(){ show(n + 1); }, 1600);
   });
 }
-function paintPlay(){
-  playBtn.textContent = playing ? "⏸" : "▶";
-  playTop.textContent = playing ? "⏸ 暫停" : "▶ 播放";
-}
-function toggle(){ playing = !playing; paintPlay(); if(playing){ if(i===BEATS.length-1) show(0); else show(i); } else stopTimers(); }
-BEATS.forEach(function(b, n){
-  var btn = document.createElement("button");
-  btn.type = "button";
-  btn.textContent = b.menu;
-  btn.addEventListener("click", function(){ menu.classList.remove("on"); show(n); });
-  menu.appendChild(btn);
+STEPS.forEach(function(s, k){
+  var b = document.createElement("button");
+  b.type = "button";
+  b.textContent = s.menu;
+  b.onclick = function(){ menu.style.display = "none"; show(k); };
+  menu.appendChild(b);
 });
-document.getElementById("qmbtn").addEventListener("click", function(e){
-  var r = e.currentTarget.getBoundingClientRect();
-  menu.style.left = r.left + "px";
-  menu.style.top = (r.bottom + 6) + "px";
-  menu.classList.toggle("on");
-});
-document.getElementById("next").addEventListener("click", function(){ show(i+1); });
-document.getElementById("prev").addEventListener("click", function(){ show(i-1); });
-playBtn.addEventListener("click", toggle);
-playTop.addEventListener("click", toggle);
-document.getElementById("spd").addEventListener("input", function(e){
-  speed = Number(e.target.value);
-  document.getElementById("spdl").textContent = speed.toFixed(1) + "x";
-});
-document.getElementById("track").addEventListener("click", function(e){
-  var r = e.currentTarget.getBoundingClientRect();
-  var p = (e.clientX - r.left) / r.width;
-  var t = p * total, acc = 0, n = 0;
-  for(var k=0;k<BEATS.length;k++){ if(acc + BEATS[k].hold > t){ n = k; break; } acc += BEATS[k].hold; n = k; }
-  show(n);
-});
+btn.onclick = function(e){
+  e.stopPropagation();
+  menu.style.display = menu.style.display === "block" ? "none" : "block";
+};
+document.addEventListener("click", function(){ menu.style.display = "none"; });
+document.getElementById("play").onclick = function(){
+  paused = !paused;
+  this.textContent = paused ? "播放" : "暫停";
+};
+document.getElementById("seek").oninput = function(){ show(+this.value); };
+document.getElementById("spd").oninput = function(){
+  speed = +this.value;
+  document.getElementById("spdv").textContent = speed.toFixed(1) + "x";
+};
+document.getElementById("ipad").onclick = function(){
+  var on = document.body.classList.toggle("ipad");
+  try { localStorage.setItem("hw_ipad_mode", on ? "1" : "0"); } catch (e) {}
+};
+try { if (localStorage.getItem("hw_ipad_mode") === "1") document.body.classList.add("ipad"); } catch (e) {}
 show(0);
 </script>
 </body>
