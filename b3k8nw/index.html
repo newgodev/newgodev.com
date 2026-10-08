@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<script>if(location.protocol==="http:")location.replace("https://"+location.host+location.pathname+location.search);</script>
+<meta charset="utf-8">
+<meta name="hwv-kind" content="physics">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>物理 HW1 畫光線 點樣畫</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0b0c0c;--muted:#505a5f;--line:#b1b4b6;--blue:#1d70b8;--hi:#ffdd00}
+*{box-sizing:border-box}
+html{background:#fff;font-size:18px}
+body{margin:0;background:#fff;color:var(--ink);font-family:"Noto Sans HK",Arial,sans-serif;line-height:1.65}
+.top{position:sticky;top:0;z-index:30;background:#fff;border-bottom:6px solid var(--blue);padding:10px 16px}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tag{font-weight:900;color:#fff;background:var(--blue);border-radius:4px;padding:2px 12px}
+.menuwrap{position:relative}
+.qmbtn{font-family:inherit;font-weight:900;font-size:1rem;padding:6px 14px;border:2px solid var(--ink);background:#fff;border-radius:4px;cursor:pointer}
+.qmenu{position:absolute;top:110%;left:0;background:#fff;border:2px solid var(--ink);border-radius:6px;min-width:240px;padding:6px;box-shadow:0 8px 24px rgba(0,0,0,.15);display:none}
+.qmenu.on{display:block}
+.qmenu button{display:block;width:100%;text-align:left;font-family:inherit;font-size:.95rem;font-weight:700;padding:8px 10px;border:0;background:#fff;cursor:pointer;border-radius:4px}
+.qmenu button:hover{background:#f3f2f1}
+.ctrl{margin-left:auto;display:flex;gap:8px}
+.ctrl button{font-family:inherit;font-size:.95rem;font-weight:700;padding:7px 14px;border:2px solid var(--ink);background:#fff;border-radius:4px;cursor:pointer}
+.ctrl button.main{background:var(--ink);color:#fff}
+.say{font-size:1.15rem;font-weight:700;margin:8px 0 0;min-height:1.5em}
+.stage{max-width:920px;margin:0 auto;padding:16px 16px 48px}
+.card{border:2px solid var(--ink);border-radius:8px;padding:14px 16px 18px;background:#fff}
+svg{width:100%;height:auto;display:block;background:#fff}
+.ans{margin-top:12px;background:var(--hi);border-radius:6px;padding:10px 12px;font-weight:900}
+.small{color:var(--muted);font-weight:700;font-size:.85rem;margin:0 0 8px}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="row">
+    <span class="tag" id="tag">開場</span>
+    <div class="menuwrap">
+      <button type="button" class="qmbtn" id="qmbtn" aria-haspopup="true">目錄 ▾</button>
+      <div class="qmenu" id="qmenu"></div>
+    </div>
+    <div class="ctrl">
+      <button id="prev" type="button">← 上一步</button>
+      <button id="next" class="main" type="button">下一步 →</button>
+    </div>
+  </div>
+  <p class="say" id="say"></p>
+</div>
+<div class="stage"><div class="card" id="card"></div></div>
+<script>
+var STEPS = [
+{
+  tag:"開場", menu:"只記一句",
+  say:"畫線之前先記一句。度數由虛線計，唔係由鏡計。",
+  html:'<p class="small">法線同鏡面</p>'+
+  '<svg viewBox="0 0 640 280">'+
+  '<line x1="40" y1="200" x2="600" y2="200" stroke="#0b0c0c" stroke-width="6"/>'+
+  '<text x="40" y="236" font-size="22" font-weight="700">鏡面</text>'+
+  '<line x1="320" y1="40" x2="320" y2="200" stroke="#1d70b8" stroke-width="4" stroke-dasharray="8 8"/>'+
+  '<text x="332" y="70" font-size="22" fill="#1d70b8" font-weight="700">虛線，法線</text>'+
+  '<path d="M320 200 L460 90" stroke="#d4351c" stroke-width="4"/>'+
+  '<text x="400" y="130" font-size="20" fill="#d4351c" font-weight="700">呢個角先唔好量</text>'+
+  '<path d="M320 200 L250 90" stroke="#d4351c" stroke-width="4"/>'+
+  '<text x="150" y="160" font-size="20" font-weight="700">同鏡面個角</text>'+
+  '</svg>'+
+  '<div class="ans">鏡面角 + 法線角 = 90°</div>'
+},
+{
+  tag:"畫法", menu:"點畫反射線",
+  say:"三步。畫虛線，由虛線量入射角，另一邊量同一個角。",
+  html:'<p class="small">箭咀跟住光行方向</p>'+
+  '<svg viewBox="0 0 640 300">'+
+  '<line x1="40" y1="230" x2="600" y2="230" stroke="#0b0c0c" stroke-width="6"/>'+
+  '<line x1="320" y1="30" x2="320" y2="230" stroke="#1d70b8" stroke-width="4" stroke-dasharray="8 8"/>'+
+  '<path d="M180 70 L320 230" stroke="#d4351c" stroke-width="4" marker-end="url(#a)"/>'+
+  '<path d="M320 230 L470 80" stroke="#00703c" stroke-width="4" marker-end="url(#b)"/>'+
+  '<path d="M320 170 A60 60 0 0 1 278 128" fill="none" stroke="#d4351c" stroke-width="3"/>'+
+  '<path d="M320 170 A60 60 0 0 0 368 132" fill="none" stroke="#00703c" stroke-width="3"/>'+
+  '<text x="250" y="150" fill="#d4351c" font-size="22" font-weight="700">入射</text>'+
+  '<text x="360" y="150" fill="#00703c" font-size="22" font-weight="700">反射</text>'+
+  '<text x="200" y="270" font-size="20" font-weight="700">兩邊角度一定一樣</text>'+
+  '<defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#d4351c"/></marker>'+
+  '<marker id="b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#00703c"/></marker></defs>'+
+  '</svg>'
+  '<div class="ans">反射角 = 入射角</div>'
+},
+{
+  tag:"Q1", menu:"Q1 發光",
+  say:"發光係自己會光。太陽會。筆同水樽要靠第二個光，唔算。",
+  html:'<div class="ans">答案 A。淨係太陽。</div>'
+},
+{
+  tag:"Q2", menu:"Q2 兩塊鏡",
+  say:"40° 同 α 都係光線貼住鏡面個角。三個角加埋 180。",
+  html:'<svg viewBox="0 0 640 280">'+
+  '<polyline points="80,70 300,210 560,70" fill="none" stroke="#0b0c0c" stroke-width="8"/>'+
+  '<path d="M120 100 L300 175 L470 110" fill="none" stroke="#d4351c" stroke-width="4" marker-end="url(#c)"/>'+
+  '<text x="150" y="150" font-size="26" font-weight="900">40°</text>'+
+  '<text x="430" y="150" font-size="26" font-weight="900">α</text>'+
+  '<text x="285" y="250" font-size="26" font-weight="900">120°</text>'+
+  '<defs><marker id="c" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#d4351c"/></marker></defs>'+
+  '</svg>'+
+  '<div class="ans">α = 180 - 120 - 40 = 20°。揀 A。</div>'
+},
+{
+  tag:"Q3", menu:"Q3 光錐",
+  say:"要睇到成件野，由野最上同最下各畫一條直線去眼。箭咀指向眼。三幅圖一樣。",
+  html:'<svg viewBox="0 0 640 260">'+
+  '<circle cx="520" cy="120" r="28" fill="none" stroke="#0b0c0c" stroke-width="4"/>'+
+  '<circle cx="530" cy="114" r="6" fill="#0b0c0c"/>'+
+  '<text x="500" y="180" font-size="20" font-weight="700">眼</text>'+
+  '<rect x="70" y="70" width="36" height="110" fill="none" stroke="#1d70b8" stroke-width="4"/>'+
+  '<text x="60" y="210" font-size="20" font-weight="700">野</text>'+
+  '<path d="M106 70 L500 108" stroke="#d4351c" stroke-width="3" marker-end="url(#d)"/>'+
+  '<path d="M106 180 L500 132" stroke="#d4351c" stroke-width="3" marker-end="url(#d)"/>'+
+  '<defs><marker id="d" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#d4351c"/></marker></defs>'+
+  '</svg>'+
+  '<div class="ans">(a) 香蕉上下去眼。(b) 飛機頭尾去眼。(c) 樹頂同樹腳去眼。</div>'
+},
+{
+  tag:"Q4a", menu:"Q4 (a) 量角器",
+  say:"量角器個 0 係虛線。條光線係虛線左邊第三格，即係 30。",
+  html:'<div class="ans">入射 30°。反射 30°。</div>'
+},
+{
+  tag:"Q4b", menu:"Q4 (b) 50°",
+  say:"50° 係同鏡面。先轉做法線角。",
+  html:'<div class="ans">入射 = 90 - 50 = 40°。反射 40°。</div>'
+},
+{
+  tag:"Q4c", menu:"Q4 (c) 110°",
+  say:"110° 係兩條光線中間，唔係同鏡。兩邊一樣，所以除二。",
+  html:'<div class="ans">入射 55°。反射 55°。</div>'
+},
+{
+  tag:"Q4d", menu:"Q4 (d) 直角",
+  say:"有個直角，光線貼住法線打落去。角度係 0。",
+  html:'<div class="ans">入射 0°。反射 0°。光彈返同一條線。</div>'
+},
+{
+  tag:"Q5", menu:"Q5 兩塊鏡畫完",
+  say:"30° 係同鏡面。M1 先轉做 60。然後用三角形計 M2。",
+  html:'<svg viewBox="0 0 640 280">'+
+  '<polyline points="80,40 220,210 620,210" fill="none" stroke="#0b0c0c" stroke-width="8"/>'+
+  '<text x="90" y="36" font-size="22" font-weight="900">M1</text>'+
+  '<text x="560" y="200" font-size="22" font-weight="900">M2</text>'+
+  '<text x="250" y="250" font-size="22" font-weight="900">120°</text>'+
+  '<path d="M150 70 L250 150 L430 150" fill="none" stroke="#d4351c" stroke-width="4"/>'+
+  '<text x="120" y="110" font-size="20" font-weight="700">30° 同鏡</text>'+
+  '</svg>'+
+  '<div class="ans">M1 入射 60°，反射 60°。M2 同鏡面 30°，所以入射 60°，反射 60°。</div>'
+},
+{
+  tag:"抄", menu:"全部答案",
+  say:"抄呢度。畫線記得先畫虛線。",
+  html:'<div class="ans">Q1 A<br>Q2 A，20°<br>Q3 每幅由野兩頭畫去眼<br>Q4 (a) 30°，30°<br>Q4 (b) 40°，40°<br>Q4 (c) 55°，55°<br>Q4 (d) 0°，0°<br>Q5 M1 60° 同 60°，M2 60° 同 60°</div>'
+}
+];
+var i = 0;
+var menu = document.getElementById("qmenu");
+var say = document.getElementById("say");
+var card = document.getElementById("card");
+var tag = document.getElementById("tag");
+function show(n){
+  i = Math.max(0, Math.min(STEPS.length-1, n));
+  var s = STEPS[i];
+  tag.textContent = s.tag;
+  say.textContent = s.say;
+  card.innerHTML = s.html;
+  menu.classList.remove("on");
+}
+STEPS.forEach(function(s, n){
+  var b = document.createElement("button");
+  b.type = "button";
+  b.textContent = s.menu;
+  b.addEventListener("click", function(){ show(n); });
+  menu.appendChild(b);
+});
+document.getElementById("qmbtn").addEventListener("click", function(){
+  menu.classList.toggle("on");
+});
+document.getElementById("next").addEventListener("click", function(){ show(i+1); });
+document.getElementById("prev").addEventListener("click", function(){ show(i-1); });
+show(0);
+</script>
+</body>
+</html>
