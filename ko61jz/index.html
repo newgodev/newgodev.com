@@ -243,6 +243,23 @@ if(document.readyState==="loading") document.addEventListener("DOMContentLoaded"
 #quizmeta{font-size:.78rem;color:#64748b;margin-bottom:8px;font-weight:700}
 #quiznext{margin-top:10px;background:#1e3a8a;color:#fff;border:0;border-radius:10px;padding:10px 14px;font-weight:900;cursor:pointer;display:none}
 #quiznext.on{display:inline-block}
+
+#padcard{position:absolute;left:8%;top:28%;width:84%;z-index:6;box-sizing:border-box;
+  background:linear-gradient(180deg,#fffef8,#fff9e8);border:3px solid #1e3a8a;border-radius:14px;
+  padding:14px 16px;box-shadow:0 10px 28px rgba(15,23,42,.18);display:none;pointer-events:auto;cursor:pointer}
+#padcard.on{display:block}
+#padcard .pq{display:inline-block;background:#1e3a8a;color:#fff;font-weight:900;font-size:.78rem;
+  padding:2px 8px;border-radius:999px;margin-bottom:8px}
+#padcard .pen{font-weight:900;font-size:1.05rem;line-height:1.35;margin:0 0 8px;white-space:normal}
+#padcard .pen.pen-red{color:#dc2626}
+#padcard .pen.pen-blue{color:#1d4ed8}
+#padcard .pen.pen-purple{color:#7c3aed}
+#padcard .pen.pen-orange{color:#ea580c}
+#padcard .pen.pen-green{color:#16a34a}
+#padcard .pzh{font-weight:800;font-size:.95rem;color:#5b21b6;line-height:1.4;margin:0;
+  background:#fef08a;padding:4px 6px;border-radius:6px;display:inline-block}
+#padcard .phint{margin-top:8px;font-size:.72rem;color:#64748b;font-weight:700}
+#st_note .ans{opacity:0!important;pointer-events:none!important} /* padcard replaces giant/empty ans */
 </style>
 </head>
 <body>
@@ -381,7 +398,7 @@ var QUIZ_PER_RUN=10;
  function sizeAns(pid,pw){var st=$("st_"+pid);if(!st)return;st.style.setProperty("--sw",pw+"px");var img=st.querySelector("img"),asp=(img.naturalHeight||1400)/(img.naturalWidth||1000);
    var ctx=sizeAns.c||(sizeAns.c=document.createElement("canvas").getContext("2d"));ctx.font="100px Arial";
    st.querySelectorAll(".ans").forEach(function(a){if(a.classList.contains("circ"))return;var f=FILLS[a.id.slice(3)];if(!f)return;var tw=ctx.measureText(f.text).width||1;
-     var r=Math.min((f.box[2]-f.box[0])*98/tw,(f.box[3]-f.box[1])*asp*1.25);     if(pid==="note"){r=Math.min(r,0.028);} /* hard cap ~ compact handwriting on pad */     a.style.fontSize="calc(var(--sw) * "+r.toFixed(5)+")";});}
+     var r=Math.min((f.box[2]-f.box[0])*98/tw,(f.box[3]-f.box[1])*asp*1.25);     if(pid==="note"){r=Math.min(Math.max(r,0.034),0.055);} /* readable handwriting on pad */     a.style.fontSize="calc(var(--sw) * "+r.toFixed(5)+")";});}
  function later(fn,ms){var t={rem:ms/SPEED,start:Date.now(),id:0};t.go=function(){t.start=Date.now();t.id=setTimeout(function(){var i=timers.indexOf(t);if(i>=0)timers.splice(i,1);fn();},Math.max(0,t.rem));};timers.push(t);if(!paused)t.go();}
  function freeze(){if(paused)return;paused=true;pauseAt=Date.now();timers.forEach(function(t){clearTimeout(t.id);t.rem-=Date.now()-t.start;});}
  function unfreeze(){if(!paused)return;paused=false;stepT0+=Date.now()-pauseAt;timers.slice().forEach(function(t){t.go();});}
@@ -458,7 +475,7 @@ var QUIZ_PER_RUN=10;
    var s=STEPS[cur];
    $("tag").textContent=s.tag;$("sec").textContent=s.sec||"";$("say").textContent=s.say;$("sayzh").textContent=s.say_zh||"";if(typeof paintTocCur==="function")paintTocCur();$("num").textContent=cur+" / "+(STEPS.length-1);
    $("prev").disabled=cur===0;$("next").disabled=cur===STEPS.length-1;
-   fillInstant(cur);boardUpTo(cur);setView(s);$("teachtext").textContent=s.teach?"":"Watch the yellow box on the left, then see where the answer goes.";$("teachzh").textContent=s.teach?"":"留意左邊黃色框,再看答案去哪一格。";
+   fillInstant(cur);boardUpTo(cur);setView(s);if(window.__paintPad)window.__paintPad(s);(s.fills||[]).forEach(function(f){putAns(f,true);});$("teachtext").textContent=s.teach?"":"Watch the yellow box on the left, then see where the answer goes.";$("teachzh").textContent=s.teach?"":"留意左邊黃色框,再看答案去哪一格。";
    later(function(){
      if(my!==token)return;var k=0,fills=s.fills||[];
      function finish(){if(onDone)later(function(){if(my===token)onDone();},1400);}
@@ -587,6 +604,62 @@ var QUIZ_PER_RUN=10;
     if(n>=0&&n<STEPS.length){setTimeout(function(){go(n);setPlay(false);},1200);setTimeout(function(){go(n);setPlay(false);},2200);}
   }
   bootStep();
+})();
+</script>
+
+<script>
+(function(){
+  function ensurePad(){
+    var st=document.getElementById("st_note"); if(!st){setTimeout(ensurePad,50);return;}
+    if(document.getElementById("padcard"))return;
+    var d=document.createElement("div"); d.id="padcard";
+    d.innerHTML='<div class="pq"></div><div class="pen"></div><div class="pzh"></div><div class="phint">撳這裏可跳返材料黃框</div>';
+    st.appendChild(d);
+  }
+  function paintPad(step){
+    ensurePad();
+    var card=document.getElementById("padcard"); if(!card)return;
+    var fills=(step&&step.fills)||[];
+    if(!fills.length){card.classList.remove("on");return;}
+    var f=fills[0];
+    var pen=f.pen||"blue";
+    card.querySelector(".pq").textContent=f.q||step.stamp||"note";
+    var en=card.querySelector(".pen");
+    en.className="pen pen-"+pen;
+    en.textContent=f.note||f.text||"";
+    var zh=card.querySelector(".pzh");
+    if(f.zh){zh.style.display=""; zh.textContent=f.zh;} else {zh.style.display="none"; zh.textContent="";}
+    card.classList.add("on");
+    card.onclick=function(e){
+      e.stopPropagation();
+      if(f.id && typeof locate==="function") locate(f.id);
+      else if(f.from && typeof locateMark==="function") locateMark(f.from);
+    };
+  }
+  window.__paintPad = paintPad;
+  // hook run via wrapping go after it is exposed
+  function hook(){
+    if(typeof window.go!=="function" || !window.STEPS){setTimeout(hook,50);return;}
+    if(window.go.__pad)return;
+    var _go=window.go;
+    window.go=function(n){
+      var r=_go(n);
+      try{
+        var s=STEPS[Math.max(0,Math.min(STEPS.length-1,n))];
+        // instant sidebar notes + pad card (works even while paused)
+        if(typeof boardUpTo==="function") boardUpTo(cur);
+        if(typeof fillInstant==="function") fillInstant(cur);
+        paintPad(s);
+        // also force .ans text in case
+        (s.fills||[]).forEach(function(f){ if(typeof putAns==="function") putAns(f,true); });
+      }catch(e){}
+      return r;
+    };
+    window.go.__pad=1;
+    // paint current
+    try{ paintPad(STEPS[cur||0]); }catch(e){}
+  }
+  ensurePad(); hook();
 })();
 </script>
 </body>
