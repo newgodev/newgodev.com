@@ -1,7 +1,62 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<!-- hist-ws2 LOCKED (a)(b)(c) full answers always in center v12 -->
+<script>
+/* RESTORE full (a)(b)(c) answers onto center 改寫板 if anything wipes them */
+window.__WS2_ANSWER_PANEL = `<div class="rw on" id="rw">
+<div class="rwh">改寫板 · FULL MODEL ANSWERS<span>copy by hand · 唔代交 LoiLo</span></div>
+<div class="ans-block" id="ans-a" data-stamps="(a) 題幹|(a) 三步|(a) 句式">
+<span class="ans-tag">(a) FULL</span>
+<div class="ans-full">Person X is John Bull (Britain). Person Y is Kaiser William II (Germany).</div>
+<div class="ans-zh">中：X 是約翰牛（代表英國）。Y 是德皇威廉二世（德國）。</div>
+</div>
+<div class="ans-block" id="ans-b" data-stamps="(b) 題幹|(b) 競賽名|(b) 選線索|(b) 思路">
+<span class="ans-tag">(b) FULL</span>
+<div class="ans-full">Britain and Germany engaged in a naval / dreadnought race. According to Source A, they bet and raise dreadnought models on the table (I bet three dreadnoughts / I raise you three). This shows each side trying to outbuild the other with warships.</div>
+<div class="ans-zh">中：英德進行海軍／無畏艦競賽。據資料 A，他們用無畏艦模型打賭同加注（我押三艘無畏艦／我再加三艘）。顯示雙方想用軍艦壓過對方。</div>
+</div>
+<div class="ans-block" id="ans-c" data-stamps="(c) 題幹|記得標明|(c) 影響|(c) 資料因|(c) 己知|(c) 骨架">
+<span class="ans-tag">(c) FULL 1+2+2</span>
+<div class="ans-full">Relations between Britain and Germany became more tense / worsened. According to Source A, they competitively bet and raise dreadnoughts, which shows distrust and rivalry. Own knowledge: after HMS Dreadnought (1906), Britain and Germany expanded their navies and suspicion rose before 1914.</div>
+<div class="ans-zh">中：英德關係變得更緊張／惡化。據資料 A，他們互相比拼押／加無畏艦，顯示不信任同敵對。自己知識：1906 年無畏艦下水後，英德擴軍，1914 年前猜疑上升。</div>
+</div>
+<div style="margin-top:8px;font-size:.85rem;color:#00703c;font-weight:800">✓ 三條完整答案常駐在中間改寫板 — 用手抄上你的紙（唔代交 LoiLo）</div>`;
+(function(){
+  function ensure(){
+    var el=document.getElementById('rw');
+    if(!el) return;
+    if(!el.querySelector('.ans-block') || el.innerText.indexOf('Person X is John Bull')<0){
+      el.outerHTML = window.__WS2_ANSWER_PANEL;
+      el=document.getElementById('rw');
+    }
+    // disable wipers
+    window.closeRw=function(){ ensure(); };
+    window.paintAnswerBoard=function(){
+      ensure();
+      try{
+        var S=window.__STEPS||(typeof STEPS!=='undefined'?STEPS:null);
+        if(!S||typeof cur!=='number'||!S[cur]) return;
+        var stamp=S[cur].stamp||'';
+        document.querySelectorAll('.ans-block').forEach(function(b){
+          b.classList.toggle('cur', (b.getAttribute('data-stamps')||'').split('|').indexOf(stamp)>=0);
+        });
+      }catch(e){}
+    };
+    window.showRewriteStatic=function(){ paintAnswerBoard(); };
+    window.showRewrite=function(f,my,done){
+      paintAnswerBoard();
+      setTimeout(function(){ var box=document.querySelector('.ans-block.cur .ans-full')||document.getElementById('rw'); if(typeof done==='function') done(box); },200);
+    };
+  }
+  function boot(){ ensure(); setTimeout(ensure,100); setTimeout(ensure,400); setTimeout(ensure,1000); setTimeout(ensure,2000); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+  window.addEventListener('load', boot);
+  setInterval(ensure, 1500);
+})();
+</script>
+
+<!-- hist-ws2 RESTORED always-on (a)(b)(c) answers v13 -->
 <script>if(location.protocol==="http:")location.replace("https://"+location.host+location.pathname+location.search);</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -306,11 +361,11 @@ if(document.readyState==="loading") document.addEventListener("DOMContentLoaded"
 <div class="grid">
   <div class="col">
     <h2>材料（鏡頭只對準這段）<span id="tbname"></span></h2>
-    <div class="cam" id="tcam"><div class="stage" id="st_ws2a"><img data-src="p/ws2a.jpg?v=12" alt="Worksheet 2 · Source A + Q(a)(b)"></div><div class="stage" id="st_ws2b"><img data-src="p/ws2b.jpg?v=12" alt="Worksheet 2 · Q(c)"></div></div>
+    <div class="cam" id="tcam"><div class="stage" id="st_ws2a"><img data-src="p/ws2a.jpg?v=13" alt="Worksheet 2 · Source A + Q(a)(b)"></div><div class="stage" id="st_ws2b"><img data-src="p/ws2b.jpg?v=13" alt="Worksheet 2 · Q(c)"></div></div>
   </div>
   <div class="col c2">
     <h2>筆記板／改寫板<span id="wbname"></span></h2>
-    <div class="cam" id="wcam"><div class="stage" id="st_note"><img data-src="p/note.jpg?v=12" alt="One-page note"></div></div>
+    <div class="cam" id="wcam"><div class="stage" id="st_note"><img data-src="p/note.jpg?v=13" alt="One-page note"></div></div>
     <div class="rw on" id="rw">
 <div class="rwh">改寫板 · FULL MODEL ANSWERS<span>copy by hand · 唔代交 LoiLo</span></div>
 <div class="ans-block" id="ans-a" data-stamps="(a) 題幹|(a) 三步|(a) 句式">
@@ -656,7 +711,7 @@ var QUIZ_PER_RUN=10;
           +esc(s[0])+"</b> → "+esc(s[1])+(s[3]?"<div class=\"zh\" style=\"margin:0;color:#555\">"+esc(s[3])+"</div>":"")+"</div>";
       });
     }
-    if(el.querySelector(".ans-block")) return; el.innerHTML="<div class="rwh">改寫板<span>"+esc(stamp)+" · copy by hand</span></div>"
+    el.innerHTML="<div class=\"rwh\">改寫板<span>"+esc(stamp)+" · copy by hand</span></div>"
       +"<span class=\"ans-tag\">完整模範答案 · FULL MODEL ANSWER</span>"+cards
       +"<div class=\"ans-full\">"+esc(full)+"</div>"
       +(zh?"<div class=\"ans-zh\">中文："+esc(zh)+"</div>":"")
