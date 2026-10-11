@@ -554,7 +554,8 @@ var QUIZ_PER_RUN=10;
  $("zhbtn").onclick=function(){setZh(!document.body.classList.contains("zhon"));};
  try{setZh(localStorage.getItem("hwv_zh")==="1");}catch(e){setZh(false);}
  document.querySelectorAll(".stage img").forEach(function(im){im.addEventListener("load",function(){if(lastT)focusCam("tcam",lastT[0],lastT[1]);if(lastW)focusCam("wcam",lastW[0],lastW[1]);});});
- go(0);
+ window.go=go; window.onStepDone=onStepDone; window.setPlay=setPlay;
+ (function(){var m=location.search.match(/[?&]step=(\d+)/);var n=m?+m[1]:0;if(!(n>=0&&n<STEPS.length))n=0;go(n);setPlay(false);})();
 })();
 </script>
 
@@ -573,6 +574,19 @@ var QUIZ_PER_RUN=10;
     window.go=function(n){if(n===0&&window.__histResetQuizRun)__histResetQuizRun(); return _go(n);};
   }
   install();
+})();
+</script>
+
+<script>
+(function(){
+  function bootStep(){
+    if(typeof go!=="function"||!window.STEPS){setTimeout(bootStep,50);return;}
+    var m=location.search.match(/[?&]step=(\d+)/);
+    if(!m)return;
+    var n=+m[1];
+    if(n>=0&&n<STEPS.length){setTimeout(function(){go(n);setPlay(false);},1200);setTimeout(function(){go(n);setPlay(false);},2200);}
+  }
+  bootStep();
 })();
 </script>
 </body>
