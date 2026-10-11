@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<script>if(location.protocol==="http:")location.replace("https://"+location.host+location.pathname+location.search);</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>歷史 UT · WWI 潛在原因溫習</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0b0c0c;--muted:#505a5f;--line:#b1b4b6;--blue:#1d4ed8;--red:#d4351c;--hi:#ffdd00}
+*{box-sizing:border-box}
+html{color-scheme:light;background:#fff;font-size:17px}
+body{margin:0;background:#fff;color:var(--ink);font-family:"Noto Sans HK",Arial,sans-serif;line-height:1.6}
+.top{background:#fff;border-bottom:6px solid #1d70b8;padding:9px 16px}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tag{font-weight:900;color:#fff;background:#1d70b8;border-radius:4px;padding:2px 12px}
+.sec{font-weight:900;color:#1d70b8}
+.num{color:var(--muted);font-size:.85rem}
+.legend{font-size:.86rem}
+.ctrl{margin-left:auto;display:flex;gap:8px}
+.ctrl button{font-family:inherit;font-size:.9rem;font-weight:700;padding:7px 13px;border:2px solid var(--ink);background:#fff;border-radius:4px;cursor:pointer}
+.ctrl button.main{background:var(--ink);color:#fff}
+#zhbtn.on{background:#b8860b;border-color:#b8860b;color:#fff}
+.say{font-size:1.1rem;font-weight:700;margin:7px 0 0;min-height:2.6em}
+.zh{display:none;color:#6b4e16;font-size:.9rem;font-weight:500;background:#fff8e6;border-radius:4px;padding:2px 8px;margin:3px 0}
+body.zhon .zh{display:block}
+.grid{display:grid;grid-template-columns:1.05fr 1.2fr .75fr;gap:12px;padding:10px 14px}
+.col{display:flex;flex-direction:column;min-height:0}
+.col h2{font-size:.92rem;font-weight:900;margin:0 0 6px}
+.col h2 span{font-weight:400;color:var(--muted);margin-left:6px;font-size:.8rem}
+.cam{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:6px;background:#eef0f1;min-height:360px}
+.stage{position:absolute;left:0;top:0;transform-origin:0 0;display:none;transition:width var(--tc,.8s) cubic-bezier(.4,0,.2,1),transform var(--tc,.8s) cubic-bezier(.4,0,.2,1)}
+.stage.on{display:block}
+.stage img{display:block;width:100%;height:auto}
+.box{position:absolute;border-radius:4px;border:3px solid transparent;transition:all .35s;pointer-events:none}
+.box.hl{border-color:var(--hi);background:rgba(255,221,0,.28);animation:pulse 1.2s infinite}
+.box.flash{border-color:#ff00aa;background:rgba(255,0,170,.2)}
+.box.hl,.box.flash{pointer-events:auto;cursor:pointer}.exgo{display:block;margin:6px 0 2px;border:2px solid var(--ink);background:#fff8e6;border-radius:6px;font-weight:800;padding:4px 8px;cursor:pointer;font-size:.85rem}.exgo:hover{background:#ffe9a8}
+.hot,.qhot{position:absolute;cursor:pointer;border-radius:4px}.qhot:hover{background:rgba(0,120,255,.05)}.hot:hover{background:rgba(0,120,255,.14);outline:2px dashed rgba(0,90,200,.6)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,221,0,0)}50%{box-shadow:0 0 0 7px rgba(255,221,0,.4)}}
+.ans{position:absolute;color:#d4001e;font-family:Arial,Helvetica,sans-serif;white-space:nowrap;line-height:1;display:flex;align-items:center;cursor:pointer;border-radius:3px}
+.ans:hover{background:rgba(255,246,207,.8)}
+.ans.circ{border:0;cursor:pointer}
+.ans.circ::after{content:"";position:absolute;inset:-6% -4%;border:2.5px solid #d4001e;border-radius:50%;opacity:0;transform:scale(.4);transition:opacity .35s,transform .45s}
+.ans.circ.on::after{opacity:1;transform:scale(1)}
+.ans.now{outline:3px solid #ff00aa;outline-offset:2px}
+.caret{display:inline-block;width:2px;height:.95em;background:var(--ink);margin-left:1px;animation:blink .8s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.teach{border:3px solid var(--red);border-radius:12px;padding:9px 12px;background:#fff;font-size:.98rem;min-height:120px;transition:box-shadow .3s;margin-bottom:10px;overflow:auto;max-height:42%}
+.teach .bh{font-weight:900;color:var(--red);font-size:.8rem;margin-bottom:3px}
+.teach.on{box-shadow:0 0 0 6px rgba(212,53,28,.18)}
+.board{border-radius:8px;padding:10px;background:#d9b98a;box-shadow:inset 0 0 0 3px #b8935f;display:flex;flex-direction:column;gap:9px;overflow:auto}
+.bempty{font-size:.86rem;color:#5a4526}
+.note{border-radius:4px;padding:6px 8px;box-shadow:0 3px 8px rgba(0,0,0,.22);font-size:.84rem;font-weight:700;line-height:1.4;cursor:pointer;background:#ffd9d3}
+.note:nth-child(odd){transform:rotate(-.8deg)}.note:nth-child(even){transform:rotate(.8deg)}
+.note i{font-style:normal;font-size:.68rem;color:#fff;background:var(--red);border-radius:3px;padding:0 5px;margin-right:5px}
+.fly{position:fixed;z-index:60;background:var(--hi);border:2px solid var(--ink);border-radius:5px;padding:4px 10px;font-size:.9rem;font-weight:700;max-width:320px;pointer-events:none;box-shadow:0 8px 20px rgba(0,0,0,.25);transition:left var(--tf,.9s) cubic-bezier(.5,0,.2,1),top var(--tf,.9s) cubic-bezier(.5,0,.2,1),opacity .3s}
+.expop{position:fixed;z-index:70;width:min(390px,92vw);background:#fff;border:3px solid var(--ink);border-radius:10px;padding:10px 14px 12px;box-shadow:0 12px 30px rgba(0,0,0,.25);font-size:.92rem;line-height:1.5}
+.exh{font-weight:900;color:#d4001e;margin-right:30px}
+.exl{font-size:.72rem;font-weight:900;color:var(--muted);margin-top:8px}
+.exl.bad{color:var(--red)}
+.exw{font-weight:700}
+.exz{color:#6b4e16;background:#fff8e6;border-radius:4px;padding:2px 6px;margin-top:3px;font-size:.88rem}
+.exo,.exa{margin:2px 0 0;padding-left:18px}.exo li{color:#00703c;font-weight:700}.exa li{color:var(--red)}
+.exzi{color:#6b4e16;font-weight:500}
+.exx{position:absolute;right:8px;top:6px;border:2px solid var(--ink);background:#fff;border-radius:4px;font-weight:900;cursor:pointer;font-family:inherit}
+.player{background:#0b0c0c;color:#fff;display:flex;align-items:center;gap:12px;padding:10px 16px}
+.player button{font-family:inherit;font-size:1rem;font-weight:900;width:42px;height:34px;border:0;border-radius:4px;background:#fff;color:#0b0c0c;cursor:pointer}
+.track{position:relative;flex:1;height:12px;background:#444;border-radius:999px;cursor:pointer}
+.fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--hi);border-radius:999px}
+.knob{position:absolute;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:#fff;border:3px solid var(--hi);left:0}
+.tick{position:absolute;top:-4px;width:2px;height:20px;background:#888}
+.tick span{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-size:.7rem;color:#ddd;font-weight:900}
+.ptime{font-size:.85rem;font-variant-numeric:tabular-nums;min-width:96px;text-align:right}
+.spdwrap{display:flex;align-items:center;gap:6px;font-size:.85rem;font-weight:900}
+.spdwrap input{width:120px;accent-color:#ffdd00;cursor:pointer}
+
+.zoom{position:fixed;z-index:70;background-repeat:no-repeat;background-color:#fff;border:5px solid var(--hi);border-radius:6px;box-shadow:0 14px 44px rgba(0,0,0,.45);pointer-events:none;
+  transition:left var(--tz,.6s) cubic-bezier(.4,0,.2,1),top var(--tz,.6s) cubic-bezier(.4,0,.2,1),width var(--tz,.6s) cubic-bezier(.4,0,.2,1),height var(--tz,.6s) cubic-bezier(.4,0,.2,1)}
+.zoomcap{position:fixed;z-index:71;background:#0b0c0c;color:#fff;font-weight:900;font-size:1.05rem;padding:6px 12px;border-radius:4px;pointer-events:none;transition:opacity .3s;max-width:700px}
+.zoomcap .zc{display:block;font-weight:500;font-size:.9rem;color:#ffe9a8}
+.note.ev{background:#fff3a3}
+.note .crop{width:100%;background-repeat:no-repeat;background-color:#fff;border:1px solid rgba(0,0,0,.2);border-radius:2px;margin-bottom:4px}
+.note .evz{display:block;font-weight:500;color:#6b4e16;font-size:.78rem}
+@media (min-width:1101px){
+  html,body{height:100%}
+  body{display:flex;flex-direction:column;height:100vh;overflow:hidden}
+  .top{flex:none}.grid{flex:1;min-height:0}.col{height:100%}
+  .cam,.board{flex:1;min-height:0}
+  .player{flex:none}
+}
+@media (max-width:1100px){.grid{grid-template-columns:1fr 1fr}}
+@media (max-width:720px){.grid{grid-template-columns:1fr}.cam{min-height:420px}}
+</style>
+<style id="dtap-css">*{touch-action:manipulation}</style>
+<script id="dtap-js">
+(function(){var last=0,lx=-99,ly=-99;
+document.addEventListener("touchend",function(e){
+ var t=Date.now(),p=e.changedTouches&&e.changedTouches[0],x=p?p.clientX:0,y=p?p.clientY:0,el=e.target,ptr=false;
+ try{ptr=!!(el&&el.nodeType===1&&(el.closest("button,a,input,select,textarea,label,[role=button],[onclick]")||getComputedStyle(el).cursor==="pointer"));}catch(_){}
+ if(t-last<350&&Math.abs(x-lx)<45&&Math.abs(y-ly)<45&&!ptr&&e.cancelable){e.preventDefault();}
+ last=t;lx=x;ly=y;},{passive:false});
+})();
+</script>
+<style id="ipadmode-css">
+#ipadsw{display:inline-flex;flex:none;border:2px solid #0b0c0c;border-radius:999px;overflow:hidden;cursor:pointer;user-select:none;-webkit-user-select:none;font-weight:900;font-size:.85rem;background:#fff;-webkit-tap-highlight-color:transparent;font-family:inherit;line-height:1.15}
+#ipadsw.float{position:fixed;z-index:2147483000;top:6px;left:50%;transform:translateX(-50%);box-shadow:0 2px 8px rgba(0,0,0,.28)}
+#ipadsw b{padding:6px 12px;color:#505a5f;white-space:nowrap;font-weight:900}
+#ipadsw b.pc{border-left:2px solid #0b0c0c}
+body:not(.ipadm) #ipadsw b.pc{background:#0b0c0c;color:#fff}
+body.ipadm #ipadsw b.ip{background:#1d70b8;color:#fff}
+body.ipadm #ipadsw b{padding:10px 15px;font-size:.95rem}
+html.ipadm-h,html.ipadm-h body{height:100%}
+body.ipadm{height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column;padding-bottom:0!important}
+body.ipadm .top{position:relative;top:auto;flex:none;padding:6px 10px}
+body.ipadm .row{gap:6px 8px}
+body.ipadm .legend{font-size:.78rem;margin-left:0}
+body.ipadm .ctrl button{font-size:1rem;padding:9px 14px}
+body.ipadm .say{min-height:0;margin:4px 0 0;font-size:1.06rem;line-height:1.45}
+body.ipadm .zh{margin:2px 0 0}
+body.ipadm .grid{flex:1;min-height:0;padding:8px 10px;gap:8px;align-items:stretch}
+body.ipadm .grid>.col{display:flex;flex-direction:column;min-height:0;min-width:0;height:100%;overflow:hidden}
+body.ipadm .col h2{flex:none;margin:0 0 4px;font-size:.84rem}
+body.ipadm .cam{flex:1.6 1 0;min-height:0}
+body.ipadm .brain{flex:1 1 0;min-height:0;margin-top:8px;overflow:auto}
+body.ipadm .paper{flex:1 1 0;min-height:0;overflow:auto}
+body.ipadm .board{position:relative;top:0;flex:1 1 0;max-height:none;min-height:0;overflow:auto}
+body.ipadm .teach{max-height:none;min-height:0;overflow:auto}
+body.ipadm .player{position:relative;left:auto;right:auto;bottom:auto;flex:none;padding:8px 12px;gap:10px}
+body.ipadm .player button{width:52px;height:44px;font-size:1.2rem}
+body.ipadm .track{height:18px}
+body.ipadm .knob{width:26px;height:26px;margin:-13px 0 0 -13px}
+body.ipadm .spdwrap input{width:150px;height:26px}
+body.ipadm:is(.lay-m3,.lay-e4,.lay-geo) .grid>.col:nth-child(1){grid-area:a}
+body.ipadm:is(.lay-m3,.lay-e4,.lay-geo) .grid>.col:nth-child(2){grid-area:b}
+body.ipadm:is(.lay-m3,.lay-e4,.lay-geo) .grid>.col:nth-child(3){grid-area:c}
+body.ipadm.lay-e4 .grid>.col:nth-child(4){grid-area:d}
+@media (orientation:portrait){
+ body.ipadm.lay-m3 .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1.25fr) minmax(0,1fr);grid-template-areas:"a b" "a c"}
+ body.ipadm.lay-e4 .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1.2fr) minmax(0,1fr);grid-template-areas:"b c" "a d"}
+ body.ipadm.lay-e4 .grid>.col:nth-child(1){display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);grid-template-rows:auto minmax(0,1fr);column-gap:8px;align-items:start}
+ body.ipadm.lay-e4 .grid>.col:nth-child(1)>h2{grid-column:1/-1}
+ body.ipadm.lay-e4 .grid>.col:nth-child(1)>.pic{grid-column:1;grid-row:2;max-height:100%}
+ body.ipadm.lay-e4 .grid>.col:nth-child(1)>.brain{grid-column:2;grid-row:2;margin-top:0;height:100%}
+ body.ipadm.lay-geo .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1.7fr) minmax(0,1fr);grid-template-areas:"a b" "c c"}
+ body.ipadm.lay-geo .grid>.col:nth-child(3){flex-direction:row;gap:8px}
+ body.ipadm.lay-geo .grid>.col:nth-child(3)>*{flex:1 1 0;margin:0;min-width:0}
+ body.ipadm.lay-gen .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-auto-rows:minmax(0,1fr)}
+}
+@media (orientation:landscape){
+ body.ipadm.lay-m3 .grid{grid-template-columns:minmax(0,1.1fr) minmax(0,1.2fr) minmax(0,.9fr);grid-template-rows:minmax(0,1fr);grid-template-areas:"a b c"}
+ body.ipadm.lay-e4 .grid{grid-template-columns:minmax(0,.95fr) minmax(0,1.1fr) minmax(0,1.15fr) minmax(0,.9fr);grid-template-rows:minmax(0,1fr);grid-template-areas:"a b c d"}
+ body.ipadm.lay-geo .grid{grid-template-columns:minmax(0,1.05fr) minmax(0,1.2fr) minmax(0,.8fr);grid-template-rows:minmax(0,1fr);grid-template-areas:"a b c"}
+ body.ipadm.lay-gen .grid{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
+}
+</style>
+<script id="ipadmode-js">
+(function(){
+function boot(){
+ var b=document.body,h=document.documentElement; if(!b||document.getElementById("ipadsw"))return;
+ var cols=document.querySelectorAll(".grid>.col").length, lay="lay-gen";
+ if(document.getElementById("tcam")) lay="lay-geo";
+ else if(cols===4) lay="lay-e4";
+ else if(cols===3&&document.getElementById("cam")) lay="lay-m3";
+ b.classList.add(lay);
+ var sw=document.createElement("span"); sw.id="ipadsw"; sw.setAttribute("role","button"); sw.tabIndex=0;
+ sw.title="iPad \u6a21\u5f0f\uff1a\u4e00\u500b\u756b\u9762\u770b\u5b8c\uff0c\u4e0d\u7528\u6372";
+ sw.innerHTML='<b class="ip">\uD83D\uDCF1 iPad</b><b class="pc">\uD83D\uDCBB \u96FB\u8166</b>';
+ var row=document.querySelector(".top .row");
+ if(row) row.insertBefore(sw,row.firstChild); else { sw.classList.add("float"); b.appendChild(sw); }
+ function apply(on,save){
+  b.classList.toggle("ipadm",!!on); h.classList.toggle("ipadm-h",!!on);
+  if(save){ try{localStorage.setItem("hw_ipad_mode",on?"1":"0");}catch(e){} }
+  setTimeout(function(){ window.dispatchEvent(new Event("resize")); },80);
+ }
+ var ua=navigator.userAgent, isTab=/iPad|iPhone|iPod|Android/.test(ua)||(/Macintosh/.test(ua)&&(navigator.maxTouchPoints||0)>1);
+ var saved=null; try{saved=localStorage.getItem("hw_ipad_mode");}catch(e){}
+ apply(saved===null?isTab:saved==="1",false);
+ var bd=document.getElementById("board");
+ if(bd&&window.MutationObserver){
+  var follow=function(n){ setTimeout(function(){
+   if(!b.classList.contains("ipadm")||n.style.visibility==="hidden"||!n.isConnected) return;
+   var top=n.offsetTop, bot=top+n.offsetHeight;
+   if(bot>bd.scrollTop+bd.clientHeight-4||top<bd.scrollTop) bd.scrollTop=Math.max(0,bot-bd.clientHeight+12);
+  },60); };
+  new MutationObserver(function(ms){ ms.forEach(function(m){
+   if(m.type==="childList") m.addedNodes.forEach(function(n){ if(n.nodeType===1&&n.classList.contains("note")) follow(n); });
+   else if(m.target.nodeType===1&&m.target.classList.contains("note")) follow(m.target);
+  }); }).observe(bd,{childList:true,subtree:true,attributes:true,attributeFilter:["style"]});
+ }
+ function flip(){ apply(!b.classList.contains("ipadm"),true); }
+ sw.addEventListener("click",flip);
+ sw.addEventListener("keydown",function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); flip(); } });
+}
+if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot); else boot();
+})();
+</script>
+<style id="hist-toc-css">
+#tocbtn{border-color:#1d70b8!important;color:#1d70b8;font-weight:900}
+#tocmenu{position:fixed;z-index:90;display:none;background:#fff;border:3px solid #0b0c0c;border-radius:10px;
+box-shadow:0 12px 30px rgba(0,0,0,.25);padding:6px;max-height:74vh;overflow:auto;width:min(420px,92vw)}
+#tocmenu.open{display:block}
+#tocmenu button{display:block;width:100%;text-align:left;border:0;background:#fff;font-family:inherit;
+font-size:.9rem;padding:6px 10px;border-radius:6px;cursor:pointer;font-weight:700;color:#0b0c0c}
+#tocmenu button:hover{background:#eef4ff}#tocmenu button.cur{background:#1d70b8;color:#fff}
+#tocmenu .qh{font-size:.72rem;font-weight:900;color:#505a5f;padding:8px 10px 2px}
+#tocmenu .qz{display:none;font-weight:500;font-size:.78rem;color:#6b4e16}body.zhon #tocmenu .qz{display:block}
+#tocmenu button.cur .qz{color:#ffe9a8}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="row">
+    <span class="tag" id="tag">Start</span><span class="sec" id="sec"></span><span class="num" id="num"></span>
+    <span class="legend">紅字 = 溫習要點 · 撳紅字看原因 · 目錄可跳段</span>
+    <div id="tocmenu"></div><div class="ctrl"><button id="tocbtn">目錄 ▾</button><button id="zhbtn">中文</button><button id="prev">← Back</button><button id="play" class="main">▶ Play</button><button id="next">Next →</button></div>
+  </div>
+  <p class="say" id="say"></p>
+  <p class="zh" id="sayzh"></p>
+</div>
+<div class="grid">
+  <div class="col">
+    <h2>材料（課本／筆記／WS）<span id="tbname"></span></h2>
+    <div class="cam" id="tcam"><div class="stage" id="st_tb5"><img data-src="p/tb5.jpg" alt="課本 · 兩次大戰比較"></div><div class="stage" id="st_tb6"><img data-src="p/tb6.jpg" alt="課本 · 歐洲列強"></div><div class="stage" id="st_tb7"><img data-src="p/tb7.jpg" alt="課本 · 極端民族主義 / 同盟"></div><div class="stage" id="st_tb8"><img data-src="p/tb8.jpg" alt="課本 · 兩大陣營地圖"></div><div class="stage" id="st_tb9"><img data-src="p/tb9.jpg" alt="課本 · 爭奪殖民地"></div><div class="stage" id="st_tb10"><img data-src="p/tb10.jpg" alt="課本 · 漫畫國族符號"></div><div class="stage" id="st_tb11"><img data-src="p/tb11.jpg" alt="課本 · 漫畫練習"></div><div class="stage" id="st_tb12"><img data-src="p/tb12.jpg" alt="課本 · 軍備競賽 p.12"></div><div class="stage" id="st_nb1"><img data-src="p/nb1.jpg" alt="筆記 · Great power"></div><div class="stage" id="st_nb2"><img data-src="p/nb2.jpg" alt="筆記 · 歐洲列強名單"></div><div class="stage" id="st_nb3"><img data-src="p/nb3.jpg" alt="筆記 · 遠因總覽 + 民族主義"></div><div class="stage" id="st_nb4"><img data-src="p/nb4.jpg" alt="筆記 · 法／塞／奧匈"></div><div class="stage" id="st_nb5"><img data-src="p/nb5.jpg" alt="筆記 · 同盟制度"></div><div class="stage" id="st_nb6"><img data-src="p/nb6.jpg" alt="筆記 · 殖民競爭心智圖"></div><div class="stage" id="st_nb7"><img data-src="p/nb7.jpg" alt="筆記 · 總複習頁"></div><div class="stage" id="st_nb8"><img data-src="p/nb8.jpg" alt="筆記 · 殖民競爭詳解"></div><div class="stage" id="st_nb9"><img data-src="p/nb9.jpg" alt="筆記 · 危機 + 軍備原因"></div><div class="stage" id="st_nb10"><img data-src="p/nb10.jpg" alt="筆記 · 軍備競賽"></div><div class="stage" id="st_ws2a"><img data-src="p/ws2a.jpg" alt="Worksheet 2 · Source A"></div><div class="stage" id="st_ws2b"><img data-src="p/ws2b.jpg" alt="Worksheet 2 · Q(c)"></div></div>
+  </div>
+  <div class="col">
+    <h2>溫習筆記紙<span id="wbname"></span></h2>
+    <div class="cam" id="wcam"><div class="stage" id="st_note"><img data-src="p/note.jpg" alt="Revision notes"></div></div>
+  </div>
+  <div class="col">
+    <div class="teach" id="teach"><div class="bh">你的腦這樣想</div><div id="teachtext">撳 Play。逐頁帶你過課本、筆記同工作紙。</div><div class="zh" id="teachzh"></div></div>
+    <div class="board" id="board"><div class="bempty" id="bempty">每個重點會變成筆記。撳筆記可跳返原位。</div></div>
+  </div>
+</div>
+<div class="player">
+  <button id="pp">▶</button>
+  <div class="track" id="track"><div class="fill" id="fill"></div><div class="knob" id="knob"></div></div>
+  <span class="ptime" id="ptime">00:00 / 00:00</span>
+  <label class="spdwrap">Speed <input type="range" id="spd" min="0.5" max="10" step="0.25" value="1"><span id="spdv">1.00x</span></label>
+</div>
+<script>
+var TB={"tb5": {"name": "課本 · 兩次大戰比較", "boxes": {"title": [0.05, 0.05, 0.95, 0.14], "table": [0.08, 0.18, 0.92, 0.55], "focus": [0.08, 0.58, 0.92, 0.78]}}, "tb6": {"name": "課本 · 歐洲列強", "boxes": {"britain": [0.05, 0.08, 0.48, 0.35], "germany": [0.52, 0.08, 0.95, 0.35], "france": [0.05, 0.38, 0.48, 0.62], "russia": [0.52, 0.38, 0.95, 0.62], "ah": [0.05, 0.65, 0.48, 0.92]}}, "tb7": {"name": "課本 · 極端民族主義 / 同盟", "boxes": {"nat": [0.05, 0.05, 0.95, 0.42], "ally": [0.05, 0.45, 0.95, 0.88]}}, "tb8": {"name": "課本 · 兩大陣營地圖", "boxes": {"map": [0.05, 0.08, 0.95, 0.7], "act": [0.05, 0.72, 0.95, 0.92]}}, "tb9": {"name": "課本 · 爭奪殖民地", "boxes": {"col": [0.05, 0.05, 0.95, 0.35], "africa": [0.05, 0.38, 0.95, 0.75]}}, "tb10": {"name": "課本 · 漫畫國族符號", "boxes": {"symbols": [0.05, 0.1, 0.95, 0.85]}}, "tb11": {"name": "課本 · 漫畫練習", "boxes": {"srcA": [0.05, 0.08, 0.48, 0.55], "srcB": [0.52, 0.08, 0.95, 0.55], "q": [0.05, 0.58, 0.95, 0.9]}}, "tb12": {"name": "課本 · 軍備競賽 p.12", "boxes": {"race": [0.05, 0.05, 0.95, 0.3], "table": [0.05, 0.32, 0.95, 0.62], "dread": [0.05, 0.64, 0.95, 0.88]}}, "nb1": {"name": "筆記 · Great power", "boxes": {"def": [0.08, 0.1, 0.92, 0.55], "five": [0.08, 0.55, 0.92, 0.9]}}, "nb2": {"name": "筆記 · 歐洲列強名單", "boxes": {"list": [0.1, 0.15, 0.9, 0.7]}}, "nb3": {"name": "筆記 · 遠因總覽 + 民族主義", "boxes": {"causes": [0.08, 0.08, 0.92, 0.4], "pan": [0.08, 0.42, 0.92, 0.88]}}, "nb4": {"name": "筆記 · 法／塞／奧匈", "boxes": {"fr": [0.08, 0.08, 0.92, 0.4], "imp": [0.08, 0.45, 0.92, 0.85]}}, "nb5": {"name": "筆記 · 同盟制度", "boxes": {"ally": [0.08, 0.08, 0.92, 0.55], "imp": [0.08, 0.55, 0.92, 0.88]}}, "nb6": {"name": "筆記 · 殖民競爭心智圖", "boxes": {"mind": [0.08, 0.1, 0.92, 0.85]}}, "nb7": {"name": "筆記 · 總複習頁", "boxes": {"sum": [0.08, 0.08, 0.92, 0.85]}}, "nb8": {"name": "筆記 · 殖民競爭詳解", "boxes": {"imp": [0.08, 0.08, 0.92, 0.35], "why": [0.08, 0.35, 0.92, 0.7], "fx": [0.08, 0.7, 0.92, 0.92]}}, "nb9": {"name": "筆記 · 危機 + 軍備原因", "boxes": {"crises": [0.08, 0.08, 0.92, 0.45], "whyarm": [0.08, 0.48, 0.92, 0.88]}}, "nb10": {"name": "筆記 · 軍備競賽", "boxes": {"forms": [0.08, 0.08, 0.92, 0.5], "fx": [0.08, 0.52, 0.92, 0.88]}}, "ws2a": {"name": "Worksheet 2 · Source A", "boxes": {"src": [0.08, 0.12, 0.92, 0.55], "qa": [0.08, 0.58, 0.92, 0.88]}}, "ws2b": {"name": "Worksheet 2 · Q(c)", "boxes": {"qc": [0.08, 0.1, 0.92, 0.55]}}};
+var WB={"note": {"name": "Revision notes", "marks": {}}};
+var STEPS=[{"tag": "考試", "tb": "tb5", "wb": "note", "say": "F.3 History Uniform Test — 29/10/2026, period 9, 25 min, 40 marks.", "say_zh": "中三歷史統一測驗：10 月 29 日第 9 節，25 分鐘，滿分 40。", "teach": "Rule: first read the syllabus — marks tell you how deep to go.", "teach_zh": "規矩：先讀考試範圍，分數告訴你要答多深。", "fills": [{"id": "i1", "box": [0.08, 0.08, 0.92, 0.14], "text": "UT 29/10 · 40 marks · 25 min", "zh": "", "q": "考試資料", "note": "考試資料", "kind": "text", "fs": 0.028, "teach": "Write date + total marks on your revision sheet first.", "teach_zh": "先把日期和滿分寫在溫習紙最頂。", "from": "title"}], "sec": "考試資料", "tbmark": ["title"], "wbfocus": [0.06, 0.06, 0.9400000000000001, 0.16]}, {"tag": "範圍", "tb": "tb5", "wb": "note", "say": "Covered: textbook p.5–12 · Notebook (Underlying Causes) · cartoons · Pre-lesson WS1–2 · WS1–2. WS3 was never given.", "say_zh": "範圍：課本 p.5–12、Notebook 遠因、漫畫解讀、Pre-lesson WS1–2、WS1–2。WS3 老師沒有發。", "teach": "Rule: only revise what the teacher listed — skip WS3.", "teach_zh": "規矩：只溫習老師寫的範圍，WS3 跳過。", "fills": [{"id": "i2", "box": [0.08, 0.16, 0.92, 0.22], "text": "TB p.5–12 · Notebook · Cartoons · WS1–2", "zh": "", "q": "範圍", "note": "範圍", "kind": "text", "fs": 0.028, "teach": "Tick each item when you finish that section in this video.", "teach_zh": "片內每一節看完就在紙上打剔。", "from": "table"}], "sec": "考試資料", "tbmark": ["table"], "wbfocus": [0.06, 0.14, 0.9400000000000001, 0.24]}, {"tag": "題型", "tb": "tb5", "wb": "note", "say": "Paper: A MC 9 · B T/F 6 · C Fill-in 8 · D Cartoon 4 · E DBQ 13.", "say_zh": "題型：選擇 9、是非 6、填充 8、漫畫 4、資料題 13。", "teach": "Rule: DBQ (13) is the biggest chunk — practise Source + own knowledge.", "teach_zh": "規矩：資料題 13 分最重，要練「資料 + 自己知識」。", "fills": [{"id": "i3", "box": [0.08, 0.24, 0.92, 0.3], "text": "MC9 T/F6 Fill8 Cartoon4 DBQ13", "zh": "", "q": "題型", "note": "題型", "kind": "text", "fs": 0.028, "from": "focus"}], "sec": "考試資料", "tbmark": ["focus"], "wbfocus": [0.06, 0.22, 0.9400000000000001, 0.32]}, {"tag": "課本起", "tb": "tb5", "wb": "note", "say": "Start the textbook. Two wars comparison: years, camps, scale.", "say_zh": "開始課本。兩次大戰比較：年份、陣營、規模。", "teach": "Rule: memorise years first — WWI 1914–1918, WWII 1939–1945.", "teach_zh": "規矩：先背年份——一戰 1914–1918，二戰 1939–1945。", "fills": [{"id": "t1", "box": [0.08, 0.32, 0.92, 0.38], "text": "WWI 1914–18 · WWII 1939–45", "zh": "", "q": "年份", "note": "年份", "kind": "text", "fs": 0.028, "teach": "Central vs Allied (WWI); Axis vs Allied (WWII).", "teach_zh": "一戰：同盟國 vs 協約國；二戰：軸心 vs 同盟。", "from": "table"}], "sec": "課本 p.5–12", "tbmark": ["table"], "wbfocus": [0.06, 0.3, 0.9400000000000001, 0.4]}, {"tag": "列強", "tb": "tb6", "wb": "note", "say": "Six European powers at the start of the 20th century — know each one's strength and fear.", "say_zh": "二十世紀初六大列強——每個要記「強項」和「擔心甚麼」。", "teach": "Rule: Britain = navy + colonies; Germany = rising army/navy (threat to Britain).", "teach_zh": "規矩：英國＝海軍＋殖民地；德國＝新興軍力（威脅英國）。", "fills": [{"id": "t2", "box": [0.08, 0.4, 0.92, 0.46], "text": "GB navy · FR revenge · RU Slavs · AH multi-ethnic · DE rising", "zh": "", "q": "列強重點", "note": "列強重點", "kind": "text", "fs": 0.028, "from": "britain"}], "sec": "課本 p.5–12", "tbmark": ["britain"], "wbfocus": [0.06, 0.38, 0.9400000000000001, 0.48000000000000004]}, {"tag": "列強2", "tb": "tb6", "wb": "note", "say": "France wants Alsace-Lorraine back. Russia is 'Big Brother of the Slavs'. Austria-Hungary is declining.", "say_zh": "法國想奪回阿爾薩斯－洛林。俄國是「斯拉夫人的大哥」。奧匈帝國在衰落。", "teach": "Rule: link each power to ONE keyword (Alsace / Slavs / declining).", "teach_zh": "規矩：每個國家只記一個關鍵字就夠應考。", "fills": [{"id": "t3", "box": [0.08, 0.48, 0.92, 0.54], "text": "FR→Alsace-Lorraine · RU→Pan-Slavism · AH→declining", "zh": "", "q": "關鍵字", "note": "關鍵字", "kind": "text", "fs": 0.028, "from": "france"}], "sec": "課本 p.5–12", "tbmark": ["france", "russia"], "wbfocus": [0.06, 0.45999999999999996, 0.9400000000000001, 0.56]}, {"tag": "民族", "tb": "tb7", "wb": "note", "say": "1.1 Extreme nationalism — aggressive expansion after 1870.", "say_zh": "1.1 極端民族主義——1870 年後侵略性擴張。", "teach": "Rule: normal nationalism = independence; extreme = expand / revenge.", "teach_zh": "規矩：普通民族主義＝獨立；極端＝擴張／復仇。", "fills": [{"id": "t4", "box": [0.08, 0.08, 0.92, 0.14], "text": "1 Extreme nationalism", "zh": "", "q": "遠因一", "note": "遠因一", "kind": "text", "fs": 0.028, "teach": "Four movements: Pan-Germanism, Pan-Slavism, French revenge, Greater Serbia.", "teach_zh": "四個運動：泛德、泛斯拉夫、法國復仇、大塞爾維亞。", "from": "nat"}], "sec": "課本 p.5–12", "tbmark": ["nat"], "wbfocus": [0.06, 0.06, 0.9400000000000001, 0.16]}, {"tag": "同盟", "tb": "tb7", "wb": "note", "say": "1.2 Alliance system — Triple Alliance 1882 vs Triple Entente 1907.", "say_zh": "1.2 同盟制度——三國同盟 1882 vs 三國協約 1907。", "teach": "Rule: two camps → local quarrel can chain-react into a big war.", "teach_zh": "規矩：兩大陣營 → 地區衝突可以連鎖變成大戰。", "fills": [{"id": "t5", "box": [0.08, 0.16, 0.92, 0.22], "text": "Alliance 1882: DE+AH+IT · Entente 1907: GB+FR+RU", "zh": "", "q": "同盟成員", "note": "同盟成員", "kind": "text", "fs": 0.028, "teach": "Chain reaction = if one is attacked, allies join.", "teach_zh": "連鎖反應＝一國被攻，盟國加入。", "from": "ally"}], "sec": "課本 p.5–12", "tbmark": ["ally"], "wbfocus": [0.06, 0.14, 0.9400000000000001, 0.24]}, {"tag": "地圖", "tb": "tb8", "wb": "note", "say": "Map of the two rival camps — colour code Alliance vs Entente in your head.", "say_zh": "兩大陣營地圖——腦中要能分出同盟與協約的顏色。", "teach": "Rule: when a map question appears, first label the two camps.", "teach_zh": "規矩：見到地圖題，先標兩大陣營。", "fills": [{"id": "t6", "box": [0.08, 0.24, 0.92, 0.3], "text": "Two camps on map → tension ↑", "zh": "", "q": "地圖結論", "note": "地圖結論", "kind": "text", "fs": 0.028, "from": "map"}], "sec": "課本 p.5–12", "tbmark": ["map"], "wbfocus": [0.06, 0.22, 0.9400000000000001, 0.32]}, {"tag": "殖民", "tb": "tb9", "wb": "note", "say": "1.3 Scrambling for colonies — Industrial Revolution needs materials and markets.", "say_zh": "1.3 爭奪殖民地——工業革命需要原料和市場。", "teach": "Rule: colonies = materials + markets + status symbol.", "teach_zh": "規矩：殖民地＝原料＋市場＋國力象徵。", "fills": [{"id": "t7", "box": [0.08, 0.32, 0.92, 0.38], "text": "2 Colonial rivalry · Tunisian 1881 · Fashoda 1898 · Morocco 1905/11", "zh": "", "q": "殖民危機", "note": "殖民危機", "kind": "text", "fs": 0.028, "teach": "Moroccan Crises = France vs Germany (twice).", "teach_zh": "摩洛哥危機＝法 vs 德（兩次）。", "from": "col"}], "sec": "課本 p.5–12", "tbmark": ["col"], "wbfocus": [0.06, 0.3, 0.9400000000000001, 0.4]}, {"tag": "非洲", "tb": "tb9", "wb": "note", "say": "Africa conflicts table: Tunisian, Fashoda, Moroccan — who fought whom.", "say_zh": "非洲衝突表：突尼斯、法紹達、摩洛哥——誰對誰。", "teach": "Rule: exam loves 'which two powers' — memorise the three rows.", "teach_zh": "規矩：考試愛問「哪兩國」——三行表要背。", "fills": [{"id": "t8", "box": [0.08, 0.4, 0.92, 0.46], "text": "TN: FR-IT · Fashoda: GB-FR · Morocco: FR-DE", "zh": "", "q": "三場衝突", "note": "三場衝突", "kind": "text", "fs": 0.028, "from": "africa"}], "sec": "課本 p.5–12", "tbmark": ["africa"], "wbfocus": [0.06, 0.38, 0.9400000000000001, 0.48000000000000004]}, {"tag": "符號", "tb": "tb10", "wb": "note", "say": "Cartoon basics — national symbols you must recognise instantly.", "say_zh": "漫畫基礎——國族符號要一眼認出。", "teach": "Rule: identify the country BEFORE you analyse the message.", "teach_zh": "規矩：先認國家，再分析漫畫意思。", "fills": [{"id": "t9", "box": [0.08, 0.48, 0.92, 0.54], "text": "GB John Bull/Lion · FR Marianne · DE Pickelhaube · RU Bear · US Uncle Sam", "zh": "", "q": "符號表", "note": "符號表", "kind": "text", "fs": 0.028, "from": "symbols"}], "sec": "漫畫解讀", "tbmark": ["symbols"], "wbfocus": [0.06, 0.45999999999999996, 0.9400000000000001, 0.56]}, {"tag": "漫畫練", "tb": "tb11", "wb": "note", "say": "Practice Sources A & B on p.11 — identify characters, then attitude.", "say_zh": "p.11 練習資料 A、B——先認人物，再講態度。", "teach": "Rule: Source first (clue from the cartoon), then own knowledge.", "teach_zh": "規矩：先寫資料線索，再寫自己知識。", "fills": [{"id": "t10", "box": [0.08, 0.56, 0.92, 0.62], "text": "Cartoon steps: 1 symbols 2 action 3 message", "zh": "", "q": "漫畫三步", "note": "漫畫三步", "kind": "text", "fs": 0.028, "from": "srcA"}], "sec": "漫畫解讀", "tbmark": ["srcA", "srcB"], "wbfocus": [0.06, 0.54, 0.9400000000000001, 0.64]}, {"tag": "軍備", "tb": "tb12", "wb": "note", "say": "1.4 Armaments race — armies, weapons, dreadnoughts; Britain vs Germany.", "say_zh": "1.4 軍備競賽——陸軍、武器、無畏艦；英德最激烈。", "teach": "Rule: dreadnought (1906) started a naval race — say Britain vs Germany.", "teach_zh": "規矩：1906 無畏艦帶起海軍競賽——一定要寫英 vs 德。", "fills": [{"id": "t11", "box": [0.08, 0.64, 0.92, 0.7], "text": "3 Armaments race · dreadnoughts 1906 · Hague failed", "zh": "", "q": "軍備重點", "note": "軍備重點", "kind": "text", "fs": 0.028, "teach": "Conscription = forced army service.", "teach_zh": "徵兵制＝強迫當兵。", "from": "race"}], "sec": "課本 p.5–12", "tbmark": ["race"], "wbfocus": [0.06, 0.62, 0.9400000000000001, 0.72]}, {"tag": "無畏艦", "tb": "tb12", "wb": "note", "say": "HMS Dreadnought made older ships outdated — powers raced to build more.", "say_zh": "無畏艦令舊軍艦過時——列強爭相多造。", "teach": "Rule: link dreadnought → naval race → worse Britain–Germany relations.", "teach_zh": "規矩：無畏艦 → 海軍競賽 → 英德關係惡化。", "fills": [{"id": "t12", "box": [0.08, 0.72, 0.92, 0.78], "text": "Dreadnought → naval race → tension GB–DE", "zh": "", "q": "無畏艦鏈", "note": "無畏艦鏈", "kind": "text", "fs": 0.028, "from": "dread"}], "sec": "課本 p.5–12", "tbmark": ["dread"], "wbfocus": [0.06, 0.7, 0.9400000000000001, 0.8]}, {"tag": "筆記起", "tb": "nb1", "wb": "note", "say": "Notebook: what is a Great Power? Culture, military, politics, economy, geography.", "say_zh": "筆記：何謂列強？文化、軍事、政治、經濟、地理。", "teach": "Rule: exam definition = influence because strong in those five areas.", "teach_zh": "規矩：考試定義＝在五方面強大所以有國際影響力。", "fills": [{"id": "n1", "box": [0.08, 0.08, 0.92, 0.14], "text": "Great power = 5 strengths", "zh": "", "q": "定義", "note": "定義", "kind": "text", "fs": 0.028, "from": "def"}], "sec": "Notebook 遠因", "tbmark": ["def"], "wbfocus": [0.06, 0.06, 0.9400000000000001, 0.16]}, {"tag": "遠因四", "tb": "nb3", "wb": "note", "say": "Four underlying causes + immediate cause Sarajevo 1914.", "say_zh": "四個遠因 + 近因／導火線：薩拉熱窩事件 1914。", "teach": "Rule: UT focuses on underlying causes — still know Sarajevo is the spark.", "teach_zh": "規矩：UT 重遠因——但仍要知薩拉熱窩是導火線。", "fills": [{"id": "n2", "box": [0.08, 0.16, 0.92, 0.22], "text": "4 causes: nationalism · alliance · colonial · armaments", "zh": "", "q": "四遠因", "note": "四遠因", "kind": "text", "fs": 0.028, "teach": "Immediate: Sarajevo Incident 1914.", "teach_zh": "近因：薩拉熱窩 1914。", "from": "causes"}], "sec": "Notebook 遠因", "tbmark": ["causes"], "wbfocus": [0.06, 0.14, 0.9400000000000001, 0.24]}, {"tag": "泛德斯拉夫", "tb": "nb3", "wb": "note", "say": "Pan-Germanism vs Pan-Slavism — both want to unite their peoples.", "say_zh": "泛德意志 vs 泛斯拉夫——都想統一同族。", "teach": "Rule: Germany unites Germans; Russia leads Slavs in the Balkans.", "teach_zh": "規矩：德國統一日耳曼人；俄國領導巴爾幹斯拉夫人。", "fills": [{"id": "n3", "box": [0.08, 0.24, 0.92, 0.3], "text": "DE Pan-Germanism · RU Pan-Slavism", "zh": "", "q": "兩大主義", "note": "兩大主義", "kind": "text", "fs": 0.028, "from": "pan"}], "sec": "Notebook 遠因", "tbmark": ["pan"], "wbfocus": [0.06, 0.22, 0.9400000000000001, 0.32]}, {"tag": "法復仇", "tb": "nb4", "wb": "note", "say": "France: revenge after Franco-Prussian War — lost Alsace-Lorraine.", "say_zh": "法國：普法戰爭後復仇——失去阿爾薩斯－洛林。", "teach": "Rule: always pair 'revenge' with Alsace-Lorraine in answers.", "teach_zh": "規矩：寫「復仇」一定要配阿爾薩斯－洛林。", "fills": [{"id": "n4", "box": [0.08, 0.32, 0.92, 0.38], "text": "FR revenge ← lost Alsace-Lorraine 1871", "zh": "", "q": "法國", "note": "法國", "kind": "text", "fs": 0.028, "from": "fr"}], "sec": "Notebook 遠因", "tbmark": ["fr"], "wbfocus": [0.06, 0.3, 0.9400000000000001, 0.4]}, {"tag": "民族影響", "tb": "nb4", "wb": "note", "say": "Impacts of extreme nationalism: tension ↑, armaments ↑, colonial rivalry ↑.", "say_zh": "極端民族主義影響：緊張↑、軍備↑、殖民競爭↑。", "teach": "Rule: one cause feeds the others — show the link in DBQ.", "teach_zh": "規矩：一個遠因會帶動其他——資料題要寫連繫。", "fills": [{"id": "n5", "box": [0.08, 0.4, 0.92, 0.46], "text": "Nationalism → tension / arms / colonies", "zh": "", "q": "連繫", "note": "連繫", "kind": "text", "fs": 0.028, "from": "imp"}], "sec": "Notebook 遠因", "tbmark": ["imp"], "wbfocus": [0.06, 0.38, 0.9400000000000001, 0.48000000000000004]}, {"tag": "同盟筆記", "tb": "nb5", "wb": "note", "say": "Bismarck aimed to avoid a two-front war. Triple Alliance then Triple Entente.", "say_zh": "俾斯麥想避免兩面作戰。先三國同盟，後三國協約。", "teach": "Rule: aim of alliances ≠ peace; it was security for Germany.", "teach_zh": "規矩：同盟目的不是和平，是德國的安全。", "fills": [{"id": "n6", "box": [0.08, 0.48, 0.92, 0.54], "text": "Bismarck: no two-front war · secret alliances → suspicion", "zh": "", "q": "俾斯麥", "note": "俾斯麥", "kind": "text", "fs": 0.028, "from": "ally"}], "sec": "Notebook 遠因", "tbmark": ["ally"], "wbfocus": [0.06, 0.45999999999999996, 0.9400000000000001, 0.56]}, {"tag": "同盟影響", "tb": "nb5", "wb": "note", "say": "Impacts: two camps, local→general war, mutual suspicion.", "say_zh": "影響：兩大陣營、地區戰變大戰、互相猜忌。", "teach": "Rule: for 'impact of alliances' write chain reaction in one sentence.", "teach_zh": "規矩：問同盟影響，用一句寫出連鎖反應。", "fills": [{"id": "n7", "box": [0.08, 0.56, 0.92, 0.62], "text": "Local war → general war (chain reaction)", "zh": "", "q": "連鎖", "note": "連鎖", "kind": "text", "fs": 0.028, "from": "imp"}], "sec": "Notebook 遠因", "tbmark": ["imp"], "wbfocus": [0.06, 0.54, 0.9400000000000001, 0.64]}, {"tag": "殖民筆記", "tb": "nb8", "wb": "note", "say": "Imperialism = extend influence and territory outside the homeland.", "say_zh": "帝國主義＝把影響力與領土伸到國土以外。", "teach": "Rule: define imperialism before listing why they wanted colonies.", "teach_zh": "規矩：先定義帝國主義，再列為甚麼要殖民地。", "fills": [{"id": "n8", "box": [0.08, 0.64, 0.92, 0.7], "text": "Imperialism = expand influence & territory abroad", "zh": "", "q": "定義", "note": "定義", "kind": "text", "fs": 0.028, "from": "imp"}], "sec": "Notebook 遠因", "tbmark": ["imp"], "wbfocus": [0.06, 0.62, 0.9400000000000001, 0.72]}, {"tag": "殖民影響", "tb": "nb8", "wb": "note", "say": "Impacts: worse relations, pre-war crises, more armaments, pushed alliance forming.", "say_zh": "影響：關係惡化、戰前危機、軍備增加、推動結盟。", "teach": "Rule: Italy joined Triple Alliance after Tunisian Incident — link event→alliance.", "teach_zh": "規矩：突尼斯事件後意大利加入三國同盟——事件連到結盟。", "fills": [{"id": "n9", "box": [0.08, 0.72, 0.92, 0.78], "text": "Tunisian→IT joins Alliance · Morocco→Entente 1907", "zh": "", "q": "事件→同盟", "note": "事件→同盟", "kind": "text", "fs": 0.028, "from": "fx"}], "sec": "Notebook 遠因", "tbmark": ["fx"], "wbfocus": [0.06, 0.7, 0.9400000000000001, 0.8]}, {"tag": "軍備筆記", "tb": "nb10", "wb": "note", "say": "Forms: conscription, new weapons, dreadnought naval race.", "say_zh": "形式：徵兵、新武器、無畏艦海軍競賽。", "teach": "Rule: three forms — army / arms / navy — don't mix them up.", "teach_zh": "規矩：三種形式——陸軍／武器／海軍——不要混。", "fills": [{"id": "n10", "box": [0.08, 0.8, 0.92, 0.86], "text": "Army conscription · weapons · navy dreadnoughts", "zh": "", "q": "三形式", "note": "三形式", "kind": "text", "fs": 0.028, "from": "forms"}], "sec": "Notebook 遠因", "tbmark": ["forms"], "wbfocus": [0.06, 0.78, 0.9400000000000001, 0.88]}, {"tag": "軍備影響", "tb": "nb10", "wb": "note", "say": "Impacts: worse relations, war-like mood, Hague disarmament failed.", "say_zh": "影響：關係惡化、好戰氣氛、海牙裁軍失敗。", "teach": "Rule: Hague 1899 & 1907 = proof they refused to disarm.", "teach_zh": "規矩：海牙 1899、1907＝拒絕裁軍的證據。", "fills": [{"id": "n11", "box": [0.08, 0.16, 0.92, 0.22], "text": "Hague 1899/1907 failed · war atmosphere ↑", "zh": "", "q": "海牙", "note": "海牙", "kind": "text", "fs": 0.028, "from": "fx"}], "sec": "Notebook 遠因", "tbmark": ["fx"], "wbfocus": [0.06, 0.14, 0.9400000000000001, 0.24]}, {"tag": "WS2", "tb": "ws2a", "wb": "note", "say": "Worksheet 2 Source A (1908): John Bull vs Kaiser betting dreadnoughts.", "say_zh": "Worksheet 2 資料 A（1908）：約翰牛與德皇用無畏艦打賭。", "teach": "Rule: X = Britain (John Bull), Y = Kaiser William II — from labels/uniforms.", "teach_zh": "規矩：X＝英國（約翰牛），Y＝德皇威廉二世——看標籤／軍服。", "fills": [{"id": "w1", "box": [0.08, 0.24, 0.92, 0.3], "text": "X John Bull (GB) · Y Kaiser William II (DE)", "zh": "", "q": "認人", "note": "認人", "kind": "text", "fs": 0.028, "teach": "This sheet is still unfinished — use the method, write your own answers later.", "teach_zh": "這份仍未完成——先學方法，稍後自己寫答案。", "from": "src"}], "sec": "Worksheet 點樣答", "tbmark": ["src"], "wbfocus": [0.06, 0.22, 0.9400000000000001, 0.32]}, {"tag": "WS2b", "tb": "ws2a", "wb": "note", "say": "(b) Naval / dreadnought race — clue: they bet warship models.", "say_zh": "(b) 海軍／無畏艦競賽——線索：他們用軍艦模型打賭。", "teach": "Rule: cite ONE clue from Source, then name the race.", "teach_zh": "規矩：先引資料一個線索，再說是甚麼競賽。", "fills": [{"id": "w2", "box": [0.08, 0.32, 0.92, 0.38], "text": "(b) Naval race — clue: dreadnought models on table", "zh": "", "q": "(b)", "note": "(b)", "kind": "text", "fs": 0.028, "from": "qa"}], "sec": "Worksheet 點樣答", "tbmark": ["qa"], "wbfocus": [0.06, 0.3, 0.9400000000000001, 0.4]}, {"tag": "WS2c", "tb": "ws2b", "wb": "note", "say": "(c) How the race hurt GB–DE relations — 1 reason from Source + 1 from own knowledge.", "say_zh": "(c) 競賽如何傷害英德關係——資料一個理由 + 自己知識一個。", "teach": "Rule: say 'Source A' and 'own knowledge' in the answer — teacher reminder box.", "teach_zh": "規矩：答案要寫明「資料 A」和「自己知識」——紙上有提醒。", "fills": [{"id": "w3", "box": [0.08, 0.4, 0.92, 0.46], "text": "(c) Source: competitive betting → Own: naval race ↑ suspicion", "zh": "", "q": "(c) 結構", "note": "(c) 結構", "kind": "text", "fs": 0.028, "teach": "Marks 1+2+2: identify effect, Source reason, own-knowledge reason.", "teach_zh": "分數 1+2+2：影響、資料理由、自己知識理由。", "from": "qc"}], "sec": "Worksheet 點樣答", "tbmark": ["qc"], "wbfocus": [0.06, 0.38, 0.9400000000000001, 0.48000000000000004]}, {"tag": "收結", "tb": "nb3", "wb": "note", "say": "Done. Replay any section from 目錄. Exam 29/10 period 9 — revise the four causes + cartoon symbols.", "say_zh": "完成。可用目錄跳回任何一節。考試 10 月 29 日第 9 節——重溫四遠因＋漫畫符號。", "teach": "Rule: before the test, recite the four underlying causes out loud once.", "teach_zh": "規矩：考試前把四個遠因大聲背一次。", "fills": [{"id": "z1", "box": [0.08, 0.08, 0.92, 0.14], "text": "4 causes ready · cartoon symbols ready · DBQ: Source+own", "zh": "", "q": "考前清單", "note": "考前清單", "kind": "text", "fs": 0.028, "from": "causes"}], "sec": "考試資料", "tbmark": ["causes"], "wbfocus": [0.06, 0.06, 0.9400000000000001, 0.16]}];
+var LABEL={"intro": "考試資料", "tb": "課本", "nb": "Notebook", "cart": "漫畫", "ws": "Worksheet", "title": "考試標題", "table": "比較表 / 範圍", "focus": "Learning Focus / 題型", "britain": "Britain", "germany": "Germany", "france": "France", "russia": "Russia", "ah": "Austria-Hungary", "nat": "1.1 Extreme nationalism", "ally": "1.2 Alliance system", "map": "兩大陣營地圖", "act": "Friends or enemies", "col": "1.3 Scrambling for colonies", "africa": "Africa conflicts table", "symbols": "National symbols", "srcA": "Source A", "srcB": "Source B", "q": "Questions", "race": "1.4 Armaments race", "dread": "HMS Dreadnought", "def": "Great power definition", "five": "Five strengths", "list": "European powers", "causes": "Four underlying causes", "pan": "Pan-Germanism / Pan-Slavism", "fr": "France revenge", "imp": "Impacts / Imperialism", "why": "Why colonies", "fx": "Impacts", "mind": "Colonial rivalry mind map", "sum": "Summary sheet", "forms": "Forms of armaments", "crises": "Pre-war crises", "whyarm": "Why more armaments", "src": "Source A cartoon", "qa": "Questions (a)(b)", "qc": "Question (c)"};
+var TOC=[{"i": 0, "sec": "intro", "label": "考試", "zh": "中三歷史統一測驗：10 月 29 日第 9 節，25 分鐘，滿分 40。"}, {"i": 1, "sec": "intro", "label": "範圍", "zh": "範圍：課本 p.5–12、Notebook 遠因、漫畫解讀、Pre-lesson WS1–2、W"}, {"i": 2, "sec": "intro", "label": "題型", "zh": "題型：選擇 9、是非 6、填充 8、漫畫 4、資料題 13。"}, {"i": 3, "sec": "tb", "label": "課本起", "zh": "開始課本。兩次大戰比較：年份、陣營、規模。"}, {"i": 4, "sec": "tb", "label": "列強", "zh": "二十世紀初六大列強——每個要記「強項」和「擔心甚麼」。"}, {"i": 5, "sec": "tb", "label": "列強2", "zh": "法國想奪回阿爾薩斯－洛林。俄國是「斯拉夫人的大哥」。奧匈帝國在衰落。"}, {"i": 6, "sec": "tb", "label": "民族", "zh": "1.1 極端民族主義——1870 年後侵略性擴張。"}, {"i": 7, "sec": "tb", "label": "同盟", "zh": "1.2 同盟制度——三國同盟 1882 vs 三國協約 1907。"}, {"i": 8, "sec": "tb", "label": "地圖", "zh": "兩大陣營地圖——腦中要能分出同盟與協約的顏色。"}, {"i": 9, "sec": "tb", "label": "殖民", "zh": "1.3 爭奪殖民地——工業革命需要原料和市場。"}, {"i": 10, "sec": "tb", "label": "非洲", "zh": "非洲衝突表：突尼斯、法紹達、摩洛哥——誰對誰。"}, {"i": 11, "sec": "cart", "label": "符號", "zh": "漫畫基礎——國族符號要一眼認出。"}, {"i": 12, "sec": "cart", "label": "漫畫練", "zh": "p.11 練習資料 A、B——先認人物，再講態度。"}, {"i": 13, "sec": "tb", "label": "軍備", "zh": "1.4 軍備競賽——陸軍、武器、無畏艦；英德最激烈。"}, {"i": 14, "sec": "tb", "label": "無畏艦", "zh": "無畏艦令舊軍艦過時——列強爭相多造。"}, {"i": 15, "sec": "nb", "label": "筆記起", "zh": "筆記：何謂列強？文化、軍事、政治、經濟、地理。"}, {"i": 16, "sec": "nb", "label": "遠因四", "zh": "四個遠因 + 近因／導火線：薩拉熱窩事件 1914。"}, {"i": 17, "sec": "nb", "label": "泛德斯拉夫", "zh": "泛德意志 vs 泛斯拉夫——都想統一同族。"}, {"i": 18, "sec": "nb", "label": "法復仇", "zh": "法國：普法戰爭後復仇——失去阿爾薩斯－洛林。"}, {"i": 19, "sec": "nb", "label": "民族影響", "zh": "極端民族主義影響：緊張↑、軍備↑、殖民競爭↑。"}, {"i": 20, "sec": "nb", "label": "同盟筆記", "zh": "俾斯麥想避免兩面作戰。先三國同盟，後三國協約。"}, {"i": 21, "sec": "nb", "label": "同盟影響", "zh": "影響：兩大陣營、地區戰變大戰、互相猜忌。"}, {"i": 22, "sec": "nb", "label": "殖民筆記", "zh": "帝國主義＝把影響力與領土伸到國土以外。"}, {"i": 23, "sec": "nb", "label": "殖民影響", "zh": "影響：關係惡化、戰前危機、軍備增加、推動結盟。"}, {"i": 24, "sec": "nb", "label": "軍備筆記", "zh": "形式：徵兵、新武器、無畏艦海軍競賽。"}, {"i": 25, "sec": "nb", "label": "軍備影響", "zh": "影響：關係惡化、好戰氣氛、海牙裁軍失敗。"}, {"i": 26, "sec": "ws", "label": "WS2", "zh": "Worksheet 2 資料 A（1908）：約翰牛與德皇用無畏艦打賭。"}, {"i": 27, "sec": "ws", "label": "WS2b", "zh": "(b) 海軍／無畏艦競賽——線索：他們用軍艦模型打賭。"}, {"i": 28, "sec": "ws", "label": "WS2c", "zh": "(c) 競賽如何傷害英德關係——資料一個理由 + 自己知識一個。"}, {"i": 29, "sec": "intro", "label": "收結", "zh": "完成。可用目錄跳回任何一節。考試 10 月 29 日第 9 節——重溫四遠因＋漫畫符號。"}];
+
+(function(){
+ var $=function(i){return document.getElementById(i);};
+ var cur=0,token=0,playing=false,timers=[],SPEED=1,paused=true,pauseAt=Date.now(),stepT0=Date.now();
+ function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+ var tocEl=$("tocmenu"), tocBtn=$("tocbtn");
+ function buildToc(){
+  var h="", last="", SEC={intro:"考試資料",tb:"課本 p.5–12",nb:"Notebook 遠因",cart:"漫畫解讀",ws:"Worksheet 點樣答"};
+  TOC.forEach(function(row){
+   var sec=row.sec||"intro";
+   if(sec!==last){h+='<div class="qh">'+(SEC[sec]||sec)+'</div>'; last=sec;}
+   h+='<button type="button" data-i="'+row.i+'">'+esc(row.label)+'<div class="qz">'+esc(row.zh||"")+'</div></button>';
+  });
+  tocEl.innerHTML=h;
+ }
+ buildToc();
+ function placeToc(){var r=tocBtn.getBoundingClientRect();tocEl.style.left=Math.max(8,Math.min(r.left,window.innerWidth-Math.min(420,window.innerWidth*0.92)-8))+"px";tocEl.style.top=(r.bottom+6)+"px";}
+ tocBtn.addEventListener("click",function(e){e.stopPropagation();tocEl.classList.toggle("open");if(tocEl.classList.contains("open"))placeToc();});
+ tocEl.addEventListener("click",function(e){var b=e.target.closest("button[data-i]");if(!b)return;tocEl.classList.remove("open");go(+b.getAttribute("data-i"));});
+ document.addEventListener("click",function(){tocEl.classList.remove("open");});
+ window.addEventListener("resize",function(){if(tocEl.classList.contains("open"))placeToc();});
+ function paintTocCur(){tocEl.querySelectorAll("button[data-i]").forEach(function(b){b.classList.toggle("cur",+b.getAttribute("data-i")===cur);});}
+ // textbook boxes
+ Object.keys(TB).forEach(function(pid){var pg=TB[pid];Object.keys(pg.boxes).forEach(function(k){var b=pg.boxes[k],d=document.createElement("div");d.className="box";d.id="tb_"+k;
+   d.style.left=(b[0]*100)+"%";d.style.top=(b[1]*100)+"%";d.style.width=((b[2]-b[0])*100)+"%";d.style.height=((b[3]-b[1])*100)+"%";$("st_"+pid).appendChild(d);});});
+ // workbook marks and answers
+ Object.keys(WB).forEach(function(pid){var pg=WB[pid];Object.keys(pg.marks||{}).forEach(function(k){var b=pg.marks[k],d=document.createElement("div");d.className="box";d.id="wm_"+k;
+   d.style.left=(b[0]*100)+"%";d.style.top=(b[1]*100)+"%";d.style.width=((b[2]-b[0])*100)+"%";d.style.height=((b[3]-b[1])*100)+"%";$("st_"+pid).appendChild(d);});});
+ var FILLS={},FSTEP={};
+ STEPS.forEach(function(s,i){(s.fills||[]).forEach(function(f){FILLS[f.id]=f;FSTEP[f.id]=i;
+   var b=f.box,d=document.createElement("div");d.className="ans"+(f.kind==="circle"?" circ":"");d.id="an_"+f.id;
+   d.style.left=(b[0]*100)+"%";d.style.top=(b[1]*100)+"%";d.style.width=((b[2]-b[0])*100)+"%";d.style.height=((b[3]-b[1])*100)+"%";
+   if(f.kind!=="circle")d.innerHTML='<span class="at"></span>';
+   d.addEventListener("click",function(e){e.stopPropagation();showExplain(f.id,d);});
+   $("st_"+s.wb).appendChild(d);});});
+ function sizeAns(pid,pw){var st=$("st_"+pid);if(!st)return;st.style.setProperty("--sw",pw+"px");var img=st.querySelector("img"),asp=(img.naturalHeight||1400)/(img.naturalWidth||1000);
+   var ctx=sizeAns.c||(sizeAns.c=document.createElement("canvas").getContext("2d"));ctx.font="100px Arial";
+   st.querySelectorAll(".ans").forEach(function(a){if(a.classList.contains("circ"))return;var f=FILLS[a.id.slice(3)];if(!f)return;var tw=ctx.measureText(f.text).width||1;
+     var r=Math.min((f.box[2]-f.box[0])*98/tw,(f.box[3]-f.box[1])*asp*1.25);a.style.fontSize="calc(var(--sw) * "+r.toFixed(5)+")";});}
+ function later(fn,ms){var t={rem:ms/SPEED,start:Date.now(),id:0};t.go=function(){t.start=Date.now();t.id=setTimeout(function(){var i=timers.indexOf(t);if(i>=0)timers.splice(i,1);fn();},Math.max(0,t.rem));};timers.push(t);if(!paused)t.go();}
+ function freeze(){if(paused)return;paused=true;pauseAt=Date.now();timers.forEach(function(t){clearTimeout(t.id);t.rem-=Date.now()-t.start;});}
+ function unfreeze(){if(!paused)return;paused=false;stepT0+=Date.now()-pauseAt;timers.slice().forEach(function(t){t.go();});}
+ function clearAll(){timers.forEach(function(t){clearTimeout(t.id);});timers=[];document.querySelectorAll(".caret,.fly,.zoom,.zoomcap").forEach(function(c){c.remove();});closeEx();document.querySelectorAll(".ans.now").forEach(function(a){a.classList.remove("now");});}
+ function need(pid){var st=$("st_"+pid);if(!st)return;var im=st.querySelector("img");if(im&&!im.getAttribute("src")&&im.getAttribute("data-src"))im.setAttribute("src",im.getAttribute("data-src"));}function showStage(cam,pid){need(pid);document.querySelectorAll("#"+cam+" .stage").forEach(function(s){s.classList.toggle("on",s.id==="st_"+pid);});for(var j=cur;j<STEPS.length&&j<cur+4;j++){if(STEPS[j].tb)need(STEPS[j].tb);if(STEPS[j].wb)need(STEPS[j].wb);}}
+ function focusCam(cam,pid,region){
+   var c=$(cam),st=$("st_"+pid);if(!st)return;var img=st.querySelector("img"),cw=c.clientWidth,ch=c.clientHeight;if(!cw||!ch)return;
+   var a=(img.naturalHeight||1400)/(img.naturalWidth||1000),x0=0,y0=0,x1=1,y1=1;
+   if(region){x0=Math.max(0,region[0]-.03);y0=Math.max(0,region[1]-.03);x1=Math.min(1,region[2]+.03);y1=Math.min(1,region[3]+.03);}
+   var sFit=Math.min(1,ch/(cw*a)),s=region?Math.min(1/(x1-x0),ch/((y1-y0)*cw*a)):sFit;s=Math.max(sFit,Math.min(s,3.4));
+   var pw=cw*s,ph=pw*a,tx=cw/2-(x0+x1)/2*pw,ty=ch/2-(y0+y1)/2*ph;
+   tx=pw<=cw?(cw-pw)/2:Math.min(0,Math.max(cw-pw,tx));ty=ph<=ch?(ch-ph)/2:Math.min(0,Math.max(ch-ph,ty));
+   st.style.width=pw+"px";st.style.transform="translate("+tx+"px,"+ty+"px)";
+   sizeAns(pid,pw);
+ }
+ function union(list){if(!list.length)return null;var r=[1,1,0,0];list.forEach(function(b){r[0]=Math.min(r[0],b[0]);r[1]=Math.min(r[1],b[1]);r[2]=Math.max(r[2],b[2]);r[3]=Math.max(r[3],b[3]);});return r;}
+ var lastT=null,lastW=null;
+ function setView(s){
+   document.querySelectorAll(".box").forEach(function(b){b.classList.remove("hl");b.classList.remove("flash");});
+   if(s.tb){showStage("tcam",s.tb);$("tbname").textContent=TB[s.tb].name;for(var j=STEPS.indexOf(s)-1;j>=0&&STEPS[j].tb===s.tb;j--){(STEPS[j].tbmark||[]).forEach(function(k){var e=$("tb_"+k);if(e)e.classList.add("hl");});}var tbs=(s.tbmark||[]).map(function(k){var e=$("tb_"+k);if(e)e.classList.add("hl");return TB[s.tb].boxes[k];}).filter(Boolean);
+     lastT=[s.tb,s.tbfocus||union(tbs)];focusCam("tcam",lastT[0],lastT[1]);}
+   (s.wbmark||[]).forEach(function(k){var e=$("wm_"+k);if(e)e.classList.add("hl");});
+   showStage("wcam",s.wb);$("wbname").textContent=WB[s.wb].name;lastW=[s.wb,s.wbfocus||union((s.fills||[]).map(function(f){return f.box;}))];focusCam("wcam",lastW[0],lastW[1]);
+ }
+ window.addEventListener("resize",function(){if(lastT)focusCam("tcam",lastT[0],lastT[1]);if(lastW)focusCam("wcam",lastW[0],lastW[1]);});
+ function putAns(f,full){var a=$("an_"+f.id);if(!a)return;if(f.kind==="circle"){a.classList.toggle("on",!!full);}else{a.querySelector(".at").textContent=full?f.text:"";}}
+ function fillInstant(n){Object.keys(FILLS).forEach(function(id){putAns(FILLS[id],FSTEP[id]<n);});}
+ var onBoard={};
+ function clearBoard(){Object.keys(onBoard).forEach(function(k){onBoard[k].remove();});onBoard={};$("bempty").style.display="";}
+ function addNote(f){if(onBoard[f.id])return;$("bempty").style.display="none";var n=document.createElement("div");n.className="note";
+   n.innerHTML='<i>'+esc(f.q||"")+'</i>'+esc(f.note||f.text);n.onclick=function(){locate(f.id);};$("board").appendChild(n);onBoard[f.id]=n;var bd=$("board");bd.scrollTop=bd.scrollHeight;}
+ function boardUpTo(n){clearBoard();for(var i=0;i<n;i++){var s=STEPS[i];(s.tbmark||[]).concat(s.wbmark||[]).forEach(function(k){if(MSTEP[k]===i)addEv(k,false);});(s.fills||[]).forEach(addNote);}}
+ function teach(text,zh,my,done){var t=$("teach"),tt=$("teachtext");t.classList.add("on");tt.textContent="";$("teachzh").textContent=zh||"";var i=0;
+   (function tk(){if(my!==token){t.classList.remove("on");return;}tt.textContent=text.slice(0,++i);if(i<text.length)later(tk,20);else later(function(){t.classList.remove("on");done();},900);})();}
+ function flyTo(fromEl,f,my,done){
+   var a=$("an_"+f.id);if(!fromEl||!a){done();return;}var ra=fromEl.getBoundingClientRect(),rb=a.getBoundingClientRect();if(!ra.width||!rb.width){done();return;}
+   var fl=document.createElement("div");fl.className="fly";fl.textContent=f.text.length>36?f.text.slice(0,36)+"…":f.text;fl.style.left=ra.left+"px";fl.style.top=ra.top+"px";document.body.appendChild(fl);
+   setTimeout(function(){fl.style.left=Math.max(6,rb.left-8)+"px";fl.style.top=(rb.top-6)+"px";},40);
+   later(function(){fl.style.opacity="0";},900);later(function(){fl.remove();if(my===token)done();},1120);
+ }
+ function typeAns(f,my,done){var a=$("an_"+f.id);if(!a){done();return;}a.classList.add("now");
+   if(f.kind==="circle"){a.classList.add("on");later(function(){a.classList.remove("now");done();},900);return;}
+   var sp=a.querySelector(".at"),i=0,caret=document.createElement("span");caret.className="caret";sp.after(caret);sp.textContent="";
+   (function tk(){if(my!==token){caret.remove();return;}sp.textContent=f.text.slice(0,++i);if(i<f.text.length)later(tk,f.text.length>40?14:45);else{caret.remove();later(function(){a.classList.remove("now");done();},300);}})();}
+
+ var KEYPAGE={};Object.keys(TB).forEach(function(pid){Object.keys(TB[pid].boxes).forEach(function(k){KEYPAGE[k]=[pid,TB[pid].boxes[k]];});});
+ Object.keys(WB).forEach(function(pid){Object.keys(WB[pid].marks||{}).forEach(function(k){KEYPAGE[k]=[pid,WB[pid].marks[k]];});});
+ var MSTEP={};STEPS.forEach(function(s,i){(s.tbmark||[]).concat(s.wbmark||[]).forEach(function(k){if(!(k in MSTEP))MSTEP[k]=i;});});
+ function markEl(k){return $("tb_"+k)||$("wm_"+k);}
+ function regionOf(k){need(KEYPAGE[k][0]);var kp=KEYPAGE[k],b=kp[1],img=$("st_"+kp[0]).querySelector("img"),w=b[2]-b[0],h=b[3]-b[1];
+   return {img:img,x:b[0],y:b[1],w:w,h:h,aspect:(w*(img.naturalWidth||1000))/(h*(img.naturalHeight||1400))};}
+ function paint(el,k){var r=regionOf(k);el.style.backgroundImage="url("+r.img.src+")";el.style.backgroundSize=(100/r.w)+"% auto";
+   el.style.backgroundPosition=(r.w>=1?0:r.x/(1-r.w)*100)+"% "+(r.h>=1?0:r.y/(1-r.h)*100)+"%";return r;}
+ function addEv(k,hidden){var id="ev_"+k;if(onBoard[id])return onBoard[id];$("bempty").style.display="none";
+   var n=document.createElement("div");n.className="note ev";var c=document.createElement("div");c.className="crop";var r=paint(c,k);c.style.paddingTop=(100/r.aspect)+"%";n.appendChild(c);
+   var L=LABEL[k]||[k,""];var lb=document.createElement("div");lb.innerHTML='<i style="background:#0b0c0c">book</i>'+esc(L[0])+(L[1]?'<span class="evz">'+esc(L[1])+'</span>':"");n.appendChild(lb);
+   if(hidden)n.style.visibility="hidden";n.onclick=function(){locateMark(k);};$("board").appendChild(n);onBoard[id]=n;return n;}
+ function zoomNote(k,my,done){
+   var bx=markEl(k),note=addEv(k,true),sr=bx?bx.getBoundingClientRect():null;
+   if(!sr||!sr.width){note.style.visibility="visible";done();return;}
+   var z=document.createElement("div");z.className="zoom";var r=paint(z,k);z.style.left=sr.left+"px";z.style.top=sr.top+"px";z.style.width=sr.width+"px";z.style.height=sr.height+"px";document.body.appendChild(z);
+   var W=Math.min(760,innerWidth*0.62),H=W/r.aspect;if(H>innerHeight*0.45){H=innerHeight*0.45;W=H*r.aspect;}
+   var L=LABEL[k]||[k,""];var cap=document.createElement("div");cap.className="zoomcap";cap.innerHTML=esc(L[0])+(L[1]?'<span class="zc">'+esc(L[1])+'</span>':"");cap.style.opacity="0";document.body.appendChild(cap);
+   setTimeout(function(){z.style.left=((innerWidth-W)/2)+"px";z.style.top=(innerHeight*0.2)+"px";z.style.width=W+"px";z.style.height=H+"px";},40);
+   later(function(){cap.style.left=((innerWidth-W)/2)+"px";cap.style.top=(innerHeight*0.2+H+14)+"px";cap.style.opacity="1";},600);
+   later(function(){cap.style.opacity="0";var bd=$("board");bd.scrollTop=note.offsetTop-bd.clientHeight+note.offsetHeight+20;var c=note.querySelector(".crop").getBoundingClientRect();
+     z.style.left=c.left+"px";z.style.top=c.top+"px";z.style.width=c.width+"px";z.style.height=c.height+"px";},2300);
+   later(function(){z.remove();cap.remove();note.style.visibility="visible";if(my===token)done();},2950);
+ }
+ function locateMark(k){setPlay(false);var kp=KEYPAGE[k];var cam=kp[0].charAt(0)==="t"?"tcam":"wcam";showStage(cam,kp[0]);
+   if(cam==="tcam"){lastT=[kp[0],kp[1]];$("tbname").textContent=TB[kp[0]].name;}else{lastW=[kp[0],kp[1]];$("wbname").textContent=WB[kp[0]].name;}
+   focusCam(cam,kp[0],kp[1]);var e=markEl(k);if(e){e.classList.add("flash");setTimeout(function(){e.classList.remove("flash");},5000);}}
+ function run(n,onDone){
+   clearAll();token++;var my=token;cur=Math.max(0,Math.min(STEPS.length-1,n));stepT0=Date.now();if(paused)pauseAt=stepT0;
+   var s=STEPS[cur];
+   $("tag").textContent=s.tag;$("sec").textContent=s.sec||"";$("say").textContent=s.say;$("sayzh").textContent=s.say_zh||"";if(typeof paintTocCur==="function")paintTocCur();$("num").textContent=cur+" / "+(STEPS.length-1);
+   $("prev").disabled=cur===0;$("next").disabled=cur===STEPS.length-1;
+   fillInstant(cur);boardUpTo(cur);setView(s);$("teachtext").textContent=s.teach?"":"Watch the yellow box on the left, then see where the answer goes.";$("teachzh").textContent=s.teach?"":"留意左邊黃色框,再看答案去哪一格。";
+   later(function(){
+     if(my!==token)return;var k=0,fills=s.fills||[];
+     function finish(){if(onDone)later(function(){if(my===token)onDone();},1400);}
+     function nextFill(){
+       if(my!==token)return;if(k>=fills.length){finish();return;}
+       var f=fills[k++];
+       var go=function(){typeAns(f,my,function(){addNote(f);later(nextFill,250);});};
+       var fly=function(){var from=f.from?($("tb_"+f.from)||$("wm_"+f.from)):null;if(from)flyTo(from,f,my,go);else go();};
+       if(f.teach)teach(f.teach,f.teach_zh,my,fly);else fly();
+     }
+     var nk=(s.tbmark||[]).concat(s.wbmark||[]).filter(function(k){return MSTEP[k]===cur&&LABEL[k];}),ni=0;
+     function nextZoom(){if(my!==token)return;if(ni<nk.length){zoomNote(nk[ni++],my,function(){later(nextZoom,200);});return;}if(s.teach)teach(s.teach,s.teach_zh,my,nextFill);else nextFill();}
+     nextZoom();
+   },900);
+ }
+ function closeEx(){var d=$("expop");if(d)d.remove();}
+ function showExplain(id,anchor){
+   var f=FILLS[id],ex=f.ex||{};if(FSTEP[id]>=cur&&!(FSTEP[id]===cur&&(f.kind==="circle"?anchor.classList.contains("on"):anchor.textContent))){closeEx();return;}
+   setPlay(false);closeEx();var d=document.createElement("div");d.className="expop";d.id="expop";
+   var h='<button class="exx" id="exx">✕</button><div class="exh">'+esc(f.q?f.q+": ":"")+esc(f.text)+'</div>';
+   if(f.zh)h+='<div class="exz">中文:'+esc(f.zh)+'</div>';
+   if(ex.why)h+='<div class="exl">Why</div><div class="exw">'+esc(ex.why)+'</div>';
+   if(ex.why_zh)h+='<div class="exz">'+esc(ex.why_zh)+'</div>';
+   function li(o){return '<li>'+(Array.isArray(o)?esc(o[0])+' <span class="exzi">'+esc(o[1])+'</span>':esc(o))+'</li>';}
+   if(ex.other&&ex.other.length)h+='<div class="exl">Other ways (also OK)</div><ul class="exo">'+ex.other.map(li).join("")+'</ul>';
+   if(ex.avoid&&ex.avoid.length)h+='<div class="exl bad">Don\'t</div><ul class="exa">'+ex.avoid.map(li).join("")+'</ul>';
+   d.innerHTML=h;document.body.appendChild(d);
+   var r=anchor.getBoundingClientRect(),W=d.offsetWidth,H=d.offsetHeight,x=Math.min(innerWidth-W-10,Math.max(10,r.left)),y=r.bottom+8;if(y+H>innerHeight-70)y=Math.max(10,r.top-H-8);
+   d.style.left=x+"px";d.style.top=y+"px";$("exx").onclick=function(e){e.stopPropagation();closeEx();};
+   if(f.from){var e=$("tb_"+f.from)||$("wm_"+f.from);if(e){e.classList.add("flash");setTimeout(function(){e.classList.remove("flash");},4000);}}
+ }
+ document.addEventListener("click",function(e){var d=$("expop");if(d&&!d.contains(e.target))closeEx();});
+ function showMark(k,anchor){
+   setPlay(false);closeEx();var L=LABEL[k]||[k,""];
+   var uses=Object.keys(FILLS).map(function(i){return FILLS[i];}).filter(function(f){return f.from===k;});
+   var d=document.createElement("div");d.className="expop";d.id="expop";
+   var h='<button class="exx" id="exx">✕</button><div class="exh" style="color:#0b0c0c">'+esc(L[0])+'</div>';
+   if(L[1])h+='<div class="exz">中文:'+esc(L[1])+'</div>';
+   STEPS.forEach(function(ss){var mx=ss.markex&&ss.markex[k];if(mx){h+='<div class="exl">About this line 這一句</div><div class="exw">'+esc(mx.why)+'</div>'+(mx.why_zh?'<div class="exz">'+esc(mx.why_zh)+'</div>':'');}});var cs=STEPS[cur];if(cs&&(cs.tbmark||[]).concat(cs.wbmark||[]).indexOf(k)>=0)h+='<div class="exl">In this step</div><div class="exw">'+esc(cs.say||"")+'</div>'+(cs.say_zh?'<div class="exz">'+esc(cs.say_zh)+'</div>':"");
+   h+='<div class="exl">Answers that come from here</div>';
+   if(uses.length){uses.forEach(function(f){var ex=f.ex||{};
+     h+='<div class="exw">→ '+esc(f.q||"")+': <span style="color:#d4001e">'+esc(f.text)+'</span></div>'+(ex.why?'<div>'+esc(ex.why)+'</div>':'')+(ex.why_zh?'<div class="exz">'+esc(ex.why_zh)+'</div>':'')+'<button class="exgo" data-id="'+f.id+'">Show me this answer 看這個答案</button>';});}
+   else h+='<div class="exw">This is the part the question is about. Look here first, then read the question again.</div><div class="exz">這是題目在問的地方。先看這裡,再讀一次題目。</div>';
+   d.innerHTML=h;document.body.appendChild(d);
+   var r=anchor.getBoundingClientRect(),W=d.offsetWidth,H=d.offsetHeight,x=Math.min(innerWidth-W-10,Math.max(10,r.left)),y=r.bottom+8;if(y+H>innerHeight-70)y=Math.max(10,r.top-H-8);
+   d.style.left=x+"px";d.style.top=y+"px";$("exx").onclick=function(e){e.stopPropagation();closeEx();};
+   d.querySelectorAll(".exgo").forEach(function(b){b.onclick=function(e){e.stopPropagation();var id=b.getAttribute("data-id");closeEx();locate(id);};});
+ }
+ document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".box.hl,.box.flash");if(b)showMark(b.id.slice(3),b);});
+ function setBox(d,b){d.style.left=(b[0]*100)+"%";d.style.top=(b[2]*100)+"%";d.style.width=((b[1]-b[0])*100)+"%";d.style.height=((b[3]-b[2])*100)+"%";}
+ function placePop(d,anchor){document.body.appendChild(d);var r=anchor.getBoundingClientRect(),W=d.offsetWidth,H=d.offsetHeight,x=Math.min(innerWidth-W-10,Math.max(10,r.left)),y=r.bottom+8;if(y+H>innerHeight-70)y=Math.max(10,r.top-H-8);
+   d.style.left=x+"px";d.style.top=y+"px";var xb=d.querySelector("#exx");if(xb)xb.onclick=function(e){e.stopPropagation();closeEx();};
+   d.querySelectorAll(".exgo").forEach(function(b){b.onclick=function(e){e.stopPropagation();var id=b.getAttribute("data-id");closeEx();locate(id);};});}
+ function fillBlock(f){var ex=f.ex||{};return '<div class="exl">Answer '+esc(f.q||"")+'</div><div class="exw" style="color:#d4001e">'+esc(f.text)+'</div>'+(ex.why?'<div>'+esc(ex.why)+'</div>':'')+(ex.why_zh?'<div class="exz">'+esc(ex.why_zh)+'</div>':'')+'<button class="exgo" data-id="'+f.id+'">Show me this answer 看這個答案</button>';}
+ function showQ(si,anchor){setPlay(false);closeEx();var s=STEPS[si],d=document.createElement("div");d.className="expop";d.id="expop";
+   var h='<button class="exx" id="exx">✕</button><div class="exh" style="color:#0b0c0c">'+esc(s.tag)+'</div><div class="exw">'+esc(s.say||"")+'</div>'+(s.say_zh?'<div class="exz">'+esc(s.say_zh)+'</div>':"");
+   if(s.teach)h+='<div class="exl">Teacher says</div><div>'+esc(s.teach)+'</div>'+(s.teach_zh?'<div class="exz">'+esc(s.teach_zh)+'</div>':"");
+   (s.fills||[]).forEach(function(f){h+=fillBlock(f);});d.innerHTML=h;placePop(d,anchor);}
+ function showHot(si,hi,anchor){setPlay(false);closeEx();var hh=STEPS[si].hot[hi],f=hh.fill?FILLS[hh.fill]:null,d=document.createElement("div");d.className="expop";d.id="expop";
+   var h='<button class="exx" id="exx">✕</button><div class="exh" style="color:#0b0c0c">'+esc(hh.title)+'</div>';
+   if(hh.why)h+='<div class="exw">'+esc(hh.why)+'</div>'+(hh.why_zh?'<div class="exz">'+esc(hh.why_zh)+'</div>':"");
+   if(f)h+=fillBlock(f);d.innerHTML=h;placePop(d,anchor);}
+ STEPS.forEach(function(s,si){(s.hot||[]).forEach(function(hh,hi){var st=$("st_"+s.wb);if(!st)return;var d=document.createElement("div");d.className="hot";setBox(d,hh.box);d.setAttribute("data-si",si);d.setAttribute("data-hi",hi);st.querySelector("img").after(d);});});
+ STEPS.forEach(function(s,si){if(!s.wb||!s.wbfocus)return;var st=$("st_"+s.wb);if(!st)return;var d=document.createElement("div");d.className="qhot";setBox(d,[s.wbfocus[0],s.wbfocus[2],s.wbfocus[1],s.wbfocus[3]]);d.setAttribute("data-si",si);st.querySelector("img").after(d);});
+ document.addEventListener("click",function(e){var t=e.target;if(!t.closest)return;var h=t.closest(".hot");if(h){showHot(+h.getAttribute("data-si"),+h.getAttribute("data-hi"),h);return;}var q=t.closest(".qhot");if(q)showQ(+q.getAttribute("data-si"),q);});
+ function locate(id){setPlay(false);var i=FSTEP[id];if(i>=cur)go(i+1);else{var s=STEPS[i];setView(s);}var a=$("an_"+id);if(a)setTimeout(function(){showExplain(id,a);},450);}
+ var ended=false;
+ function onStepDone(){if(cur>=STEPS.length-1){ended=true;setPlay(false);return;}go(cur+1);}
+ function go(n){ended=false;run(n,onStepDone);}
+ function setPlay(on){playing=on;$("play").textContent=on?"❚❚ Pause":"▶ Play";$("pp").textContent=on?"❚❚":"▶";if(on)unfreeze();else freeze();}
+ $("play").onclick=function(){if(playing)setPlay(false);else{if(ended)go(0);setPlay(true);}};
+ $("next").onclick=function(){go(cur+1);};$("prev").onclick=function(){go(cur-1);};
+ document.addEventListener("keydown",function(e){if(e.key==="ArrowRight")go(cur+1);if(e.key==="ArrowLeft")go(cur-1);if(e.key===" "){e.preventDefault();$("play").onclick();}});
+ var EST=STEPS.map(function(s,si){var t=2.3;(s.tbmark||[]).concat(s.wbmark||[]).forEach(function(k){if(MSTEP[k]===si&&LABEL[k])t+=3.15;});if(s.teach)t+=s.teach.length*0.02+0.9;(s.fills||[]).forEach(function(f){t+=0.25+(f.kind==="circle"?0.9:f.text.length*(f.text.length>40?0.014:0.045)+0.3);if(f.from)t+=1.12;if(f.teach)t+=f.teach.length*0.02+0.9;});t+=1.4;return Math.max(t,3.2);});
+ var START=[],TOTAL=0;EST.forEach(function(e){START.push(TOTAL);TOTAL+=e;});
+ var lastSec="";STEPS.forEach(function(s,i){if(!i)return;var k=document.createElement("div");k.className="tick";k.style.left=(START[i]/TOTAL*100)+"%";if(s.sec&&s.sec!==lastSec){var sp=document.createElement("span");sp.textContent=s.sec.charAt(0);k.appendChild(sp);k.style.background="#ffdd00";lastSec=s.sec;}$("track").appendChild(k);});
+ function fmt(s){s=Math.max(0,Math.floor(s));return("0"+Math.floor(s/60)).slice(-2)+":"+("0"+(s%60)).slice(-2);}
+ function nowT(){return START[cur]+Math.min(EST[cur],((paused?pauseAt:Date.now())-stepT0)/1000*SPEED);}
+ setInterval(function(){var t=nowT();$("fill").style.width=(t/TOTAL*100)+"%";$("knob").style.left=(t/TOTAL*100)+"%";$("ptime").textContent=fmt(t)+" / "+fmt(TOTAL);},200);
+ function seekFrac(f){var t=f*TOTAL,i=0;for(var j=0;j<START.length;j++)if(START[j]<=t)i=j;return i;}
+ var dragging=false;
+ function fracOf(e){var r=$("track").getBoundingClientRect();return Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));}
+ $("track").addEventListener("pointerdown",function(e){dragging=true;$("track").setPointerCapture(e.pointerId);var f=fracOf(e);$("knob").style.left=(f*100)+"%";});
+ $("track").addEventListener("pointermove",function(e){if(!dragging)return;var f=fracOf(e);$("knob").style.left=(f*100)+"%";$("ptime").textContent=fmt(f*TOTAL)+" / "+fmt(TOTAL);});
+ $("track").addEventListener("pointerup",function(e){if(!dragging)return;dragging=false;go(seekFrac(fracOf(e)));});
+ $("pp").onclick=function(){$("play").onclick();};
+ function setSpeed(v){var t=nowT();SPEED=v;stepT0=Date.now()-(t-START[cur])*1000/SPEED;if(paused)pauseAt=Date.now();
+   document.documentElement.style.setProperty("--tf",(0.9/SPEED)+"s");document.documentElement.style.setProperty("--tz",(0.6/SPEED)+"s");document.documentElement.style.setProperty("--tc",(0.8/SPEED)+"s");$("spd").value=String(v);$("spdv").textContent=v.toFixed(2)+"x";
+   try{localStorage.setItem("geo1_spd",String(v));}catch(e){}}
+ $("spd").oninput=function(){setSpeed(parseFloat($("spd").value));};
+ try{var sv=parseFloat(localStorage.getItem("geo1_spd"));if(sv>0)setSpeed(sv);}catch(e){}
+ function setZh(on){document.body.classList.toggle("zhon",on);$("zhbtn").classList.toggle("on",on);$("zhbtn").textContent=on?"中文 ✓":"中文";try{localStorage.setItem("hwv_zh",on?"1":"0");}catch(e){}}
+ $("zhbtn").onclick=function(){setZh(!document.body.classList.contains("zhon"));};
+ try{setZh(localStorage.getItem("hwv_zh")==="1");}catch(e){setZh(false);}
+ document.querySelectorAll(".stage img").forEach(function(im){im.addEventListener("load",function(){if(lastT)focusCam("tcam",lastT[0],lastT[1]);if(lastW)focusCam("wcam",lastW[0],lastW[1]);});});
+ go(0);
+})();
+</script>
+</body>
+</html>
