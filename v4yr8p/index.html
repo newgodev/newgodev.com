@@ -26,7 +26,7 @@ window.__WS2_ANSWER_PANEL = `<div class="rw on" id="rw">
     var el=document.getElementById('rw');
     if(!el) return;
     if(!el.querySelector('.ans-block') || el.innerText.indexOf('Person X is John Bull')<0){
-      el.outerHTML = window.__WS2_ANSWER_PANEL;
+      var host=document.getElementById('pane-answers');if(host){ host.innerHTML=window.__WS2_ANSWER_PANEL; el=document.getElementById('rw'); }else { el.outerHTML=window.__WS2_ANSWER_PANEL; el=document.getElementById('rw'); }
       el=document.getElementById('rw');
     }
     // disable wipers
@@ -56,7 +56,7 @@ window.__WS2_ANSWER_PANEL = `<div class="rw on" id="rw">
 })();
 </script>
 
-<!-- hist-ws2 RESTORED always-on (a)(b)(c) answers v13 -->
+<!-- hist-ws2 notes|answers TABS — both readable v14 -->
 <script>if(location.protocol==="http:")location.replace("https://"+location.host+location.pathname+location.search);</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -181,29 +181,29 @@ body.ipadm .rw{font-size:.76rem;line-height:1.3;padding:5px 8px;margin-top:6px}b
 #qmenu .qz{display:none;font-weight:500;font-size:.8rem;color:#6b4e16}body.zhon #qmenu .qz{display:block}#qmenu button.cur .qz{color:#ffe9a8}
 
 
-/* FULL answer board — dominant center column */
-.c2{display:flex;flex-direction:column;min-height:0}
-.c2 .cam{flex:0 0 26%!important;min-height:0}
-.c2 .rw{flex:1 1 auto!important;min-height:200px;border:4px solid #1d70b8;border-radius:10px;padding:10px 12px;overflow:auto;background:#fffef6;margin-top:6px;font-size:1.05rem;line-height:1.5}
-.rw .rwh{font-weight:900;color:#1d70b8;font-size:1.08rem;margin-bottom:6px}
-.rw .rwh span{font-weight:600;color:#555;font-size:.85rem;margin-left:8px}
-.rw .ans-full{font-size:1.12rem;font-weight:700;color:#111;background:#fff;border:3px solid #1d70b8;border-radius:8px;padding:12px 14px;margin:8px 0;white-space:pre-wrap}
-.rw .ans-zh{font-size:1rem;font-weight:600;color:#222;margin-top:8px;padding:8px 10px;background:#f0f7ff;border-radius:6px}
-.rw .ans-tag{display:inline-block;background:#d4001e;color:#fff;font-weight:900;font-size:.8rem;padding:3px 12px;border-radius:999px;margin-bottom:6px}
-.rw .rwempty{color:#555;font-size:.95rem}
-.rw.on{box-shadow:0 0 0 5px rgba(29,112,184,.25)}
-.rwmoves{display:flex;gap:5px;flex-wrap:wrap;margin:4px 0}
-.rwmoves span{font-size:.72rem;font-weight:900;padding:2px 8px;border-radius:999px;background:#eef0f2;color:#8a9196}
-.rwmoves span.on{background:#1d70b8;color:#fff}
-
-
-.c2 .cam{flex:0 0 18%!important;max-height:18vh!important}
-.c2 .rw{flex:1 1 auto!important;min-height:55vh!important;border:4px solid #1d70b8;background:#fffef6;overflow:auto;padding:10px 12px}
 .ans-block{margin:10px 0;padding:8px;border:2px solid #cfe0ff;border-radius:8px;background:#fff}
 .ans-block.cur{border-color:#d4001e;box-shadow:0 0 0 4px rgba(212,0,30,.18);background:#fff8f8}
 .ans-block .ans-full{font-size:1.1rem;font-weight:700;line-height:1.45;white-space:pre-wrap;margin:6px 0}
 .ans-block .ans-zh{font-size:.95rem;font-weight:600;color:#222;background:#f0f7ff;padding:6px 8px;border-radius:6px}
 .ans-tag{display:inline-block;background:#d4001e;color:#fff;font-weight:900;font-size:.78rem;padding:2px 10px;border-radius:999px}
+
+
+/* Notes | Answers tabs — never cover each other */
+.c2{display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.c2-tabs{display:flex;gap:6px;flex:0 0 auto;margin:4px 0 6px;align-items:center}
+.c2-tabs button{flex:1;font-weight:900;font-size:.88rem;padding:6px 10px;border:2px solid #1d70b8;border-radius:8px;background:#eef4ff;color:#1d70b8;cursor:pointer}
+.c2-tabs button.on{background:#1d70b8;color:#fff}
+.c2-panes{flex:1 1 auto;min-height:0;position:relative;display:flex;flex-direction:column}
+.c2-pane{display:none;flex:1 1 auto;min-height:0;overflow:auto;flex-direction:column}
+.c2-pane.on{display:flex}
+.c2-pane#pane-notes .cam{flex:1 1 auto;min-height:0;height:100%}
+.c2-pane#pane-answers .rw{flex:1 1 auto;min-height:0;margin-top:0;border:3px solid #1d70b8;border-radius:8px;padding:8px 10px;overflow:auto;background:#fffef6;font-size:.95rem;line-height:1.45}
+.ans-block{margin:8px 0;padding:8px;border:2px solid #cfe0ff;border-radius:8px;background:#fff}
+.ans-block.cur{border-color:#d4001e;box-shadow:0 0 0 3px rgba(212,0,30,.15);background:#fff8f8}
+.ans-block .ans-full{font-size:1.02rem;font-weight:700;line-height:1.4;white-space:pre-wrap;margin:6px 0}
+.ans-block .ans-zh{font-size:.9rem;font-weight:600;color:#222;background:#f0f7ff;padding:6px 8px;border-radius:6px}
+.ans-tag{display:inline-block;background:#d4001e;color:#fff;font-weight:900;font-size:.75rem;padding:2px 10px;border-radius:999px}
+.c2 h2 .pane-hint{font-weight:600;font-size:.75rem;color:#666;margin-left:8px}
 
 </style>
 <style id="dtap-css">*{touch-action:manipulation}</style>
@@ -361,17 +361,20 @@ if(document.readyState==="loading") document.addEventListener("DOMContentLoaded"
 <div class="grid">
   <div class="col">
     <h2>材料（鏡頭只對準這段）<span id="tbname"></span></h2>
-    <div class="cam" id="tcam"><div class="stage" id="st_ws2a"><img data-src="p/ws2a.jpg?v=13" alt="Worksheet 2 · Source A + Q(a)(b)"></div><div class="stage" id="st_ws2b"><img data-src="p/ws2b.jpg?v=13" alt="Worksheet 2 · Q(c)"></div></div>
+    <div class="cam" id="tcam"><div class="stage" id="st_ws2a"><img data-src="p/ws2a.jpg?v=14" alt="Worksheet 2 · Source A + Q(a)(b)"></div><div class="stage" id="st_ws2b"><img data-src="p/ws2b.jpg?v=14" alt="Worksheet 2 · Q(c)"></div></div>
   </div>
   <div class="col c2">
     <h2>筆記板／改寫板<span id="wbname"></span></h2>
-    <div class="cam" id="wcam"><div class="stage" id="st_note"><img data-src="p/note.jpg?v=13" alt="One-page note"></div></div>
-    <div class="rw on" id="rw">
+    <div class="c2-tabs" id="c2tabs"><button type="button" id="tab-notes" class="on">📝 筆記板</button><button type="button" id="tab-answers">✍️ 完整答案 (a)(b)(c)</button></div>
+    <div class="c2-panes">
+      <div class="c2-pane on" id="pane-notes"><div class="cam" id="wcam"><div class="stage" id="st_note"><img data-src="p/note.jpg?v=14" alt="One-page note"></div></div></div>
+      <div class="c2-pane" id="pane-answers"><div class="rw" id="rw">
 <div class="rwh">改寫板 · FULL MODEL ANSWERS<span>copy by hand · 唔代交 LoiLo</span></div>
 <div class="ans-block" id="ans-a" data-stamps="(a) 題幹|(a) 三步|(a) 句式">
 <span class="ans-tag">(a) FULL</span>
 <div class="ans-full">Person X is John Bull (Britain). Person Y is Kaiser William II (Germany).</div>
-<div class="ans-zh">中：X 是約翰牛（代表英國）。Y 是德皇威廉二世（德國）。</div>
+<div class="ans-zh">中：X 是約翰牛（代表英國）。Y 是德皇威廉二世（德國）。</div></div>
+    </div>
 </div>
 <div class="ans-block" id="ans-b" data-stamps="(b) 題幹|(b) 競賽名|(b) 選線索|(b) 思路">
 <span class="ans-tag">(b) FULL</span>
@@ -795,6 +798,56 @@ var QUIZ_PER_RUN=10;
   if(document.readyState==="complete") setTimeout(guard,50);
   else window.addEventListener("load", function(){ setTimeout(guard,50); });
   setTimeout(guard,500); setTimeout(guard,1500);
+})();
+</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function showPane(which){
+    var notes=$("pane-notes"), ans=$("pane-answers");
+    var tn=$("tab-notes"), ta=$("tab-answers");
+    if(!notes||!ans) return;
+    var isAns = which==="answers";
+    notes.classList.toggle("on", !isAns);
+    ans.classList.toggle("on", isAns);
+    if(tn) tn.classList.toggle("on", !isAns);
+    if(ta) ta.classList.toggle("on", isAns);
+  }
+  function hl(){
+    try{
+      var S=window.__STEPS||(typeof STEPS!=="undefined"?STEPS:null);
+      if(!S||typeof cur!=="number"||!S[cur]) return;
+      var stamp=S[cur].stamp||"";
+      document.querySelectorAll(".ans-block").forEach(function(b){
+        var ds=b.getAttribute("data-stamps")||"";
+        b.classList.toggle("cur", ds.split("|").indexOf(stamp)>=0);
+      });
+      // auto-switch: answer stamps → answers tab; else stay (don't force notes every step)
+      if(/\(a\)|\(b\)|\(c\)|句式|思路|骨架|資料因|己知|選線索|記得標明/.test(stamp)){
+        showPane("answers");
+        var c=document.querySelector(".ans-block.cur");
+        if(c) c.scrollIntoView({block:"nearest"});
+      }
+    }catch(e){}
+  }
+  function bind(){
+    var tn=$("tab-notes"), ta=$("tab-answers");
+    if(tn) tn.onclick=function(){ showPane("notes"); };
+    if(ta) ta.onclick=function(){ showPane("answers"); };
+    // default: notes visible first so he can see note board; answers one click away
+    showPane("notes");
+    if(typeof window.go==="function" && !window.go.__tabs){
+      var g=window.go;
+      window.go=function(n){ var r=g.apply(this,arguments); setTimeout(hl,80); setTimeout(hl,300); return r; };
+      window.go.__tabs=1;
+    }
+    // keep restore ensure from wiping — but ensure must not break panes
+    var _ensure=window.__ws2Ensure;
+    setTimeout(hl,500);
+  }
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", bind);
+  else bind();
+  window.addEventListener("load", function(){ setTimeout(bind,200); });
 })();
 </script>
 </body>
