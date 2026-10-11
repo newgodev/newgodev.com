@@ -591,7 +591,7 @@ if(typeof closeRw==="function")closeRw();
   function goRw(){
     var q=location.search||'';
     var want=-1;
-    if(/[?&]seek=rw/.test(q)) want=firstRw();
+    if(/[?&]seek=rw\b/.test(q)) want=firstRw();
     var m=q.match(/[?&]seek=(\d+)/); if(m) want=+m[1];
     if(want<0||want>=STEPS.length) return;
     try{
