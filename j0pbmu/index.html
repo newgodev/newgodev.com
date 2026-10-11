@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<script>if(location.protocol==="http:")location.replace("https://"+location.host+location.pathname+location.search);</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>歷史 UT 入門 · WWI 潛在原因 V1</title>
+<style>
+:root{
+  --acc:#2563eb;--acc2:#1e40af;--soft:#e8f0ff;--line:#dbe4f0;
+  --ink:#14171c;--mut:#5b6270;--ok:#1a8a3a;--okbg:#e6f6ec;
+  --bad:#c62a3a;--badbg:#fdeeee;--warn:#b45309;--warnbg:#fff7ed;
+  --card:#fff;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",Inter,system-ui,-apple-system,"Noto Sans HK","Microsoft JhengHei",sans-serif;color:var(--ink);background:#f4f7fc;line-height:1.55}
+.top{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:12px;padding:10px 18px;background:#fff;border-bottom:3px solid var(--acc);box-shadow:0 2px 8px rgba(37,99,235,.08)}
+.brand{font-weight:800;color:var(--acc)}.ttl{font-weight:600;color:var(--mut);font-size:.92rem;flex:1}
+.pill{background:var(--soft);color:var(--acc2);font-weight:700;border-radius:999px;padding:4px 12px;font-size:.85rem}
+.wrap{max-width:920px;margin:0 auto;padding:22px 16px 70px}
+.hero{background:linear-gradient(145deg,#1e40af 0%,#2563eb 55%,#3b82f6 100%);color:#fff;border-radius:18px;padding:28px 24px 24px;margin-bottom:22px;box-shadow:0 10px 28px rgba(37,99,235,.25)}
+.hero .kicker{display:inline-block;background:rgba(255,255,255,.18);border-radius:999px;padding:4px 12px;font-size:.82rem;font-weight:700;letter-spacing:.02em}
+.hero h1{margin:12px 0 6px;font-size:1.85rem;line-height:1.25}
+.hero .sub{opacity:.92;margin:0 0 16px;max-width:640px}
+.meta{display:flex;flex-wrap:wrap;gap:8px}
+.meta span{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:6px 12px;font-size:.88rem;font-weight:600}
+h2{font-size:1.25rem;margin:28px 0 12px;color:var(--acc2);display:flex;align-items:center;gap:8px}
+h2 .n{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;background:var(--acc);color:#fff;font-size:.85rem;font-weight:800}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:12px}
+.check{list-style:none;padding:0;margin:0}
+.check li{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px dashed var(--line)}
+.check li:last-child{border-bottom:0}
+.tick{flex:0 0 22px;height:22px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:800;margin-top:1px}
+.tick.y{background:var(--okbg);color:var(--ok)}.tick.n{background:var(--warnbg);color:var(--warn)}.tick.m{background:#f1f5f9;color:#64748b}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.cause{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:16px;border-top:4px solid var(--acc);min-height:150px}
+.cause .en{font-weight:800;color:var(--acc2);font-size:1.02rem}
+.cause .zh{color:var(--mut);font-size:.9rem;margin:2px 0 8px}
+.cause p{margin:0;font-size:.92rem}
+.cause .tag{display:inline-block;margin-top:10px;font-size:.75rem;font-weight:700;background:var(--soft);color:var(--acc2);border-radius:999px;padding:3px 9px}
+.words{width:100%;border-collapse:collapse;font-size:.92rem}
+.words th,.words td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.words th{background:var(--soft);color:var(--acc2);font-size:.82rem;position:sticky;top:52px}
+.words tr:hover td{background:#f8fbff}
+.words .en{font-weight:700;color:var(--ink)}.words .zh{color:var(--mut)}
+.tipstrip{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.tip{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:12px 14px}
+.tip b{display:block;color:var(--acc2);margin-bottom:4px;font-size:.95rem}
+.tip span{font-size:.88rem;color:var(--mut)}
+.sym{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-top:10px}
+.sym div{background:var(--soft);border-radius:10px;padding:8px 10px;font-size:.85rem}
+.sym strong{color:var(--acc2)}
+.q{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:14px}
+.q .kind{display:inline-block;font-size:.72rem;font-weight:800;border-radius:999px;padding:3px 9px;background:var(--soft);color:var(--acc2);margin-bottom:8px}
+.q .stem{font-weight:600;margin:0 0 10px;font-size:1rem}
+.opts{display:grid;gap:8px}
+.opts label{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;background:#fafbfd;transition:border-color .15s,background .15s}
+.opts label:hover{border-color:#93c5fd;background:#f0f7ff}
+.opts label.sel{border-color:var(--acc);background:var(--soft)}
+.opts label.ok{border-color:var(--ok);background:var(--okbg)}
+.opts label.bad{border-color:var(--bad);background:var(--badbg)}
+.opts input{margin-top:3px}
+.fillrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.fillrow input[type=text]{flex:1;min-width:160px;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit}
+.fillrow input:focus{outline:2px solid #93c5fd;border-color:var(--acc)}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+button{font:inherit;cursor:pointer}
+.btn{background:var(--acc);color:#fff;border:0;border-radius:10px;padding:9px 16px;font-weight:700}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.btn.ghost{background:#fff;color:var(--acc);border:1.5px solid var(--acc)}
+.why{display:none;margin-top:12px;padding:12px 14px;border-radius:10px;font-size:.92rem}
+.why.on{display:block}
+.why.ok{background:var(--okbg);color:#14532d;border:1px solid #bbf7d0}
+.why.bad{background:var(--badbg);color:#7f1d1d;border:1px solid #fecaca}
+.footnote{margin-top:32px;padding:16px 18px;background:#fff;border:1.5px dashed #93c5fd;border-radius:14px;color:var(--mut);font-size:.92rem}
+.footnote b{color:var(--acc2)}
+.nav{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 18px}
+.nav a{text-decoration:none;background:#fff;border:1.5px solid var(--line);color:var(--acc2);border-radius:999px;padding:5px 12px;font-size:.82rem;font-weight:700}
+.nav a:hover{border-color:var(--acc);background:var(--soft)}
+.scorebox{display:none;margin:16px 0;padding:14px 16px;border-radius:12px;background:var(--soft);border:1.5px solid #bfdbfe;font-weight:700;color:var(--acc2)}
+.scorebox.on{display:block}
+@media (max-width:560px){.hero h1{font-size:1.45rem}.words th{position:static}}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="brand">newgodev · 歷史</div>
+  <div class="ttl">F.3 1st Term UT 入門 V1</div>
+  <div class="pill">40 分 · 25 分鐘</div>
+</div>
+<div class="wrap">
+
+<section class="hero" id="cover">
+  <div class="kicker">Version 1 · Intro</div>
+  <h1>歷史 UT 入門 · WWI 潛在原因</h1>
+  <p class="sub">先掌握遠因地圖與關鍵詞，再練習少量題目。完整溫習版稍後再上。</p>
+  <div class="meta">
+    <span>📅 2026-10-29</span>
+    <span>🕘 第 9 節 · 25 分鐘</span>
+    <span>📝 總分 40</span>
+    <span>📚 Textbook p.5–12</span>
+  </div>
+</section>
+
+<nav class="nav">
+  <a href="#syllabus">範圍清單</a>
+  <a href="#causes">四大遠因</a>
+  <a href="#words">關鍵詞</a>
+  <a href="#cartoon">漫畫讀法</a>
+  <a href="#practice">小練習</a>
+</nav>
+
+<h2 id="syllabus"><span class="n">1</span> 考試範圍清單</h2>
+<div class="card">
+  <ul class="check">
+    <li><span class="tick y">✓</span><div><b>Textbook p.5–12</b><br><span style="color:var(--mut);font-size:.9rem">兩次大戰簡介、Extreme nationalism、Alliance system、Scrambling for colonies、Armaments race、漫畫 Basics</span></div></li>
+    <li><span class="tick y">✓</span><div><b>Notebook — Underlying Causes for WWI</b><br><span style="color:var(--mut);font-size:.9rem">四大遠因 + Sarajevo Incident（近因）</span></div></li>
+    <li><span class="tick y">✓</span><div><b>How to interpret cartoons and posters</b><br><span style="color:var(--mut);font-size:.9rem">國家符號、態度、證據</span></div></li>
+    <li><span class="tick y">✓</span><div><b>Pre-lesson WS 1</b></div></li>
+    <li><span class="tick y">✓</span><div><b>Pre-lesson WS 2 / WS 1–2</b><br><span style="color:var(--mut);font-size:.9rem">含 Worksheet 2（無畏艦漫畫）；功課未完成，此頁不代答</span></div></li>
+    <li><span class="tick n">!</span><div><b>Pre-lesson WS 3</b><br><span style="color:var(--warn);font-size:.9rem">老師未發 — 跳過</span></div></li>
+  </ul>
+  <p style="margin:12px 0 0;font-size:.9rem;color:var(--mut)"><b>題型：</b>MC 9 · T/F 6 · Fill-in 8 · Cartoon 4 · DBQ 13</p>
+</div>
+
+<h2 id="causes"><span class="n">2</span> 四大遠因地圖（Underlying causes）</h2>
+<p style="margin:-4px 0 12px;color:var(--mut);font-size:.92rem">近因／導火線：<b>Sarajevo Incident (1914)</b> — 薩拉熱窩事件。考試重點先記下面四張卡。</p>
+<div class="grid">
+  <div class="cause">
+    <div class="en">1. Extreme nationalism</div>
+    <div class="zh">極端民族主義</div>
+    <p>各國想擴張、報仇、統一同族。例：Pan-Germanism、Pan-Slavism、法國取回 Alsace-Lorraine、Greater Serbia。</p>
+    <span class="tag">→ 緊張 · 軍備 · 殖民競爭</span>
+  </div>
+  <div class="cause">
+    <div class="en">2. Alliance system</div>
+    <div class="zh">同盟制度</div>
+    <p>Bismarck 防兩面作戰。Triple Alliance (1882)：德奧意；Triple Entente (1907)：英法俄。歐洲分成兩大陣營。</p>
+    <span class="tag">→ 地方戰變大戰 · 互相猜忌</span>
+  </div>
+  <div class="cause">
+    <div class="en">3. Colonial rivalry</div>
+    <div class="zh">殖民競爭</div>
+    <p>帝國主義搶原料、市場、地位。危機：Tunisian 1881、Fashoda 1898、Moroccan 1905–06／1911。</p>
+    <span class="tag">→ 惡化關係 · 催生同盟</span>
+  </div>
+  <div class="cause">
+    <div class="en">4. Armament race</div>
+    <div class="zh">軍備競賽</div>
+    <p>徵兵、武器、無畏艦（dreadnoughts）。英德海軍競賽最激烈。Hague 1899／1907 裁軍失敗。</p>
+    <span class="tag">→ 戰爭氣氛 · 難和平解決</span>
+  </div>
+</div>
+
+<h2 id="words"><span class="n">3</span> 關鍵詞速記</h2>
+<div class="card" style="padding:0;overflow:auto">
+<table class="words">
+  <thead><tr><th>English</th><th>中文</th><th>一點提示</th></tr></thead>
+  <tbody>
+    <tr><td class="en">Underlying causes</td><td class="zh">遠因</td><td>長期累積的根因</td></tr>
+    <tr><td class="en">Immediate cause</td><td class="zh">近因／導火線</td><td>Sarajevo Incident 1914</td></tr>
+    <tr><td class="en">Extreme nationalism</td><td class="zh">極端民族主義</td><td>擴張、報仇、統一同族</td></tr>
+    <tr><td class="en">Pan-Germanism</td><td class="zh">泛德意志主義</td><td>統一歐洲德裔；海外擴張</td></tr>
+    <tr><td class="en">Pan-Slavism</td><td class="zh">大斯拉夫主義</td><td>俄國領導斯拉夫人；巴爾幹</td></tr>
+    <tr><td class="en">Alsace-Lorraine</td><td class="zh">阿爾薩斯—洛林</td><td>普法戰爭後法國失去；報仇目標</td></tr>
+    <tr><td class="en">Greater Serbia Movement</td><td class="zh">大塞爾維亞運動</td><td>塞爾維亞在巴爾幹擴張</td></tr>
+    <tr><td class="en">Triple Alliance (1882)</td><td class="zh">三國同盟</td><td>Germany · Austria-Hungary · Italy</td></tr>
+    <tr><td class="en">Triple Entente (1907)</td><td class="zh">三國協約</td><td>Britain · France · Russia</td></tr>
+    <tr><td class="en">Imperialism</td><td class="zh">帝國主義</td><td>把勢力／領土伸到本國以外</td></tr>
+    <tr><td class="en">Colonial rivalry</td><td class="zh">殖民競爭</td><td>原料、市場、國力象徵</td></tr>
+    <tr><td class="en">Tunisian Incident (1881)</td><td class="zh">突尼斯事件</td><td>France vs Italy → 意加入同盟</td></tr>
+    <tr><td class="en">Fashoda Incident (1898)</td><td class="zh">法紹達事件</td><td>Britain vs France</td></tr>
+    <tr><td class="en">Moroccan Crises</td><td class="zh">摩洛哥危機</td><td>1905–06、1911；France vs Germany</td></tr>
+    <tr><td class="en">Armament race</td><td class="zh">軍備競賽</td><td>陸軍／武器／海軍</td></tr>
+    <tr><td class="en">Conscription</td><td class="zh">徵兵制</td><td>強迫入伍</td></tr>
+    <tr><td class="en">Dreadnought</td><td class="zh">無畏艦</td><td>1906 英國首艘；英德海軍競賽</td></tr>
+    <tr><td class="en">Hague Conferences</td><td class="zh">海牙會議</td><td>1899、1907 裁軍失敗</td></tr>
+    <tr><td class="en">Splendid isolation</td><td class="zh">光榮孤立</td><td>英國早期少結盟政策</td></tr>
+    <tr><td class="en">Chain reaction</td><td class="zh">連鎖反應</td><td>同盟令地方衝突變大戰</td></tr>
+  </tbody>
+</table>
+</div>
+
+<h2 id="cartoon"><span class="n">4</span> 怎樣讀政治漫畫</h2>
+<div class="tipstrip">
+  <div class="tip"><b>① 認人／符號</b><span>先認國家象徵，再讀對話與物件。</span></div>
+  <div class="tip"><b>② 找誇張／隱喻</b><span>尺寸、動作、標題常是作者態度。</span></div>
+  <div class="tip"><b>③ 寫答案格式</b><span>講清用 Source A 還是 own knowledge。</span></div>
+  <div class="tip"><b>④ 關係怎變</b><span>競賽／猜忌／敵意 — 用圖中線索 + 史實各一。</span></div>
+</div>
+<div class="sym">
+  <div><strong>Britain</strong><br>John Bull · Lion</div>
+  <div><strong>France</strong><br>Marianne · Rooster</div>
+  <div><strong>Germany</strong><br>尖盔士兵 · Kaiser</div>
+  <div><strong>Austria-Hungary</strong><br>Double-headed eagle</div>
+  <div><strong>Russia</strong><br>Russian bear</div>
+  <div><strong>USA</strong><br>Uncle Sam · Bald eagle</div>
+</div>
+<p style="margin:12px 0 0;font-size:.9rem;color:var(--mut)">WS2 漫畫（1908）：John Bull 與 Kaiser 用 dreadnoughts「加注」— 象徵英德海軍競賽。此頁<b>不代填</b>你的未完成功課。</p>
+
+<h2 id="practice"><span class="n">5</span> 小練習（8 題）</h2>
+<p style="margin:-4px 0 12px;color:var(--mut);font-size:.92rem">選完或填完按「核對」看解釋。可重做。</p>
+<div id="scorebox" class="scorebox"></div>
+<div id="quiz"></div>
+<div class="btnrow">
+  <button class="btn" id="checkAll" type="button">全部核對</button>
+  <button class="btn ghost" id="resetAll" type="button">重做</button>
+</div>
+
+<div class="footnote">
+  <b>這是入門版 V1；完整溫習版稍後再上。</b><br>
+  材料來源：Textbook p.5–12、Notebook（Underlying Causes）、漫畫 Basics／WS2 主題。WS3 老師未發。未替你完成未交的 WS2 功課。
+</div>
+
+</div>
+<script>
+const Q=[
+{id:1,kind:'MC',stem:'Which is an underlying cause of WWI, not the immediate cause?',
+ opts:['Sarajevo Incident (1914)','Extreme nationalism','Assassination of Archduke Franz Ferdinand','Outbreak of fighting in July 1914'],
+ ans:1,why:'遠因是長期根因（民族主義、同盟、殖民、軍備）。Sarajevo Incident 是近因／導火線。'},
+{id:2,kind:'MC',stem:'Triple Entente (1907) 的成員是？',
+ opts:['Germany, Austria-Hungary, Italy','Britain, France, Russia','Germany, Britain, France','Russia, Serbia, France'],
+ ans:1,why:'三國協約：Britain · France · Russia。三國同盟才是德奧意。'},
+{id:3,kind:'T/F',stem:'True or False：France wanted to recapture Alsace-Lorraine from Germany after the Franco-Prussian War.',
+ opts:['True','False'],
+ ans:0,why:'普法戰爭後法國失去 Alsace-Lorraine，復仇情緒是法國極端民族主義的重點。'},
+{id:4,kind:'T/F',stem:'True or False：The Hague Conferences of 1899 and 1907 successfully ended the armaments race.',
+ opts:['True','False'],
+ ans:1,why:'兩次海牙會議裁軍失敗；各國仍不肯裁軍，軍備競賽繼續。'},
+{id:5,kind:'Fill',stem:'Fill in：Britain’s first modern battleship launched in 1906 that started a naval race was the HMS ________.',
+ ansText:['dreadnought','hms dreadnought','無畏艦'],
+ display:'Dreadnought',
+ why:'1906 年英國 HMS Dreadnought（無畏艦）火力與動力領先，引發全球海軍競賽，尤其英德。'},
+{id:6,kind:'MC',stem:'Which colonial crisis was mainly between France and Germany?',
+ opts:['Tunisian Incident (1881)','Fashoda Incident (1898)','Moroccan Crises (1905–06, 1911)','Sarajevo Incident (1914)'],
+ ans:2,why:'摩洛哥危機是 France vs Germany。突尼斯是法對意；法紹達是英對法。'},
+{id:7,kind:'MC',stem:'In a British cartoon, a man labelled John Bull usually stands for ________.',
+ opts:['Germany','France','Britain','Russia'],
+ ans:2,why:'John Bull／Lion = Britain；Marianne／Rooster = France；尖盔／Kaiser = Germany；Bear = Russia。'},
+{id:8,kind:'Fill',stem:'Fill in：Bismarck’s aim in making alliances was to prevent a ________-front war against France and Russia.',
+ ansText:['two','2','兩','兩面'],
+ display:'two',
+ why:'俾斯麥要避免同時與法國和俄國開戰（two-front war），所以建立同盟網。'}
+];
+
+const quiz=document.getElementById('quiz');
+function render(){
+  quiz.innerHTML=Q.map((q,i)=>{
+    let body='';
+    if(q.kind==='Fill'){
+      body=`<div class="fillrow"><input type="text" id="a${q.id}" placeholder="輸入答案…" autocomplete="off"></div>`;
+    }else{
+      body=`<div class="opts">${q.opts.map((o,j)=>`<label data-q="${q.id}" data-i="${j}"><input type="radio" name="q${q.id}" value="${j}"><span>${o}</span></label>`).join('')}</div>`;
+    }
+    return `<div class="q" id="q${q.id}">
+      <div class="kind">${q.kind} · Q${i+1}</div>
+      <p class="stem">${q.stem}</p>
+      ${body}
+      <div class="btnrow"><button class="btn ghost" type="button" data-check="${q.id}">核對</button></div>
+      <div class="why" id="w${q.id}"></div>
+    </div>`;
+  }).join('');
+  quiz.querySelectorAll('.opts label').forEach(lab=>{
+    lab.addEventListener('click',()=>{
+      const qid=lab.dataset.q;
+      quiz.querySelectorAll(`.opts label[data-q="${qid}"]`).forEach(x=>x.classList.remove('sel'));
+      lab.classList.add('sel');
+    });
+  });
+  quiz.querySelectorAll('[data-check]').forEach(b=>b.addEventListener('click',()=>checkOne(+b.dataset.check)));
+}
+function norm(s){return (s||'').trim().toLowerCase().replace(/\s+/g,' ')}
+function checkOne(id){
+  const q=Q.find(x=>x.id===id);
+  const box=document.getElementById('w'+id);
+  const card=document.getElementById('q'+id);
+  let ok=false, got='';
+  if(q.kind==='Fill'){
+    got=document.getElementById('a'+id).value;
+    ok=q.ansText.some(a=>norm(got)===norm(a)||norm(got).includes(norm(a)));
+  }else{
+    const sel=card.querySelector('input[type=radio]:checked');
+    if(!sel){box.className='why on bad';box.textContent='請先選一個答案。';return false}
+    const idx=+sel.value; ok=idx===q.ans;
+    card.querySelectorAll('.opts label').forEach(lab=>{
+      lab.classList.remove('ok','bad');
+      const i=+lab.dataset.i;
+      if(i===q.ans) lab.classList.add('ok');
+      else if(i===idx && !ok) lab.classList.add('bad');
+    });
+  }
+  box.className='why on '+(ok?'ok':'bad');
+  box.innerHTML=(ok?'✅ 正確。 ':'❌ 未中。正確是：<b>'+(q.display||q.opts[q.ans])+'</b>。 ')+q.why;
+  return ok;
+}
+function checkAll(){
+  let n=0; Q.forEach(q=>{if(checkOne(q.id))n++});
+  const sb=document.getElementById('scorebox');
+  sb.className='scorebox on';
+  sb.textContent=`得分：${n} / ${Q.length}`;
+  sb.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function resetAll(){
+  document.getElementById('scorebox').className='scorebox';
+  render();
+}
+document.getElementById('checkAll').onclick=checkAll;
+document.getElementById('resetAll').onclick=resetAll;
+render();
+</script>
+</body>
+</html>
