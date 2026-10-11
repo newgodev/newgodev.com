@@ -475,7 +475,7 @@ var QUIZ_PER_RUN=10;
    var s=STEPS[cur];
    $("tag").textContent=s.tag;$("sec").textContent=s.sec||"";$("say").textContent=s.say;$("sayzh").textContent=s.say_zh||"";if(typeof paintTocCur==="function")paintTocCur();$("num").textContent=cur+" / "+(STEPS.length-1);
    $("prev").disabled=cur===0;$("next").disabled=cur===STEPS.length-1;
-   fillInstant(cur);boardUpTo(cur);setView(s);if(window.__paintPad)window.__paintPad(s);(s.fills||[]).forEach(function(f){putAns(f,true);});$("teachtext").textContent=s.teach?"":"Watch the yellow box on the left, then see where the answer goes.";$("teachzh").textContent=s.teach?"":"留意左邊黃色框,再看答案去哪一格。";
+   window.cur=cur;fillInstant(cur);boardUpTo(cur);setView(s);if(window.__paintPad)window.__paintPad(s);(s.fills||[]).forEach(function(f){putAns(f,true);});$("teachtext").textContent=s.teach?"":"Watch the yellow box on the left, then see where the answer goes.";$("teachzh").textContent=s.teach?"":"留意左邊黃色框,再看答案去哪一格。";
    later(function(){
      if(my!==token)return;var k=0,fills=s.fills||[];
      function finish(){if(onDone)later(function(){if(my===token)onDone();},1400);}
@@ -656,10 +656,17 @@ var QUIZ_PER_RUN=10;
       return r;
     };
     window.go.__pad=1;
-    // paint current
-    try{ paintPad(STEPS[cur||0]); }catch(e){}
+    // paint current (cur is inside IIFE — use URL step or #num)
+    try{
+      var m=location.search.match(/[?&]step=(\d+)/);
+      var n=m?+m[1]:(parseInt((document.getElementById('num')||{}).textContent,10)||0);
+      if(!(n>=0&&n<STEPS.length)) n=0;
+      paintPad(STEPS[n]);
+    }catch(e){}
   }
   ensurePad(); hook();
+  // re-paint shortly after main go() finishes
+  setTimeout(hook,500); setTimeout(function(){var m=location.search.match(/[?&]step=(\d+)/);var n=m?+m[1]:0;if(STEPS[n])paintPad(STEPS[n]);},800);
 })();
 </script>
 </body>
