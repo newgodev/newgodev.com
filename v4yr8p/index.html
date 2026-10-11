@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<!-- hist-ws2 THREE full answers ALWAYS on center 改寫板 v11 -->
+<!-- hist-ws2 LOCKED (a)(b)(c) full answers always in center v12 -->
 <script>if(location.protocol==="http:")location.replace("https://"+location.host+location.pathname+location.search);</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -306,11 +306,11 @@ if(document.readyState==="loading") document.addEventListener("DOMContentLoaded"
 <div class="grid">
   <div class="col">
     <h2>材料（鏡頭只對準這段）<span id="tbname"></span></h2>
-    <div class="cam" id="tcam"><div class="stage" id="st_ws2a"><img data-src="p/ws2a.jpg?v=11" alt="Worksheet 2 · Source A + Q(a)(b)"></div><div class="stage" id="st_ws2b"><img data-src="p/ws2b.jpg?v=11" alt="Worksheet 2 · Q(c)"></div></div>
+    <div class="cam" id="tcam"><div class="stage" id="st_ws2a"><img data-src="p/ws2a.jpg?v=12" alt="Worksheet 2 · Source A + Q(a)(b)"></div><div class="stage" id="st_ws2b"><img data-src="p/ws2b.jpg?v=12" alt="Worksheet 2 · Q(c)"></div></div>
   </div>
   <div class="col c2">
     <h2>筆記板／改寫板<span id="wbname"></span></h2>
-    <div class="cam" id="wcam"><div class="stage" id="st_note"><img data-src="p/note.jpg?v=11" alt="One-page note"></div></div>
+    <div class="cam" id="wcam"><div class="stage" id="st_note"><img data-src="p/note.jpg?v=12" alt="One-page note"></div></div>
     <div class="rw on" id="rw">
 <div class="rwh">改寫板 · FULL MODEL ANSWERS<span>copy by hand · 唔代交 LoiLo</span></div>
 <div class="ans-block" id="ans-a" data-stamps="(a) 題幹|(a) 三步|(a) 句式">
@@ -656,7 +656,7 @@ var QUIZ_PER_RUN=10;
           +esc(s[0])+"</b> → "+esc(s[1])+(s[3]?"<div class=\"zh\" style=\"margin:0;color:#555\">"+esc(s[3])+"</div>":"")+"</div>";
       });
     }
-    el.innerHTML="<div class=\"rwh\">改寫板<span>"+esc(stamp)+" · copy by hand</span></div>"
+    if(el.querySelector(".ans-block")) return; el.innerHTML="<div class="rwh">改寫板<span>"+esc(stamp)+" · copy by hand</span></div>"
       +"<span class=\"ans-tag\">完整模範答案 · FULL MODEL ANSWER</span>"+cards
       +"<div class=\"ans-full\">"+esc(full)+"</div>"
       +(zh?"<div class=\"ans-zh\">中文："+esc(zh)+"</div>":"")
