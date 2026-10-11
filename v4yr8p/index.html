@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<!-- hist-ws2 white scan + 改寫板 v6 -->
+<!-- hist-ws2 white scan + 改寫板 v7 -->
 <script>if(location.protocol==="http:")location.replace("https://"+location.host+location.pathname+location.search);</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -281,11 +281,11 @@ if(document.readyState==="loading") document.addEventListener("DOMContentLoaded"
 <div class="grid">
   <div class="col">
     <h2>材料（鏡頭只對準這段）<span id="tbname"></span></h2>
-    <div class="cam" id="tcam"><div class="stage" id="st_ws2a"><img data-src="p/ws2a.jpg?v=6" alt="Worksheet 2 · Source A + Q(a)(b)"></div><div class="stage" id="st_ws2b"><img data-src="p/ws2b.jpg?v=6" alt="Worksheet 2 · Q(c)"></div></div>
+    <div class="cam" id="tcam"><div class="stage" id="st_ws2a"><img data-src="p/ws2a.jpg?v=7" alt="Worksheet 2 · Source A + Q(a)(b)"></div><div class="stage" id="st_ws2b"><img data-src="p/ws2b.jpg?v=7" alt="Worksheet 2 · Q(c)"></div></div>
   </div>
   <div class="col c2">
     <h2>筆記板／改寫板<span id="wbname"></span></h2>
-    <div class="cam" id="wcam"><div class="stage" id="st_note"><img data-src="p/note.jpg?v=6" alt="One-page note"></div></div>
+    <div class="cam" id="wcam"><div class="stage" id="st_note"><img data-src="p/note.jpg?v=7" alt="One-page note"></div></div>
     <div class="rw" id="rw"></div>
   </div>
   <div class="col">
@@ -588,24 +588,25 @@ if(typeof closeRw==="function")closeRw();
 <script>
 (function(){
   function firstRw(){for(var i=0;i<STEPS.length;i++){var f=(STEPS[i].fills||[])[0];if(f&&f.rw)return i;}return -1;}
-  function goRw(){
-    var q=location.search||'';
+  function apply(){
+    var q=location.search||"";
     var want=-1;
-    if(/[?&]seek=rw\b/.test(q)) want=firstRw();
+    if(/[?&]seek=rw(?:&|$)/.test(q)) want=firstRw();
     var m=q.match(/[?&]seek=(\d+)/); if(m) want=+m[1];
-    if(want<0||want>=STEPS.length) return;
+    if(want<0||want>=STEPS.length) return false;
     try{
-      if(typeof setPlay==='function') setPlay(false);
-      if(typeof go==='function') go(want);
-      else if(typeof seekTo==='function') seekTo(want);
-      else { cur=want; if(typeof paint==='function') paint(); if(typeof showStep==='function') showStep(want); }
+      if(typeof setPlay==="function") setPlay(false);
+      if(typeof go==="function") go(want);
+      else { cur=want; if(typeof run==="function") run(want, function(){}); }
       var f=(STEPS[want].fills||[])[0];
-      if(f&&f.rw&&typeof showRewriteStatic==='function') showRewriteStatic(f);
-      document.title=(document.title||'')+' · rw'+want;
-    }catch(e){console.warn('seek',e);}
+      if(f&&f.rw&&typeof showRewriteStatic==="function") showRewriteStatic(f);
+      try{document.title="歷史 WS2 · rw"+want+" "+(STEPS[want].stamp||"");}catch(e){}
+      return true;
+    }catch(e){console.warn("seek",e); return false;}
   }
-  if(document.readyState==='complete') setTimeout(goRw,600);
-  else window.addEventListener('load', function(){ setTimeout(goRw,600); });
+  var n=0; function tick(){ if(apply()||n++>20) return; setTimeout(tick, 400); }
+  if(document.readyState==="complete") setTimeout(tick, 300);
+  else window.addEventListener("load", function(){ setTimeout(tick, 300); });
 })();
 </script>
 </body>
