@@ -244,9 +244,11 @@ if(document.readyState==="loading") document.addEventListener("DOMContentLoaded"
 #quiznext{margin-top:10px;background:#1e3a8a;color:#fff;border:0;border-radius:10px;padding:10px 14px;font-weight:900;cursor:pointer;display:none}
 #quiznext.on{display:inline-block}
 
-#padcard{position:absolute;left:8%;top:28%;width:84%;z-index:6;box-sizing:border-box;
+#wcam{position:relative}
+#padcard{position:absolute;left:4%;right:4%;top:12%;bottom:12%;z-index:20;box-sizing:border-box;
   background:linear-gradient(180deg,#fffef8,#fff9e8);border:3px solid #1e3a8a;border-radius:14px;
-  padding:14px 16px;box-shadow:0 10px 28px rgba(15,23,42,.18);display:none;pointer-events:auto;cursor:pointer}
+  padding:16px 18px;box-shadow:0 12px 32px rgba(15,23,42,.22);display:none;pointer-events:auto;cursor:pointer;
+  overflow:auto}
 #padcard.on{display:block}
 #padcard .pq{display:inline-block;background:#1e3a8a;color:#fff;font-weight:900;font-size:.78rem;
   padding:2px 8px;border-radius:999px;margin-bottom:8px}
@@ -610,11 +612,11 @@ var QUIZ_PER_RUN=10;
 <script>
 (function(){
   function ensurePad(){
-    var st=document.getElementById("st_note"); if(!st){setTimeout(ensurePad,50);return;}
+    var cam=document.getElementById("wcam"); if(!cam){setTimeout(ensurePad,50);return;}
     if(document.getElementById("padcard"))return;
     var d=document.createElement("div"); d.id="padcard";
-    d.innerHTML='<div class="pq"></div><div class="pen"></div><div class="pzh"></div><div class="phint">撳這裏可跳返材料黃框</div>';
-    st.appendChild(d);
+    d.innerHTML='<div class="pq"></div><div class="pen"></div><div class="pzh"></div><div class="phint">撳筆記可跳返材料黃框 · 下一點會清板再寫</div>';
+    cam.appendChild(d);
   }
   function paintPad(step){
     ensurePad();
