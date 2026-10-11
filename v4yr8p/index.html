@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<!-- hist-ws2 white scan + 改寫板 v5 -->
+<!-- hist-ws2 white scan + 改寫板 v6 -->
 <script>if(location.protocol==="http:")location.replace("https://"+location.host+location.pathname+location.search);</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -281,11 +281,11 @@ if(document.readyState==="loading") document.addEventListener("DOMContentLoaded"
 <div class="grid">
   <div class="col">
     <h2>材料（鏡頭只對準這段）<span id="tbname"></span></h2>
-    <div class="cam" id="tcam"><div class="stage" id="st_ws2a"><img data-src="p/ws2a.jpg?v=5" alt="Worksheet 2 · Source A + Q(a)(b)"></div><div class="stage" id="st_ws2b"><img data-src="p/ws2b.jpg?v=5" alt="Worksheet 2 · Q(c)"></div></div>
+    <div class="cam" id="tcam"><div class="stage" id="st_ws2a"><img data-src="p/ws2a.jpg?v=6" alt="Worksheet 2 · Source A + Q(a)(b)"></div><div class="stage" id="st_ws2b"><img data-src="p/ws2b.jpg?v=6" alt="Worksheet 2 · Q(c)"></div></div>
   </div>
   <div class="col c2">
     <h2>筆記板／改寫板<span id="wbname"></span></h2>
-    <div class="cam" id="wcam"><div class="stage" id="st_note"><img data-src="p/note.jpg?v=5" alt="One-page note"></div></div>
+    <div class="cam" id="wcam"><div class="stage" id="st_note"><img data-src="p/note.jpg?v=6" alt="One-page note"></div></div>
     <div class="rw" id="rw"></div>
   </div>
   <div class="col">
@@ -583,6 +583,30 @@ function overlap3(a,b){function tk(s){return s.toLowerCase().match(/[a-z0-9']+/g
  function rwT(f){var r=f.rw;return 0.6+0.9+r.swaps.length*1.1+(r.order?1.1:0)+rwOut(f).length*0.022+0.4+1.3;}
  
 if(typeof closeRw==="function")closeRw();
+</script>
+
+<script>
+(function(){
+  function firstRw(){for(var i=0;i<STEPS.length;i++){var f=(STEPS[i].fills||[])[0];if(f&&f.rw)return i;}return -1;}
+  function goRw(){
+    var q=location.search||'';
+    var want=-1;
+    if(/[?&]seek=rw/.test(q)) want=firstRw();
+    var m=q.match(/[?&]seek=(\d+)/); if(m) want=+m[1];
+    if(want<0||want>=STEPS.length) return;
+    try{
+      if(typeof setPlay==='function') setPlay(false);
+      if(typeof go==='function') go(want);
+      else if(typeof seekTo==='function') seekTo(want);
+      else { cur=want; if(typeof paint==='function') paint(); if(typeof showStep==='function') showStep(want); }
+      var f=(STEPS[want].fills||[])[0];
+      if(f&&f.rw&&typeof showRewriteStatic==='function') showRewriteStatic(f);
+      document.title=(document.title||'')+' · rw'+want;
+    }catch(e){console.warn('seek',e);}
+  }
+  if(document.readyState==='complete') setTimeout(goRw,600);
+  else window.addEventListener('load', function(){ setTimeout(goRw,600); });
+})();
 </script>
 </body>
 
