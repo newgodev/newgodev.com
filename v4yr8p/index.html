@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<!-- hist-ws2 dreadnoughts how-to-fill -->
+<script>if(location.protocol==="http:")location.replace("https://"+location.host+location.pathname+location.search);</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>歷史 WS2 點樣填 · dreadnoughts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0b0c0c;--muted:#505a5f;--line:#b1b4b6;--blue:#1d4ed8;--red:#d4351c;--hi:#ffdd00}
+*{box-sizing:border-box}
+html{color-scheme:light;background:#fff;font-size:17px}
+body{margin:0;background:#fff;color:var(--ink);font-family:"Noto Sans HK",Arial,sans-serif;line-height:1.6}
+.top{background:#fff;border-bottom:6px solid #1d70b8;padding:9px 16px}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tag{font-weight:900;color:#fff;background:#1d70b8;border-radius:4px;padding:2px 12px}
+.sec{font-weight:900;color:#1d70b8}
+.num{color:var(--muted);font-size:.85rem}
+.legend{font-size:.86rem}
+.ctrl{margin-left:auto;display:flex;gap:8px}
+.ctrl button{font-family:inherit;font-size:.9rem;font-weight:700;padding:7px 13px;border:2px solid var(--ink);background:#fff;border-radius:4px;cursor:pointer}
+.ctrl button.main{background:var(--ink);color:#fff}
+#zhbtn.on{background:#b8860b;border-color:#b8860b;color:#fff}
+.say{font-size:1.1rem;font-weight:700;margin:7px 0 0;min-height:2.6em}
+.zh{display:none;color:#6b4e16;font-size:.9rem;font-weight:500;background:#fff8e6;border-radius:4px;padding:2px 8px;margin:3px 0}
+body.zhon .zh{display:block}
+.grid{display:grid;grid-template-columns:1.05fr 1.2fr .75fr;gap:12px;padding:10px 14px}
+.col{display:flex;flex-direction:column;min-height:0}
+.col h2{font-size:.92rem;font-weight:900;margin:0 0 6px}
+.col h2 span{font-weight:400;color:var(--muted);margin-left:6px;font-size:.8rem}
+.cam{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:6px;background:#eef0f1;min-height:360px}
+.stage{position:absolute;left:0;top:0;transform-origin:0 0;display:none;transition:width var(--tc,.8s) cubic-bezier(.4,0,.2,1),transform var(--tc,.8s) cubic-bezier(.4,0,.2,1)}
+.stage.on{display:block}
+.stage img{display:block;width:100%;height:auto}
+.box{position:absolute;border-radius:4px;border:3px solid transparent;transition:all .35s;pointer-events:none}
+.box.hl{border-color:var(--hi);background:rgba(255,221,0,.28);animation:pulse 1.2s infinite}
+.box.flash{border-color:#ff00aa;background:rgba(255,0,170,.2)}
+.box.hl,.box.flash{pointer-events:auto;cursor:pointer}.exgo{display:block;margin:6px 0 2px;border:2px solid var(--ink);background:#fff8e6;border-radius:6px;font-weight:800;padding:4px 8px;cursor:pointer;font-size:.85rem}.exgo:hover{background:#ffe9a8}
+.hot,.qhot{position:absolute;cursor:pointer;border-radius:4px}.qhot:hover{background:rgba(0,120,255,.05)}.hot:hover{background:rgba(0,120,255,.14);outline:2px dashed rgba(0,90,200,.6)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,221,0,0)}50%{box-shadow:0 0 0 7px rgba(255,221,0,.4)}}
+.ans{position:absolute;color:#d4001e;font-family:Arial,Helvetica,sans-serif;white-space:nowrap;line-height:1;display:flex;align-items:center;cursor:pointer;border-radius:3px}
+.ans:hover{background:rgba(255,246,207,.8)}
+.ans.circ{border:0;cursor:pointer}
+.ans.circ::after{content:"";position:absolute;inset:-6% -4%;border:2.5px solid #d4001e;border-radius:50%;opacity:0;transform:scale(.4);transition:opacity .35s,transform .45s}
+.ans.circ.on::after{opacity:1;transform:scale(1)}
+.ans.now{outline:3px solid #ff00aa;outline-offset:2px}
+.caret{display:inline-block;width:2px;height:.95em;background:var(--ink);margin-left:1px;animation:blink .8s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.teach{border:3px solid var(--red);border-radius:12px;padding:9px 12px;background:#fff;font-size:.98rem;min-height:120px;transition:box-shadow .3s;margin-bottom:10px;overflow:auto;max-height:42%}
+.teach .bh{font-weight:900;color:var(--red);font-size:.8rem;margin-bottom:3px}
+.teach.on{box-shadow:0 0 0 6px rgba(212,53,28,.18)}
+.board{border-radius:8px;padding:10px;background:#d9b98a;box-shadow:inset 0 0 0 3px #b8935f;display:flex;flex-direction:column;gap:9px;overflow:auto}
+.bempty{font-size:.86rem;color:#5a4526}
+.note{border-radius:4px;padding:6px 8px;box-shadow:0 3px 8px rgba(0,0,0,.22);font-size:.84rem;font-weight:700;line-height:1.4;cursor:pointer;background:#ffd9d3}
+.note:nth-child(odd){transform:rotate(-.8deg)}.note:nth-child(even){transform:rotate(.8deg)}
+.note i{font-style:normal;font-size:.68rem;color:#fff;background:var(--red);border-radius:3px;padding:0 5px;margin-right:5px}
+.fly{position:fixed;z-index:60;background:var(--hi);border:2px solid var(--ink);border-radius:5px;padding:4px 10px;font-size:.9rem;font-weight:700;max-width:320px;pointer-events:none;box-shadow:0 8px 20px rgba(0,0,0,.25);transition:left var(--tf,.9s) cubic-bezier(.5,0,.2,1),top var(--tf,.9s) cubic-bezier(.5,0,.2,1),opacity .3s}
+.expop{position:fixed;z-index:70;width:min(390px,92vw);background:#fff;border:3px solid var(--ink);border-radius:10px;padding:10px 14px 12px;box-shadow:0 12px 30px rgba(0,0,0,.25);font-size:.92rem;line-height:1.5}
+.exh{font-weight:900;color:#d4001e;margin-right:30px}
+.exl{font-size:.72rem;font-weight:900;color:var(--muted);margin-top:8px}
+.exl.bad{color:var(--red)}
+.exw{font-weight:700}
+.exz{color:#6b4e16;background:#fff8e6;border-radius:4px;padding:2px 6px;margin-top:3px;font-size:.88rem}
+.exo,.exa{margin:2px 0 0;padding-left:18px}.exo li{color:#00703c;font-weight:700}.exa li{color:var(--red)}
+.exzi{color:#6b4e16;font-weight:500}
+.exx{position:absolute;right:8px;top:6px;border:2px solid var(--ink);background:#fff;border-radius:4px;font-weight:900;cursor:pointer;font-family:inherit}
+.player{background:#0b0c0c;color:#fff;display:flex;align-items:center;gap:12px;padding:10px 16px}
+.player button{font-family:inherit;font-size:1rem;font-weight:900;width:42px;height:34px;border:0;border-radius:4px;background:#fff;color:#0b0c0c;cursor:pointer}
+.track{position:relative;flex:1;height:12px;background:#444;border-radius:999px;cursor:pointer}
+.fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--hi);border-radius:999px}
+.knob{position:absolute;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:#fff;border:3px solid var(--hi);left:0}
+.tick{position:absolute;top:-4px;width:2px;height:20px;background:#888}
+.tick span{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font-size:.7rem;color:#ddd;font-weight:900}
+.ptime{font-size:.85rem;font-variant-numeric:tabular-nums;min-width:96px;text-align:right}
+.spdwrap{display:flex;align-items:center;gap:6px;font-size:.85rem;font-weight:900}
+.spdwrap input{width:120px;accent-color:#ffdd00;cursor:pointer}
+
+.zoom{position:fixed;z-index:70;background-repeat:no-repeat;background-color:#fff;border:5px solid var(--hi);border-radius:6px;box-shadow:0 14px 44px rgba(0,0,0,.45);pointer-events:none;
+  transition:left var(--tz,.6s) cubic-bezier(.4,0,.2,1),top var(--tz,.6s) cubic-bezier(.4,0,.2,1),width var(--tz,.6s) cubic-bezier(.4,0,.2,1),height var(--tz,.6s) cubic-bezier(.4,0,.2,1)}
+.zoomcap{position:fixed;z-index:71;background:#0b0c0c;color:#fff;font-weight:900;font-size:1.05rem;padding:6px 12px;border-radius:4px;pointer-events:none;transition:opacity .3s;max-width:700px}
+.zoomcap .zc{display:block;font-weight:500;font-size:.9rem;color:#ffe9a8}
+.note.ev{background:#fff3a3}
+.note .crop{width:100%;background-repeat:no-repeat;background-color:#fff;border:1px solid rgba(0,0,0,.2);border-radius:2px;margin-bottom:4px}
+.note .evz{display:block;font-weight:500;color:#6b4e16;font-size:.78rem}
+@media (min-width:1101px){
+  html,body{height:100%}
+  body{display:flex;flex-direction:column;height:100vh;overflow:hidden}
+  .top{flex:none}.grid{flex:1;min-height:0}.col{height:100%}
+  .cam,.board{flex:1;min-height:0}
+  .player{flex:none}
+}
+@media (max-width:1100px){.grid{grid-template-columns:1fr 1fr}}
+@media (max-width:720px){.grid{grid-template-columns:1fr}.cam{min-height:420px}}
+</style>
+<style id="dtap-css">*{touch-action:manipulation}</style>
+<script id="dtap-js">
+(function(){var last=0,lx=-99,ly=-99;
+document.addEventListener("touchend",function(e){
+ var t=Date.now(),p=e.changedTouches&&e.changedTouches[0],x=p?p.clientX:0,y=p?p.clientY:0,el=e.target,ptr=false;
+ try{ptr=!!(el&&el.nodeType===1&&(el.closest("button,a,input,select,textarea,label,[role=button],[onclick]")||getComputedStyle(el).cursor==="pointer"));}catch(_){}
+ if(t-last<350&&Math.abs(x-lx)<45&&Math.abs(y-ly)<45&&!ptr&&e.cancelable){e.preventDefault();}
+ last=t;lx=x;ly=y;},{passive:false});
+})();
+</script>
+<style id="ipadmode-css">
+#ipadsw{display:inline-flex;flex:none;border:2px solid #0b0c0c;border-radius:999px;overflow:hidden;cursor:pointer;user-select:none;-webkit-user-select:none;font-weight:900;font-size:.85rem;background:#fff;-webkit-tap-highlight-color:transparent;font-family:inherit;line-height:1.15}
+#ipadsw.float{position:fixed;z-index:2147483000;top:6px;left:50%;transform:translateX(-50%);box-shadow:0 2px 8px rgba(0,0,0,.28)}
+#ipadsw b{padding:6px 12px;color:#505a5f;white-space:nowrap;font-weight:900}
+#ipadsw b.pc{border-left:2px solid #0b0c0c}
+body:not(.ipadm) #ipadsw b.pc{background:#0b0c0c;color:#fff}
+body.ipadm #ipadsw b.ip{background:#1d70b8;color:#fff}
+body.ipadm #ipadsw b{padding:10px 15px;font-size:.95rem}
+html.ipadm-h,html.ipadm-h body{height:100%}
+body.ipadm{height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column;padding-bottom:0!important}
+body.ipadm .top{position:relative;top:auto;flex:none;padding:6px 10px}
+body.ipadm .row{gap:6px 8px}
+body.ipadm .legend{font-size:.78rem;margin-left:0}
+body.ipadm .ctrl button{font-size:1rem;padding:9px 14px}
+body.ipadm .say{min-height:0;margin:4px 0 0;font-size:1.06rem;line-height:1.45}
+body.ipadm .zh{margin:2px 0 0}
+body.ipadm .grid{flex:1;min-height:0;padding:8px 10px;gap:8px;align-items:stretch}
+body.ipadm .grid>.col{display:flex;flex-direction:column;min-height:0;min-width:0;height:100%;overflow:hidden}
+body.ipadm .col h2{flex:none;margin:0 0 4px;font-size:.84rem}
+body.ipadm .cam{flex:1.6 1 0;min-height:0}
+body.ipadm .brain{flex:1 1 0;min-height:0;margin-top:8px;overflow:auto}
+body.ipadm .paper{flex:1 1 0;min-height:0;overflow:auto}
+body.ipadm .board{position:relative;top:0;flex:1 1 0;max-height:none;min-height:0;overflow:auto}
+body.ipadm .teach{max-height:none;min-height:0;overflow:auto}
+body.ipadm .player{position:relative;left:auto;right:auto;bottom:auto;flex:none;padding:8px 12px;gap:10px}
+body.ipadm .player button{width:52px;height:44px;font-size:1.2rem}
+body.ipadm .track{height:18px}
+body.ipadm .knob{width:26px;height:26px;margin:-13px 0 0 -13px}
+body.ipadm .spdwrap input{width:150px;height:26px}
+body.ipadm:is(.lay-m3,.lay-e4,.lay-geo) .grid>.col:nth-child(1){grid-area:a}
+body.ipadm:is(.lay-m3,.lay-e4,.lay-geo) .grid>.col:nth-child(2){grid-area:b}
+body.ipadm:is(.lay-m3,.lay-e4,.lay-geo) .grid>.col:nth-child(3){grid-area:c}
+body.ipadm.lay-e4 .grid>.col:nth-child(4){grid-area:d}
+@media (orientation:portrait){
+ body.ipadm.lay-m3 .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1.25fr) minmax(0,1fr);grid-template-areas:"a b" "a c"}
+ body.ipadm.lay-e4 .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1.2fr) minmax(0,1fr);grid-template-areas:"b c" "a d"}
+ body.ipadm.lay-e4 .grid>.col:nth-child(1){display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);grid-template-rows:auto minmax(0,1fr);column-gap:8px;align-items:start}
+ body.ipadm.lay-e4 .grid>.col:nth-child(1)>h2{grid-column:1/-1}
+ body.ipadm.lay-e4 .grid>.col:nth-child(1)>.pic{grid-column:1;grid-row:2;max-height:100%}
+ body.ipadm.lay-e4 .grid>.col:nth-child(1)>.brain{grid-column:2;grid-row:2;margin-top:0;height:100%}
+ body.ipadm.lay-geo .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1.7fr) minmax(0,1fr);grid-template-areas:"a b" "c c"}
+ body.ipadm.lay-geo .grid>.col:nth-child(3){flex-direction:row;gap:8px}
+ body.ipadm.lay-geo .grid>.col:nth-child(3)>*{flex:1 1 0;margin:0;min-width:0}
+ body.ipadm.lay-gen .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-auto-rows:minmax(0,1fr)}
+}
+@media (orientation:landscape){
+ body.ipadm.lay-m3 .grid{grid-template-columns:minmax(0,1.1fr) minmax(0,1.2fr) minmax(0,.9fr);grid-template-rows:minmax(0,1fr);grid-template-areas:"a b c"}
+ body.ipadm.lay-e4 .grid{grid-template-columns:minmax(0,.95fr) minmax(0,1.1fr) minmax(0,1.15fr) minmax(0,.9fr);grid-template-rows:minmax(0,1fr);grid-template-areas:"a b c d"}
+ body.ipadm.lay-geo .grid{grid-template-columns:minmax(0,1.05fr) minmax(0,1.2fr) minmax(0,.8fr);grid-template-rows:minmax(0,1fr);grid-template-areas:"a b c"}
+ body.ipadm.lay-gen .grid{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
+}
+</style>
+<script id="ipadmode-js">
+(function(){
+function boot(){
+ var b=document.body,h=document.documentElement; if(!b||document.getElementById("ipadsw"))return;
+ var cols=document.querySelectorAll(".grid>.col").length, lay="lay-gen";
+ if(document.getElementById("tcam")) lay="lay-geo";
+ else if(cols===4) lay="lay-e4";
+ else if(cols===3&&document.getElementById("cam")) lay="lay-m3";
+ b.classList.add(lay);
+ var sw=document.createElement("span"); sw.id="ipadsw"; sw.setAttribute("role","button"); sw.tabIndex=0;
+ sw.title="iPad \u6a21\u5f0f\uff1a\u4e00\u500b\u756b\u9762\u770b\u5b8c\uff0c\u4e0d\u7528\u6372";
+ sw.innerHTML='<b class="ip">\uD83D\uDCF1 iPad</b><b class="pc">\uD83D\uDCBB \u96FB\u8166</b>';
+ var row=document.querySelector(".top .row");
+ if(row) row.insertBefore(sw,row.firstChild); else { sw.classList.add("float"); b.appendChild(sw); }
+ function apply(on,save){
+  b.classList.toggle("ipadm",!!on); h.classList.toggle("ipadm-h",!!on);
+  if(save){ try{localStorage.setItem("hw_ipad_mode",on?"1":"0");}catch(e){} }
+  setTimeout(function(){ window.dispatchEvent(new Event("resize")); },80);
+ }
+ var ua=navigator.userAgent, isTab=/iPad|iPhone|iPod|Android/.test(ua)||(/Macintosh/.test(ua)&&(navigator.maxTouchPoints||0)>1);
+ var saved=null; try{saved=localStorage.getItem("hw_ipad_mode");}catch(e){}
+ apply(saved===null?isTab:saved==="1",false);
+ var bd=document.getElementById("board");
+ if(bd&&window.MutationObserver){
+  var follow=function(n){ setTimeout(function(){
+   if(!b.classList.contains("ipadm")||n.style.visibility==="hidden"||!n.isConnected) return;
+   var top=n.offsetTop, bot=top+n.offsetHeight;
+   if(bot>bd.scrollTop+bd.clientHeight-4||top<bd.scrollTop) bd.scrollTop=Math.max(0,bot-bd.clientHeight+12);
+  },60); };
+  new MutationObserver(function(ms){ ms.forEach(function(m){
+   if(m.type==="childList") m.addedNodes.forEach(function(n){ if(n.nodeType===1&&n.classList.contains("note")) follow(n); });
+   else if(m.target.nodeType===1&&m.target.classList.contains("note")) follow(m.target);
+  }); }).observe(bd,{childList:true,subtree:true,attributes:true,attributeFilter:["style"]});
+ }
+ function flip(){ apply(!b.classList.contains("ipadm"),true); }
+ sw.addEventListener("click",flip);
+ sw.addEventListener("keydown",function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); flip(); } });
+}
+if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot); else boot();
+})();
+</script>
+<style id="ws2-css">
+#tocbtn{border-color:#1e3a8a!important;color:#1e3a8a;font-weight:900}
+#tocmenu{position:fixed;z-index:90;display:none;background:#fff;border:3px solid #0b0c0c;border-radius:12px;box-shadow:0 14px 36px rgba(15,23,42,.22);padding:6px;max-height:74vh;overflow:auto;width:min(460px,92vw)}
+#tocmenu.open{display:block}
+#tocmenu button{display:block;width:100%;text-align:left;border:0;background:#fff;font-family:inherit;font-size:.9rem;padding:7px 10px;border-radius:8px;cursor:pointer;font-weight:700;color:#0b0c0c}
+#tocmenu button:hover{background:#eff6ff}#tocmenu button.cur{background:#1e3a8a;color:#fff}
+#tocmenu .qh{font-size:.72rem;font-weight:900;color:#64748b;padding:8px 10px 2px}
+#tocmenu .qz{display:none;font-weight:500;font-size:.78rem;color:#6b4e16}body.zhon #tocmenu .qz{display:block}
+#tocmenu button.cur .qz{color:#ffe9a8}
+#board .note{border-left:6px solid #1d4ed8;background:linear-gradient(90deg,#eff6ff,#fff);padding:8px 10px;margin:6px 0;border-radius:8px}
+#board .note.pen-red{border-left-color:#dc2626;background:linear-gradient(90deg,#fef2f2,#fff)}
+#board .note.pen-purple{border-left-color:#7c3aed;background:linear-gradient(90deg,#f5f3ff,#fff)}
+#board .note.pen-orange{border-left-color:#ea580c;background:linear-gradient(90deg,#fff7ed,#fff)}
+#board .note.pen-green{border-left-color:#16a34a;background:linear-gradient(90deg,#f0fdf4,#fff)}
+#board .note i{background:#1e3a8a!important}
+#board .note .nz{display:block;margin-top:4px;font-size:.86rem;color:#5b21b6;font-weight:700}
+#board .note .nh{background:#fef08a;padding:0 4px;border-radius:3px}
+#quizmask{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:200;display:none;align-items:center;justify-content:center;padding:16px}
+#quizmask.on{display:flex}
+#quizbox{background:#fff;border:3px solid #0b0c0c;border-radius:16px;max-width:560px;width:100%;padding:18px 18px 14px;box-shadow:0 20px 50px rgba(0,0,0,.35)}
+#quizbox h3{margin:0 0 8px;font-size:1.05rem;color:#1e3a8a}
+#quizq{font-weight:800;font-size:1.05rem;margin:0 0 12px}
+#quizopts button{display:block;width:100%;text-align:left;margin:0 0 8px;padding:10px 12px;border:2px solid #cbd5e1;border-radius:10px;background:#f8fafc;font-weight:700;cursor:pointer;font-family:inherit}
+#quizopts button:hover{border-color:#1e3a8a;background:#eff6ff}
+#quizopts button.ok{border-color:#16a34a;background:#dcfce7}
+#quizopts button.bad{border-color:#e11d48;background:#ffe4e6}
+#quizwhy{display:none;margin-top:8px;padding:10px;border-radius:10px;background:#f1f5f9;font-size:.92rem}
+#quizwhy.on{display:block}
+#quizmeta{font-size:.78rem;color:#64748b;margin-bottom:8px;font-weight:700}
+#quiznext{margin-top:10px;background:#1e3a8a;color:#fff;border:0;border-radius:10px;padding:10px 14px;font-weight:900;cursor:pointer;display:none}
+#quiznext.on{display:inline-block}
+#padcard{position:absolute;left:8%;top:26%;width:84%;z-index:6;box-sizing:border-box;background:linear-gradient(180deg,#fffef8,#fff9e8);border:3px solid #1e3a8a;border-radius:14px;padding:14px 16px;box-shadow:0 10px 28px rgba(15,23,42,.18);display:none;pointer-events:auto;cursor:pointer}
+#padcard.on{display:block}
+#padcard .pq{display:inline-block;background:#1e3a8a;color:#fff;font-weight:900;font-size:.78rem;padding:2px 8px;border-radius:999px;margin-bottom:8px}
+#padcard .pen{font-weight:900;font-size:1.02rem;line-height:1.35;margin:0 0 8px;white-space:normal}
+#padcard .pen.pen-red{color:#dc2626}#padcard .pen.pen-blue{color:#1d4ed8}#padcard .pen.pen-purple{color:#7c3aed}#padcard .pen.pen-orange{color:#ea580c}#padcard .pen.pen-green{color:#16a34a}
+#padcard .pzh{font-weight:800;font-size:.92rem;color:#5b21b6;line-height:1.4;margin:0;background:#fef08a;padding:4px 6px;border-radius:6px;display:inline-block}
+#padcard .phint{margin-top:8px;font-size:.72rem;color:#64748b;font-weight:700}
+#st_note .ans{opacity:0!important;pointer-events:none!important}
+</style></head>
+<body>
+<div class="top">
+  <div class="row">
+    <span class="tag" id="tag">Start</span><span class="sec" id="sec"></span><span class="num" id="num"></span>
+    <span class="legend">一頁一刻 · 彩筆 · 撳筆記返來源 · 跟段練習 · 自己動筆</span>
+    <div id="tocmenu"></div><div class="ctrl"><button id="tocbtn">目錄 ▾</button><button id="zhbtn">中文</button><button id="prev">← Back</button><button id="play" class="main">▶ Play</button><button id="next">Next →</button></div>
+  </div>
+  <p class="say" id="say"></p>
+  <p class="zh" id="sayzh"></p>
+</div>
+<div class="grid">
+  <div class="col">
+    <h2>材料（鏡頭只對準這段）<span id="tbname"></span></h2>
+    <div class="cam" id="tcam"><div class="stage" id="st_ws2a"><img data-src="p/ws2a.jpg" alt="Worksheet 2 · Source A + Q(a)(b)"></div><div class="stage" id="st_ws2b"><img data-src="p/ws2b.jpg" alt="Worksheet 2 · Q(c)"></div></div>
+  </div>
+  <div class="col">
+    <h2>筆記板（只這一點）<span id="wbname"></span></h2>
+    <div class="cam" id="wcam"><div class="stage" id="st_note"><img data-src="p/note.jpg" alt="One-page note"></div></div>
+  </div>
+  <div class="col">
+    <div class="teach" id="teach"><div class="bh">你的腦這樣想</div><div id="teachtext">撳 Play。學點樣填 WS2；講完清板；練習只考本段。紙要你自己寫。</div><div class="zh" id="teachzh"></div></div>
+    <div class="board" id="board"><div class="bempty" id="bempty">這一頁只放一個重點。撳筆記＝跳返材料黃框。</div></div>
+  </div>
+</div>
+<div class="player">
+  <button id="pp">▶</button>
+  <div class="track" id="track"><div class="fill" id="fill"></div><div class="knob" id="knob"></div></div>
+  <span class="ptime" id="ptime">00:00 / 00:00</span>
+  <label class="spdwrap">Speed <input type="range" id="spd" min="0.5" max="10" step="0.25" value="1"><span id="spdv">1.00x</span></label>
+</div>
+<script>
+var TB={"ws2a": {"name": "Worksheet 2 · Source A + Q(a)(b)", "boxes": {"header": [0.05, 0.02, 0.95, 0.12], "instr": [0.05, 0.1, 0.95, 0.16], "srcA": [0.08, 0.14, 0.92, 0.52], "year": [0.55, 0.14, 0.92, 0.2], "figY": [0.1, 0.22, 0.48, 0.5], "figX": [0.48, 0.22, 0.9, 0.5], "ships": [0.25, 0.38, 0.75, 0.52], "qa": [0.05, 0.54, 0.95, 0.66], "qb": [0.05, 0.66, 0.95, 0.88]}}, "ws2b": {"name": "Worksheet 2 · Q(c)", "boxes": {"qc": [0.05, 0.06, 0.95, 0.42], "remind": [0.08, 0.42, 0.92, 0.58], "blank": [0.08, 0.58, 0.92, 0.88]}}};
+var WB={"note": {"name": "One-page note", "marks": {}}};
+var STEPS=[{"tag": "開場", "tb": "ws2a", "wb": "note", "say": "This video teaches HOW to fill History Worksheet 2 (dreadnoughts cartoon). Your paper is still blank — you write later.", "say_zh": "這支片教你點樣填歷史 Worksheet 2（無畏艦漫畫）。你的紙仍是空白——稍後自己寫。", "mark": [["header", "hl"]], "stamp": "功課未交", "teach": "Rule: watch method → pause → write on YOUR sheet. Do not submit this video as homework.", "teach_zh": "規矩：先睇方法 → 暫停 → 寫在你自己的紙上。不要把這支片當作業交。", "sec": "intro", "quiz": false, "fills": [{"id": "i1", "box": [0.1, 0.22, 0.9, 0.34], "text": "WS2 unfinished · learn METHOD · write yourself", "zh": "未完成功課 · 只學方法 · 自己動筆", "q": "開場", "note": "WS2 unfinished · learn METHOD · write yourself", "kind": "text", "fs": 0.028, "pen": "red", "teach": "School-safe: no personal names. Goal = you can fill (a)(b)(c) alone.", "teach_zh": "學校安全：唔用人名。目標＝你自己寫得出 (a)(b)(c)。"}]}, {"tag": "紙頭", "tb": "ws2a", "wb": "note", "say": "Header: Methodist College · F.3 History · The First World War · Worksheet 2.", "say_zh": "紙頭：循道中學 · 中三歷史 · 第一次世界大戰 · Worksheet 2。", "mark": [["header", "hl"]], "stamp": "紙頭資料", "teach": "Rule: always write your class/number on the paper top before answering.", "teach_zh": "規矩：答題前先在紙頂寫班別／學號。", "sec": "intro", "quiz": false, "fills": [{"id": "i2", "box": [0.1, 0.36, 0.9, 0.48], "text": "F.3 History · WWI · Worksheet 2", "zh": "中三歷史 · 一戰 · 工作紙 2", "q": "紙頭", "note": "F.3 History · WWI · Worksheet 2", "kind": "text", "fs": 0.028, "pen": "blue", "teach": "This sheet has Source A + questions (a)(b) on page 1, (c) on page 2.", "teach_zh": "第 1 頁有資料 A＋(a)(b)；第 2 頁是 (c)。"}]}, {"tag": "指令", "tb": "ws2a", "wb": "note", "say": "Instruction line: Study the Sources below and answer the following questions.", "say_zh": "指令：細閱下面資料，然後回答下列問題。", "mark": [["instr", "hl"]], "stamp": "先睇資料", "teach": "Rule: never answer before you have studied Source A — marks need Source clues.", "teach_zh": "規矩：未睇資料 A 唔好作答——分數要靠資料線索。", "sec": "intro", "quiz": true, "fills": [{"id": "i3", "box": [0.1, 0.5, 0.9, 0.62], "text": "Study Source FIRST · then answer", "zh": "先研究資料 · 再答題", "q": "指令", "note": "Study Source FIRST · then answer", "kind": "text", "fs": 0.028, "pen": "green", "teach": "DBQ habit: Source → question → own knowledge only when asked.", "teach_zh": "資料題習慣：先資料 → 再題目 → 問到自己知識先寫。"}]}, {"tag": "資料年份", "tb": "ws2a", "wb": "note", "say": "Source A is a British cartoon published in 1908 — before World War I started (1914).", "say_zh": "資料 A 是 1908 年英國漫畫——一戰 1914 年才爆發，所以這是戰前氣氛。", "mark": [["year", "hl"]], "stamp": "1908 年", "teach": "Rule: write the year 1908 when you cite Source A — it proves pre-war naval rivalry.", "teach_zh": "規矩：引用資料 A 時寫 1908——證明戰前已有海軍對立。", "sec": "src", "quiz": false, "fills": [{"id": "s1", "box": [0.1, 0.22, 0.9, 0.34], "text": "Source A · British cartoon · 1908", "zh": "資料 A · 英國漫畫 · 1908 年", "q": "年份", "note": "Source A · British cartoon · 1908", "kind": "text", "fs": 0.028, "pen": "orange", "teach": "Why 1908 matters: HMS Dreadnought launched 1906 → race already hot by 1908.", "teach_zh": "點解重要：無畏艦 1906 下水 → 1908 競賽已好激烈。"}]}, {"tag": "漫畫場面", "tb": "ws2a", "wb": "note", "say": "Scene: two men at a table betting with small warship / dreadnought models — like a poker game.", "say_zh": "場面：兩人坐枱，用細軍艦／無畏艦模型打賭——好似啤牌賭局。", "mark": [["srcA", "hl"]], "stamp": "賭局場面", "teach": "Rule: cartoon message = rivalry shown as a game of raising bets (ships).", "teach_zh": "規矩：漫畫訊息＝用「加注」賭局顯示雙方軍備競賽。", "sec": "src", "quiz": false, "fills": [{"id": "s2", "box": [0.1, 0.36, 0.9, 0.48], "text": "Poker-style bet · warship models on table", "zh": "啤牌式打賭 · 枱上放軍艦模型", "q": "場面", "note": "Poker-style bet · warship models on table", "kind": "text", "fs": 0.028, "pen": "blue", "teach": "Metaphor: each raise = building more dreadnoughts, not friendly cards.", "teach_zh": "比喻：每次「加注」＝再建更多無畏艦，不是友善玩牌。"}]}, {"tag": "人物Y", "tb": "ws2a", "wb": "note", "say": "Figure Y (Kaiser look): speech — I bet three dreadnoughts.", "say_zh": "人物 Y（德皇外形）：對白——「我押三艘無畏艦。」", "mark": [["figY", "hl"]], "stamp": "認人 Y", "teach": "Rule for (a): identify Y from uniform / moustache / German look + the dreadnought bet line.", "teach_zh": "（a）規矩：用軍服／鬍子／德國外形＋無畏艦對白認 Y。", "sec": "src", "quiz": false, "fills": [{"id": "s3", "box": [0.1, 0.5, 0.9, 0.62], "text": "Y clue: Kaiser look + I bet three dreadnoughts.", "zh": "Y 線索：德皇外形＋「我押三艘無畏艦」", "q": "Y 線索", "note": "Y clue: Kaiser look + I bet three dreadnoughts.", "kind": "text", "fs": 0.028, "pen": "purple", "teach": "You will WRITE the name yourself on the sheet — method = look then label.", "teach_zh": "紙上名字要你自己寫——方法＝先睇線索再標名。"}]}, {"tag": "人物X", "tb": "ws2a", "wb": "note", "say": "Figure X: John Bull style (British symbol) — Well, just to show there is no ill feeling, I raise you three.", "say_zh": "人物 X：約翰牛外形（英國象徵）——「為表示無惡意，我再加三艘。」", "mark": [["figX", "hl"]], "stamp": "認人 X", "teach": "Rule: sarcasm — no ill feeling while raising ships = rivalry, not friendship.", "teach_zh": "規矩：「無惡意」卻加注軍艦＝反話，其實係敵對。", "sec": "src", "quiz": true, "fills": [{"id": "s4", "box": [0.1, 0.64, 0.9, 0.76], "text": "X clue: John Bull (Britain) + I raise you three.", "zh": "X 線索：約翰牛（英國）＋「我再加三艘」", "q": "X 線索", "note": "X clue: John Bull (Britain) + I raise you three.", "kind": "text", "fs": 0.028, "pen": "purple", "teach": "Raise you three = Britain answers Germany bet with more dreadnoughts.", "teach_zh": "再加三＝英國用更多無畏艦回應德國的賭注。"}]}, {"tag": "軍艦模型", "tb": "ws2a", "wb": "note", "say": "The small ships on the table are dreadnought models — the cartoon main clue for an arms / naval race.", "say_zh": "枱上細船係無畏艦模型——漫畫指出軍備／海軍競賽的主線索。", "mark": [["ships", "hl"]], "stamp": "無畏艦線索", "teach": "Rule: when (b) asks for ONE clue, point to the dreadnought models OR the bet/raise dialogue.", "teach_zh": "（b）只要一個線索：可以寫無畏艦模型，或「押／加注」對白。", "sec": "src", "quiz": false, "fills": [{"id": "s5", "box": [0.1, 0.36, 0.9, 0.48], "text": "Clue bank: ship models · bet · raise three", "zh": "線索庫：船模型 · 打賭 · 再加三艘", "q": "線索庫", "note": "Clue bank: ship models · bet · raise three", "kind": "text", "fs": 0.028, "pen": "orange", "teach": "HMS Dreadnought (1906) made older battleships outdated — powers raced to build more.", "teach_zh": "1906 無畏艦令舊戰艦過時——列強爭住多建。"}]}, {"tag": "漫畫訊息", "tb": "ws2a", "wb": "note", "say": "Overall message: Britain and Germany are racing in naval building; tension rises even when words sound polite.", "say_zh": "總訊息：英德在海軍建造上競賽；語氣客氣但關係愈來愈繃。", "mark": [["srcA", "hl"]], "stamp": "漫畫訊息", "teach": "Rule: symbols → action (betting) → message (naval race / worse relations).", "teach_zh": "規矩：符號 → 動作（打賭）→ 訊息（海軍競賽／關係惡化）。", "sec": "src", "quiz": true, "fills": [{"id": "s6", "box": [0.1, 0.5, 0.9, 0.62], "text": "Symbols→action→message = naval race GB vs DE", "zh": "符號→動作→訊息＝英德海軍競賽", "q": "讀法", "note": "Symbols→action→message = naval race GB vs DE", "kind": "text", "fs": 0.028, "pen": "green", "teach": "This three-step read is the same method as How to interpret cartoons.", "teach_zh": "三步讀法同「點樣解讀漫畫」課一致。"}]}, {"tag": "題a問甚麼", "tb": "ws2a", "wb": "note", "say": "(a) Identify persons X and Y. — short identification.", "say_zh": "（a）指出人物 X 和 Y——短答認人題。", "mark": [["qa", "hl"]], "stamp": "(a) 題幹", "teach": "Rule: write BOTH names clearly; say which is X and which is Y.", "teach_zh": "規矩：兩個名字都要寫清；註明邊個係 X、邊個係 Y。", "sec": "qa", "quiz": false, "fills": [{"id": "a1", "box": [0.1, 0.22, 0.9, 0.34], "text": "(a) Identify X and Y — label both", "zh": "（a）指出 X 同 Y——兩個都要標", "q": "(a) 問", "note": "(a) Identify X and Y — label both", "kind": "text", "fs": 0.028, "pen": "blue", "teach": "Do not only describe clothes — the teacher wants the names/titles.", "teach_zh": "唔好只描述衫——老師要名字／身分。"}]}, {"tag": "題a方法", "tb": "ws2a", "wb": "note", "say": "Method: (1) read speech bubbles (2) match cartoon symbols (John Bull / Kaiser) (3) write X=… Y=…", "say_zh": "方法：（1）睇對白（2）對符號（約翰牛／德皇）（3）寫 X＝… Y＝…", "mark": [["figX", "hl"], ["figY", "hl"]], "stamp": "(a) 三步", "teach": "Rule: if unsure, start from the British-symbol figure = usually John Bull = Britain.", "teach_zh": "規矩：唔肯定就由英國象徵入手＝多數係約翰牛＝英國。", "sec": "qa", "quiz": true, "fills": [{"id": "a2", "box": [0.1, 0.36, 0.9, 0.48], "text": "Steps: bubbles → symbols → write X= / Y=", "zh": "步驟：對白→符號→寫 X＝／Y＝", "q": "(a) 法", "note": "Steps: bubbles → symbols → write X= / Y=", "kind": "text", "fs": 0.028, "pen": "green", "teach": "Teaching ID (for learning): X = John Bull (Britain); Y = Kaiser William II (Germany).", "teach_zh": "教學認人（學習用）：X＝約翰牛（英國）；Y＝德皇威廉二世（德國）。你紙上要自己寫。"}]}, {"tag": "題a寫法", "tb": "ws2a", "wb": "note", "say": "Sentence frame: X is … (Britain). Y is … (Germany). Then stop — no long essay for (a).", "say_zh": "句式：X is … (Britain). Y is … (Germany). 然後停——（a）唔使長文。", "mark": [["qa", "hl"]], "stamp": "(a) 句式", "teach": "Rule: leave the blank on YOUR worksheet for your handwriting — video only shows the frame.", "teach_zh": "規矩：工作紙空白留给你手寫——片只教句式。", "sec": "qa", "quiz": false, "fills": [{"id": "a3", "box": [0.1, 0.5, 0.9, 0.62], "text": "Frame: X is John Bull (GB). Y is Kaiser William II (DE).", "zh": "句式：X＝約翰牛（英）；Y＝德皇威廉二世（德）", "q": "(a) 寫", "note": "Frame: X is John Bull (GB). Y is Kaiser William II (DE).", "kind": "text", "fs": 0.028, "pen": "red", "teach": "Why these names: John Bull = traditional cartoon symbol of Britain; Kaiser = German emperor.", "teach_zh": "點解係呢兩個名：約翰牛＝英國傳統漫畫符號；Kaiser＝德國皇帝。"}]}, {"tag": "題b問甚麼", "tb": "ws2a", "wb": "note", "say": "(b) What race between Germany and Britain is shown? Cite ONE clue from Source A and explain.", "say_zh": "（b）漫畫顯示英德之間甚麼競賽？引資料 A 一個線索並解釋。", "mark": [["qb", "hl"]], "stamp": "(b) 題幹", "teach": "Rule: TWO parts — (1) name the race (2) ONE Source clue + short explain.", "teach_zh": "規矩：兩部分——（1）講明競賽名稱（2）一個資料線索＋短解釋。", "sec": "qb", "quiz": false, "fills": [{"id": "b1", "box": [0.1, 0.22, 0.9, 0.34], "text": "(b) Name the race + ONE Source clue + explain", "zh": "（b）講競賽＋一個資料線索＋解釋", "q": "(b) 問", "note": "(b) Name the race + ONE Source clue + explain", "kind": "text", "fs": 0.028, "pen": "blue", "teach": "Missing either the race name OR the clue = easy mark loss.", "teach_zh": "缺競賽名稱或缺線索＝易失分。"}]}, {"tag": "題b競賽", "tb": "ws2a", "wb": "note", "say": "The race = naval / dreadnought / armaments race between Britain and Germany.", "say_zh": "競賽＝英德之間的海軍／無畏艦／軍備競賽。", "mark": [["ships", "hl"]], "stamp": "(b) 競賽名", "teach": "Rule: prefer naval race or dreadnought race — matches the ship models.", "teach_zh": "規矩：優先寫 naval race／dreadnought race——同船模型夾。", "sec": "qb", "quiz": true, "fills": [{"id": "b2", "box": [0.1, 0.36, 0.9, 0.48], "text": "Race name: naval / dreadnought race (GB vs DE)", "zh": "競賽名：海軍／無畏艦競賽（英對德）", "q": "(b) 名", "note": "Race name: naval / dreadnought race (GB vs DE)", "kind": "text", "fs": 0.028, "pen": "orange", "teach": "Differs from colonial race or army conscription — here the cartoon shows ships.", "teach_zh": "唔同殖民競賽或徵兵——呢幅漫畫出船。"}]}, {"tag": "題b線索", "tb": "ws2a", "wb": "note", "say": "Pick ONE clue only, e.g. they bet/raise dreadnought models, or the dialogue about betting three / raising three.", "say_zh": "只選一個線索，例如：用無畏艦模型打賭／加注，或「押三艘／再加三艘」對白。", "mark": [["qb", "hl"]], "stamp": "(b) 選線索", "teach": "Rule: cite → explain. Example structure: The clue is … This shows …", "teach_zh": "規矩：先引→再解。句式：The clue is … This shows …", "sec": "qb", "quiz": false, "fills": [{"id": "b3", "box": [0.1, 0.5, 0.9, 0.62], "text": "Clue→explain: They bet dreadnoughts → naval race", "zh": "線索→解釋：「他們押無畏艦」→海軍競賽", "q": "(b) 鏈", "note": "Clue→explain: They bet dreadnoughts → naval race", "kind": "text", "fs": 0.028, "pen": "green", "teach": "Do not list three clues — the question says ONE.", "teach_zh": "唔好列三個線索——題目寫 ONE。"}]}, {"tag": "題b範句", "tb": "ws2a", "wb": "note", "say": "Model logic (rewrite in your words): Race = naval race. Clue = dreadnought models / raise you three. Explain = each side builds more warships to outdo the other.", "say_zh": "思路（用你自己文字重寫）：競賽＝海軍競賽。線索＝枱上無畏艦／「再加三艘」。解釋＝雙方不斷建更多軍艦壓過對方。", "mark": [["qb", "hl"]], "stamp": "(b) 思路", "teach": "Rule: paraphrase — copying the video word-for-word is weaker than your own sentence.", "teach_zh": "規矩：改寫——照抄影片不如用自己句子。", "sec": "qb", "quiz": true, "fills": [{"id": "b4", "box": [0.1, 0.64, 0.9, 0.76], "text": "Your job: paraphrase clue + link to naval race", "zh": "你要做：用自己話寫線索＋連到海軍競賽", "q": "(b) 你做", "note": "Your job: paraphrase clue + link to naval race", "kind": "text", "fs": 0.028, "pen": "red", "teach": "Teacher looks for Source mention + correct race name.", "teach_zh": "老師睇你有冇提資料＋競賽名啱唔啱。"}]}, {"tag": "題c問甚麼", "tb": "ws2b", "wb": "note", "say": "(c) How did the race affect Britain-Germany relations in the early 20th century? One reason from Source A + one from own knowledge. (1+2+2)", "say_zh": "（c）這場競賽如何影響廿世紀初英德關係？資料 A 一個理由＋自己知識一個。（1+2+2）", "mark": [["qc", "hl"]], "stamp": "(c) 題幹", "teach": "Rule: three mark buckets — effect (1) + Source reason (2) + own-knowledge reason (2).", "teach_zh": "規矩：三個分數桶——影響(1)＋資料理由(2)＋自己知識理由(2)。", "sec": "qc", "quiz": false, "fills": [{"id": "c1", "box": [0.1, 0.22, 0.9, 0.34], "text": "(c) 1+2+2: effect · Source reason · own knowledge", "zh": "（c）1+2+2：影響·資料理由·自己知識", "q": "(c) 分", "note": "(c) 1+2+2: effect · Source reason · own knowledge", "kind": "text", "fs": 0.028, "pen": "blue", "teach": "Early 20th century = around 1900-1914, matching 1908 cartoon.", "teach_zh": "廿世紀初≈1900–1914，夾 1908 漫畫。"}]}, {"tag": "提醒框", "tb": "ws2b", "wb": "note", "say": "Reminder box on the sheet: specify you are using Source A and own knowledge.", "say_zh": "紙上提醒框：要寫明你用緊 Source A 同 own knowledge。", "mark": [["remind", "hl"]], "stamp": "記得標明", "teach": "Rule: literally write the words Source A / own knowledge — easy marks.", "teach_zh": "規矩：答案裏直接寫 Source A／own knowledge——易分。", "sec": "qc", "quiz": true, "fills": [{"id": "c2", "box": [0.1, 0.36, 0.9, 0.48], "text": "Write the labels: Source A + own knowledge", "zh": "要寫標籤：Source A＋own knowledge", "q": "標籤", "note": "Write the labels: Source A + own knowledge", "kind": "text", "fs": 0.028, "pen": "red", "teach": "If you forget the labels, teacher may not award the Source/own split cleanly.", "teach_zh": "漏標籤，老師可能好難按資料／自己知識分開俾分。"}]}, {"tag": "題c影響", "tb": "ws2b", "wb": "note", "say": "Effect to state (1 mark idea): relations worsened / became more tense / more suspicious / hostile rivalry.", "say_zh": "影響（約 1 分意思）：關係惡化／更緊張／更猜疑／敵對競賽。", "mark": [["qc", "hl"]], "stamp": "(c) 影響", "teach": "Rule: one clear effect sentence first, then support with Source + own knowledge.", "teach_zh": "規矩：先一句講清影響，再用資料＋自己知識撐。", "sec": "qc", "quiz": false, "fills": [{"id": "c3", "box": [0.1, 0.5, 0.9, 0.62], "text": "Effect: GB-DE relations worsened / more tense", "zh": "影響：英德關係惡化／更緊張", "q": "(c) 影響", "note": "Effect: GB-DE relations worsened / more tense", "kind": "text", "fs": 0.028, "pen": "orange", "teach": "Do not say they became friends — the raise-bet shows rivalry.", "teach_zh": "唔好寫「他們變朋友」——加注顯示敵對。"}]}, {"tag": "題c資料理由", "tb": "ws2b", "wb": "note", "say": "Source A reason: competitive betting / raising dreadnoughts shows each side trying to outbuild the other → distrust.", "say_zh": "資料 A 理由：互相比拼押／加無畏艦＝互相想建多過對方 → 不信任。", "mark": [["qc", "hl"]], "stamp": "(c) 資料因", "teach": "Rule: link a concrete cartoon detail to worse relations — not a vague Source shows race.", "teach_zh": "規矩：要用漫畫具體細節連到關係變差——唔好空泛寫「資料顯示競賽」。", "sec": "qc", "quiz": false, "fills": [{"id": "c4", "box": [0.1, 0.64, 0.9, 0.76], "text": "Source: raise/bet ships → rivalry → worse relations", "zh": "資料：加注／押船 → 敵對 → 關係變差", "q": "(c) 資料", "note": "Source: raise/bet ships → rivalry → worse relations", "kind": "text", "fs": 0.028, "pen": "purple", "teach": "Phrase: According to Source A, … then the detail.", "teach_zh": "句式：According to Source A, … 再寫細節。"}]}, {"tag": "題c自己知識", "tb": "ws2b", "wb": "note", "say": "Own knowledge reason: after HMS Dreadnought (1906), Britain and Germany expanded navies; arms race raised fear of war / suspicion.", "say_zh": "自己知識：1906 無畏艦後英德擴軍；軍備競賽令怕戰爭／猜疑上升。", "mark": [["blank", "hl"]], "stamp": "(c) 己知", "teach": "Rule: own knowledge must NOT only repeat the cartoon — add 1906 / naval race / pre-1914 tension.", "teach_zh": "規矩：自己知識唔可以只重複漫畫——要加 1906／海軍競賽／1914 前緊張。", "sec": "qc", "quiz": true, "fills": [{"id": "c5", "box": [0.1, 0.36, 0.9, 0.48], "text": "Own: Dreadnought 1906 → naval race → suspicion up", "zh": "己知：無畏艦1906→海軍競賽→猜疑↑", "q": "(c) 己知", "note": "Own: Dreadnought 1906 → naval race → suspicion up", "kind": "text", "fs": 0.028, "pen": "green", "teach": "Other valid own points: two-power standard; German naval laws; Anglo-German rivalry.", "teach_zh": "其他可用己知：兩國標準；德國海軍法；英德對立。"}]}, {"tag": "題c全句骨架", "tb": "ws2b", "wb": "note", "say": "Full skeleton (rewrite yourself): Effect.… According to Source A,… Own knowledge: …", "say_zh": "全句骨架（自己改寫）：Effect.… According to Source A,… Own knowledge: …", "mark": [["qc", "hl"]], "stamp": "(c) 骨架", "teach": "Rule: three blocks in order = easier for marker to give 1+2+2.", "teach_zh": "規矩：三塊按序寫＝改卷老師易俾 1+2+2。", "sec": "qc", "quiz": false, "fills": [{"id": "c6", "box": [0.1, 0.5, 0.9, 0.62], "text": "Order: Effect → Source A → own knowledge", "zh": "次序：影響→資料 A→自己知識", "q": "(c) 序", "note": "Order: Effect → Source A → own knowledge", "kind": "text", "fs": 0.028, "pen": "red", "teach": "Leave the answer lines on page 2 blank until YOU write — this video is the coach only.", "teach_zh": "第 2 頁答案線留空等你寫——片只係教練。"}]}, {"tag": "檢查清單", "tb": "ws2a", "wb": "note", "say": "Before you write: (a) both names (b) race + ONE clue (c) labels Source A + own knowledge + 1+2+2.", "say_zh": "動筆前檢查：（a）兩個名（b）競賽＋一個線索（c）標 Source A＋own knowledge＋1+2+2。", "mark": [["header", "hl"]], "stamp": "動筆清單", "teach": "Rule: fill your own sheet by hand after pausing — then submit THAT paper.", "teach_zh": "規矩：暫停後用手寫滿你自己的紙——交嗰份紙。", "sec": "end", "quiz": true, "fills": [{"id": "e1", "box": [0.1, 0.22, 0.9, 0.34], "text": "Checklist (a)(b)(c) · then write on YOUR WS2", "zh": "清單 (a)(b)(c) · 然後寫在你自己的 WS2", "q": "清單", "note": "Checklist (a)(b)(c) · then write on YOUR WS2", "kind": "text", "fs": 0.028, "pen": "green", "teach": "Replay any section from directory if a part is still unclear.", "teach_zh": "仲未清可用目錄跳回重看。"}]}, {"tag": "收結", "tb": "ws2b", "wb": "note", "say": "Done coaching. Your Worksheet 2 is still unfinished until YOU write. Good luck — method over copying.", "say_zh": "教練完。Worksheet 2 在你動筆前仍算未完成。加油——方法大過抄襲。", "mark": [["blank", "hl"]], "stamp": "自己寫", "teach": "Rule: if stuck on (c), say the three headings out loud first, then write.", "teach_zh": "規矩：卡在（c）就先大聲講三個標題，再寫。", "sec": "end", "quiz": false, "fills": [{"id": "e2", "box": [0.1, 0.36, 0.9, 0.48], "text": "Coach done · your handwriting = the homework", "zh": "教練完 · 你的字跡先係功課", "q": "收結", "note": "Coach done · your handwriting = the homework", "kind": "text", "fs": 0.028, "pen": "red", "teach": "Linked UT skill: cartoon DBQ uses the same Source + own knowledge habit.", "teach_zh": "連 UT：漫畫資料題同一套「資料＋自己知識」。"}]}];
+var LABEL={"intro": "0 這份功課是甚麼", "src": "1 資料 A 點樣睇", "qa": "2 題 (a) 點樣答", "qb": "3 題 (b) 點樣答", "qc": "4 題 (c) 點樣答", "end": "5 自己動筆前檢查"};
+var TOC=[{"i": 0, "sec": "intro", "label": "功課未交", "zh": "這支片教你點樣填歷史 Worksheet 2（無畏艦漫畫）。你的紙仍是空白——稍後自己寫。"}, {"i": 1, "sec": "intro", "label": "紙頭資料", "zh": "紙頭：循道中學 · 中三歷史 · 第一次世界大戰 · Worksheet 2。"}, {"i": 2, "sec": "intro", "label": "先睇資料", "zh": "指令：細閱下面資料，然後回答下列問題。"}, {"i": 3, "sec": "src", "label": "1908 年", "zh": "資料 A 是 1908 年英國漫畫——一戰 1914 年才爆發，所以這是戰前氣氛。"}, {"i": 4, "sec": "src", "label": "賭局場面", "zh": "場面：兩人坐枱，用細軍艦／無畏艦模型打賭——好似啤牌賭局。"}, {"i": 5, "sec": "src", "label": "認人 Y", "zh": "人物 Y（德皇外形）：對白——「我押三艘無畏艦。」"}, {"i": 6, "sec": "src", "label": "認人 X", "zh": "人物 X：約翰牛外形（英國象徵）——「為表示無惡意，我再加三艘。」"}, {"i": 7, "sec": "src", "label": "無畏艦線索", "zh": "枱上細船係無畏艦模型——漫畫指出軍備／海軍競賽的主線索。"}, {"i": 8, "sec": "src", "label": "漫畫訊息", "zh": "總訊息：英德在海軍建造上競賽；語氣客氣但關係愈來愈繃。"}, {"i": 9, "sec": "qa", "label": "(a) 題幹", "zh": "（a）指出人物 X 和 Y——短答認人題。"}, {"i": 10, "sec": "qa", "label": "(a) 三步", "zh": "方法：（1）睇對白（2）對符號（約翰牛／德皇）（3）寫 X＝… Y＝…"}, {"i": 11, "sec": "qa", "label": "(a) 句式", "zh": "句式：X is … (Britain). Y is … (Germany). 然後停——（a）唔使長文。"}, {"i": 12, "sec": "qb", "label": "(b) 題幹", "zh": "（b）漫畫顯示英德之間甚麼競賽？引資料 A 一個線索並解釋。"}, {"i": 13, "sec": "qb", "label": "(b) 競賽名", "zh": "競賽＝英德之間的海軍／無畏艦／軍備競賽。"}, {"i": 14, "sec": "qb", "label": "(b) 選線索", "zh": "只選一個線索，例如：用無畏艦模型打賭／加注，或「押三艘／再加三艘」對白。"}, {"i": 15, "sec": "qb", "label": "(b) 思路", "zh": "思路（用你自己文字重寫）：競賽＝海軍競賽。線索＝枱上無畏艦／「再加三艘」。解釋＝雙方不斷建更多軍艦壓過對方。"}, {"i": 16, "sec": "qc", "label": "(c) 題幹", "zh": "（c）這場競賽如何影響廿世紀初英德關係？資料 A 一個理由＋自己知識一個。（1+2+2）"}, {"i": 17, "sec": "qc", "label": "記得標明", "zh": "紙上提醒框：要寫明你用緊 Source A 同 own knowledge。"}, {"i": 18, "sec": "qc", "label": "(c) 影響", "zh": "影響（約 1 分意思）：關係惡化／更緊張／更猜疑／敵對競賽。"}, {"i": 19, "sec": "qc", "label": "(c) 資料因", "zh": "資料 A 理由：互相比拼押／加無畏艦＝互相想建多過對方 → 不信任。"}, {"i": 20, "sec": "qc", "label": "(c) 己知", "zh": "自己知識：1906 無畏艦後英德擴軍；軍備競賽令怕戰爭／猜疑上升。"}, {"i": 21, "sec": "qc", "label": "(c) 骨架", "zh": "全句骨架（自己改寫）：Effect.… According to Source A,… Own knowledg"}, {"i": 22, "sec": "end", "label": "動筆清單", "zh": "動筆前檢查：（a）兩個名（b）競賽＋一個線索（c）標 Source A＋own knowledge＋1+2+2。"}, {"i": 23, "sec": "end", "label": "自己寫", "zh": "教練完。Worksheet 2 在你動筆前仍算未完成。加油——方法大過抄襲。"}];
+var QUIZ_BANK=[{"sec": "intro", "q": "這支片最正確的用法是？", "opts": ["學方法後自己寫上 WS2 交", "直接把影片截圖當功課交", "叫人代填整張紙", "只睇唔使寫"], "ans": 0, "why": "片係教練；要交的是你手寫的 Worksheet 2。"}, {"sec": "intro", "q": "答資料題前應先做甚麼？", "opts": ["先 Scramble 自己知識", "先 Study Source", "先交空白紙", "先跳過漫畫"], "ans": 1, "why": "指令寫 Study the Sources below and answer…"}, {"sec": "intro", "q": "Worksheet 2 主題漫畫同邊樣最有關？", "opts": ["農作物價格", "無畏艦／海軍", "足球對抗", "鐵路時刻"], "ans": 1, "why": "Source A 用 dreadnought 模型打賭。"}, {"sec": "src", "q": "Source A 的出版年份是？", "opts": ["1906", "1908", "1914", "1918"], "ans": 1, "why": "紙上寫 British cartoon published in 1908。"}, {"sec": "src", "q": "1908 相對一戰爆發（1914）代表甚麼？", "opts": ["戰後回憶", "戰前已有海軍對立氣氛", "大戰正打得激烈", "與軍備無關"], "ans": 1, "why": "戰前漫畫顯示英德已在競賽。"}, {"sec": "src", "q": "漫畫場面最似甚麼？", "opts": ["野餐", "啤牌／打賭加注", "上課點名", "簽和約"], "ans": 1, "why": "兩人用軍艦模型 bet／raise。"}, {"sec": "src", "q": "「I raise you three」語氣客氣，實際訊息係？", "opts": ["真心和好", "用更多軍艦回應＝敵對競賽", "英國投降", "德國已勝"], "ans": 1, "why": "反話：口說 no ill feeling，手卻加注無畏艦。"}, {"sec": "src", "q": "讀漫畫正確三步是？", "opts": ["年份→抄全文→交", "符號→動作→訊息", "只背年份", "只睇顏色"], "ans": 1, "why": "symbols → action → message。"}, {"sec": "src", "q": "枱上細船模型主要象徵？", "opts": ["漁船", "無畏艦／軍艦", "玩具火車", "商船貿易和平"], "ans": 1, "why": "對白直接講 dreadnoughts。"}, {"sec": "src", "q": "HMS Dreadnought 下水大約係？", "opts": ["1899", "1906", "1914", "1918"], "ans": 1, "why": "1906 無畏艦令舊戰艦過時，引發海軍競賽。"}, {"sec": "qa", "q": "(a) 題要求你做甚麼？", "opts": ["寫長篇關係分析", "Identify persons X and Y", "只畫箭嘴", "只抄年份"], "ans": 1, "why": "題幹：Identify persons X and Y。"}, {"sec": "qa", "q": "認人時最有用的線索是？", "opts": ["紙張厚度", "對白＋漫畫符號（約翰牛／德皇外形）", "頁腳 icon", "老師簽名"], "ans": 1, "why": "bubbles + symbols → names。"}, {"sec": "qa", "q": "教學上 X 通常係邊個象徵？", "opts": ["法國 Marianne", "John Bull（英國）", "美國 Uncle Sam 先決", "俄國北極熊唯一答案"], "ans": 1, "why": "英國漫畫常用 John Bull 代表 Britain。"}, {"sec": "qa", "q": "教學上 Y 較合理係？", "opts": ["Kaiser William II（德皇）", "英國首相", "塞爾維亞國王", "美國總統"], "ans": 0, "why": "外形＋押無畏艦對白指向德皇。"}, {"sec": "qa", "q": "(a) 答案應點寫？", "opts": ["只寫一個名", "清楚寫 X=… 同 Y=…", "只寫 Germany", "留空"], "ans": 1, "why": "兩個人物都要標明。"}, {"sec": "qb", "q": "(b) 最少要包含邊兩樣？", "opts": ["只寫年份", "競賽名稱＋一個資料線索並解釋", "只畫船", "三個無關例子"], "ans": 1, "why": "What race… Cite one clue… and explain。"}, {"sec": "qb", "q": "這幅漫畫顯示的競賽較準確係？", "opts": ["殖民搶地唯一", "naval／dreadnought race", "足球世界盃", "關稅戰為主"], "ans": 1, "why": "船模型同 dreadnought 對白。"}, {"sec": "qb", "q": "(b) 可以選作 ONE clue 的例子？", "opts": ["頁腳 SDG icon", "他們用無畏艦模型打賭／加注", "你昨晚溫習時間", "老師名字"], "ans": 1, "why": "線索必須來自 Source A。"}, {"sec": "qb", "q": "寫 clue 之後還要做甚麼？", "opts": ["立刻交卷", "短 explain 點解呢個線索顯示該競賽", "再抄三個線索", "刪年份"], "ans": 1, "why": "題目要求 cite and explain。"}, {"sec": "qb", "q": "點解唔宜一次列很多線索？", "opts": ["紙太白", "題目寫 ONE clue", "老師討厭船", "1908 唔重要"], "ans": 1, "why": "跟題：one clue。"}, {"sec": "qc", "q": "(c) 分數結構 1+2+2 通常指？", "opts": ["三條無關選擇題", "影響＋資料理由＋自己知識理由", "只抄 Source", "只寫 own knowledge"], "ans": 1, "why": "紙上／題幹要求 Source 一個＋own knowledge 一個。"}, {"sec": "qc", "q": "答案裏為甚麼要寫 Source A／own knowledge？", "opts": ["裝飾", "提醒框要求；方便按項俾分", "可唔寫", "只寫中文名"], "ans": 1, "why": "Remember to specify you are using Source A and own knowledge。"}, {"sec": "qc", "q": "影響句較合理係？", "opts": ["英德更友好無猜疑", "relations worsened／more tense／more suspicious", "英國退出歐洲", "德國解散海軍"], "ans": 1, "why": "加注競賽顯示敵對升級。"}, {"sec": "qc", "q": "資料理由應連去邊樣細節？", "opts": ["空白頁厚度", "bet／raise dreadnoughts → rivalry／distrust", "足球比分", "無關天氣"], "ans": 1, "why": "要用漫畫具體細節撑「關係變差」。"}, {"sec": "qc", "q": "自己知識較好加邊樣（唔只重複漫畫）？", "opts": ["只重複 they bet ships", "Dreadnought 1906 後海軍擴張／猜疑上升", "抄同學名", "寫午餐餐單"], "ans": 1, "why": "own knowledge 要額外史實。"}, {"sec": "qc", "q": "建議作答次序？", "opts": ["亂序", "Effect → Source A → own knowledge", "只寫 own knowledge", "先交再寫"], "ans": 1, "why": "方便 marker 按 1+2+2 俾分。"}, {"sec": "end", "q": "睇完片你應該？", "opts": ["交影片連結當 WS2", "暫停後用手寫填自己的 Worksheet 2", "撕毀 Source A", "唔使理 (c)"], "ans": 1, "why": "功課＝你的紙；片唔代交。"}, {"sec": "end", "q": "卡在 (c) 時可先做？", "opts": ["放棄", "大聲講三個標題再寫", "刪 Reminder", "只畫圖案"], "ans": 1, "why": "Effect／Source／own 三塊先出口再落筆。"}, {"sec": "all", "q": "John Bull 在英國漫畫通常代表？", "opts": ["德國", "Britain", "奧匈", "意大利"], "ans": 1, "why": "傳統英國國家象徵。"}, {"sec": "all", "q": "英德無畏艦競賽同邊個遠因最直接相關？", "opts": ["只民族服裝", "Armaments／naval race", "只有帝國主義定義字", "同盟制度年份"], "ans": 1, "why": "軍備競賽遠因；漫畫正正打艦隊。"}];
+var QUIZ_PER_RUN=10;
+
+(function(){
+ var $=function(i){return document.getElementById(i);};
+ var cur=0,token=0,playing=false,timers=[],SPEED=1,paused=true,pauseAt=Date.now(),stepT0=Date.now();
+ function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+ var tocEl=$("tocmenu"), tocBtn=$("tocbtn");
+ function buildToc(){var h="", last=""; TOC.forEach(function(row){var sec=row.sec||"intro"; if(sec!==last){h+='<div class="qh">'+(LABEL[sec]||sec)+'</div>'; last=sec;} h+='<button type="button" data-i="'+row.i+'">'+esc(row.label)+'<div class="qz">'+esc(row.zh||"")+'</div></button>';}); tocEl.innerHTML=h;}
+ buildToc();
+ function placeToc(){var r=tocBtn.getBoundingClientRect(); tocEl.style.left=Math.max(8, Math.min(r.left, window.innerWidth-tocEl.offsetWidth-8))+"px"; tocEl.style.top=(r.bottom+6)+"px";}
+ tocBtn.addEventListener("click",function(e){e.stopPropagation();tocEl.classList.toggle("open");if(tocEl.classList.contains("open"))placeToc();});
+ tocEl.addEventListener("click",function(e){var b=e.target.closest("button[data-i]"); if(!b)return; var i=+b.getAttribute("data-i"); tocEl.classList.remove("open"); go(i,true);});
+ document.addEventListener("click",function(){tocEl.classList.remove("open");});
+ window.addEventListener("resize",function(){if(tocEl.classList.contains("open"))placeToc();});
+ function paintTocCur(){tocEl.querySelectorAll("button[data-i]").forEach(function(b){b.classList.toggle("cur", +b.getAttribute("data-i")===cur);});}
+ (function(){
+   var mask=document.createElement("div"); mask.id="quizmask";
+   mask.innerHTML='<div id="quizbox"><div id="quizmeta"></div><h3>快速練習（本段）</h3><div id="quizq"></div><div id="quizopts"></div><div id="quizwhy"></div><button type="button" id="quiznext">繼續影片 ▸</button></div>';
+   document.body.appendChild(mask);
+   var shown=0, resume=null, answered=false, used={};
+   function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+   function closeQuiz(){mask.classList.remove("on"); if(resume){var r=resume; resume=null; r();}}
+   $("quiznext").addEventListener("click", closeQuiz);
+   function poolFor(sec){var a=QUIZ_BANK.filter(function(q){return q.sec===sec || q.sec==="all";}); if(a.length<3) a=QUIZ_BANK.slice(); a=a.filter(function(q){return !used[q.q];}); if(!a.length){used={}; a=QUIZ_BANK.filter(function(q){return q.sec===sec || q.sec==="all";}); if(!a.length)a=QUIZ_BANK.slice();} return shuffle(a);}
+   function askOne(sec, done){if(shown>=QUIZ_PER_RUN){done();return;} var pool=poolFor(sec); if(!pool.length){done();return;} var item=pool[0]; used[item.q]=1; shown++; answered=false; resume=done; setPlay(false);
+     $("quizmeta").textContent = "本段「"+(LABEL[sec]||sec)+"」· 本題 "+shown+" / "+QUIZ_PER_RUN+" · 題庫 "+QUIZ_BANK.length;
+     $("quizq").textContent = item.q; $("quizwhy").className=""; $("quizwhy").textContent=""; $("quiznext").className="";
+     var box=$("quizopts"); box.innerHTML=""; var order=item.opts.map(function(op,idx){return {op:op,idx:idx};}); shuffle(order);
+     var newAns=0; order.forEach(function(o,i){if(o.idx===item.ans)newAns=i;});
+     order.forEach(function(o,idx){var b=document.createElement("button"); b.type="button"; b.textContent=o.op;
+       b.addEventListener("click",function(){if(answered)return; answered=true; var ok=idx===newAns; b.className=ok?"ok":"bad"; box.querySelectorAll("button")[newAns].classList.add("ok"); $("quizwhy").textContent=(ok?"答對。 ":"答錯。 ")+(item.why||""); $("quizwhy").className="on"; $("quiznext").className="on";}); box.appendChild(b);});
+     mask.classList.add("on");}
+   window.__histMaybeQuiz=function(step,cont){if(step&&step.quiz&&shown<QUIZ_PER_RUN){askOne(step.sec||"intro",cont);} else cont();};
+   window.__histResetQuizRun=function(){shown=0; used={};};
+ })();
+ (function(){
+   function ensurePad(){var st=document.getElementById("st_note"); if(!st){setTimeout(ensurePad,50);return;} if(document.getElementById("padcard"))return; var d=document.createElement("div"); d.id="padcard"; d.innerHTML='<div class="pq"></div><div class="pen"></div><div class="pzh"></div><div class="phint">撳這裏可跳返材料黃框 · 講完下一點會清板</div>'; st.appendChild(d);}
+   function paintPad(step){ensurePad(); var card=document.getElementById("padcard"); if(!card)return; var fills=(step&&step.fills)||[]; if(!fills.length){card.classList.remove("on");return;} var f=fills[0]; var pen=f.pen||"blue"; card.querySelector(".pq").textContent=f.q||step.stamp||"note"; var en=card.querySelector(".pen"); en.className="pen pen-"+pen; en.textContent=f.note||f.text||""; var zh=card.querySelector(".pzh"); if(f.zh){zh.style.display=""; zh.textContent=f.zh;} else {zh.style.display="none"; zh.textContent="";} card.classList.add("on"); card.onclick=function(e){e.stopPropagation(); if(f.id && typeof locate==="function") locate(f.id);};}
+   window.__paintPad=paintPad;
+ })();
+ // textbook boxes
+ Object.keys(TB).forEach(function(pid){var pg=TB[pid];Object.keys(pg.boxes).forEach(function(k){var b=pg.boxes[k],d=document.createElement("div");d.className="box";d.id="tb_"+k;
+   d.style.left=(b[0]*100)+"%";d.style.top=(b[1]*100)+"%";d.style.width=((b[2]-b[0])*100)+"%";d.style.height=((b[3]-b[1])*100)+"%";$("st_"+pid).appendChild(d);});});
+ // workbook marks and answers
+ Object.keys(WB).forEach(function(pid){var pg=WB[pid];Object.keys(pg.marks||{}).forEach(function(k){var b=pg.marks[k],d=document.createElement("div");d.className="box";d.id="wm_"+k;
+   d.style.left=(b[0]*100)+"%";d.style.top=(b[1]*100)+"%";d.style.width=((b[2]-b[0])*100)+"%";d.style.height=((b[3]-b[1])*100)+"%";$("st_"+pid).appendChild(d);});});
+ var FILLS={},FSTEP={};
+ STEPS.forEach(function(s,i){(s.fills||[]).forEach(function(f){FILLS[f.id]=f;FSTEP[f.id]=i;
+   var b=f.box,d=document.createElement("div");d.className="ans"+(f.kind==="circle"?" circ":"");d.id="an_"+f.id;
+   d.style.left=(b[0]*100)+"%";d.style.top=(b[1]*100)+"%";d.style.width=((b[2]-b[0])*100)+"%";d.style.height=((b[3]-b[1])*100)+"%";
+   if(f.kind!=="circle")d.innerHTML='<span class="at"></span>';
+   d.addEventListener("click",function(e){e.stopPropagation();showExplain(f.id,d);});
+   $("st_"+s.wb).appendChild(d);});});
+ function sizeAns(pid,pw){var st=$("st_"+pid);if(!st)return;st.style.setProperty("--sw",pw+"px");var img=st.querySelector("img"),asp=(img.naturalHeight||1400)/(img.naturalWidth||1000);
+   var ctx=sizeAns.c||(sizeAns.c=document.createElement("canvas").getContext("2d"));ctx.font="100px Arial";
+   st.querySelectorAll(".ans").forEach(function(a){if(a.classList.contains("circ"))return;var f=FILLS[a.id.slice(3)];if(!f)return;var tw=ctx.measureText(f.text).width||1;
+     var r=Math.min((f.box[2]-f.box[0])*98/tw,(f.box[3]-f.box[1])*asp*1.25);a.style.fontSize="calc(var(--sw) * "+r.toFixed(5)+")";});}
+ function later(fn,ms){var t={rem:ms/SPEED,start:Date.now(),id:0};t.go=function(){t.start=Date.now();t.id=setTimeout(function(){var i=timers.indexOf(t);if(i>=0)timers.splice(i,1);fn();},Math.max(0,t.rem));};timers.push(t);if(!paused)t.go();}
+ function freeze(){if(paused)return;paused=true;pauseAt=Date.now();timers.forEach(function(t){clearTimeout(t.id);t.rem-=Date.now()-t.start;});}
+ function unfreeze(){if(!paused)return;paused=false;stepT0+=Date.now()-pauseAt;timers.slice().forEach(function(t){t.go();});}
+ function clearAll(){timers.forEach(function(t){clearTimeout(t.id);});timers=[];document.querySelectorAll(".caret,.fly,.zoom,.zoomcap").forEach(function(c){c.remove();});closeEx();document.querySelectorAll(".ans.now").forEach(function(a){a.classList.remove("now");});}
+ function need(pid){var st=$("st_"+pid);if(!st)return;var im=st.querySelector("img");if(im&&!im.getAttribute("src")&&im.getAttribute("data-src"))im.setAttribute("src",im.getAttribute("data-src"));}function showStage(cam,pid){need(pid);document.querySelectorAll("#"+cam+" .stage").forEach(function(s){s.classList.toggle("on",s.id==="st_"+pid);});for(var j=cur;j<STEPS.length&&j<cur+4;j++){if(STEPS[j].tb)need(STEPS[j].tb);if(STEPS[j].wb)need(STEPS[j].wb);}}
+ function focusCam(cam,pid,region){
+   var c=$(cam),st=$("st_"+pid);if(!st)return;var img=st.querySelector("img"),cw=c.clientWidth,ch=c.clientHeight;if(!cw||!ch)return;
+   var a=(img.naturalHeight||1400)/(img.naturalWidth||1000),x0=0,y0=0,x1=1,y1=1;
+   if(region){x0=Math.max(0,region[0]-.03);y0=Math.max(0,region[1]-.03);x1=Math.min(1,region[2]+.03);y1=Math.min(1,region[3]+.03);}
+   var sFit=Math.min(1,ch/(cw*a)),s=region?Math.min(1/(x1-x0),ch/((y1-y0)*cw*a)):sFit;s=Math.max(sFit,Math.min(s,3.4));
+   var pw=cw*s,ph=pw*a,tx=cw/2-(x0+x1)/2*pw,ty=ch/2-(y0+y1)/2*ph;
+   tx=pw<=cw?(cw-pw)/2:Math.min(0,Math.max(cw-pw,tx));ty=ph<=ch?(ch-ph)/2:Math.min(0,Math.max(ch-ph,ty));
+   st.style.width=pw+"px";st.style.transform="translate("+tx+"px,"+ty+"px)";
+   sizeAns(pid,pw);
+ }
+ function union(list){if(!list.length)return null;var r=[1,1,0,0];list.forEach(function(b){r[0]=Math.min(r[0],b[0]);r[1]=Math.min(r[1],b[1]);r[2]=Math.max(r[2],b[2]);r[3]=Math.max(r[3],b[3]);});return r;}
+ var lastT=null,lastW=null;
+ function setView(s){
+   document.querySelectorAll(".box").forEach(function(b){b.classList.remove("hl");b.classList.remove("flash");});
+   if(s.tb){showStage("tcam",s.tb);$("tbname").textContent=TB[s.tb].name;for(var j=STEPS.indexOf(s)-1;j>=0&&STEPS[j].tb===s.tb;j--){(STEPS[j].tbmark||[]).forEach(function(k){var e=$("tb_"+k);if(e)e.classList.add("hl");});}var tbs=(s.tbmark||[]).map(function(k){var e=$("tb_"+k);if(e)e.classList.add("hl");return TB[s.tb].boxes[k];}).filter(Boolean);
+     lastT=[s.tb,s.tbfocus||union(tbs)];focusCam("tcam",lastT[0],lastT[1]);}
+   (s.wbmark||[]).forEach(function(k){var e=$("wm_"+k);if(e)e.classList.add("hl");});
+   showStage("wcam",s.wb);$("wbname").textContent=WB[s.wb].name;lastW=[s.wb,s.wbfocus||union((s.fills||[]).map(function(f){return f.box;}))];focusCam("wcam",lastW[0],lastW[1]);
+ }
+ window.addEventListener("resize",function(){if(lastT)focusCam("tcam",lastT[0],lastT[1]);if(lastW)focusCam("wcam",lastW[0],lastW[1]);});
+ function putAns(f,full){var a=$("an_"+f.id);if(!a)return;if(f.kind==="circle"){a.classList.toggle("on",!!full);}else{a.querySelector(".at").textContent=full?f.text:"";}}
+ function fillInstant(n){Object.keys(FILLS).forEach(function(id){putAns(FILLS[id],FSTEP[id]===n);});Object.keys(FILLS).forEach(function(id){var a=$("an_"+id);if(!a)return;var f=FILLS[id];a.classList.remove("pen-red","pen-purple","pen-orange","pen-green","pen-blue");if(f.pen)a.classList.add("pen-"+(f.pen||"blue"));});}
+ var onBoard={};
+ function clearBoard(){Object.keys(onBoard).forEach(function(k){onBoard[k].remove();});onBoard={};$("bempty").style.display="";}
+ function addNote(f){if(onBoard[f.id])return;$("bempty").style.display="none";var n=document.createElement("div");n.className="note pen-"+(f.pen||"blue");var zh=f.zh?('<span class="nz">'+esc(f.zh)+"</span>"):"";n.innerHTML='<i>'+esc(f.q||"")+'</i><span class="nh">'+esc(f.note||f.text)+"</span>"+zh;n.onclick=function(){locate(f.id);};$("board").appendChild(n);onBoard[f.id]=n;var bd=$("board");bd.scrollTop=0;}
+ function boardUpTo(n){clearBoard();var s=STEPS[n];if(!s)return;(s.tbmark||[]).concat(s.wbmark||[]).forEach(function(k){if(MSTEP[k]===n)addEv(k,false);});(s.fills||[]).forEach(addNote);}
+ function teach(text,zh,my,done){var t=$("teach"),tt=$("teachtext");t.classList.add("on");tt.textContent="";$("teachzh").textContent=zh||"";var i=0;
+   (function tk(){if(my!==token){t.classList.remove("on");return;}tt.textContent=text.slice(0,++i);if(i<text.length)later(tk,20);else later(function(){t.classList.remove("on");done();},900);})();}
+ function flyTo(fromEl,f,my,done){
+   var a=$("an_"+f.id);if(!fromEl||!a){done();return;}var ra=fromEl.getBoundingClientRect(),rb=a.getBoundingClientRect();if(!ra.width||!rb.width){done();return;}
+   var fl=document.createElement("div");fl.className="fly";fl.textContent=f.text.length>36?f.text.slice(0,36)+"…":f.text;fl.style.left=ra.left+"px";fl.style.top=ra.top+"px";document.body.appendChild(fl);
+   setTimeout(function(){fl.style.left=Math.max(6,rb.left-8)+"px";fl.style.top=(rb.top-6)+"px";},40);
+   later(function(){fl.style.opacity="0";},900);later(function(){fl.remove();if(my===token)done();},1120);
+ }
+ function typeAns(f,my,done){var a=$("an_"+f.id);if(!a){done();return;}a.classList.add("now");
+   if(f.kind==="circle"){a.classList.add("on");later(function(){a.classList.remove("now");done();},900);return;}
+   var sp=a.querySelector(".at"),i=0,caret=document.createElement("span");caret.className="caret";sp.after(caret);sp.textContent="";
+   (function tk(){if(my!==token){caret.remove();return;}sp.textContent=f.text.slice(0,++i);if(i<f.text.length)later(tk,f.text.length>40?14:45);else{caret.remove();later(function(){a.classList.remove("now");done();},300);}})();}
+
+ var KEYPAGE={};Object.keys(TB).forEach(function(pid){Object.keys(TB[pid].boxes).forEach(function(k){KEYPAGE[k]=[pid,TB[pid].boxes[k]];});});
+ Object.keys(WB).forEach(function(pid){Object.keys(WB[pid].marks||{}).forEach(function(k){KEYPAGE[k]=[pid,WB[pid].marks[k]];});});
+ var MSTEP={};STEPS.forEach(function(s,i){(s.tbmark||[]).concat(s.wbmark||[]).forEach(function(k){if(!(k in MSTEP))MSTEP[k]=i;});});
+ function markEl(k){return $("tb_"+k)||$("wm_"+k);}
+ function regionOf(k){need(KEYPAGE[k][0]);var kp=KEYPAGE[k],b=kp[1],img=$("st_"+kp[0]).querySelector("img"),w=b[2]-b[0],h=b[3]-b[1];
+   return {img:img,x:b[0],y:b[1],w:w,h:h,aspect:(w*(img.naturalWidth||1000))/(h*(img.naturalHeight||1400))};}
+ function paint(el,k){var r=regionOf(k);el.style.backgroundImage="url("+r.img.src+")";el.style.backgroundSize=(100/r.w)+"% auto";
+   el.style.backgroundPosition=(r.w>=1?0:r.x/(1-r.w)*100)+"% "+(r.h>=1?0:r.y/(1-r.h)*100)+"%";return r;}
+ function addEv(k,hidden){var id="ev_"+k;if(onBoard[id])return onBoard[id];$("bempty").style.display="none";
+   var n=document.createElement("div");n.className="note ev";var c=document.createElement("div");c.className="crop";var r=paint(c,k);c.style.paddingTop=(100/r.aspect)+"%";n.appendChild(c);
+   var L=LABEL[k]||[k,""];var lb=document.createElement("div");lb.innerHTML='<i style="background:#0b0c0c">book</i>'+esc(L[0])+(L[1]?'<span class="evz">'+esc(L[1])+'</span>':"");n.appendChild(lb);
+   if(hidden)n.style.visibility="hidden";n.onclick=function(){locateMark(k);};$("board").appendChild(n);onBoard[id]=n;return n;}
+ function zoomNote(k,my,done){
+   var bx=markEl(k),note=addEv(k,true),sr=bx?bx.getBoundingClientRect():null;
+   if(!sr||!sr.width){note.style.visibility="visible";done();return;}
+   var z=document.createElement("div");z.className="zoom";var r=paint(z,k);z.style.left=sr.left+"px";z.style.top=sr.top+"px";z.style.width=sr.width+"px";z.style.height=sr.height+"px";document.body.appendChild(z);
+   var W=Math.min(760,innerWidth*0.62),H=W/r.aspect;if(H>innerHeight*0.45){H=innerHeight*0.45;W=H*r.aspect;}
+   var L=LABEL[k]||[k,""];var cap=document.createElement("div");cap.className="zoomcap";cap.innerHTML=esc(L[0])+(L[1]?'<span class="zc">'+esc(L[1])+'</span>':"");cap.style.opacity="0";document.body.appendChild(cap);
+   setTimeout(function(){z.style.left=((innerWidth-W)/2)+"px";z.style.top=(innerHeight*0.2)+"px";z.style.width=W+"px";z.style.height=H+"px";},40);
+   later(function(){cap.style.left=((innerWidth-W)/2)+"px";cap.style.top=(innerHeight*0.2+H+14)+"px";cap.style.opacity="1";},600);
+   later(function(){cap.style.opacity="0";var bd=$("board");bd.scrollTop=note.offsetTop-bd.clientHeight+note.offsetHeight+20;var c=note.querySelector(".crop").getBoundingClientRect();
+     z.style.left=c.left+"px";z.style.top=c.top+"px";z.style.width=c.width+"px";z.style.height=c.height+"px";},2300);
+   later(function(){z.remove();cap.remove();note.style.visibility="visible";if(my===token)done();},2950);
+ }
+ function locateMark(k){setPlay(false);var kp=KEYPAGE[k];var cam=kp[0].charAt(0)==="t"?"tcam":"wcam";showStage(cam,kp[0]);
+   if(cam==="tcam"){lastT=[kp[0],kp[1]];$("tbname").textContent=TB[kp[0]].name;}else{lastW=[kp[0],kp[1]];$("wbname").textContent=WB[kp[0]].name;}
+   focusCam(cam,kp[0],kp[1]);var e=markEl(k);if(e){e.classList.add("flash");setTimeout(function(){e.classList.remove("flash");},5000);}}
+ function run(n,onDone){
+   clearAll();token++;var my=token;cur=Math.max(0,Math.min(STEPS.length-1,n));stepT0=Date.now();if(paused)pauseAt=stepT0;
+   var s=STEPS[cur];
+   $("tag").textContent=s.tag;$("sec").textContent=s.sec||"";$("say").textContent=s.say;$("sayzh").textContent=s.say_zh||"";if(typeof paintTocCur==="function")paintTocCur();if(window.__paintPad)__paintPad(STEPS[cur]);$("num").textContent=cur+" / "+(STEPS.length-1);
+   $("prev").disabled=cur===0;$("next").disabled=cur===STEPS.length-1;
+   fillInstant(cur);boardUpTo(cur);setView(s);$("teachtext").textContent=s.teach?"":"Watch the yellow box on the left, then see where the answer goes.";$("teachzh").textContent=s.teach?"":"留意左邊黃色框,再看答案去哪一格。";
+   later(function(){
+     if(my!==token)return;var k=0,fills=s.fills||[];
+     function finish(){if(onDone)later(function(){if(my===token)onDone();},1400);}
+     function nextFill(){
+       if(my!==token)return;if(k>=fills.length){finish();return;}
+       var f=fills[k++];
+       var go=function(){typeAns(f,my,function(){addNote(f);later(nextFill,250);});};
+       var fly=function(){var from=f.from?($("tb_"+f.from)||$("wm_"+f.from)):null;if(from)flyTo(from,f,my,go);else go();};
+       if(f.teach)teach(f.teach,f.teach_zh,my,fly);else fly();
+     }
+     var nk=(s.tbmark||[]).concat(s.wbmark||[]).filter(function(k){return MSTEP[k]===cur&&LABEL[k];}),ni=0;
+     function nextZoom(){if(my!==token)return;if(ni<nk.length){zoomNote(nk[ni++],my,function(){later(nextZoom,200);});return;}if(s.teach)teach(s.teach,s.teach_zh,my,nextFill);else nextFill();}
+     nextZoom();
+   },900);
+ }
+ function closeEx(){var d=$("expop");if(d)d.remove();}
+ function showExplain(id,anchor){
+   var f=FILLS[id],ex=f.ex||{};if(FSTEP[id]>=cur&&!(FSTEP[id]===cur&&(f.kind==="circle"?anchor.classList.contains("on"):anchor.textContent))){closeEx();return;}
+   setPlay(false);closeEx();var d=document.createElement("div");d.className="expop";d.id="expop";
+   var h='<button class="exx" id="exx">✕</button><div class="exh">'+esc(f.q?f.q+": ":"")+esc(f.text)+'</div>';
+   if(f.zh)h+='<div class="exz">中文:'+esc(f.zh)+'</div>';
+   if(ex.why)h+='<div class="exl">Why</div><div class="exw">'+esc(ex.why)+'</div>';
+   if(ex.why_zh)h+='<div class="exz">'+esc(ex.why_zh)+'</div>';
+   function li(o){return '<li>'+(Array.isArray(o)?esc(o[0])+' <span class="exzi">'+esc(o[1])+'</span>':esc(o))+'</li>';}
+   if(ex.other&&ex.other.length)h+='<div class="exl">Other ways (also OK)</div><ul class="exo">'+ex.other.map(li).join("")+'</ul>';
+   if(ex.avoid&&ex.avoid.length)h+='<div class="exl bad">Don\'t</div><ul class="exa">'+ex.avoid.map(li).join("")+'</ul>';
+   d.innerHTML=h;document.body.appendChild(d);
+   var r=anchor.getBoundingClientRect(),W=d.offsetWidth,H=d.offsetHeight,x=Math.min(innerWidth-W-10,Math.max(10,r.left)),y=r.bottom+8;if(y+H>innerHeight-70)y=Math.max(10,r.top-H-8);
+   d.style.left=x+"px";d.style.top=y+"px";$("exx").onclick=function(e){e.stopPropagation();closeEx();};
+   if(f.from){var e=$("tb_"+f.from)||$("wm_"+f.from);if(e){e.classList.add("flash");setTimeout(function(){e.classList.remove("flash");},4000);}}
+ }
+ document.addEventListener("click",function(e){var d=$("expop");if(d&&!d.contains(e.target))closeEx();});
+ function showMark(k,anchor){
+   setPlay(false);closeEx();var L=LABEL[k]||[k,""];
+   var uses=Object.keys(FILLS).map(function(i){return FILLS[i];}).filter(function(f){return f.from===k;});
+   var d=document.createElement("div");d.className="expop";d.id="expop";
+   var h='<button class="exx" id="exx">✕</button><div class="exh" style="color:#0b0c0c">'+esc(L[0])+'</div>';
+   if(L[1])h+='<div class="exz">中文:'+esc(L[1])+'</div>';
+   STEPS.forEach(function(ss){var mx=ss.markex&&ss.markex[k];if(mx){h+='<div class="exl">About this line 這一句</div><div class="exw">'+esc(mx.why)+'</div>'+(mx.why_zh?'<div class="exz">'+esc(mx.why_zh)+'</div>':'');}});var cs=STEPS[cur];if(cs&&(cs.tbmark||[]).concat(cs.wbmark||[]).indexOf(k)>=0)h+='<div class="exl">In this step</div><div class="exw">'+esc(cs.say||"")+'</div>'+(cs.say_zh?'<div class="exz">'+esc(cs.say_zh)+'</div>':"");
+   h+='<div class="exl">Answers that come from here</div>';
+   if(uses.length){uses.forEach(function(f){var ex=f.ex||{};
+     h+='<div class="exw">→ '+esc(f.q||"")+': <span style="color:#d4001e">'+esc(f.text)+'</span></div>'+(ex.why?'<div>'+esc(ex.why)+'</div>':'')+(ex.why_zh?'<div class="exz">'+esc(ex.why_zh)+'</div>':'')+'<button class="exgo" data-id="'+f.id+'">Show me this answer 看這個答案</button>';});}
+   else h+='<div class="exw">This is the part the question is about. Look here first, then read the question again.</div><div class="exz">這是題目在問的地方。先看這裡,再讀一次題目。</div>';
+   d.innerHTML=h;document.body.appendChild(d);
+   var r=anchor.getBoundingClientRect(),W=d.offsetWidth,H=d.offsetHeight,x=Math.min(innerWidth-W-10,Math.max(10,r.left)),y=r.bottom+8;if(y+H>innerHeight-70)y=Math.max(10,r.top-H-8);
+   d.style.left=x+"px";d.style.top=y+"px";$("exx").onclick=function(e){e.stopPropagation();closeEx();};
+   d.querySelectorAll(".exgo").forEach(function(b){b.onclick=function(e){e.stopPropagation();var id=b.getAttribute("data-id");closeEx();locate(id);};});
+ }
+ document.addEventListener("click",function(e){var b=e.target.closest&&e.target.closest(".box.hl,.box.flash");if(b)showMark(b.id.slice(3),b);});
+ function setBox(d,b){d.style.left=(b[0]*100)+"%";d.style.top=(b[2]*100)+"%";d.style.width=((b[1]-b[0])*100)+"%";d.style.height=((b[3]-b[2])*100)+"%";}
+ function placePop(d,anchor){document.body.appendChild(d);var r=anchor.getBoundingClientRect(),W=d.offsetWidth,H=d.offsetHeight,x=Math.min(innerWidth-W-10,Math.max(10,r.left)),y=r.bottom+8;if(y+H>innerHeight-70)y=Math.max(10,r.top-H-8);
+   d.style.left=x+"px";d.style.top=y+"px";var xb=d.querySelector("#exx");if(xb)xb.onclick=function(e){e.stopPropagation();closeEx();};
+   d.querySelectorAll(".exgo").forEach(function(b){b.onclick=function(e){e.stopPropagation();var id=b.getAttribute("data-id");closeEx();locate(id);};});}
+ function fillBlock(f){var ex=f.ex||{};return '<div class="exl">Answer '+esc(f.q||"")+'</div><div class="exw" style="color:#d4001e">'+esc(f.text)+'</div>'+(ex.why?'<div>'+esc(ex.why)+'</div>':'')+(ex.why_zh?'<div class="exz">'+esc(ex.why_zh)+'</div>':'')+'<button class="exgo" data-id="'+f.id+'">Show me this answer 看這個答案</button>';}
+ function showQ(si,anchor){setPlay(false);closeEx();var s=STEPS[si],d=document.createElement("div");d.className="expop";d.id="expop";
+   var h='<button class="exx" id="exx">✕</button><div class="exh" style="color:#0b0c0c">'+esc(s.tag)+'</div><div class="exw">'+esc(s.say||"")+'</div>'+(s.say_zh?'<div class="exz">'+esc(s.say_zh)+'</div>':"");
+   if(s.teach)h+='<div class="exl">Teacher says</div><div>'+esc(s.teach)+'</div>'+(s.teach_zh?'<div class="exz">'+esc(s.teach_zh)+'</div>':"");
+   (s.fills||[]).forEach(function(f){h+=fillBlock(f);});d.innerHTML=h;placePop(d,anchor);}
+ function showHot(si,hi,anchor){setPlay(false);closeEx();var hh=STEPS[si].hot[hi],f=hh.fill?FILLS[hh.fill]:null,d=document.createElement("div");d.className="expop";d.id="expop";
+   var h='<button class="exx" id="exx">✕</button><div class="exh" style="color:#0b0c0c">'+esc(hh.title)+'</div>';
+   if(hh.why)h+='<div class="exw">'+esc(hh.why)+'</div>'+(hh.why_zh?'<div class="exz">'+esc(hh.why_zh)+'</div>':"");
+   if(f)h+=fillBlock(f);d.innerHTML=h;placePop(d,anchor);}
+ STEPS.forEach(function(s,si){(s.hot||[]).forEach(function(hh,hi){var st=$("st_"+s.wb);if(!st)return;var d=document.createElement("div");d.className="hot";setBox(d,hh.box);d.setAttribute("data-si",si);d.setAttribute("data-hi",hi);st.querySelector("img").after(d);});});
+ STEPS.forEach(function(s,si){if(!s.wb||!s.wbfocus)return;var st=$("st_"+s.wb);if(!st)return;var d=document.createElement("div");d.className="qhot";setBox(d,[s.wbfocus[0],s.wbfocus[2],s.wbfocus[1],s.wbfocus[3]]);d.setAttribute("data-si",si);st.querySelector("img").after(d);});
+ document.addEventListener("click",function(e){var t=e.target;if(!t.closest)return;var h=t.closest(".hot");if(h){showHot(+h.getAttribute("data-si"),+h.getAttribute("data-hi"),h);return;}var q=t.closest(".qhot");if(q)showQ(+q.getAttribute("data-si"),q);});
+ function locate(id){setPlay(false);var i=FSTEP[id];if(i>=cur)go(i+1);else{var s=STEPS[i];setView(s);}var a=$("an_"+id);if(a)setTimeout(function(){showExplain(id,a);},450);}
+ var ended=false;
+ function onStepDone(){if(cur>=STEPS.length-1){ended=true;setPlay(false);return;}go(cur+1);}
+ function go(n){ended=false;run(n,onStepDone);}
+ function setPlay(on){playing=on;$("play").textContent=on?"❚❚ Pause":"▶ Play";$("pp").textContent=on?"❚❚":"▶";if(on)unfreeze();else freeze();}
+ $("play").onclick=function(){if(playing)setPlay(false);else{if(ended)go(0);setPlay(true);}};
+ $("next").onclick=function(){go(cur+1);};$("prev").onclick=function(){go(cur-1);};
+ document.addEventListener("keydown",function(e){if(e.key==="ArrowRight")go(cur+1);if(e.key==="ArrowLeft")go(cur-1);if(e.key===" "){e.preventDefault();$("play").onclick();}});
+ var EST=STEPS.map(function(s,si){var t=2.3;(s.tbmark||[]).concat(s.wbmark||[]).forEach(function(k){if(MSTEP[k]===si&&LABEL[k])t+=3.15;});if(s.teach)t+=s.teach.length*0.02+0.9;(s.fills||[]).forEach(function(f){t+=0.25+(f.kind==="circle"?0.9:f.text.length*(f.text.length>40?0.014:0.045)+0.3);if(f.from)t+=1.12;if(f.teach)t+=f.teach.length*0.02+0.9;});t+=1.4;return Math.max(t,3.2);});
+ var START=[],TOTAL=0;EST.forEach(function(e){START.push(TOTAL);TOTAL+=e;});
+ var lastSec="";STEPS.forEach(function(s,i){if(!i)return;var k=document.createElement("div");k.className="tick";k.style.left=(START[i]/TOTAL*100)+"%";if(s.sec&&s.sec!==lastSec){var sp=document.createElement("span");sp.textContent=s.sec.charAt(0);k.appendChild(sp);k.style.background="#ffdd00";lastSec=s.sec;}$("track").appendChild(k);});
+ function fmt(s){s=Math.max(0,Math.floor(s));return("0"+Math.floor(s/60)).slice(-2)+":"+("0"+(s%60)).slice(-2);}
+ function nowT(){return START[cur]+Math.min(EST[cur],((paused?pauseAt:Date.now())-stepT0)/1000*SPEED);}
+ setInterval(function(){var t=nowT();$("fill").style.width=(t/TOTAL*100)+"%";$("knob").style.left=(t/TOTAL*100)+"%";$("ptime").textContent=fmt(t)+" / "+fmt(TOTAL);},200);
+ function seekFrac(f){var t=f*TOTAL,i=0;for(var j=0;j<START.length;j++)if(START[j]<=t)i=j;return i;}
+ var dragging=false;
+ function fracOf(e){var r=$("track").getBoundingClientRect();return Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));}
+ $("track").addEventListener("pointerdown",function(e){dragging=true;$("track").setPointerCapture(e.pointerId);var f=fracOf(e);$("knob").style.left=(f*100)+"%";});
+ $("track").addEventListener("pointermove",function(e){if(!dragging)return;var f=fracOf(e);$("knob").style.left=(f*100)+"%";$("ptime").textContent=fmt(f*TOTAL)+" / "+fmt(TOTAL);});
+ $("track").addEventListener("pointerup",function(e){if(!dragging)return;dragging=false;go(seekFrac(fracOf(e)));});
+ $("pp").onclick=function(){$("play").onclick();};
+ function setSpeed(v){var t=nowT();SPEED=v;stepT0=Date.now()-(t-START[cur])*1000/SPEED;if(paused)pauseAt=Date.now();
+   document.documentElement.style.setProperty("--tf",(0.9/SPEED)+"s");document.documentElement.style.setProperty("--tz",(0.6/SPEED)+"s");document.documentElement.style.setProperty("--tc",(0.8/SPEED)+"s");$("spd").value=String(v);$("spdv").textContent=v.toFixed(2)+"x";
+   try{localStorage.setItem("geo1_spd",String(v));}catch(e){}}
+ $("spd").oninput=function(){setSpeed(parseFloat($("spd").value));};
+ try{var sv=parseFloat(localStorage.getItem("geo1_spd"));if(sv>0)setSpeed(sv);}catch(e){}
+ function setZh(on){document.body.classList.toggle("zhon",on);$("zhbtn").classList.toggle("on",on);$("zhbtn").textContent=on?"中文 ✓":"中文";try{localStorage.setItem("hwv_zh",on?"1":"0");}catch(e){}}
+ $("zhbtn").onclick=function(){setZh(!document.body.classList.contains("zhon"));};
+ try{setZh(localStorage.getItem("hwv_zh")==="1");}catch(e){setZh(false);}
+ document.querySelectorAll(".stage img").forEach(function(im){im.addEventListener("load",function(){if(lastT)focusCam("tcam",lastT[0],lastT[1]);if(lastW)focusCam("wcam",lastW[0],lastW[1]);});});
+ go(0);
+})();
+</script>
+
+<script>
+(function(){
+  function install(){
+    if(typeof onStepDone!=="function" || !window.__histMaybeQuiz){setTimeout(install,50);return;}
+    if(onStepDone.__hist)return;
+    var orig=onStepDone;
+    window.onStepDone=function(){var s=STEPS[cur]; window.__histMaybeQuiz(s, function(){ orig(); });};
+    window.onStepDone.__hist=1;
+    var _go=go;
+    window.go=function(n){if(n===0&&window.__histResetQuizRun)__histResetQuizRun(); var r=_go.apply(this, arguments); if(window.__paintPad)__paintPad(STEPS[cur]); return r;};
+  }
+  install();
+})();
+</script>
+</body>
+
+</html>
