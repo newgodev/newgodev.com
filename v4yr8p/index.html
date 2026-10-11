@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<!-- hist-ws2 white scan + 改寫板 v7 -->
+<!-- hist-ws2 white scan + 改寫板 v8 -->
 <script>if(location.protocol==="http:")location.replace("https://"+location.host+location.pathname+location.search);</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -281,11 +281,11 @@ if(document.readyState==="loading") document.addEventListener("DOMContentLoaded"
 <div class="grid">
   <div class="col">
     <h2>材料（鏡頭只對準這段）<span id="tbname"></span></h2>
-    <div class="cam" id="tcam"><div class="stage" id="st_ws2a"><img data-src="p/ws2a.jpg?v=7" alt="Worksheet 2 · Source A + Q(a)(b)"></div><div class="stage" id="st_ws2b"><img data-src="p/ws2b.jpg?v=7" alt="Worksheet 2 · Q(c)"></div></div>
+    <div class="cam" id="tcam"><div class="stage" id="st_ws2a"><img data-src="p/ws2a.jpg?v=8" alt="Worksheet 2 · Source A + Q(a)(b)"></div><div class="stage" id="st_ws2b"><img data-src="p/ws2b.jpg?v=8" alt="Worksheet 2 · Q(c)"></div></div>
   </div>
   <div class="col c2">
     <h2>筆記板／改寫板<span id="wbname"></span></h2>
-    <div class="cam" id="wcam"><div class="stage" id="st_note"><img data-src="p/note.jpg?v=7" alt="One-page note"></div></div>
+    <div class="cam" id="wcam"><div class="stage" id="st_note"><img data-src="p/note.jpg?v=8" alt="One-page note"></div></div>
     <div class="rw" id="rw"></div>
   </div>
   <div class="col">
@@ -535,7 +535,7 @@ var QUIZ_PER_RUN=10;
  $("zhbtn").onclick=function(){setZh(!document.body.classList.contains("zhon"));};
  try{setZh(localStorage.getItem("hwv_zh")==="1");}catch(e){setZh(false);}
  document.querySelectorAll(".stage img").forEach(function(im){im.addEventListener("load",function(){if(lastT)focusCam("tcam",lastT[0],lastT[1]);if(lastW)focusCam("wcam",lastW[0],lastW[1]);});});
- go(0);
+ window.go=go; window.setPlay=setPlay; window.__STEPS=STEPS; go(0);
 })();
 </script>
 
@@ -554,59 +554,32 @@ var QUIZ_PER_RUN=10;
 })();
 </script>
 <script>
-function overlap3(a,b){function tk(s){return s.toLowerCase().match(/[a-z0-9']+/g)||[];}var A=tk(a),B=tk(b),G={},n=0,i;for(i=0;i+2<A.length;i++)G[A[i]+" "+A[i+1]+" "+A[i+2]]=1;for(i=0;i+2<B.length;i++)if(G[B[i]+" "+B[i+1]+" "+B[i+2]])n++;return n;}
- function cardHTML(s){var z=s[2]?'<div class="zh">原:'+esc(s[2])+'　→　新:'+esc(s[3]||"")+'</div>':'';
-   if(s[1].indexOf("(cut")===0)return '<div class="card"><s>'+esc(s[0])+'</s> ✂ <i>'+esc(s[1].slice(1,-1))+'</i>'+z+'</div>';
-   return '<div class="card"><s>'+esc(s[0])+'</s> → <b>'+esc(s[1])+'</b>'+z+'</div>';}
- function rwOut(f){return f.rw.out||f.text;}
- function rwFrame(f){var r=f.rw;RWCUR=f;
-   $("rw").innerHTML='<div class="rwh">Rewrite board<span>Source / demand → your written answer</span></div><div class="rwmoves"><span id="mv1">1 Keep the demand</span><span id="mv2">2 Build from Source</span><span id="mv3">3 Add own knowledge</span><span id="mv4">4 Check</span></div>'+
-     '<div class="rwlab">The book says ('+esc(r.pg||"")+')</div><div class="rwai">'+segHTML(r.src,r)+'</div><div class="zh">'+esc(r.src_zh||"")+'</div><div class="rwsw" id="rwsw"></div>'+
-     '<div class="rwlab" id="rwol" style="display:none">Order</div><div class="rword" id="rword"></div><div class="zh" id="rwordzh"></div>'+
-     '<div class="rwlab">Your words</div><div class="rwres" id="rwres"></div><div class="zh" id="rwreszh"></div><div class="rwchk" id="rwchk"></div>';
-   $("rw").className="rw on";$("rw").scrollTop=0;return r.src;}
- function rwCheck(src,text){var n=overlap3(src,text),c=$("rwchk");c.className="rwchk "+(n?"bad":"good");c.textContent=n?("✗ "+n+" places still have 3 words in a row from the book"):"✓ 3 words in a row from the book: 0. These are your words.";}
- function rwBottom(){var b=$("rw");b.scrollTop=b.scrollHeight;}
- function closeRw(){RWCUR=null;$("rw").className="rw";$("rw").innerHTML='<div class="rwempty"><b style="color:#1d70b8">改寫板</b>: for long History answers, build here step by step — do not stuff the note pad. 1 keep the demand · 2 use Source clue · 3 add own knowledge · 4 check labels.<div class="zh">改寫板：歷史長答在這裏逐步組句，不要塞滿筆記板。①看清題目 ②用資料線索 ③加自己知識 ④檢查 Source A／own knowledge。</div></div>';}
- function showRewrite(f,my,done){var r=f.rw,src=rwFrame(f),i=0,out=rwOut(f);function stop(){return my!==token;}
-   later(function(){if(stop())return;$("mv1").className="on";document.querySelectorAll("#rw .rk").forEach(function(k){k.classList.add("on");});
-     later(function(){if(stop())return;$("mv1").className="";$("mv2").className="on";nextSwap();},900);},600);
-   function nextSwap(){if(stop())return;if(i>=r.swaps.length){$("mv2").className="";afterSwaps();return;}
-     var s=r.swaps[i],el=document.querySelector('#rw .rs[data-i="'+i+'"]');if(el)el.classList.add("cut");$("rwsw").insertAdjacentHTML("beforeend",cardHTML(s));rwBottom();i++;later(nextSwap,1100);}
-   function afterSwaps(){if(r.order){$("mv3").className="on";$("rwol").style.display="";$("rword").textContent=r.order;$("rwordzh").textContent=r.order_zh||"";rwBottom();later(typeRes,1100);}else{$("mv3").className="skip";typeRes();}}
-   function typeRes(){if(stop())return;$("mv3").className=r.order?"":"skip";var el=$("rwres"),j=0;
-     (function tk(){if(stop())return;el.textContent=out.slice(0,++j);if(j%12===1)rwBottom();if(j<out.length)later(tk,22);else later(function(){if(stop())return;$("mv4").className="on";rwCheck(r.src,out);$("rwreszh").textContent=f.zh||"";rwBottom();later(function(){if(stop())return;done($("rwres"));},1300);},400);})();}}
- function showRewriteStatic(f){var r=f.rw;rwFrame(f);["mv1","mv2","mv4"].forEach(function(id){$(id).className="on";});$("mv3").className=r.order?"on":"skip";
-   document.querySelectorAll("#rw .rk").forEach(function(k){k.classList.add("on");});document.querySelectorAll("#rw .rs").forEach(function(k){k.classList.add("cut");});
-   $("rwsw").innerHTML=r.swaps.map(cardHTML).join("");if(r.order){$("rwol").style.display="";$("rword").textContent=r.order;$("rwordzh").textContent=r.order_zh||"";}
-   $("rwres").textContent=rwOut(f);rwCheck(r.src,rwOut(f));$("rwreszh").textContent=f.zh||"";}
- function rwT(f){var r=f.rw;return 0.6+0.9+r.swaps.length*1.1+(r.order?1.1:0)+rwOut(f).length*0.022+0.4+1.3;}
- 
-if(typeof closeRw==="function")closeRw();
-</script>
-
-<script>
 (function(){
-  function firstRw(){for(var i=0;i<STEPS.length;i++){var f=(STEPS[i].fills||[])[0];if(f&&f.rw)return i;}return -1;}
+  function firstRw(){
+    var S=window.__STEPS||window.STEPS||(typeof STEPS!=="undefined"?STEPS:null);
+    if(!S) return -1;
+    for(var i=0;i<S.length;i++){var f=(S[i].fills||[])[0];if(f&&f.rw)return i;}
+    return -1;
+  }
   function apply(){
     var q=location.search||"";
     var want=-1;
     if(/[?&]seek=rw(?:&|$)/.test(q)) want=firstRw();
     var m=q.match(/[?&]seek=(\d+)/); if(m) want=+m[1];
-    if(want<0||want>=STEPS.length) return false;
+    var S=window.__STEPS||(typeof STEPS!=="undefined"?STEPS:null);
+    if(want<0||!S||want>=S.length) return false;
+    var goFn=window.go; if(typeof goFn!=="function") return false;
     try{
-      if(typeof setPlay==="function") setPlay(false);
-      if(typeof go==="function") go(want);
-      else { cur=want; if(typeof run==="function") run(want, function(){}); }
-      var f=(STEPS[want].fills||[])[0];
+      if(typeof window.setPlay==="function") window.setPlay(false);
+      goFn(want);
+      var f=(S[want].fills||[])[0];
       if(f&&f.rw&&typeof showRewriteStatic==="function") showRewriteStatic(f);
-      try{document.title="歷史 WS2 · rw"+want+" "+(STEPS[want].stamp||"");}catch(e){}
+      document.title="歷史 WS2 · rw"+want+" "+(S[want].stamp||"");
       return true;
     }catch(e){console.warn("seek",e); return false;}
   }
-  var n=0; function tick(){ if(apply()||n++>20) return; setTimeout(tick, 400); }
-  if(document.readyState==="complete") setTimeout(tick, 300);
-  else window.addEventListener("load", function(){ setTimeout(tick, 300); });
+  var n=0; function tick(){ if(apply()|| ++n>25) return; setTimeout(tick, 350); }
+  setTimeout(tick, 800);
 })();
 </script>
 </body>
