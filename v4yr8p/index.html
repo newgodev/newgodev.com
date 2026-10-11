@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<!-- hist-ws2 FULL answers + white scan v9 -->
+<!-- hist-ws2 ALWAYS-visible FULL answers on 改寫板 v10 -->
 <script>if(location.protocol==="http:")location.replace("https://"+location.host+location.pathname+location.search);</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -124,6 +124,22 @@ body.ipadm .rw{font-size:.76rem;line-height:1.3;padding:5px 8px;margin-top:6px}b
 #qmenu button:hover{background:#eef4ff}#qmenu button.cur{background:#1d70b8;color:#fff}
 #qmenu .qh{font-size:.72rem;font-weight:900;color:var(--muted);padding:6px 10px 2px;text-transform:uppercase}
 #qmenu .qz{display:none;font-weight:500;font-size:.8rem;color:#6b4e16}body.zhon #qmenu .qz{display:block}#qmenu button.cur .qz{color:#ffe9a8}
+
+
+/* FULL answer board — dominant center column */
+.c2{display:flex;flex-direction:column;min-height:0}
+.c2 .cam{flex:0 0 26%!important;min-height:0}
+.c2 .rw{flex:1 1 auto!important;min-height:200px;border:4px solid #1d70b8;border-radius:10px;padding:10px 12px;overflow:auto;background:#fffef6;margin-top:6px;font-size:1.05rem;line-height:1.5}
+.rw .rwh{font-weight:900;color:#1d70b8;font-size:1.08rem;margin-bottom:6px}
+.rw .rwh span{font-weight:600;color:#555;font-size:.85rem;margin-left:8px}
+.rw .ans-full{font-size:1.12rem;font-weight:700;color:#111;background:#fff;border:3px solid #1d70b8;border-radius:8px;padding:12px 14px;margin:8px 0;white-space:pre-wrap}
+.rw .ans-zh{font-size:1rem;font-weight:600;color:#222;margin-top:8px;padding:8px 10px;background:#f0f7ff;border-radius:6px}
+.rw .ans-tag{display:inline-block;background:#d4001e;color:#fff;font-weight:900;font-size:.8rem;padding:3px 12px;border-radius:999px;margin-bottom:6px}
+.rw .rwempty{color:#555;font-size:.95rem}
+.rw.on{box-shadow:0 0 0 5px rgba(29,112,184,.25)}
+.rwmoves{display:flex;gap:5px;flex-wrap:wrap;margin:4px 0}
+.rwmoves span{font-size:.72rem;font-weight:900;padding:2px 8px;border-radius:999px;background:#eef0f2;color:#8a9196}
+.rwmoves span.on{background:#1d70b8;color:#fff}
 
 </style>
 <style id="dtap-css">*{touch-action:manipulation}</style>
@@ -281,11 +297,11 @@ if(document.readyState==="loading") document.addEventListener("DOMContentLoaded"
 <div class="grid">
   <div class="col">
     <h2>材料（鏡頭只對準這段）<span id="tbname"></span></h2>
-    <div class="cam" id="tcam"><div class="stage" id="st_ws2a"><img data-src="p/ws2a.jpg?v=9" alt="Worksheet 2 · Source A + Q(a)(b)"></div><div class="stage" id="st_ws2b"><img data-src="p/ws2b.jpg?v=9" alt="Worksheet 2 · Q(c)"></div></div>
+    <div class="cam" id="tcam"><div class="stage" id="st_ws2a"><img data-src="p/ws2a.jpg?v=10" alt="Worksheet 2 · Source A + Q(a)(b)"></div><div class="stage" id="st_ws2b"><img data-src="p/ws2b.jpg?v=10" alt="Worksheet 2 · Q(c)"></div></div>
   </div>
   <div class="col c2">
     <h2>筆記板／改寫板<span id="wbname"></span></h2>
-    <div class="cam" id="wcam"><div class="stage" id="st_note"><img data-src="p/note.jpg?v=9" alt="One-page note"></div></div>
+    <div class="cam" id="wcam"><div class="stage" id="st_note"><img data-src="p/note.jpg?v=10" alt="One-page note"></div></div>
     <div class="rw" id="rw"></div>
   </div>
   <div class="col">
@@ -580,6 +596,73 @@ var QUIZ_PER_RUN=10;
   }
   var n=0; function tick(){ if(apply()|| ++n>25) return; setTimeout(tick, 350); }
   setTimeout(tick, 800);
+})();
+</script>
+<script>
+(function(){
+  function $(id){return document.getElementById(id);}
+  function esc(s){return String(s||"").replace(/&/g,"&").replace(/</g,"<").replace(/>/g,">");}
+  function steps(){return window.__STEPS || (typeof STEPS!=="undefined"?STEPS:null);}
+  window.closeRw=function(){
+    var el=$("rw"); if(!el) return;
+    el.className="rw";
+    el.innerHTML="<div class=\"rwempty\"><b style=\"color:#1d70b8\">改寫板 · Full model answers</b><br>"
+      +"When you reach (a)(b)(c), the COMPLETE answer appears HERE in big text — copy by hand. We do not submit LoiLo for you."
+      +"<div class=\"zh\">到 (a)(b)(c) 時，完整模範答案會用大字顯示在【中間改寫板】——用手抄（唔代交 LoiLo）。</div></div>";
+  };
+  window.paintAnswerBoard=function(step){
+    var el=$("rw"); if(!el) return;
+    if(!step){ closeRw(); return; }
+    var fills=step.fills||[], f=null;
+    for(var j=0;j<fills.length;j++){ if(fills[j]&&fills[j].rw){ f=fills[j]; break; } }
+    if(!f){ for(var i=0;i<fills.length;i++){ var n=(fills[i].note||fills[i].text||""); if(n.length>50){ f=fills[i]; break; } } }
+    if(!f){ closeRw(); return; }
+    var full=(f.rw&&f.rw.out)?f.rw.out:(f.note||f.text||"");
+    var zh=f.zh||"", stamp=step.stamp||"";
+    if(!full||full.length<8){ closeRw(); return; }
+    el.className="rw on";
+    var cards="";
+    if(f.rw&&f.rw.swaps&&f.rw.swaps.length){
+      cards="<div class=\"rwmoves\"><span class=\"on\">1</span><span class=\"on\">2</span><span class=\"on\">3</span><span class=\"on\">Copy</span></div>";
+      f.rw.swaps.forEach(function(s){
+        cards+="<div style=\"margin:3px 0;padding:4px 8px;background:#f4f8ff;border:1px solid #cfe0ff;border-radius:6px;font-size:.86rem\"><b>"
+          +esc(s[0])+"</b> → "+esc(s[1])+(s[3]?"<div class=\"zh\" style=\"margin:0;color:#555\">"+esc(s[3])+"</div>":"")+"</div>";
+      });
+    }
+    el.innerHTML="<div class=\"rwh\">改寫板<span>"+esc(stamp)+" · copy by hand</span></div>"
+      +"<span class=\"ans-tag\">完整模範答案 · FULL MODEL ANSWER</span>"+cards
+      +"<div class=\"ans-full\">"+esc(full)+"</div>"
+      +(zh?"<div class=\"ans-zh\">中文："+esc(zh)+"</div>":"")
+      +"<div style=\"margin-top:8px;font-size:.85rem;color:#00703c;font-weight:800\">✓ Copy this WHOLE answer onto YOUR worksheet by hand.（唔代交 LoiLo）</div>";
+  };
+  window.showRewriteStatic=function(f){
+    var S=steps(), step=(S&&typeof cur==="number"&&S[cur])?S[cur]:null;
+    if(!step&&f) step={stamp:(f.rw&&f.rw.pg)||"answer", fills:[f]};
+    if(step) paintAnswerBoard(step);
+  };
+  window.showRewrite=function(f,my,done){
+    showRewriteStatic(f);
+    setTimeout(function(){ var box=document.querySelector("#rw .ans-full")||$("rw"); if(typeof done==="function") done(box); }, 350);
+  };
+  function syncBoard(){
+    try{ var S=steps(); if(!S) return; var c=(typeof cur==="number")?cur:0; if(c<0||c>=S.length) return; paintAnswerBoard(S[c]); }catch(e){}
+  }
+  function install(){
+    if(typeof window.go==="function" && !window.go.__ansHooked){
+      var _go=window.go;
+      window.go=function(n){ var r=_go.apply(this,arguments); setTimeout(syncBoard,40); setTimeout(syncBoard,250); return r; };
+      window.go.__ansHooked=true;
+    }
+    if(window.__paintPad && !window.__paintPad.__ansHooked){
+      var _pp=window.__paintPad;
+      window.__paintPad=function(){ var r=_pp.apply(this,arguments); setTimeout(syncBoard,30); return r; };
+      window.__paintPad.__ansHooked=true;
+    }
+    syncBoard();
+  }
+  var n=0;(function tick(){ if(typeof window.go==="function"){ install(); return; } if(++n<50) setTimeout(tick,150); else closeRw(); })();
+  if(document.readyState==="complete") setTimeout(function(){ closeRw(); install(); },100);
+  else window.addEventListener("load", function(){ setTimeout(function(){ closeRw(); install(); },100); });
 })();
 </script>
 </body>
