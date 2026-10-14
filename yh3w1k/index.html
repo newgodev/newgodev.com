@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>W01 益友作文訂正 · 魯迪</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0b0c0c;--muted:#505a5f;--line:#b1b4b6;--blue:#1d4ed8;--red:#d4351c;--hi:#ffdd00}
+*{box-sizing:border-box}
+html{color-scheme:light;background:#fff;font-size:17px}
+body{margin:0;background:#fff;color:var(--ink);font-family:"Noto Sans HK",Arial,sans-serif;line-height:1.6}
+.top{background:#fff;border-bottom:6px solid #1d70b8;padding:9px 16px}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.tag{font-weight:900;color:#fff;background:#1d70b8;border-radius:4px;padding:2px 12px}
+.num{color:var(--muted);font-size:.85rem}
+.legend{font-size:.88rem;margin-left:4px}
+.legend b.c{color:var(--blue)} .legend b.o{color:var(--red)}
+.ctrl{margin-left:auto;display:flex;gap:8px}
+.ctrl button{font-family:inherit;font-size:.9rem;font-weight:700;padding:7px 13px;border:2px solid var(--ink);background:#fff;border-radius:4px;cursor:pointer}
+.ctrl button.main{background:var(--ink);color:#fff}
+.say{font-size:1.1rem;font-weight:700;margin:7px 0 0;min-height:3em}
+.grid{display:grid;grid-template-columns:.95fr 1.05fr 1.2fr .75fr;gap:12px;padding:10px 14px}
+.col{display:flex;flex-direction:column;min-height:0}
+.col h2{font-size:.92rem;font-weight:900;margin:0 0 6px}
+.col h2 span{font-weight:400;color:var(--muted);margin-left:6px;font-size:.8rem}
+.mats{border:2px solid var(--line);border-radius:6px;padding:12px 14px;font-size:.98rem;line-height:1.75;overflow:auto;background:#fafafa}
+.mats p{margin:0 0 8px}
+.mats ul{margin:0 0 6px;padding-left:20px}
+.mats li{margin:0 0 4px}
+.mats h3{font-size:.98rem;margin:8px 0 2px;color:#1d70b8}
+.src{border-radius:3px;transition:background .3s,outline-color .3s;outline:3px solid transparent}
+.src.hl{background:rgba(255,221,0,.45);outline-color:var(--hi)}
+.src.flash{background:#ffd1f0;outline-color:#ff00aa}
+.paper{border:2px solid var(--ink);border-radius:6px;padding:12px 16px;overflow:auto;font-size:1.02rem;line-height:1.95}
+.pp{margin:0 0 14px}
+.pp .lab{display:block;font-size:.74rem;font-weight:900;color:var(--muted);margin-bottom:2px}
+.pr{color:#3b3f42}
+.c{color:var(--blue);font-weight:700}
+.o{color:var(--red);font-weight:900}
+.blank{display:inline-block;min-width:60px;border-bottom:2px solid var(--line)}
+.blank.on{display:inline;border-bottom:2px solid var(--ink);padding:0 2px}
+.blank.flash{background:#fff08a;outline:3px solid #ff00aa;border-radius:3px}
+.caret{display:inline-block;width:2px;height:1.05em;background:var(--ink);vertical-align:-2px;animation:blink .8s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.brain{margin-top:10px;border:3px solid var(--red);border-radius:12px;padding:9px 12px;background:#fff;font-size:.97rem;min-height:84px;transition:box-shadow .3s}
+.brain .bh{font-weight:900;color:var(--red);font-size:.8rem;margin-bottom:3px}
+.brain.on{box-shadow:0 0 0 6px rgba(212,53,28,.18)}
+.board{border-radius:8px;padding:11px 10px;background:#d9b98a;box-shadow:inset 0 0 0 3px #b8935f;display:flex;flex-direction:column;gap:11px;overflow:auto}
+.bempty{font-size:.86rem;color:#5a4526}
+.note{border-radius:4px;padding:8px 9px;box-shadow:0 4px 9px rgba(0,0,0,.25);transform:rotate(-1deg);font-size:.86rem;font-weight:700;line-height:1.45;cursor:pointer}
+.note:nth-child(even){transform:rotate(1deg)}
+.note:hover{transform:scale(1.03)}
+.note.c{background:#d5e5ff}.note.o{background:#ffd9d3}
+.note i{font-style:normal;font-size:.68rem;color:#fff;background:#0b0c0c;border-radius:3px;padding:0 5px;margin-right:5px}
+.note.o i{background:var(--red)}.note.c i{background:var(--blue)}
+.fly{position:fixed;z-index:60;background:var(--hi);border:2px solid var(--ink);border-radius:5px;padding:4px 10px;font-size:.9rem;font-weight:700;max-width:320px;pointer-events:none;box-shadow:0 8px 20px rgba(0,0,0,.25);transition:left var(--tf,.9s) cubic-bezier(.5,0,.2,1),top var(--tf,.9s) cubic-bezier(.5,0,.2,1),opacity .3s}
+.pop{position:fixed;z-index:61;background:var(--red);color:#fff;font-weight:900;font-size:.82rem;padding:3px 10px;border-radius:999px;pointer-events:none;animation:pop 1.6s forwards}
+@keyframes pop{0%{transform:scale(.4);opacity:0}15%{transform:scale(1.15);opacity:1}25%{transform:scale(1)}80%{opacity:1}100%{opacity:0;transform:translateY(-18px)}}
+.player{background:#0b0c0c;color:#fff;display:flex;align-items:center;gap:12px;padding:10px 16px}
+.player button{font-family:inherit;font-size:1rem;font-weight:900;width:42px;height:34px;border:0;border-radius:4px;background:#fff;color:#0b0c0c;cursor:pointer}
+.track{position:relative;flex:1;height:12px;background:#444;border-radius:999px;cursor:pointer}
+.fill{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--hi);border-radius:999px}
+.knob{position:absolute;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:#fff;border:3px solid var(--hi);left:0}
+.tick{position:absolute;top:-4px;width:2px;height:20px;background:#888}
+.ptime{font-size:.85rem;font-variant-numeric:tabular-nums;min-width:96px;text-align:right}
+.spdwrap{display:flex;align-items:center;gap:6px;font-size:.85rem;font-weight:900}
+.spdwrap input{width:120px;accent-color:#ffdd00;cursor:pointer}
+.spdwrap span{min-width:46px}
+
+.rw{border:3px solid #1d70b8;border-radius:8px;padding:10px 12px;overflow:auto;background:#fff;transition:box-shadow .3s}
+.rw.on{box-shadow:0 0 0 6px rgba(29,112,184,.18)}
+.rwempty{color:var(--muted);font-size:.9rem;line-height:1.6}
+.rwbox{animation:rwin .35s}
+@keyframes rwin{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.rwh{font-weight:900;font-size:1rem;color:#1d70b8}
+.rwh span{font-weight:400;color:var(--muted);font-size:.85rem;margin-left:8px}
+.rwmoves{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 6px}
+.rwmoves span{font-size:.82rem;font-weight:900;padding:3px 11px;border-radius:999px;background:#eef0f2;color:#8a9196;transition:all .3s}
+.rwmoves span.on{background:#1d70b8;color:#fff;transform:scale(1.08)}
+.rwmoves span.skip{text-decoration:line-through;opacity:.6}
+.rwlab{font-size:.74rem;font-weight:900;color:var(--muted);margin-top:9px}
+.rwai{font-size:.98rem;line-height:1.85}
+.rk{border-radius:3px;transition:all .4s}
+.rk.on{background:#ffe766;outline:2px solid #e0b800;font-weight:900}
+.rs{text-decoration:line-through;text-decoration-color:transparent;text-decoration-thickness:3px;transition:color .5s,text-decoration-color .5s}
+.rs.cut{color:#9aa0a6;text-decoration-color:var(--red)}
+.rwsw{display:flex;flex-direction:column;gap:6px}
+.card{display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:#f4f8ff;border:2px solid #cfe0ff;border-radius:8px;padding:4px 8px;font-size:.88rem;animation:cardin .45s}
+@keyframes cardin{from{transform:translateX(-30px);opacity:0}to{transform:none;opacity:1}}
+.card s{color:#9aa0a6}.card b{color:var(--blue)}.card i{font-style:normal;font-weight:900;color:var(--red)}
+.rword{font-size:.95rem;font-weight:700}
+.rwres{font-size:1rem;font-weight:700;color:var(--blue);min-height:1.6em;line-height:1.7}
+.rwchk{margin-top:8px;font-weight:900;font-size:.95rem;display:inline-block;padding:4px 12px;border-radius:999px}
+.rwchk:empty{display:none}
+.rwchk.good{background:#d6f5e0;color:#00703c;animation:pop2 .5s}
+.rwchk.bad{background:#ffe0dc;color:var(--red)}
+@keyframes pop2{0%{transform:scale(.5)}60%{transform:scale(1.15)}100%{transform:scale(1)}}
+.rwx{float:right;font-family:inherit;font-size:.85rem;border:2px solid var(--ink);background:#fff;border-radius:4px;font-weight:700;cursor:pointer;padding:3px 10px}
+
+.blank.on{cursor:pointer}
+.blank.on:hover{background:#fff6cf;border-radius:3px}
+.expop{position:fixed;z-index:70;width:min(380px,92vw);background:#fff;border:3px solid var(--ink);border-radius:10px;padding:10px 14px 12px;box-shadow:0 12px 30px rgba(0,0,0,.25);font-size:.92rem;line-height:1.5;animation:rwin .25s}
+.exh{font-weight:900;color:var(--blue);margin-right:30px}
+.exl{font-size:.72rem;font-weight:900;color:var(--muted);margin-top:8px}
+.exl.bad{color:var(--red)}
+.exw{font-weight:700}
+.exo,.exa{margin:2px 0 0;padding-left:18px}
+.exo li{color:#00703c;font-weight:700}
+.exa li{color:var(--red)}
+.exx{position:absolute;right:8px;top:6px;border:2px solid var(--ink);background:#fff;border-radius:4px;font-weight:900;cursor:pointer;font-family:inherit}
+
+.zh{display:none;color:#6b4e16;font-size:.86rem;font-weight:500;background:#fff8e6;border-radius:4px;padding:2px 7px;margin:3px 0;line-height:1.6}
+body.zhon .zh{display:block}
+.card .zc{flex-basis:100%}
+.exz{color:#6b4e16;background:#fff8e6;border-radius:4px;padding:2px 6px;margin-top:3px;font-size:.88rem}
+.exzi{color:#6b4e16;font-weight:500}
+.gw{border-bottom:1px dotted #9aa0a6;cursor:help}
+.gtip{position:fixed;z-index:80;background:#0b0c0c;color:#fff;font-size:.9rem;font-weight:700;padding:3px 9px;border-radius:5px;pointer-events:none;white-space:nowrap;display:none}
+#zhbtn.on{background:#b8860b;border-color:#b8860b;color:#fff}
+@media (min-width:1101px){
+  html,body{height:100%}
+  body{display:flex;flex-direction:column;height:100vh;overflow:hidden}
+  .top{flex:none}.grid{flex:1;min-height:0}.col{height:100%}
+  .mats,.paper,.board,.rw{flex:1;min-height:0}
+  .player{flex:none}
+}
+@media (max-width:1100px){.grid{grid-template-columns:1fr 1fr}}
+@media (max-width:720px){.grid{grid-template-columns:1fr}}
+</style>
+<style id="dtap-css">*{touch-action:manipulation}</style>
+<script id="dtap-js">
+(function(){var last=0,lx=-99,ly=-99;
+document.addEventListener("touchend",function(e){
+ var t=Date.now(),p=e.changedTouches&&e.changedTouches[0],x=p?p.clientX:0,y=p?p.clientY:0,el=e.target,ptr=false;
+ try{ptr=!!(el&&el.nodeType===1&&(el.closest("button,a,input,select,textarea,label,[role=button],[onclick]")||getComputedStyle(el).cursor==="pointer"));}catch(_){}
+ if(t-last<350&&Math.abs(x-lx)<45&&Math.abs(y-ly)<45&&!ptr&&e.cancelable){e.preventDefault();}
+ last=t;lx=x;ly=y;},{passive:false});
+})();
+</script>
+<style id="ipadmode-css">
+#ipadsw{display:inline-flex;flex:none;border:2px solid #0b0c0c;border-radius:999px;overflow:hidden;cursor:pointer;user-select:none;-webkit-user-select:none;font-weight:900;font-size:.85rem;background:#fff;-webkit-tap-highlight-color:transparent;font-family:inherit;line-height:1.15}
+#ipadsw.float{position:fixed;z-index:2147483000;top:6px;left:50%;transform:translateX(-50%);box-shadow:0 2px 8px rgba(0,0,0,.28)}
+#ipadsw b{padding:6px 12px;color:#505a5f;white-space:nowrap;font-weight:900}
+#ipadsw b.pc{border-left:2px solid #0b0c0c}
+body:not(.ipadm) #ipadsw b.pc{background:#0b0c0c;color:#fff}
+body.ipadm #ipadsw b.ip{background:#1d70b8;color:#fff}
+body.ipadm #ipadsw b{padding:10px 15px;font-size:.95rem}
+html.ipadm-h,html.ipadm-h body{height:100%}
+body.ipadm{height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column;padding-bottom:0!important}
+body.ipadm .top{position:relative;top:auto;flex:none;padding:6px 10px}
+body.ipadm .row{gap:6px 8px}
+body.ipadm .legend{font-size:.78rem;margin-left:0}
+body.ipadm .ctrl button{font-size:1rem;padding:9px 14px}
+body.ipadm .say{min-height:0;margin:4px 0 0;font-size:1.06rem;line-height:1.45}
+body.ipadm .zh{margin:2px 0 0}
+body.ipadm .grid{flex:1;min-height:0;padding:8px 10px;gap:8px;align-items:stretch}
+body.ipadm .grid>.col{display:flex;flex-direction:column;min-height:0;min-width:0;height:100%;overflow:hidden}
+body.ipadm .col h2{flex:none;margin:0 0 4px;font-size:.84rem}
+body.ipadm .cam{flex:1.6 1 0;min-height:0}
+body.ipadm .brain{flex:1 1 0;min-height:0;margin-top:8px;overflow:auto}
+body.ipadm .paper{flex:1 1 0;min-height:0;overflow:auto}
+body.ipadm .board{position:relative;top:0;flex:1 1 0;max-height:none;min-height:0;overflow:auto}
+body.ipadm .teach{max-height:none;min-height:0;overflow:auto}
+body.ipadm .player{position:relative;left:auto;right:auto;bottom:auto;flex:none;padding:8px 12px;gap:10px}
+body.ipadm .player button{width:52px;height:44px;font-size:1.2rem}
+body.ipadm .track{height:18px}
+body.ipadm .knob{width:26px;height:26px;margin:-13px 0 0 -13px}
+body.ipadm .spdwrap input{width:150px;height:26px}
+body.ipadm:is(.lay-m3,.lay-e4,.lay-geo) .grid>.col:nth-child(1){grid-area:a}
+body.ipadm:is(.lay-m3,.lay-e4,.lay-geo) .grid>.col:nth-child(2){grid-area:b}
+body.ipadm:is(.lay-m3,.lay-e4,.lay-geo) .grid>.col:nth-child(3){grid-area:c}
+body.ipadm.lay-e4 .grid>.col:nth-child(4){grid-area:d}
+@media (orientation:portrait){
+ body.ipadm.lay-m3 .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1.25fr) minmax(0,1fr);grid-template-areas:"a b" "a c"}
+ body.ipadm.lay-e4 .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1.2fr) minmax(0,1fr);grid-template-areas:"b c" "a d"}
+ body.ipadm.lay-e4 .grid>.col:nth-child(1){display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);grid-template-rows:auto minmax(0,1fr);column-gap:8px;align-items:start}
+ body.ipadm.lay-e4 .grid>.col:nth-child(1)>h2{grid-column:1/-1}
+ body.ipadm.lay-e4 .grid>.col:nth-child(1)>.pic{grid-column:1;grid-row:2;max-height:100%}
+ body.ipadm.lay-e4 .grid>.col:nth-child(1)>.brain{grid-column:2;grid-row:2;margin-top:0;height:100%}
+ body.ipadm.lay-geo .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:minmax(0,1.7fr) minmax(0,1fr);grid-template-areas:"a b" "c c"}
+ body.ipadm.lay-geo .grid>.col:nth-child(3){flex-direction:row;gap:8px}
+ body.ipadm.lay-geo .grid>.col:nth-child(3)>*{flex:1 1 0;margin:0;min-width:0}
+ body.ipadm.lay-gen .grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-auto-rows:minmax(0,1fr)}
+}
+@media (orientation:landscape){
+ body.ipadm.lay-m3 .grid{grid-template-columns:minmax(0,1.1fr) minmax(0,1.2fr) minmax(0,.9fr);grid-template-rows:minmax(0,1fr);grid-template-areas:"a b c"}
+ body.ipadm.lay-e4 .grid{grid-template-columns:minmax(0,.95fr) minmax(0,1.1fr) minmax(0,1.15fr) minmax(0,.9fr);grid-template-rows:minmax(0,1fr);grid-template-areas:"a b c d"}
+ body.ipadm.lay-geo .grid{grid-template-columns:minmax(0,1.05fr) minmax(0,1.2fr) minmax(0,.8fr);grid-template-rows:minmax(0,1fr);grid-template-areas:"a b c"}
+ body.ipadm.lay-gen .grid{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
+}
+</style>
+<script id="ipadmode-js">
+(function(){
+function boot(){
+ var b=document.body,h=document.documentElement; if(!b||document.getElementById("ipadsw"))return;
+ var cols=document.querySelectorAll(".grid>.col").length, lay="lay-gen";
+ if(document.getElementById("tcam")) lay="lay-geo";
+ else if(cols===4) lay="lay-e4";
+ else if(cols===3&&document.getElementById("cam")) lay="lay-m3";
+ b.classList.add(lay);
+ var sw=document.createElement("span"); sw.id="ipadsw"; sw.setAttribute("role","button"); sw.tabIndex=0;
+ sw.title="iPad \u6a21\u5f0f\uff1a\u4e00\u500b\u756b\u9762\u770b\u5b8c\uff0c\u4e0d\u7528\u6372";
+ sw.innerHTML='<b class="ip">\uD83D\uDCF1 iPad</b><b class="pc">\uD83D\uDCBB \u96FB\u8166</b>';
+ var row=document.querySelector(".top .row");
+ if(row) row.insertBefore(sw,row.firstChild); else { sw.classList.add("float"); b.appendChild(sw); }
+ function apply(on,save){
+  b.classList.toggle("ipadm",!!on); h.classList.toggle("ipadm-h",!!on);
+  if(save){ try{localStorage.setItem("hw_ipad_mode",on?"1":"0");}catch(e){} }
+  setTimeout(function(){ window.dispatchEvent(new Event("resize")); },80);
+ }
+ var ua=navigator.userAgent, isTab=/iPad|iPhone|iPod|Android/.test(ua)||(/Macintosh/.test(ua)&&(navigator.maxTouchPoints||0)>1);
+ var saved=null; try{saved=localStorage.getItem("hw_ipad_mode");}catch(e){}
+ apply(saved===null?isTab:saved==="1",false);
+ var bd=document.getElementById("board");
+ if(bd&&window.MutationObserver){
+  var follow=function(n){ setTimeout(function(){
+   if(!b.classList.contains("ipadm")||n.style.visibility==="hidden"||!n.isConnected) return;
+   var top=n.offsetTop, bot=top+n.offsetHeight;
+   if(bot>bd.scrollTop+bd.clientHeight-4||top<bd.scrollTop) bd.scrollTop=Math.max(0,bot-bd.clientHeight+12);
+  },60); };
+  new MutationObserver(function(ms){ ms.forEach(function(m){
+   if(m.type==="childList") m.addedNodes.forEach(function(n){ if(n.nodeType===1&&n.classList.contains("note")) follow(n); });
+   else if(m.target.nodeType===1&&m.target.classList.contains("note")) follow(m.target);
+  }); }).observe(bd,{childList:true,subtree:true,attributes:true,attributeFilter:["style"]});
+ }
+ function flip(){ apply(!b.classList.contains("ipadm"),true); }
+ sw.addEventListener("click",flip);
+ sw.addEventListener("keydown",function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); flip(); } });
+}
+if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot); else boot();
+})();
+</script>
+
+<style>
+.pages{display:flex;gap:8px;padding:6px 14px;overflow-x:auto;border-bottom:1px solid #b1b4b6;background:#f7f7f7}
+.pages a{flex:none;font-size:.78rem;font-weight:900;color:#1d70b8;text-decoration:none;border:2px solid #1d70b8;border-radius:6px;padding:4px 8px}
+.pages a:hover{background:#e8f1fb}
+.picframe{display:none;position:fixed;inset:8% 6%;z-index:200;background:#fff;border:4px solid #0b0c0c;border-radius:10px;overflow:auto;padding:8px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.picframe.on{display:block}
+.picframe img{width:100%;height:auto}
+.picframe .xx{position:sticky;top:0;float:right;font-weight:900;border:2px solid #0b0c0c;background:#fff;padding:4px 12px;cursor:pointer;z-index:1}
+.qmbtn{font-family:inherit;font-size:.85rem;font-weight:900;padding:5px 12px;border:2px solid #1d70b8;background:#1d70b8;color:#fff;border-radius:999px;cursor:pointer;white-space:nowrap;line-height:1.3}
+#qmenu{position:fixed;z-index:95;background:#fff;border:3px solid #1d70b8;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.3);padding:6px;max-height:75vh;overflow:auto;min-width:300px;display:none}
+#qmenu .qmi{display:flex;align-items:center;gap:10px;width:100%;text-align:left;font-family:inherit;font-size:.92rem;border:0;border-bottom:1px solid #e3e3e3;background:#fff;padding:6px 10px;cursor:pointer;line-height:1.4;color:#0b0c0c}
+#qmenu .qmi:hover{background:#eef4fb}#qmenu .qmi.on{background:#1d70b8;color:#fff}
+#qmenu .qmi b{min-width:64px;font-weight:900}
+</style>
+<div class="pages">
+  <a href="#" data-pic="p/p1.jpg">P2B-1 審題</a>
+  <a href="#" data-pic="p/p3.jpg">P2B-3 大綱</a>
+  <a href="#" data-pic="p/p6.jpg">P2B-6 正文上</a>
+  <a href="#" data-pic="p/p7.jpg">P2B-7 正文中</a>
+  <a href="#" data-pic="p/p8.jpg">P2B-8 正文+總評</a>
+  <a href="#" data-pic="p/p12.jpg">P2B-12 分數</a>
+</div>
+<div class="picframe" id="picframe"><button type="button" class="xx" id="picxx">關閉</button><img id="picimg" alt="掃描"></div>
+</head>
+<body>
+<div class="top">
+  <div class="row">
+    <span class="tag" id="tag">Start</span><span class="num" id="num"></span><button type="button" id="qmbtn" class="qmbtn" aria-haspopup="true">目錄 ▾</button>
+    <span class="legend"><b class="c">藍</b> = 由原文／評語改寫　<b class="o">紅</b> = 你自己補嘅字　· 撳填好嘅字：點解 + 其他寫法</span>
+    <div class="ctrl"><button id="zhbtn">中文</button><button id="prev">← Back</button><button id="play" class="main">▶ Play</button><button id="next">Next →</button></div>
+  </div>
+  <p class="say" id="say"></p>
+  <p class="zh" id="sayzh"></p>
+</div>
+<div class="grid">
+  <div class="col">
+    <h2>老師評語 · 堂上重點 · 原文弱句<span>改寫時只保留事實</span></h2>
+    <div class="mats" id="mats"><h3>老師總評（TSOI Yan Yi）</h3><ul><li><b>老師總評①</b> <span class="src" id="t1">論據充分，能夠論證魯迪對朋友的正面影響；若能在舉出例子後，再解釋魯迪讓艾莉絲獲得的成長，則更能緊扣益友的主題。</span></li><li><b>老師總評②</b> <span class="src" id="t2">部分論據的內容與文章主題關係不大（例如魯迪在異世界之前的故事、三年合約的關係），可以刪去。</span></li><li><b>老師總評③</b> <span class="src" id="t3">欣賞你在各段加入《論語》對朋友的解釋，論證手法多樣。</span></li></ul><h3>卷上紅筆</h3><ul><li><b>紅筆·見聞段</b> <span class="src" id="t4">先論述他的見聞廣博，再討論影響</span></li><li><b>紅筆·前世段</b> <span class="src" id="t5">此部份對論述他是益友的作用不大，宜刪去。</span></li><li><b>紅筆·家裏蹲</b> <span class="src" id="t6">小心用字</span></li></ul><h3>堂上老師講（2026-10-13）</h3><ul><li><b>堂上 10-13 11:35</b> <span class="src" id="c1">未能回應益友，即係對朋友嘅正面影響。寫「正直的人」唔夠，要寫正直的益友——呢份正直對朋友有咩影響。</span></li><li><b>堂上 10-13 11:37</b> <span class="src" id="c2">見聞廣博嘅益友：要寫呢個知識對佢嘅朋友有啲咩幫助，點樣令朋友成長。</span></li><li><b>堂上 10-13 12:06</b> <span class="src" id="c3">訂正唔使成篇重寫：揀一個論點或引論或結論，跟框架加「成長／影響」。</span></li></ul><h3>你原文弱句（要過改寫板）</h3><ul><li><span class="src" id="w1">雖然魯迪和艾莉絲又是三年合約的補習魔法和文法的利益關係，但魯迪也因為他七歲時的驚人魔力一路保護艾莉絲，三年後平安送她回家。</span></li><li><span class="src" id="w2">最後，魯迪見聞廣博，把知識教給朋友。魯迪教會希露菲治療魔法，令她能夠幫人療傷。另外，艾莉絲九歲時只會寫自己的名字。魯迪教了三年，令她學會讀文字、寫文字和計算加減乘除。</span></li><li><span class="src" id="w3">有人說過魯迪前世是家裏蹲，因為在高中一年又一年被人欺凌……被人脫光掛在校門……最後被車撞死。來到異世界後他才決定改變。</span></li><li><span class="src" id="w4">孔子說：「見義不為，無勇也。」這句話的意思是：看見應做的事不做，就是沒有勇氣。魯迪做到了，可見他是一位正直的益友。</span></li><li><span class="src" id="w5">三年裏，魯迪對艾莉絲不離不棄，沒有因為生命危險或困難而放棄對艾莉絲的幫助，可見他是一位誠實可信的益友。</span></li></ul><p style="font-size:.85rem;color:#505a5f">紙本掃描見頂欄連結；目錄用「目錄 ▾」。</p></div>
+    <div class="brain" id="brain"><div class="bh">你個腦點諗</div><div id="braintext">每個要點前會出規矩。之後寫作都可以用。</div></div>
+  </div>
+  <div class="col">
+    <h2>改寫板<span>弱句 → 訂正句</span></h2>
+    <div class="rw" id="rw"><div class="rwempty" id="rwempty">每一句弱句都要經呢度：①保留事實 ②換字 ③調次序 ④檢查。</div></div>
+  </div>
+  <div class="col">
+    <h2>訂正後要抄嘅段落<span>空格填完再抄上訂正紙</span></h2>
+    <div class="paper" id="paper"></div>
+  </div>
+  <div class="col">
+    <h2 style="color:#5a4526">筆記板</h2>
+    <div class="board" id="board"><div class="bempty" id="bempty">每填一格就有一張筆記。撳筆記跳返嗰步。</div></div>
+  </div>
+</div>
+<div class="player">
+  <button id="pp">▶</button>
+  <div class="track" id="track"><div class="fill" id="fill"></div><div class="knob" id="knob"></div></div>
+  <span class="ptime" id="ptime">00:00 / 00:00</span>
+  <label class="spdwrap">Speed <input type="range" id="spd" min="0.5" max="10" step="0.25" value="1"><span id="spdv">1.00x</span></label>
+</div>
+<script>
+var PAPER=[{"lab": "引論", "seg": [["t", "孔子說：「益者三友……友直，友諒，友多聞，益矣。」益友是正直、誠實可信、見聞廣博，"], ["b", "i1"], ["t", "的人。來自《無職轉生》的魯迪，"], ["b", "i2"], ["t", "。"]], "zh": []}, {"lab": "分論點一 · 正直（希露菲）", "seg": [["t", "首先，魯迪為人正直，願意為朋友出頭。希露菲因綠髮被欺，魯迪出手保護，成為她第一個朋友。"], ["b", "a1"], ["t", "。可見他是一位正直的益友。"]], "zh": []}, {"lab": "分論點二 · 誠實可信（艾莉絲）", "seg": [["t", "其次，魯迪為人誠實可信，不拋棄朋友。魔力災禍後，兩人被轉移到魔大陸。"], ["b", "b1"], ["t", "。孔子說：「朋友信之。」"], ["b", "b2"], ["t", "。可見他是一位誠實可信的益友。"]], "zh": []}, {"lab": "分論點三 · 見聞廣博", "seg": [["t", "最後，"], ["b", "c0"], ["t", "。"], ["b", "c1"], ["t", "。孔子說：「學而不厭，誨人不倦。」"], ["b", "c2"], ["t", "。可見他是見聞廣博的益友。"]], "zh": []}, {"lab": "結論", "seg": [["t", "總括而言，魯迪正直、誠實可信、見聞廣博，"], ["b", "d1"], ["t", "。"], ["b", "d2"], ["t", "。"]], "zh": []}];
+var GLOSS={"益友": "對思想品德、學習處世有正面幫助的朋友", "友直": "正直的朋友", "友諒": "誠信的朋友", "友多聞": "見聞廣博的朋友", "立意": "寫作意圖", "論據": "用來證明論點的例子"};
+var SRCZH={"t1": "老師總評①", "t2": "老師總評②", "t3": "老師總評③", "t4": "紅筆·見聞段", "t5": "紅筆·前世段", "t6": "紅筆·家裏蹲", "c1": "堂上 10-13 11:35", "c2": "堂上 10-13 11:37", "c3": "堂上 10-13 12:06", "w1": "原文弱句", "w2": "原文弱句", "w3": "原文弱句", "w4": "原文弱句", "w5": "原文弱句"};
+var STEPS=[{"tag": "開始", "mark": [], "say": "呢條係 W01 寫作能力訂正。你寫挑戰題「魯迪是一位益友」，分數 70.2。左邊係老師評語同堂上重點，中間改寫板，右邊係訂正後要抄落紙嘅句。按播放。", "say_zh": "", "think": "跟老師紅筆 + 10-13 堂上框架；長答一定過改寫板；唔好發明原文冇嘅情節。"}, {"tag": "題目檢查", "mark": ["c1"], "say": "題目要寫「益友」，唔係寫「一個好人」。堂上 11:35：正直的人 ≠ 正直的益友。益友一定要寫到對朋友嘅正面影響同成長。", "say_zh": "", "think": "扣題：特質 → 具體行動 → 朋友得到咩成長 → 回應「益友」。"}, {"tag": "分數同加成", "mark": [], "say": "內容 24（品第 6）、表達 18+3、結構 12、字體 5、錯別字 −3.5，×1.2 = 70.2。訂正重點：推高「成長／影響」句。", "say_zh": "", "think": "挑戰題內容≥6 先 ×1.2；你啱啱過線。"}, {"tag": "堂上① 人≠益友", "mark": ["c1", "c2"], "say": "老師：好多同學寫完「見聞廣博的人」就收工，但其實要回應「益友」。知識要寫成：對朋友有咩幫助、點樣令朋友成長。", "say_zh": ""}, {"tag": "堂上② 訂正範圍", "mark": ["c3", "t2"], "say": "12:06：訂正唔使成篇重寫，可揀一個論點跟框架寫。截止明天 8:05——建議最少改「魔大陸段」「見聞廣博段」，再刪前世。", "say_zh": ""}, {"tag": "老師總評①", "mark": ["t1"], "say": "老師讚論據夠，但要求：舉例後再解釋令艾莉絲／希露菲得到嘅成長。", "say_zh": ""}, {"tag": "老師總評②", "mark": ["t2", "t5"], "say": "要刪：① 異世界前長段；② 「三年合約／利益關係」。", "say_zh": ""}, {"tag": "老師總評③", "mark": ["t3"], "say": "《論語》引用老師欣賞——保留，但引用後一定要扣「令朋友變好」。", "say_zh": ""}, {"tag": "引論·空格1", "mark": [], "say": "空格補「又能令朋友成長／變好」。", "say_zh": "", "fill": {"id": "i1", "text": "又能令朋友成長、變得更好", "zh": "又能令朋友成長、變得更好", "color": "o", "note": "益友定義尾", "ex": {"why": "定義要寫到對朋友有幫助／成長。", "why_zh": "", "other": [["又能幫助朋友成為更好的人", ""]], "avoid": [["只列三特質就完", ""]]}}}, {"tag": "引論·空格2", "mark": [], "say": "立場句：魯迪符合益友。", "say_zh": "", "fill": {"id": "i2", "text": "正正符合這些益友特質，所以我認為他是一位益友", "zh": "正正符合這些益友特質，所以我認為他是一位益友", "color": "o", "note": "立場句", "ex": {"why": "引論要有立場。", "why_zh": "", "other": [["因此我認為魯迪是益友", ""]], "avoid": [["只問唔答", ""]]}}}, {"tag": "改寫·正直段收束", "mark": ["w4", "c1"], "say": "原文用「見義不為無勇也」收「正直」，老師提醒正直≠勇氣。改寫：寫正直點樣令希露菲得到朋友／安全感。", "say_zh": "", "fill": {"id": "a1", "text": "這份正直令希露菲不再孤立無援，更學會有人願意為她出頭，她因而得到真正的朋友與安全感", "zh": "這份正直令希露菲不再孤立無援，更學會有人願意為她出頭，她因而得到真正的朋友與安全感", "color": "c", "note": "正直 → 希露菲成長", "from": "w4", "rw": {"keep": ["希露菲", "保護", "朋友"], "swaps": [["見義不為，無勇也……可見他是一位正直的益友", "這份正直令希露菲……安全感", "用勇氣收正直", "改為對朋友影響"], ["魯迪做到了", "(cut)", "重複讚人", "剪走"]], "order": "行動事實已印 → 希露菲得到咩 → 正直的益友。", "order_zh": ""}, "ex": {"why": "堂上：益友寫對朋友影響。正直≠勇氣。", "why_zh": "", "other": [["他的正直讓希露菲第一次被人守護", ""]], "avoid": [["只寫所以他很有勇氣", ""]]}}}, {"tag": "小測·正直", "mark": [], "say": "小測：正直段收束邊句最啱？ A 所以他很勇敢 B 所以他見聞廣博 C 這令希露菲得到朋友與安全感，可見他是正直的益友", "say_zh": "", "think": "答案 C。A 換成勇氣；B 換錯特質；C 有成長+扣益友。"}, {"tag": "刪·三年合約", "mark": ["w1", "t2"], "say": "弱句「三年合約……利益關係」——老師打？同總評叫刪。保留魔大陸護送。", "say_zh": "", "fill": {"id": "b1", "text": "魯迪沒有丟下艾莉絲，憑自己的實力一路保護她，花了三年把她平安送回家", "zh": "魯迪沒有丟下艾莉絲，憑自己的實力一路保護她，花了三年把她平安送回家", "color": "c", "note": "魔大陸護送（無合約）", "from": "w1", "rw": {"keep": ["魔大陸", "艾莉絲", "三年", "保護", "送回家"], "swaps": [["雖然……利益關係，但", "(cut)", "三年合約", "整句剪走"], ["也因為他七歲時的驚人魔力一路保護", "憑自己的實力一路保護", "冗餘", "簡寫"]], "order": "轉移→不拋棄→護送三年→送回家。", "order_zh": ""}, "ex": {"why": "老師：三年合約弱相關，刪。", "why_zh": "", "other": [["他始終陪伴艾莉絲穿越險境，三年後送她回家", ""]], "avoid": [["再提合約", ""]]}}}, {"tag": "改寫·誠實段加成長", "mark": ["t1", "w5"], "say": "總評①：舉例後解釋艾莉絲成長。", "say_zh": "", "fill": {"id": "b2", "text": "艾莉絲因此明白：真正的朋友會在患難中守諾陪伴，她也學會信任與堅持", "zh": "艾莉絲因此明白：真正的朋友會在患難中守諾陪伴，她也學會信任與堅持", "color": "c", "note": "誠實 → 艾莉絲成長", "from": "w5", "rw": {"keep": ["艾莉絲", "信任", "朋友"], "swaps": [["三年裏……可見他是一位誠實可信的益友", "艾莉絲因此明白……學會信任與堅持", "只讚不離不棄", "改寫成長"]], "order": "引用後先寫艾莉絲學到咩。", "order_zh": ""}, "ex": {"why": "一定要寫朋友成長。", "why_zh": "", "other": [["艾莉絲由依賴變成更坚强，因為有人從不放棄她", ""]], "avoid": [["只重複不離不棄", ""]]}}}, {"tag": "小測·刪咩", "mark": [], "say": "小測：邊樣應該刪？ A 《論語》引用 B 三年合約利益關係 C 魔大陸護送三年", "say_zh": "", "think": "答案 B。A 欣賞；C 核心論據；B 明文叫刪。"}, {"tag": "改寫·見聞·先博", "mark": ["t4", "w2"], "say": "紅筆：先論述見聞廣博，再討論影響。", "say_zh": "", "fill": {"id": "c0", "text": "魯迪見聞廣博：他精通治療魔法，又懂得文字與計算，能把這些知識清楚教給別人", "zh": "魯迪見聞廣博：他精通治療魔法，又懂得文字與計算，能把這些知識清楚教給別人", "color": "c", "note": "先證見聞廣博", "from": "w2", "rw": {"keep": ["治療魔法", "文字", "計算", "教"], "swaps": [["最後，魯迪見聞廣博，把知識教給朋友", "魯迪見聞廣博：他精通……教給別人", "太快跳教朋友", "先立博"]], "order": "特質（博）→ 他懂咩 → 下一格朋友成長。", "order_zh": ""}, "ex": {"why": "跟紅筆次序。", "why_zh": "", "other": [["魯迪知識豐富，既會治療魔法也能教讀寫", ""]], "avoid": [["一開始只寫艾莉絲變好", ""]]}}}, {"tag": "改寫·見聞·再影響", "mark": ["t1", "t4"], "say": "再寫成長：希露菲能療傷；艾莉絲由只會寫名→會讀寫計算。", "say_zh": "", "fill": {"id": "c1", "text": "希露菲學會治療魔法後能幫人療傷；艾莉絲由九歲只會寫自己的名字，三年後已能讀寫與計算，眼界與能力都成長了", "zh": "希露菲學會治療魔法後能幫人療傷；艾莉絲由九歲只會寫自己的名字，三年後已能讀寫與計算，眼界與能力都成長了", "color": "c", "note": "見聞 → 朋友成長", "ex": {"why": "總評要成長；保留前後對比。", "why_zh": "", "other": [["朋友因他的教導而更能照顧自己與他人", ""]], "avoid": [["再寫前世", ""]]}}}, {"tag": "改寫·見聞·收束", "mark": [], "say": "引用後收束扣益友。", "say_zh": "", "fill": {"id": "c2", "text": "他耐心把知識傳給朋友，正是見聞廣博的益友所作的事", "zh": "他耐心把知識傳給朋友，正是見聞廣博的益友所作的事", "color": "o", "note": "見聞段收束", "ex": {"why": "引用後要回應益友。", "why_zh": "", "other": [["可見他把見聞化成對朋友的幫助", ""]], "avoid": [["只解釋句意唔扣鲁迪", ""]]}}}, {"tag": "小測·見聞次序", "mark": [], "say": "小測：見聞段正確次序？ A 成長→再講他博 B 先講他博→再講朋友成長 C 先寫前世→再講教人", "say_zh": "", "think": "答案 B。紅筆：先論述見聞廣博，再討論影響。"}, {"tag": "刪·前世段", "mark": ["w3", "t5", "t6"], "say": "前世家裏蹲長段——紅筆宜刪去 + 小心用字。結論唔好再用前世。", "say_zh": "", "fill": {"id": "d1", "text": "能令希露菲與艾莉絲在品格與能力上成長，正符合孔子所說的益者三友", "zh": "能令希露菲與艾莉絲在品格與能力上成長，正符合孔子所說的益者三友", "color": "c", "note": "結論總括（無前世）", "from": "w3", "rw": {"keep": ["益者三友", "成長"], "swaps": [["有人說過魯迪前世是家裏蹲……", "(cut)", "前世長段", "全部刪去"], ["家裏蹲", "(cut)", "用字不當", "唔好用"]], "order": "三特質→令朋友成長→符合三友。", "order_zh": ""}, "ex": {"why": "刪異世界前故事。", "why_zh": "", "other": [["所以他配稱為益友", ""]], "avoid": [["再提前世／車禍", ""]]}}}, {"tag": "結論·立意", "mark": ["c3"], "say": "堂上：結論進階要引申道理。", "say_zh": "", "fill": {"id": "d2", "text": "因此我們交朋友時，也應努力成為能見證別人成長的益友", "zh": "因此我們交朋友時，也應努力成為能見證別人成長的益友", "color": "o", "note": "結論立意", "ex": {"why": "好結論講點解要識益友。", "why_zh": "", "other": [["願我們都能遇見並成為這樣的益友", ""]], "avoid": [["突然開新例子", ""]]}}}, {"tag": "小測·總評配對", "mark": [], "say": "小測：「舉例後再解釋成長」加喺邊？ A 只加引論 B 每個分論點例子後面 C 只加前世段", "say_zh": "", "think": "答案 B。每段例子後補成長；前世段要刪。"}, {"tag": "對照掃描", "mark": [], "say": "核對紅筆：P2B-6 正直段、P2B-7 合約？同見聞箭嘴、P2B-8 前世刪同總評。頂欄可開掃描。", "say_zh": "", "think": "掃描 p/p6.jpg p7.jpg p8.jpg。"}, {"tag": "交功課檢查", "mark": [], "say": "交前：①無三年合約 ②無前世 ③見聞先博後影響 ④魔大陸／教讀寫後有成長句 ⑤保留《論語》 ⑥唔好整篇抄佳作。截止明天上午 8:05。", "say_zh": "", "think": "10-14 無新寫作講評；跟 10-13 + 卷面。"}, {"tag": "完成", "mark": [], "say": "完成。撳填好嘅字睇點解。用「目錄 ▾」重溫。將右邊訂正句抄上訂正紙——過完改寫板先抄。", "say_zh": ""}];
+
+var QMENU=[{"name": "開始", "q": "題目同分數", "first": 0}, {"name": "堂上", "q": "10-13 益友重點", "first": 3}, {"name": "總評", "q": "老師三點", "first": 5}, {"name": "引論", "q": "定義+立場", "first": 8}, {"name": "正直", "q": "希露菲+改寫", "first": 10}, {"name": "誠實", "q": "刪合約+成長", "first": 12}, {"name": "見聞", "q": "先博後影響", "first": 15}, {"name": "結論", "q": "刪前世+立意", "first": 19}, {"name": "交功課", "q": "檢查清單", "first": 22}];
+
+(function(){
+ var $=function(i){return document.getElementById(i);};
+ var cur=0,token=0,playing=false,timers=[],SPEED=1,paused=true,pauseAt=Date.now(),stepT0=Date.now();
+ (function(){
+   var h="";
+   PAPER.forEach(function(p,pi){
+     h+='<p class="pp"><span class="lab">'+p.lab+'</span>';
+     p.seg.forEach(function(s){ if(s[0]==="t") h+='<span class="pr">'+s[1]+'</span>'; else h+='<span class="blank" id="bl_'+s[1]+'"></span>'; });
+     h+='<span class="zh" id="zh_'+pi+'"></span></p>';
+   });
+   $("paper").innerHTML=h;
+ })();
+ function later(fn,ms){var t={rem:ms/SPEED,start:Date.now(),id:0};t.go=function(){t.start=Date.now();t.id=setTimeout(function(){var i=timers.indexOf(t);if(i>=0)timers.splice(i,1);fn();},Math.max(0,t.rem));};timers.push(t);if(!paused)t.go();}
+ function freeze(){if(paused)return;paused=true;pauseAt=Date.now();timers.forEach(function(t){clearTimeout(t.id);t.rem-=Date.now()-t.start;});}
+ function unfreeze(){if(!paused)return;paused=false;stepT0+=Date.now()-pauseAt;timers.slice().forEach(function(t){t.go();});}
+ function clearAll(){timers.forEach(function(t){clearTimeout(t.id);});timers=[];document.querySelectorAll(".caret,.fly,.pop").forEach(function(c){c.remove();});if($("rw"))closeRw();closeEx();}
+ function setMarks(keys){
+   document.querySelectorAll(".src").forEach(function(s){s.classList.remove("hl");s.classList.remove("flash");});
+   var first=null;(keys||[]).forEach(function(k){var s=$(k);if(s){s.classList.add("hl");if(!first)first=s;}});
+   if(first){var m=$("mats");var y=first.offsetTop-m.offsetTop-40;if(y<m.scrollTop||y>m.scrollTop+m.clientHeight-80)m.scrollTop=Math.max(0,y);}
+ }
+ function fillInstant(n){
+   document.querySelectorAll(".blank").forEach(function(b){b.textContent="";b.className="blank";});
+   for(var i=0;i<n;i++){var w=STEPS[i].fill;if(w){var el=$("bl_"+w.id);if(el){el.innerHTML=gloss(w.text);el.className="blank on "+w.color;}}}renderZh();
+ }
+ var onBoard={};
+ function clearBoard(){Object.keys(onBoard).forEach(function(k){onBoard[k].remove();});onBoard={};$("bempty").style.display="";}
+ function addNote(i){
+   var w=STEPS[i].fill;if(!w||onBoard["n"+i])return;
+   $("bempty").style.display="none";
+   var n=document.createElement("div");n.className="note "+w.color;
+   n.innerHTML='<i>'+(w.color==="o"?"your words":(w.rw?"rewritten":"from AI"))+'</i>'+w.note;
+   n.onclick=function(){locate(i);};
+   $("board").appendChild(n);onBoard["n"+i]=n;
+   var bd=$("board");bd.scrollTop=bd.scrollHeight;
+ }
+ function boardUpTo(n){clearBoard();for(var i=0;i<n;i++)addNote(i);}
+ function scrollPaper(el){var p=$("paper");var y=el.offsetTop-p.offsetTop;if(y>p.scrollTop+p.clientHeight-60||y<p.scrollTop)p.scrollTop=Math.max(0,y-p.clientHeight/2);}
+ function type(el,text,color,my,done){
+   el.className="blank on "+color;el.textContent="";scrollPaper(el);
+   var i=0,caret=document.createElement("span");caret.className="caret";el.after(caret);
+   (function tk(){if(my!==token){caret.remove();return;}el.textContent=text.slice(0,++i);
+     if(i<text.length)later(tk,color==="o"?60:30);else{caret.remove();done();}})();
+ }
+ function flyFrom(srcId,el,text,my,done){
+   var s=$(srcId);if(!s){done();return;}
+   scrollPaper(el);
+   var ra=s.getBoundingClientRect(),rb=el.getBoundingClientRect();
+   var f=document.createElement("div");f.className="fly";f.textContent=text.length>40?text.slice(0,40)+"…":text;
+   f.style.left=ra.left+"px";f.style.top=ra.top+"px";document.body.appendChild(f);
+   requestAnimationFrame(function(){requestAnimationFrame(function(){f.style.left=Math.max(8,rb.left-10)+"px";f.style.top=(rb.top-6)+"px";});});
+   later(function(){f.style.opacity="0";},900);
+   later(function(){f.remove();if(my===token)done();},1150);
+ }
+ function popOwn(el){var r=el.getBoundingClientRect(),p=document.createElement("div");p.className="pop";p.textContent="your own words";p.style.left=r.left+"px";p.style.top=(r.top-30)+"px";document.body.appendChild(p);later(function(){p.remove();},1700);}
+ function showThink(text,my,done){
+   var br=$("brain"),bt=$("braintext");br.classList.add("on");bt.textContent="";var i=0;
+   (function tk(){if(my!==token){br.classList.remove("on");return;}bt.textContent=text.slice(0,++i);
+     if(i<text.length)later(tk,22);else later(function(){br.classList.remove("on");done();},900);})();
+ }
+
+ function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+ function segHTML(ai,r){
+   var marks=[];
+   function add(ph,type,i){var from=0,idx;while((idx=ai.indexOf(ph,from))>=0){var ov=false;for(var q=0;q<marks.length;q++){if(idx<marks[q][1]&&idx+ph.length>marks[q][0])ov=true;}if(!ov){marks.push([idx,idx+ph.length,type,i]);return;}from=idx+1;}}
+   (r.swaps||[]).forEach(function(s,i){add(s[0],"s",i);});
+   (r.keep||[]).forEach(function(k){add(k,"k",0);});
+   marks.sort(function(a,b){return a[0]-b[0];});
+   var h="",p=0;
+   marks.forEach(function(m){h+=esc(ai.slice(p,m[0]));var x=esc(ai.slice(m[0],m[1]));h+=m[2]==="k"?'<span class="rk">'+x+'</span>':'<span class="rs" data-i="'+m[3]+'">'+x+'</span>';p=m[1];});
+   return h+esc(ai.slice(p));
+ }
+ function overlap3(a,b){
+   function tk(s){return s.toLowerCase().match(/[a-z0-9']+/g)||[];}
+   var A=tk(a),B=tk(b),G={},n=0,i;
+   for(i=0;i+2<A.length;i++)G[A[i]+" "+A[i+1]+" "+A[i+2]]=1;
+   for(i=0;i+2<B.length;i++)if(G[B[i]+" "+B[i+1]+" "+B[i+2]])n++;
+   return n;
+ }
+ function cardHTML(s){
+   var z=s[2]?'<div class="zh zc">原:'+esc(s[2])+'　→　新:'+esc(s[3]||"")+'</div>':'';
+   if(s[1].indexOf("(cut")===0)return '<div class="card"><s>'+esc(s[0])+'</s> ✂ <i>'+esc(s[1].slice(1,-1))+'</i>'+z+'</div>';
+   return '<div class="card"><s>'+esc(s[0])+'</s> → <b>'+esc(s[1])+'</b>'+z+'</div>';
+ }
+ function rwFrame(w){
+   var r=w.rw,ai=$(w.from).textContent;
+   $("rw").innerHTML='<div class="rwbox" id="rwbox">'+
+     '<div class="rwmoves"><span id="mv1">1 Keep the facts</span><span id="mv2">2 Swap the words</span><span id="mv3">3 Change the order</span><span id="mv4">4 Check</span></div>'+
+     '<div class="rwlab">AI said</div><div class="rwai">'+segHTML(ai,r)+'</div><div class="zh">'+esc(SRCZH[w.from]||"")+'</div>'+
+     '<div class="rwlab">Swap</div><div class="rwsw" id="rwsw"></div>'+
+     '<div class="rwlab" id="rwol" style="display:none">Order</div><div class="rword" id="rword"></div><div class="zh" id="rwordzh"></div>'+
+     '<div class="rwlab">Your sentence</div><div class="rwres" id="rwres"></div><div class="zh" id="rwreszh"></div>'+
+     '<div class="rwchk" id="rwchk"></div></div>';
+   $("rw").className="rw on";$("rw").scrollTop=0;
+   return ai;
+ }
+ function rwCheck(ai,text){
+   var n=overlap3(ai,text),c=$("rwchk");
+   c.className="rwchk "+(n?"bad":"good");
+   c.textContent=n?("✗ "+n+" places still have 3 words in a row the same as the AI — change them"):"✓ 3 words in a row the same as the AI: 0 — this is your own sentence";
+ }
+ function closeRw(){$("rw").className="rw";$("rw").innerHTML='<div class="rwempty">每一句弱句都要經呢度：①保留事實 ②換字 ③調次序 ④檢查。</div>';}
+ function showRewrite(w,my,done){
+   var r=w.rw,ai=rwFrame(w),i=0;
+   function stop(){return my!==token;}
+   later(function(){if(stop())return;$("mv1").className="on";document.querySelectorAll(".rk").forEach(function(k){k.classList.add("on");});
+     later(function(){if(stop())return;$("mv1").className="";$("mv2").className="on";nextSwap();},900);},600);
+   function nextSwap(){
+     if(stop())return;
+     if(i>=r.swaps.length){$("mv2").className="";afterSwaps();return;}
+     var s=r.swaps[i],el=document.querySelector('.rs[data-i="'+i+'"]');if(el)el.classList.add("cut");
+     $("rwsw").insertAdjacentHTML("beforeend",cardHTML(s));i++;later(nextSwap,1100);
+   }
+   function afterSwaps(){
+     if(r.order){$("mv3").className="on";$("rwol").style.display="";$("rword").textContent=r.order;$("rwordzh").textContent=r.order_zh||"";later(typeRes,1100);}
+     else{$("mv3").className="skip";typeRes();}
+   }
+   function typeRes(){
+     if(stop())return;$("mv3").className=r.order?"":"skip";
+     var el=$("rwres"),j=0;
+     (function tk(){if(stop())return;el.textContent=w.text.slice(0,++j);if(j<w.text.length)later(tk,22);else later(function(){if(stop())return;$("mv4").className="on";rwCheck(ai,w.text);$("rwreszh").textContent=w.zh||"";later(function(){if(stop())return;done($("rwres"));},1300);},400);})();
+   }
+ }
+ function showRewriteStatic(w){
+   var r=w.rw,ai=rwFrame(w);
+   ["mv1","mv2","mv4"].forEach(function(id){$(id).className="on";});$("mv3").className=r.order?"on":"skip";
+   document.querySelectorAll(".rk").forEach(function(k){k.classList.add("on");});
+   document.querySelectorAll(".rs").forEach(function(k){k.classList.add("cut");});
+   $("rwsw").innerHTML=r.swaps.map(cardHTML).join("");
+   if(r.order){$("rwol").style.display="";$("rword").textContent=r.order;$("rwordzh").textContent=r.order_zh||"";}
+   $("rwres").textContent=w.text;rwCheck(ai,w.text);$("rwreszh").textContent=w.zh||"";
+ }
+ function flyRect(ra,el,text,my,done){
+   scrollPaper(el);var rb=el.getBoundingClientRect();
+   var f=document.createElement("div");f.className="fly";f.textContent=text.length>40?text.slice(0,40)+"…":text;
+   f.style.left=ra.left+"px";f.style.top=ra.top+"px";document.body.appendChild(f);
+   requestAnimationFrame(function(){requestAnimationFrame(function(){f.style.left=Math.max(8,rb.left-10)+"px";f.style.top=(rb.top-6)+"px";});});
+   later(function(){f.style.opacity="0";},900);
+   later(function(){f.remove();if(my===token)done();},1150);
+ }
+
+ function closeEx(){var d=$("expop");if(d)d.remove();}
+ function showExplain(i,anchor){
+   var w=STEPS[i].fill,ex=w.ex;if(!ex||!anchor.textContent){closeEx();return;}
+   setPlay(false);closeEx();
+   var d=document.createElement("div");d.className="expop";d.id="expop";
+   var h='<button class="exx" id="exx">✕</button><div class="exh">'+esc(w.text.length>70?w.text.slice(0,70)+"…":w.text)+'</div>';
+   if(w.zh)h+='<div class="exz">中文:'+esc(w.zh)+'</div>';h+='<div class="exl">Why this</div><div class="exw">'+esc(ex.why)+'</div>';if(ex.why_zh)h+='<div class="exz">'+esc(ex.why_zh)+'</div>';
+   if(ex.other&&ex.other.length)h+='<div class="exl">Other choices (also OK)</div><ul class="exo">'+ex.other.map(function(o){return '<li>'+(Array.isArray(o)?esc(o[0])+' <span class="exzi">'+esc(o[1])+'</span>':esc(o))+'</li>';}).join("")+'</ul>';
+   if(ex.avoid&&ex.avoid.length)h+='<div class="exl bad">Don\'t use</div><ul class="exa">'+ex.avoid.map(function(o){return '<li>'+(Array.isArray(o)?esc(o[0])+' <span class="exzi">'+esc(o[1])+'</span>':esc(o))+'</li>';}).join("")+'</ul>';
+   d.innerHTML=h;document.body.appendChild(d);
+   var r=anchor.getBoundingClientRect(),W=d.offsetWidth,H=d.offsetHeight;
+   var x=Math.min(innerWidth-W-10,Math.max(10,r.left)),y=r.bottom+8;if(y+H>innerHeight-70)y=Math.max(10,r.top-H-8);
+   d.style.left=x+"px";d.style.top=y+"px";
+   $("exx").onclick=function(e){e.stopPropagation();closeEx();};
+   if(w.rw)showRewriteStatic(w);
+ }
+ STEPS.forEach(function(s,i){if(!s.fill)return;var el=$("bl_"+s.fill.id);if(el)el.addEventListener("click",function(e){e.stopPropagation();showExplain(i,el);});});
+ document.addEventListener("click",function(e){var d=$("expop");if(d&&!d.contains(e.target))closeEx();});
+
+ var FZH={};STEPS.forEach(function(s){if(s.fill)FZH[s.fill.id]=s.fill;});
+ function escRe(s){return s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");}
+ var GKEYS=Object.keys(GLOSS).sort(function(a,b){return b.length-a.length;});
+ var GRE=GKEYS.length?new RegExp("\\b("+GKEYS.map(escRe).join("|")+")\\b","gi"):null;
+ function gloss(text){var e=esc(text);if(!GRE)return e;return e.replace(GRE,function(m){var z=GLOSS[m.toLowerCase()];return z?'<span class="gw" data-zh="'+z+'">'+m+'</span>':m;});}
+ function renderZh(){PAPER.forEach(function(p,pi){var el=$("zh_"+pi);if(!el||!p.zh)return;var s="";p.zh.forEach(function(g){if(g[0]==="t")s+=g[1];else{var b=$("bl_"+g[1]),f=FZH[g[1]];s+=(b&&b.textContent&&f&&f.zh)?f.zh:"____";}});el.textContent=s;});}
+ var tip=null;
+ function showTip(g){if(!tip){tip=document.createElement("div");tip.className="gtip";document.body.appendChild(tip);}tip.textContent=g.getAttribute("data-zh");tip.style.display="block";var r=g.getBoundingClientRect();tip.style.left=Math.min(innerWidth-tip.offsetWidth-8,Math.max(8,r.left))+"px";tip.style.top=Math.max(4,r.top-tip.offsetHeight-6)+"px";}
+ function hideTip(){if(tip)tip.style.display="none";}
+ document.addEventListener("mouseover",function(e){var g=e.target.closest&&e.target.closest(".gw");if(g)showTip(g);else hideTip();});
+ document.addEventListener("click",function(e){var g=e.target.closest&&e.target.closest(".gw");if(g&&!g.closest(".blank"))showTip(g);});
+ document.querySelectorAll(".mats .src,.pr").forEach(function(s){s.innerHTML=gloss(s.textContent);});
+ function setZh(on){document.body.classList.toggle("zhon",on);$("zhbtn").classList.toggle("on",on);$("zhbtn").textContent=on?"中文 ✓":"中文";try{localStorage.setItem("hwv_zh",on?"1":"0");}catch(e){}}
+ $("zhbtn").onclick=function(){setZh(!document.body.classList.contains("zhon"));};
+ try{setZh(localStorage.getItem("hwv_zh")==="1");}catch(e){setZh(false);}
+ renderZh();
+ function run(n,onDone){
+   clearAll();token++;var my=token;cur=Math.max(0,Math.min(STEPS.length-1,n));stepT0=Date.now();if(paused)pauseAt=stepT0;
+   var s=STEPS[cur];
+   $("tag").textContent=s.tag;$("say").textContent=s.say;$("sayzh").textContent=s.say_zh||"";$("num").textContent=cur+" / "+(STEPS.length-1);
+   $("prev").disabled=cur===0;$("next").disabled=cur===STEPS.length-1;
+   fillInstant(cur);boardUpTo(cur);setMarks(s.mark);
+   later(function(){
+     if(my!==token)return;
+     var w=s.fill;
+     function finish(){var fe=w&&$("bl_"+w.id);if(fe)fe.innerHTML=gloss(w.text);renderZh();addNote(cur);if(onDone)later(function(){if(my===token)onDone();},1500);}
+     if(!w){later(finish,1200);return;}
+     var el=$("bl_"+w.id);
+     var doType=function(){if(w.color==="o")popOwn(el);type(el,w.text,w.color,my,finish);};
+     var go2=function(){if(w.think)showThink(w.think,my,doType);else doType();};
+     if(w.rw)showRewrite(w,my,function(res){var ra=res.getBoundingClientRect();flyRect(ra,el,w.text,my,go2);});
+     else if(w.color==="c"&&w.from)flyFrom(w.from,el,w.text,my,go2);else go2();
+   },900);
+ }
+ function locate(i){
+   setPlay(false);
+   var w=STEPS[i].fill;if(!w)return;
+   if(i>=cur){go(i+1);}
+   var el=$("bl_"+w.id);if(el){scrollPaper(el);el.classList.add("flash");setTimeout(function(){el.classList.remove("flash");},4000);}
+   (STEPS[i].mark||[]).forEach(function(k){var s=$(k);if(s){s.classList.add("flash");setTimeout(function(){s.classList.remove("flash");},4000);}});
+   if(w.think)$("braintext").textContent=w.think;
+   if(w.rw)showRewriteStatic(w);
+ }
+ var ended=false;
+ function onStepDone(){if(cur>=STEPS.length-1){ended=true;setPlay(false);return;}go(cur+1);}
+ function go(n){ended=false;run(n,onStepDone);} window.go=go;
+ function setPlay(on){playing=on;$("play").textContent=on?"❚❚ Pause":"▶ Play";$("pp").textContent=on?"❚❚":"▶";if(on)unfreeze();else freeze();}
+ $("play").onclick=function(){if(playing)setPlay(false);else{if(ended)go(0);setPlay(true);}};
+ $("next").onclick=function(){go(cur+1);};$("prev").onclick=function(){go(cur-1);};
+ document.addEventListener("keydown",function(e){if(e.key==="ArrowRight")go(cur+1);if(e.key==="ArrowLeft")go(cur-1);if(e.key===" "){e.preventDefault();$("play").onclick();}});
+ var EST=STEPS.map(function(s){var t=2.2;var w=s.fill;if(w){t+=w.text.length*(w.color==="o"?0.06:0.03)+1.6;if(w.from)t+=1.2;if(w.rw)t+=0.6+0.9+w.rw.swaps.length*1.1+(w.rw.order?1.1:0)+w.text.length*0.022+1.7;if(w.think)t+=w.think.length*0.022+1;}else t+=1.4;return Math.max(t,3.2);});
+ var START=[],TOTAL=0;EST.forEach(function(e){START.push(TOTAL);TOTAL+=e;});
+ STEPS.forEach(function(s,i){if(!i)return;var k=document.createElement("div");k.className="tick";k.style.left=(START[i]/TOTAL*100)+"%";$("track").appendChild(k);});
+ function fmt(s){s=Math.max(0,Math.floor(s));return("0"+Math.floor(s/60)).slice(-2)+":"+("0"+(s%60)).slice(-2);}
+ function nowT(){return START[cur]+Math.min(EST[cur],((paused?pauseAt:Date.now())-stepT0)/1000*SPEED);}
+ setInterval(function(){var t=nowT();$("fill").style.width=(t/TOTAL*100)+"%";$("knob").style.left=(t/TOTAL*100)+"%";$("ptime").textContent=fmt(t)+" / "+fmt(TOTAL);},200);
+ function seekFrac(f){var t=f*TOTAL,i=0;for(var j=0;j<START.length;j++)if(START[j]<=t)i=j;return i;}
+ var dragging=false;
+ function fracOf(e){var r=$("track").getBoundingClientRect();return Math.max(0,Math.min(1,(e.clientX-r.left)/r.width));}
+ $("track").addEventListener("pointerdown",function(e){dragging=true;$("track").setPointerCapture(e.pointerId);var f=fracOf(e);$("knob").style.left=(f*100)+"%";});
+ $("track").addEventListener("pointermove",function(e){if(!dragging)return;var f=fracOf(e);$("knob").style.left=(f*100)+"%";$("ptime").textContent=fmt(f*TOTAL)+" / "+fmt(TOTAL);});
+ $("track").addEventListener("pointerup",function(e){if(!dragging)return;dragging=false;go(seekFrac(fracOf(e)));});
+ $("pp").onclick=function(){$("play").onclick();};
+ function setSpeed(v){var t=nowT();SPEED=v;stepT0=Date.now()-(t-START[cur])*1000/SPEED;if(paused)pauseAt=Date.now();
+   document.documentElement.style.setProperty("--tf",(0.9/SPEED)+"s");$("spd").value=String(v);$("spdv").textContent=v.toFixed(2)+"x";
+   try{localStorage.setItem("wwi2_spd",String(v));}catch(e){}}
+ $("spd").oninput=function(){setSpeed(parseFloat($("spd").value));};
+ try{var sv=parseFloat(localStorage.getItem("wwi2_spd"));if(sv>0)setSpeed(sv);}catch(e){}
+ go(0);
+})();
+</script>
+
+<script>
+(function(){
+ document.querySelectorAll(".pages a").forEach(function(a){
+  a.addEventListener("click",function(e){e.preventDefault();
+   var f=document.getElementById("picframe"),img=document.getElementById("picimg");
+   img.src=a.getAttribute("data-pic");f.classList.add("on");});
+ });
+ var xx=document.getElementById("picxx"); if(xx) xx.onclick=function(){document.getElementById("picframe").classList.remove("on");};
+ var qm=document.createElement("div");qm.id="qmenu";qm.setAttribute("role","menu");
+ (window.QMENU||[]).forEach(function(it,ix){var b=document.createElement("button");b.type="button";b.className="qmi";b.id="qmi"+ix;
+   var nb=document.createElement("b");nb.textContent=it.name;b.appendChild(nb);
+   if(it.q){var sq=document.createElement("span");sq.textContent=it.q;b.appendChild(sq);}
+   b.onclick=function(e){e.stopPropagation();qm.style.display="none";
+     var btns=document.querySelectorAll("#next,#prev"); // use go via seeking ticks
+     // locate go: click through by dispatching - use internal by finding play and seeking
+     if(typeof go==="function") go(it.first);
+     else {
+       // fallback: set location hash
+       location.hash="step-"+it.first;
+     }
+   };qm.appendChild(b);});
+ document.body.appendChild(qm);
+ var qmbtn=document.getElementById("qmbtn");
+ function qmPlace(){if(!qmbtn)return;var r=qmbtn.getBoundingClientRect();var W=qm.offsetWidth||300;qm.style.left=Math.max(8,Math.min(r.left,innerWidth-W-8))+"px";qm.style.top=(r.bottom+6)+"px";qm.style.maxHeight=Math.max(200,innerHeight-r.bottom-20)+"px";}
+ if(qmbtn){qmbtn.onclick=function(e){e.stopPropagation();if(qm.style.display!=="block"){qm.style.display="block";qmPlace();}else qm.style.display="none";};}
+ document.addEventListener("click",function(e){if(qm.style.display==="block"&&!qm.contains(e.target)&&e.target!==qmbtn)qm.style.display="none";});
+ // expose go if closed in IIFE - poll num and highlight menu; also try to capture go from next button
+ var last="";
+ setInterval(function(){
+  var n=document.getElementById("num"); if(!n) return;
+  var tx=n.textContent||""; if(tx===last) return; last=tx;
+  var m=tx.match(/(\d+)/); if(!m) return; var cur=parseInt(m[1],10)-1;
+  var k=-1;(window.QMENU||[]).forEach(function(it,ix){if(it.first<=cur)k=ix;});
+  (window.QMENU||[]).forEach(function(it,ix){var b=document.getElementById("qmi"+ix);if(b)b.classList.toggle("on",ix===k);});
+  if(qmbtn) qmbtn.textContent="目錄 ▾ "+(k>=0?QMENU[k].name:"");
+ },200);
+ // Monkey: wrap next clicks won't give go. Patch: listen for custom.
+ // Access go from clicking: override QMENU handlers after IIFE by reading script - use hash
+ window.addEventListener("hashchange",function(){
+  var m=location.hash.match(/step-(\d+)/); if(!m) return;
+  var idx=parseInt(m[1],10);
+  // simulate by repeatedly? Better inject into open scope - rewrite QMENU onclick after delay using eval of go from button
+ });
+ // After load, steal go by wrapping: the IIFE doesn't export go. Use progress bar ticks - click tick near step.
+ // Practical fix: QMENU uses document.getElementById("next") repeatedly - NO.
+ // Instead: inject into template a global. Re-patch build: add window.go=go inside IIFE.
+})();
+</script>
+</body>
+</html>
