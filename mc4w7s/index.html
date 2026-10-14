@@ -105,21 +105,25 @@ document.addEventListener("touchend",function(e){
 })();
 </script>
 <style id="ipadmode-css">
-#ipadsw{display:inline-flex;flex:none;border:2px solid #0b0c0c;border-radius:999px;overflow:hidden;cursor:pointer;user-select:none;-webkit-user-select:none;font-weight:900;font-size:.85rem;background:#fff;-webkit-tap-highlight-color:transparent;font-family:inherit;line-height:1.15}
+#ipadsw{display:inline-flex;flex:none;border:2px solid #0b0c0c;border-radius:999px;overflow:hidden;cursor:pointer;user-select:none;-webkit-user-select:none;font-weight:900;font-size:.78rem;background:#fff;-webkit-tap-highlight-color:transparent;font-family:inherit;line-height:1.15}
 #ipadsw.float{position:fixed;z-index:2147483000;top:6px;left:50%;transform:translateX(-50%);box-shadow:0 2px 8px rgba(0,0,0,.28)}
-#ipadsw b{padding:6px 12px;color:#505a5f;white-space:nowrap;font-weight:900}
-#ipadsw b.pc{border-left:2px solid #0b0c0c}
-body:not(.ipadm) #ipadsw b.pc{background:#0b0c0c;color:#fff}
-body.ipadm #ipadsw b.ip{background:#1d70b8;color:#fff}
-body.ipadm #ipadsw b{padding:10px 15px;font-size:.95rem}
-html.ipadm-h,html.ipadm-h body{height:100%}
-body.ipadm{height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column;padding-bottom:0!important}
-body.ipadm .top{position:relative;top:auto;flex:none;padding:6px 10px}
-body.ipadm .row{gap:6px 8px}
+#ipadsw b{padding:6px 10px;color:#505a5f;white-space:nowrap;font-weight:900}
+#ipadsw b.ip,#ipadsw b.pc{border-left:2px solid #0b0c0c}
+body.mode-pc #ipadsw b.pc{background:#0b0c0c;color:#fff}
+body.mode-ipad #ipadsw b.ip{background:#1d70b8;color:#fff}
+body.mode-phone #ipadsw b.ph{background:#6f42c1;color:#fff}
+body.ipadm #ipadsw b,body.phonem #ipadsw b{padding:9px 12px;font-size:.88rem}
+html.ipadm-h,html.ipadm-h body,html.phonem-h,html.phonem-h body{height:100%}
+body.ipadm,body.phonem{height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column;padding-bottom:0!important}
+body.ipadm .top,body.phonem .top{position:relative;top:auto;flex:none;padding:6px 10px}
+body.ipadm .row,body.phonem .row{gap:6px 8px}
 body.ipadm .legend{font-size:.78rem;margin-left:0}
-body.ipadm .ctrl button{font-size:1rem;padding:9px 14px}
+body.phonem .legend{display:none}
+body.ipadm .ctrl button,body.phonem .ctrl button{font-size:1rem;padding:9px 14px}
+body.phonem .ctrl button{font-size:1.05rem;padding:11px 15px;min-height:44px}
 body.ipadm .say{min-height:0;margin:4px 0 0;font-size:1.06rem;line-height:1.45}
-body.ipadm .zh{margin:2px 0 0}
+body.phonem .say{min-height:0;margin:4px 0 0;font-size:1rem;line-height:1.35;max-height:3.2em;overflow:auto}
+body.ipadm .zh,body.phonem .zh{margin:2px 0 0}
 body.ipadm .grid{flex:1;min-height:0;padding:8px 10px;gap:8px;align-items:stretch}
 body.ipadm .grid>.col{display:flex;flex-direction:column;min-height:0;min-width:0;height:100%;overflow:hidden}
 body.ipadm .col h2{flex:none;margin:0 0 4px;font-size:.84rem}
@@ -128,11 +132,15 @@ body.ipadm .brain{flex:1 1 0;min-height:0;margin-top:8px;overflow:auto}
 body.ipadm .paper{flex:1 1 0;min-height:0;overflow:auto}
 body.ipadm .board{position:relative;top:0;flex:1 1 0;max-height:none;min-height:0;overflow:auto}
 body.ipadm .teach{max-height:none;min-height:0;overflow:auto}
-body.ipadm .player{position:relative;left:auto;right:auto;bottom:auto;flex:none;padding:8px 12px;gap:10px}
+body.ipadm .player,body.phonem .player{position:relative;left:auto;right:auto;bottom:auto;flex:none;padding:8px 12px;gap:10px}
 body.ipadm .player button{width:52px;height:44px;font-size:1.2rem}
+body.phonem .player button{width:58px;height:50px;font-size:1.35rem}
 body.ipadm .track{height:18px}
+body.phonem .track{height:22px}
 body.ipadm .knob{width:26px;height:26px;margin:-13px 0 0 -13px}
+body.phonem .knob{width:32px;height:32px;margin:-16px 0 0 -16px}
 body.ipadm .spdwrap input{width:150px;height:26px}
+body.phonem .spdwrap input{width:120px;height:28px}
 body.ipadm:is(.lay-m3,.lay-e4,.lay-geo) .grid>.col:nth-child(1){grid-area:a}
 body.ipadm:is(.lay-m3,.lay-e4,.lay-geo) .grid>.col:nth-child(2){grid-area:b}
 body.ipadm:is(.lay-m3,.lay-e4,.lay-geo) .grid>.col:nth-child(3){grid-area:c}
@@ -155,6 +163,24 @@ body.ipadm.lay-e4 .grid>.col:nth-child(4){grid-area:d}
  body.ipadm.lay-geo .grid{grid-template-columns:minmax(0,1.05fr) minmax(0,1.2fr) minmax(0,.8fr);grid-template-rows:minmax(0,1fr);grid-template-areas:"a b c"}
  body.ipadm.lay-gen .grid{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr)}
 }
+/* —— Phone: one column, tabs 書/紙/筆記 —— */
+#phsw{display:none;flex:none;gap:0;margin:6px 8px 0;border:2px solid #0b0c0c;border-radius:10px;overflow:hidden;background:#fff}
+body.phonem #phsw{display:flex}
+#phsw button{flex:1;font-family:inherit;font-weight:900;font-size:1.05rem;padding:12px 8px;min-height:48px;border:0;border-right:2px solid #0b0c0c;background:#fff;color:#505a5f;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#phsw button:last-child{border-right:0}
+#phsw button.on{background:#6f42c1;color:#fff}
+body.phonem .qmbtn{font-size:1rem;padding:10px 14px;min-height:44px}
+body.phonem #qmenu .qmi{font-size:1.05rem;padding:12px 14px;min-height:48px}
+body.phonem .grid{flex:1;min-height:0;padding:6px 8px;gap:0;display:block!important;position:relative;grid-template:none!important}
+body.phonem .grid>.col{position:absolute;left:0;right:0;top:0;bottom:0;display:flex!important;flex-direction:column;min-height:0;min-width:0;overflow:hidden;visibility:hidden;pointer-events:none;z-index:0;opacity:0}
+body.phonem.ph-tb .grid>.col:nth-child(1),
+body.phonem.ph-wb .grid>.col:nth-child(2),
+body.phonem.ph-note .grid>.col:nth-child(3){visibility:visible;pointer-events:auto;z-index:1;opacity:1}
+body.phonem .col h2{flex:none;margin:0 0 4px;font-size:.9rem}
+body.phonem .cam{flex:1 1 0;min-height:0}
+body.phonem .teach{flex:none;max-height:38%;overflow:auto;margin:0 0 6px}
+body.phonem .board,body.phonem #rw{flex:1 1 0;min-height:0;max-height:none;overflow:auto;position:relative;top:0}
+body.phonem #rw{margin-bottom:6px}
 </style>
 <script id="ipadmode-js">
 (function(){
@@ -165,23 +191,76 @@ function boot(){
  else if(cols===4) lay="lay-e4";
  else if(cols===3&&document.getElementById("cam")) lay="lay-m3";
  b.classList.add(lay);
- var sw=document.createElement("span"); sw.id="ipadsw"; sw.setAttribute("role","button"); sw.tabIndex=0;
- sw.title="iPad \u6a21\u5f0f\uff1a\u4e00\u500b\u756b\u9762\u770b\u5b8c\uff0c\u4e0d\u7528\u6372";
- sw.innerHTML='<b class="ip">\uD83D\uDCF1 iPad</b><b class="pc">\uD83D\uDCBB \u96FB\u8166</b>';
+ var sw=document.createElement("span"); sw.id="ipadsw"; sw.setAttribute("role","radiogroup"); sw.tabIndex=0;
+ sw.title="Phone / iPad / \u96fb\u8166\uff1a\u9078\u756b\u9762\u6a21\u5f0f";
+ sw.innerHTML='<b class="ph" data-m="phone" role="radio">\uD83D\uDCF1 Phone</b><b class="ip" data-m="ipad" role="radio">\uD83D\uDCF1 iPad</b><b class="pc" data-m="pc" role="radio">\uD83D\uDCBB \u96FB\u8166</b>';
  var row=document.querySelector(".top .row");
  if(row) row.insertBefore(sw,row.firstChild); else { sw.classList.add("float"); b.appendChild(sw); }
- function apply(on,save){
-  b.classList.toggle("ipadm",!!on); h.classList.toggle("ipadm-h",!!on);
-  if(save){ try{localStorage.setItem("hw_ipad_mode",on?"1":"0");}catch(e){} }
+ var ph=document.createElement("div"); ph.id="phsw"; ph.setAttribute("role","tablist");
+ ph.innerHTML='<button type="button" data-ph="tb" role="tab">\u66f8</button><button type="button" data-ph="wb" role="tab">\u7d19</button><button type="button" data-ph="note" role="tab">\u7b46\u8a18</button>';
+ var grid=document.querySelector(".grid");
+ if(grid&&grid.parentNode) grid.parentNode.insertBefore(ph,grid);
+ var mode="pc", panel="wb", lock=false;
+ function setPanel(p,user){
+  panel=p||"wb";
+  if(user) lock=true;
+  b.classList.remove("ph-tb","ph-wb","ph-note");
+  b.classList.add(panel==="tb"?"ph-tb":panel==="note"?"ph-note":"ph-wb");
+  ph.querySelectorAll("button").forEach(function(btn){ btn.classList.toggle("on",btn.getAttribute("data-ph")===panel); });
+  setTimeout(function(){ window.dispatchEvent(new Event("resize")); },60);
+ }
+ window.__phShow=function(p){ if(b.classList.contains("phonem")) setPanel(p,false); };
+ window.__phOnStep=function(s){
+  if(!b.classList.contains("phonem")||!s) return;
+  lock=false;
+  if((s.fills&&s.fills.length)||s.wbfocus) setPanel("wb",false);
+  else if((s.tbmark&&s.tbmark.length)||s.tbfocus||s.tb) setPanel("tb",false);
+  else setPanel("note",false);
+ };
+ function apply(m,save){
+  mode=m==="phone"||m==="ipad"||m==="pc"?m:"pc";
+  b.classList.remove("ipadm","phonem","mode-pc","mode-ipad","mode-phone");
+  h.classList.remove("ipadm-h","phonem-h");
+  if(mode==="phone"){ b.classList.add("phonem","mode-phone"); h.classList.add("phonem-h"); setPanel(panel,false); }
+  else if(mode==="ipad"){ b.classList.add("ipadm","mode-ipad"); h.classList.add("ipadm-h"); }
+  else { b.classList.add("mode-pc"); }
+  if(save){ try{localStorage.setItem("hw_view_mode",mode); localStorage.setItem("hw_ipad_mode",mode==="ipad"?"1":"0");}catch(e){} }
   setTimeout(function(){ window.dispatchEvent(new Event("resize")); },80);
  }
- var ua=navigator.userAgent, isTab=/iPad|iPhone|iPod|Android/.test(ua)||(/Macintosh/.test(ua)&&(navigator.maxTouchPoints||0)>1);
- var saved=null; try{saved=localStorage.getItem("hw_ipad_mode");}catch(e){}
- apply(saved===null?isTab:saved==="1",false);
+ var ua=navigator.userAgent||"";
+ function defaultMode(){
+  if(/iPhone|iPod/i.test(ua)) return "phone";
+  if(/Android/i.test(ua)&&/Mobile/i.test(ua)) return "phone";
+  if(Math.min(screen.width||999,screen.height||999)<=480&&/Android|Mobile/i.test(ua)) return "phone";
+  var isTab=/iPad|Android/.test(ua)||(/Macintosh/.test(ua)&&(navigator.maxTouchPoints||0)>1);
+  return isTab?"ipad":"pc";
+ }
+ var saved=null; try{saved=localStorage.getItem("hw_view_mode");}catch(e){}
+ if(saved!=="phone"&&saved!=="ipad"&&saved!=="pc"){
+  var old=null; try{old=localStorage.getItem("hw_ipad_mode");}catch(e){}
+  saved=old==="1"?"ipad":old==="0"?"pc":null;
+ }
+ apply(saved||defaultMode(),false);
+ sw.addEventListener("click",function(e){
+  var t=e.target&&e.target.closest?e.target.closest("b[data-m]"):null;
+  if(!t) return;
+  apply(t.getAttribute("data-m"),true);
+ });
+ sw.addEventListener("keydown",function(e){
+  if(e.key!=="Enter"&&e.key!==" ") return;
+  e.preventDefault();
+  apply(mode==="phone"?"ipad":mode==="ipad"?"pc":"phone",true);
+ });
+ ph.addEventListener("click",function(e){
+  var t=e.target&&e.target.closest?e.target.closest("button[data-ph]"):null;
+  if(!t) return;
+  setPanel(t.getAttribute("data-ph"),true);
+ });
  var bd=document.getElementById("board");
  if(bd&&window.MutationObserver){
   var follow=function(n){ setTimeout(function(){
-   if(!b.classList.contains("ipadm")||n.style.visibility==="hidden"||!n.isConnected) return;
+   if(!(b.classList.contains("ipadm")||b.classList.contains("phonem"))||n.style.visibility==="hidden"||!n.isConnected) return;
+   if(b.classList.contains("phonem")&&!lock) setPanel("note",false);
    var top=n.offsetTop, bot=top+n.offsetHeight;
    if(bot>bd.scrollTop+bd.clientHeight-4||top<bd.scrollTop) bd.scrollTop=Math.max(0,bot-bd.clientHeight+12);
   },60); };
@@ -190,9 +269,18 @@ function boot(){
    else if(m.target.nodeType===1&&m.target.classList.contains("note")) follow(m.target);
   }); }).observe(bd,{childList:true,subtree:true,attributes:true,attributeFilter:["style"]});
  }
- function flip(){ apply(!b.classList.contains("ipadm"),true); }
- sw.addEventListener("click",flip);
- sw.addEventListener("keydown",function(e){ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); flip(); } });
+ if(window.MutationObserver){
+  new MutationObserver(function(){
+   if(!b.classList.contains("phonem")||lock) return;
+   if(document.querySelector(".ans.now,.fly")) setPanel("wb",false);
+  }).observe(b,{subtree:true,attributes:true,attributeFilter:["class"],childList:true});
+  var num=document.getElementById("num");
+  if(num) new MutationObserver(function(){
+   if(!b.classList.contains("phonem")||typeof STEPS==="undefined") return;
+   var n=parseInt((num.textContent||"").split("/")[0],10);
+   if(!isNaN(n)&&STEPS[n]) window.__phOnStep(STEPS[n]);
+  }).observe(num,{characterData:true,childList:true,subtree:true});
+ }
 }
 if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",boot); else boot();
 })();
@@ -205,6 +293,8 @@ if(document.readyState==="loading") document.addEventListener("DOMContentLoaded"
 #qmenu .qmi b{min-width:110px;font-weight:900}
 body.ipadm .qmbtn{font-size:.95rem;padding:8px 14px}
 body.ipadm #qmenu .qmi{font-size:1rem;padding:9px 12px}
+body.phonem .qmbtn{font-size:1rem;padding:10px 14px;min-height:44px}
+body.phonem #qmenu .qmi{font-size:1.05rem;padding:12px 14px;min-height:48px}
 #board .note{border-left:6px solid #1d4ed8;background:linear-gradient(90deg,#eff6ff,#fff);padding:8px 10px;margin:6px 0;border-radius:8px}
 #board .note.pen-red{border-left-color:#dc2626;background:linear-gradient(90deg,#fef2f2,#fff)}
 #board .note.pen-purple{border-left-color:#7c3aed;background:linear-gradient(90deg,#f5f3ff,#fff)}
@@ -492,7 +582,7 @@ var QUIZ_PER_RUN=8;
    var s=STEPS[cur];
    $("tag").textContent=s.tag;$("sec").textContent=s.sec||"";$("say").textContent=s.say;$("sayzh").textContent=s.say_zh||"";if(typeof markQ==="function")markQ();if(STEPS[cur]&&!(STEPS[cur].fills||[]).some(function(f){return f.rw;})&&window.__closeRw)__closeRw();$("num").textContent=cur+" / "+(STEPS.length-1);
    $("prev").disabled=cur===0;$("next").disabled=cur===STEPS.length-1;
-   fillInstant(cur);boardUpTo(cur);setView(s);$("teachtext").textContent=s.teach?"":"Watch the yellow box on the left, then see where the answer goes.";$("teachzh").textContent=s.teach?"":"留意左邊黃色框,再看答案去哪一格。";
+   fillInstant(cur);boardUpTo(cur);setView(s);if(window.__phOnStep)window.__phOnStep(s);$("teachtext").textContent=s.teach?"":"Watch the yellow box on the left, then see where the answer goes.";$("teachzh").textContent=s.teach?"":"留意左邊黃色框,再看答案去哪一格。";
    later(function(){
      if(my!==token)return;var k=0,fills=s.fills||[];
      function finish(){if(onDone)later(function(){if(my===token)onDone();},1400);}
