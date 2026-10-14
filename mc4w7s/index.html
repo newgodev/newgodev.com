@@ -442,11 +442,11 @@ var QUIZ_PER_RUN=8;
  }
  window.addEventListener("resize",function(){if(lastT)focusCam("tcam",lastT[0],lastT[1]);if(lastW)focusCam("wcam",lastW[0],lastW[1]);});
  function putAns(f,full){var a=$("an_"+f.id);if(!a)return;if(f.kind==="circle"){a.classList.toggle("on",!!full);}else{a.querySelector(".at").textContent=full?f.text:"";}}
- function fillInstant(n){Object.keys(FILLS).forEach(function(id){putAns(FILLS[id],FSTEP[id]===n);});Object.keys(FILLS).forEach(function(id){var a=$("an_"+id);if(!a)return;var f=FILLS[id];a.classList.remove("pen-red","pen-purple","pen-orange","pen-green","pen-blue");if(f.pen)a.classList.add("pen-"+(f.pen||"blue"));});}
+ function fillInstant(n){Object.keys(FILLS).forEach(function(id){putAns(FILLS[id],FSTEP[id]<n);});Object.keys(FILLS).forEach(function(id){var a=$("an_"+id);if(!a)return;var f=FILLS[id];a.classList.remove("pen-red","pen-purple","pen-orange","pen-green","pen-blue");if(f.pen)a.classList.add("pen-"+(f.pen||"blue"));});}
  var onBoard={};
  function clearBoard(){Object.keys(onBoard).forEach(function(k){onBoard[k].remove();});onBoard={};$("bempty").style.display="";}
  function addNote(f){if(onBoard[f.id])return;$("bempty").style.display="none";var n=document.createElement("div");n.className="note pen-"+(f.pen||"blue");var zh=f.zh?('<span class="nz">'+esc(f.zh)+"</span>"):"";n.innerHTML='<i>'+esc(f.q||"")+'</i><span class="nh">'+esc(f.note||f.text)+"</span>"+zh;n.onclick=function(){locate(f.id);};$("board").appendChild(n);onBoard[f.id]=n;var bd=$("board");bd.scrollTop=0;}
- function boardUpTo(n){clearBoard();var s=STEPS[n];if(!s)return;if((s.fills||[]).length){(s.fills||[]).forEach(addNote);}else{(s.tbmark||[]).concat(s.wbmark||[]).forEach(function(k){if(MSTEP[k]===n)addEv(k,false);});}}
+ function boardUpTo(n){clearBoard();for(var i=0;i<n;i++){var s=STEPS[i];(s.tbmark||[]).concat(s.wbmark||[]).forEach(function(k){if(MSTEP[k]===i)addEv(k,false);});(s.fills||[]).forEach(addNote);}}
  function teach(text,zh,my,done){var t=$("teach"),tt=$("teachtext");t.classList.add("on");tt.textContent="";$("teachzh").textContent=zh||"";var i=0;
    (function tk(){if(my!==token){t.classList.remove("on");return;}tt.textContent=text.slice(0,++i);if(i<text.length)later(tk,20);else later(function(){t.classList.remove("on");done();},900);})();}
  function flyTo(fromEl,f,my,done){
