@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<script>if(location.protocol==="http:")location.replace("https://"+location.host+location.pathname+location.search+location.hash)</script>
+
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>SHOW — 呢兩週的我 L1–L13</title>
+<style>
+  :root {
+    --paper: #f7f1e6;
+    --ink: #1a1a1a;
+    --muted: #5a5348;
+    --line: #c9b8a0;
+    --card: #fffdf8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", "Microsoft JhengHei", "PingFang TC", sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    padding: 20px 16px 40px;
+  }
+  header {
+    max-width: 1180px;
+    margin: 0 auto 16px;
+    border-bottom: 3px solid var(--ink);
+    padding-bottom: 10px;
+  }
+  h1 { margin: 0 0 4px; font-size: 1.45rem; }
+  .meta { color: var(--muted); font-size: 0.88rem; line-height: 1.4; }
+  .board {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 12px;
+  }
+  .card {
+    background: var(--card);
+    border: 2px solid var(--ink);
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 268px;
+  }
+  .top { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; }
+  .num { font-weight: 800; font-size: 1.05rem; }
+  .date { font-size: 0.78rem; color: var(--muted); white-space: nowrap; }
+  .art {
+    height: 108px;
+    border: 1.5px dashed var(--line);
+    border-radius: 8px;
+    background: #faf6ef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  svg { width: 94%; height: 94%; }
+  .label { font-size: 1.05rem; font-weight: 800; line-height: 1.25; }
+  .why { font-size: 0.84rem; color: var(--muted); line-height: 1.4; flex: 1; }
+  .tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1.5px solid var(--ink);
+    width: fit-content;
+    background: #ffe8c8;
+  }
+  footer {
+    max-width: 1180px;
+    margin: 18px auto 0;
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+  .stroke { fill: none; stroke: #1a1a1a; stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round; }
+  .fill-soft { fill: #f0e6d6; stroke: #1a1a1a; stroke-width: 2; }
+  .fill-warn { fill: #f6d59a; stroke: #1a1a1a; stroke-width: 2; }
+  .fill-hot { fill: #f2a08a; stroke: #1a1a1a; stroke-width: 2; }
+  .fill-cool { fill: #b9d4e4; stroke: #1a1a1a; stroke-width: 2; }
+  .fill-mint { fill: #cfe8d4; stroke: #1a1a1a; stroke-width: 2; }
+  .txt { fill: #1a1a1a; font-family: "Segoe UI", "Microsoft JhengHei", sans-serif; font-weight: 800; }
+</style>
+</head>
+<body>
+<header>
+  <h1>SHOW 板 — 呢兩週的我（L1–L13）</h1>
+  <div class="meta">2026-10-02 → 10-16 · 來源 <code>17-LAST2WEEKS-ABOUT-ME.txt</code> · 每格＝認得到符號 + 可讀中文</div>
+</header>
+
+<main class="board">
+
+<article class="card">
+  <div class="top"><span class="num">L1</span><span class="date">10-08</span></div>
+  <div class="art"><svg viewBox="0 0 260 100">
+    <rect class="fill-soft" x="30" y="48" width="120" height="28" rx="6"/>
+    <rect class="fill-cool" x="40" y="28" width="70" height="28" rx="8"/>
+    <circle class="fill-soft" cx="55" cy="34" r="10"/>
+    <text class="txt" x="170" y="42" font-size="14">瞓好夜</text>
+    <text class="txt" x="170" y="64" font-size="14">好攰</text>
+    <path class="stroke" d="M200 70 h40"/><text class="txt" x="210" y="88" font-size="12">UT</text>
+  </svg></div>
+  <div class="label">沙發攤平／攰到唔郁</div>
+  <div class="why">耗咗兩日躺沙發、瞓好夜、好攰好壓力，仲要溫 UT。</div>
+  <span class="tag">tired · messy</span>
+</article>
+
+<article class="card">
+  <div class="top"><span class="num">L2</span><span class="date">10-09</span></div>
+  <div class="art"><svg viewBox="0 0 260 100">
+    <rect class="fill-warn" x="40" y="22" width="70" height="55" rx="4"/>
+    <path class="stroke" d="M40 36 h70"/>
+    <text class="txt" x="52" y="58" font-size="13">箱</text>
+    <path class="stroke" d="M130 30 q20 20 0 40"/>
+    <circle class="fill-hot" cx="175" cy="50" r="22"/>
+    <text class="txt" x="162" y="55" font-size="12">怕執</text>
+    <text class="txt" x="120" y="90" font-size="12">so messy</text>
+  </svg></div>
+  <div class="label">搬屋壓力／藏私人物</div>
+  <div class="why">搬去另一個地方前，巨大壓力怕媽媽執到私人物。</div>
+  <span class="tag">stress · messy</span>
+</article>
+
+<article class="card">
+  <div class="top"><span class="num">L3</span><span class="date">10-10</span></div>
+  <div class="art"><svg viewBox="0 0 260 100">
+    <path class="fill-hot" d="M70 70 c0-22 22-34 34-44 c12 10 34 22 34 44 c0 18-14 28-34 28 s-34-10-34-28z"/>
+    <path class="stroke" d="M92 48 l5 9 8-14 6 11 7-10"/>
+    <rect class="fill-soft" x="150" y="28" width="80" height="50" rx="4"/>
+    <path class="stroke" d="M160 42 h55 M160 55 h40 M160 68 h48"/>
+    <text class="txt" x="155" y="90" font-size="11">打包亂</text>
+  </svg></div>
+  <div class="label">心口燒／心重</div>
+  <div class="why">打包緊嘢，期待見人同時 heart heavy／scared／burning。</div>
+  <span class="tag">dark · crush</span>
+</article>
+
+<article class="card">
+  <div class="top"><span class="num">L4</span><span class="date">10-11</span></div>
+  <div class="art"><svg viewBox="0 0 260 100">
+    <rect class="fill-soft" x="20" y="30" width="80" height="40" rx="8"/>
+    <text class="txt" x="32" y="56" font-size="18">INFP</text>
+    <text class="txt" x="112" y="58" font-size="30">?</text>
+    <rect class="fill-cool" x="145" y="30" width="80" height="40" rx="8"/>
+    <text class="txt" x="157" y="56" font-size="18">INFJ</text>
+  </svg></div>
+  <div class="label">MBTI 動搖</div>
+  <div class="why">10 個月前 INFP，而家覺得似 INFJ——標籤喺兩週內重開。</div>
+  <span class="tag">identity</span>
+</article>
+
+<article class="card">
+  <div class="top"><span class="num">L5</span><span class="date">10-13</span></div>
+  <div class="art"><svg viewBox="0 0 260 100">
+    <rect class="fill-mint" x="36" y="22" width="100" height="60" rx="6"/>
+    <circle class="fill-warn" cx="60" cy="42" r="9"/>
+    <circle class="fill-cool" cx="90" cy="42" r="9"/>
+    <circle class="fill-soft" cx="120" cy="42" r="9"/>
+    <circle class="fill-hot" cx="60" cy="68" r="9"/>
+    <circle class="fill-warn" cx="90" cy="68" r="9"/>
+    <text class="txt" x="150" y="48" font-size="14">朝早半粒</text>
+    <text class="txt" x="150" y="70" font-size="13">精神科藥</text>
+  </svg></div>
+  <div class="label">食精神科藥</div>
+  <div class="why">10-13 起步藥；同日頭痛／流鼻血／夜晚做嘢唔瞓——黑暗有醫療層。</div>
+  <span class="tag">dark · med</span>
+</article>
+
+<article class="card">
+  <div class="top"><span class="num">L6</span><span class="date">10-13…14</span></div>
+  <div class="art"><svg viewBox="0 0 260 100">
+    <rect class="fill-soft" x="28" y="30" width="70" height="40" rx="6"/>
+    <text class="txt" x="42" y="56" font-size="16">13X</text>
+    <rect class="fill-cool" x="115" y="25" width="55" height="45" rx="3"/>
+    <text class="txt" x="122" y="52" font-size="11">PC ⅔</text>
+    <path class="stroke" d="M190 35 h40 v30 h-40z"/>
+    <path class="stroke" d="M198 50 h24 M210 42 v16"/>
+    <text class="txt" x="185" y="85" font-size="11">WiFi 嬲</text>
+  </svg></div>
+  <div class="label">新屋／重機未搬完</div>
+  <div class="why">13X 新路線；電腦搬咗約⅔；新寬頻冇舊機穩。</div>
+  <span class="tag">messy · move</span>
+</article>
+
+<article class="card">
+  <div class="top"><span class="num">L7</span><span class="date">10-02…15</span></div>
+  <div class="art"><svg viewBox="0 0 260 100">
+    <rect class="fill-soft" x="24" y="32" width="28" height="40" rx="8"/>
+    <circle class="fill-warn" cx="38" cy="26" r="10"/>
+    <g transform="translate(70,22)">
+      <rect class="fill-cool" x="0" y="0" width="22" height="18" rx="2"/><text class="txt" x="5" y="14" font-size="11">✓</text>
+      <rect class="fill-hot" x="28" y="0" width="22" height="18" rx="2"/><text class="txt" x="32" y="14" font-size="11">0</text>
+      <rect class="fill-hot" x="56" y="0" width="22" height="18" rx="2"/><text class="txt" x="60" y="14" font-size="11">0</text>
+      <rect class="fill-warn" x="84" y="0" width="28" height="18" rx="2"/><text class="txt" x="86" y="14" font-size="10">35%</text>
+      <rect class="fill-warn" x="0" y="28" width="28" height="18" rx="2"/><text class="txt" x="2" y="42" font-size="10">37%</text>
+      <rect class="fill-cool" x="36" y="28" width="22" height="18" rx="2"/><text class="txt" x="41" y="42" font-size="11">✓</text>
+      <rect class="fill-cool" x="64" y="28" width="22" height="18" rx="2"/><text class="txt" x="69" y="42" font-size="11">✓</text>
+    </g>
+    <text class="txt" x="70" y="88" font-size="12">全日咪 · 有破口</text>
+  </svg></div>
+  <div class="label">全日咪／錄音缺口</div>
+  <div class="why">幾乎日日長錄，但 9–10 斷檔、14/15 覆蓋警告——想錄晒，檔案本身都破。</div>
+  <span class="tag">messy · gap</span>
+</article>
+
+<article class="card">
+  <div class="top"><span class="num">L8</span><span class="date">10-13…14</span></div>
+  <div class="art"><svg viewBox="0 0 260 100">
+    <path class="stroke" d="M40 55 q30 -35 60 0"/>
+    <circle class="fill-hot" cx="70" cy="40" r="8"/>
+    <text class="txt" x="110" y="40" font-size="13">太中意你</text>
+    <rect class="fill-soft" x="110" y="52" width="100" height="28" rx="6"/>
+    <text class="txt" x="122" y="71" font-size="13">隱形人</text>
+  </svg></div>
+  <div class="label">耳語暗戀／隱形人</div>
+  <div class="why">耳語叫名、「我太中意你」，同時求對方當自己係隱形人。</div>
+  <span class="tag">dark · soft</span>
+</article>
+
+<article class="card">
+  <div class="top"><span class="num">L9</span><span class="date">10-13…14</span></div>
+  <div class="art"><svg viewBox="0 0 260 100">
+    <g stroke="#1a1a1a" stroke-width="1.5" fill="#f0e6d6">
+      <rect x="30" y="25" width="28" height="22"/><rect x="62" y="25" width="28" height="22"/><rect x="94" y="25" width="28" height="22"/>
+      <rect x="30" y="52" width="28" height="22"/><rect x="62" y="52" width="28" height="22"/>
+      <rect x="94" y="52" width="28" height="22" fill="#b9d4e4" stroke-width="2.5"/>
+    </g>
+    <path class="stroke" d="M130 63 h50" stroke-width="3"/>
+    <polygon points="180,63 170,57 170,69" fill="#1a1a1a"/>
+    <text class="txt" x="135" y="50" font-size="13">坐最遠</text>
+    <text class="txt" x="135" y="88" font-size="12">內向 · 耳塞</text>
+  </svg></div>
+  <div class="label">內向／坐最遠</div>
+  <div class="why">唔中意同輩；騷擾未解，已經坐最遠仲想耳塞。</div>
+  <span class="tag">lonely · school</span>
+</article>
+
+<article class="card">
+  <div class="top"><span class="num">L10</span><span class="date">10-06</span></div>
+  <div class="art"><svg viewBox="0 0 260 100">
+    <rect class="fill-soft" x="40" y="20" width="100" height="60" rx="4"/>
+    <text class="txt" x="55" y="45" font-size="14">select</text>
+    <text class="txt" x="55" y="68" font-size="22" fill="#b33a3a">= 0</text>
+    <rect class="fill-hot" x="160" y="30" width="70" height="40" rx="6"/>
+    <text class="txt" x="172" y="56" font-size="14">驚標記</text>
+  </svg></div>
+  <div class="label">測驗怕被當作弊</div>
+  <div class="why">驚揀字／複製／太快交卷被系統記低——壓力係系統，唔係淨係溫書。</div>
+  <span class="tag">anxiety · quiz</span>
+</article>
+
+<article class="card">
+  <div class="top"><span class="num">L11</span><span class="date">10-04</span></div>
+  <div class="art"><svg viewBox="0 0 260 100">
+    <ellipse class="fill-soft" cx="90" cy="70" rx="55" ry="18"/>
+    <circle class="fill-cool" cx="90" cy="42" r="22"/>
+    <path class="stroke" d="M72 42 h36" stroke-width="3"/>
+    <path class="stroke" d="M68 40 q-8 2 -12 8 M112 40 q8 2 12 8"/>
+    <text class="txt" x="150" y="48" font-size="16">攰</text>
+    <text class="txt" x="150" y="70" font-size="12">眼鏡仲戴</text>
+  </svg></div>
+  <div class="label">眼鏡瞓／攰到唔郁</div>
+  <div class="why">眼合、眼鏡仲戴、頭髮亂、灰枕——表面似瞓／發呆／攰到唔郁。</div>
+  <span class="tag">tired</span>
+</article>
+
+<article class="card">
+  <div class="top"><span class="num">L12</span><span class="date">10-15…16</span></div>
+  <div class="art"><svg viewBox="0 0 260 100">
+    <rect class="fill-soft" x="30" y="18" width="40" height="40" rx="3"/><text class="txt" x="36" y="42" font-size="10">傷心</text>
+    <rect class="fill-hot" x="78" y="18" width="40" height="40" rx="3"/><text class="txt" x="84" y="42" font-size="10">絕望</text>
+    <rect class="fill-warn" x="126" y="18" width="40" height="40" rx="3"/><text class="txt" x="132" y="42" font-size="10">混亂</text>
+    <rect class="fill-cool" x="174" y="18" width="40" height="40" rx="3"/><text class="txt" x="180" y="42" font-size="10">腦海</text>
+    <text class="txt" x="70" y="82" font-size="13">黑暗凌亂心 · 要有字</text>
+  </svg></div>
+  <div class="label">黑暗凌亂心功課</div>
+  <div class="why">VA 兩週內爆發；怒改方向——要可讀字＋符號，唔係舊 core10 焦點。</div>
+  <span class="tag">VA · now</span>
+</article>
+
+<article class="card">
+  <div class="top"><span class="num">L13</span><span class="date">10-05</span></div>
+  <div class="art"><svg viewBox="0 0 260 100">
+    <rect class="fill-cool" x="50" y="25" width="50" height="55" rx="10"/>
+    <circle class="fill-soft" cx="75" cy="40" r="10"/>
+    <path class="stroke" d="M75 50 v20"/>
+    <text class="txt" x="120" y="48" font-size="16">想搵人傾</text>
+    <text class="txt" x="120" y="72" font-size="12">熱線 · 要人聲</text>
+  </svg></div>
+  <div class="label">想搵人傾</div>
+  <div class="why">主動問香港電話傾訴可唔可以而家打——壓力要即時人聲。</div>
+  <span class="tag">stress · reach</span>
+</article>
+
+</main>
+
+<footer>
+  雙擊開：<code>C:\Users\benbe\Desktop\18-SHOW-LAST2WEEKS-board.html</code><br/>
+  亦喺：<code>C:\Users\benbe\Downloads\knwong eme\18-SHOW-LAST2WEEKS-board.html</code><br/>
+  來源 L1–L13 only · 123r2q · 2026-10-16
+</footer>
+</body>
+</html>
