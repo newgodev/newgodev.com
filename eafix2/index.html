@@ -4,58 +4,68 @@
 <script>if(location.protocol==='http:')location.replace('https://'+location.host+location.pathname+location.search);</script>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Your draft — word count + red/green fixes</title>
+<title>Internet addiction — red/green polish</title>
 <style>
-  body{margin:0;font-family:system-ui,-apple-system,sans-serif;background:#f7f1e6;color:#1a1a1a;line-height:1.55;padding:16px 18px 48px;max-width:740px;margin-inline:auto}
-  h1{font-size:1.2rem;margin:0 0 6px}
-  .meta{color:#555;font-size:.95rem;margin-bottom:12px}
-  .count{background:#333;color:#f7f1e6;display:inline-block;padding:6px 12px;border-radius:8px;font-size:1.05rem;margin:8px 0 14px}
-  .key{display:flex;gap:12px;flex-wrap:wrap;margin:8px 0 14px;font-size:.9rem}
-  .key span{padding:3px 8px;border-radius:6px}
-  del,.del{background:#ffd0d0;color:#8b0000;text-decoration:line-through;padding:0 2px;border-radius:2px}
-  ins,.add{background:#c8f0c8;color:#0a5c0a;text-decoration:none;padding:0 2px;border-radius:2px;font-style:normal}
-  .box{background:#fff;border:1px solid #ccc;border-radius:10px;padding:14px 16px;margin:12px 0}
-  h2{font-size:1.02rem;margin:0 0 10px;border-bottom:2px solid #333;padding-bottom:4px}
-  p{margin:0 0 12px}
-  .title{font-weight:700}
-  .note{font-size:.9rem;color:#555}
+  :root { --bg:#0f1419; --card:#1a2332; --text:#e7ecf3; --muted:#9aa8bc; --red:#ff6b6b; --green:#3dd68c; --line:#2a3548; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: system-ui, -apple-system, Segoe UI, sans-serif; background:var(--bg); color:var(--text); line-height:1.45; }
+  main { max-width:720px; margin:0 auto; padding:20px 16px 48px; }
+  h1 { font-size:1.25rem; margin:0 0 8px; }
+  .meta { color:var(--muted); font-size:0.95rem; margin-bottom:18px; }
+  .legend { display:flex; flex-wrap:wrap; gap:10px 16px; margin:12px 0 20px; font-size:0.9rem; }
+  .legend span { display:inline-flex; align-items:center; gap:6px; }
+  .swatch { width:14px; height:14px; border-radius:3px; display:inline-block; }
+  .swatch.r { background:var(--red); }
+  .swatch.g { background:var(--green); }
+  section { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin:12px 0; }
+  h2 { font-size:1.05rem; margin:0 0 8px; }
+  p { margin:8px 0; }
+  .now { color:var(--muted); font-size:0.88rem; }
+  .red { color:var(--red); text-decoration: line-through; background:rgba(255,107,107,.12); padding:0 2px; border-radius:2px; }
+  .green { color:var(--green); text-decoration:none; background:rgba(61,214,140,.14); padding:0 2px; border-radius:2px; font-weight:600; }
+  .count { font-size:1.35rem; font-weight:700; }
+  .ok { color:var(--green); }
+  ul { margin:8px 0; padding-left:1.2rem; }
+  li { margin:6px 0; }
 </style>
 </head>
 <body>
-<h1>Your draft now</h1>
-<p class="meta">Counted from your latest PDF (body only, no title line).</p>
-<p class="count">Word count now: <b>163</b> · target &gt;150 · already OK</p>
-<div class="key"><span class="del">delete / fix</span><span class="add">add</span></div>
+<main>
+  <h1>Internet addiction — fix map (hints only)</h1>
+  <p class="meta"><span class="count">~163 words</span> now (body only, no title) — already <span class="ok">&gt;150</span>. Do the 3 polish fixes below, then count again.</p>
+  <div class="legend">
+    <span><i class="swatch r"></i> <b>Red</b> = cut / wrong — delete or change</span>
+    <span><i class="swatch g"></i> <b>Green</b> = add / correct wording</span>
+  </div>
 
-<div class="box">
-<h2>1 · Markup (edit on paper)</h2>
-<p class="title">Title: Internet addiction causes and effects</p>
+  <section>
+    <h2>1) Intro — add a full stop</h2>
+    <p class="now">Now: …people escape real life I will talk about…</p>
+    <p>…people escape real life<span class="green">.</span> I will talk about causes, effects and how to help.</p>
+  </section>
 
-<p><b>Intro</b><br>
-Internet addiction is too much time online. One reason why this happens is that people escape real life<ins>.</ins> <ins>Then </ins>I will talk about causes, effects and how to help.</p>
+  <section>
+    <h2>2) Paragraph 2 (individual) — grammar + optional 1 more effect</h2>
+    <p class="now">Now: This lead to poor interact at real world.</p>
+    <p>This <span class="red">lead</span> <span class="green">leads</span> to poor interact at real world.</p>
+    <p>Optional (makes this paragraph fuller — write ONE idea in your own words):</p>
+    <p><span class="green">Also, he may sleep late and feel tired at school.</span></p>
+  </section>
 
-<p><b>Paragraph 2 — individual</b><br>
-First of all, for individuals <del>is</del><ins>it is</ins> difficult to stay away from online preoccupation. For example, Benedict was playing at online games and found it hard to stay away from it. This <del>lead</del><ins>leads</ins> to poor interact at real world<ins>. It also leads to bad sleep and late school</ins>.</p>
+  <section>
+    <h2>3) Help — short sentences + fix “might can”</h2>
+    <p class="now">Now: long tips + “might can help…”</p>
+    <ul>
+      <li><span class="green">Add a time limit on apps or games.</span></li>
+      <li><span class="green">Unplug and go outside to meet people face to face.</span></li>
+      <li>These tips <span class="red">might can</span> <span class="green">might help</span> you control your time and unwind.</li>
+    </ul>
+  </section>
 
-<p><b>Paragraph 3 — society</b><br>
-Secondly, for society <del>causes</del><ins>it causes</ins> family argue and loss <ins>of </ins>work<del> or people hates you</del><ins>,</ins> <ins>and</ins> in turn, people in general talk less face to face.</p>
-
-<p><b>Help</b><br>
-However, I will suggest <del>some can be done</del><ins>some things that can be done</ins> to help the addict<ins>.</ins> <del>like</del><ins>For example,</ins> add limit time for your apps or games. <del>And, unplugged for go outside for engage physical society.</del><ins>Also, unplug and go outside to meet people face to face.</ins> These tips <del>, it might can help you more content for control owned times and unwind your body</del><ins>might help you control your own time and unwind your body</ins>.</p>
-
-<p><b>Conclusion</b><br>
-In conclusion, internet addiction <del>problem was</del><ins>is a</ins> preoccupation for <del>individual</del><ins>individuals</ins> and family argue for society. Also, control your own time by adding limited time on apps or games.</p>
-</div>
-
-<div class="box">
-<h2>2 · Clean copy (after edits)</h2>
-<p class="title">Title: Internet addiction causes and effects</p>
-<p>Internet addiction is too much time online. One reason why this happens is that people escape real life. Then I will talk about causes, effects and how to help.</p>
-<p>First of all, for individuals it is difficult to stay away from online preoccupation. For example, Benedict was playing at online games and found it hard to stay away from it. This leads to poor interact at real world. It also leads to bad sleep and late school.</p>
-<p>Secondly, for society it causes family argue and loss of work, and in turn, people in general talk less face to face.</p>
-<p>However, I will suggest some things that can be done to help the addict. For example, add limit time for your apps or games. Also, unplug and go outside to meet people face to face. These tips might help you control your own time and unwind your body.</p>
-<p>In conclusion, internet addiction is a preoccupation for individuals and family argue for society. Also, control your own time by adding limited time on apps or games.</p>
-<p class="note">After green/red edits, word count will be about <b>170+</b>.</p>
-</div>
+  <section>
+    <h2>What NOT to change</h2>
+    <p>Keep your structure: Intro → Paragraph 2 individual → Paragraph 3 society → Help → Conclusion. No new big paragraphs. After edits, take a photo again for a quick check.</p>
+  </section>
+</main>
 </body>
 </html>
