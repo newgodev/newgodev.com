@@ -3,83 +3,88 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>CES P.25 — full draft red/green (all your words)</title>
+<title>CES P.25 — red delete / green add / black keep</title>
 <style>
-:root{--bg:#f7f5f1;--ink:#1a1a1a;--muted:#666;--green:#0b6b3a;--gbg:#e6f6ec;--red:#9b1c1c;--rbg:#fde8e8;--card:#fff;--line:#ddd;--acc:#2a6f5b}
+:root{--bg:#f7f5f1;--ink:#1a1a1a;--muted:#666;--green:#0b6b3a;--gbg:#c8f0d8;--red:#9b1c1c;--rbg:#ffc9c9;--card:#fff;--line:#ddd;--acc:#2a6f5b}
 *{box-sizing:border-box}
-body{margin:0;font-family:system-ui,"PingFang TC","Noto Sans TC",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+body{margin:0;font-family:system-ui,"PingFang TC","Noto Sans TC",sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
 header{background:var(--acc);color:#fff;padding:1rem 1.25rem}
 header h1{margin:0;font-size:1.15rem}
 header p{margin:.4rem 0 0;opacity:.95;font-size:.9rem}
 main{max-width:760px;margin:0 auto;padding:1rem 1rem 2.5rem}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1rem;margin-bottom:1rem}
 h2{margin:0 0 .6rem;font-size:1.05rem}
-.legend{display:flex;flex-wrap:wrap;gap:.5rem}
-.pill{padding:.25rem .65rem;border-radius:999px;font-size:.85rem;font-weight:600}
+.legend{display:flex;flex-direction:column;gap:.4rem;margin-top:.4rem}
+.pill{display:inline-block;padding:.3rem .7rem;border-radius:999px;font-size:.9rem;font-weight:700;width:fit-content}
 .pill.g{background:var(--gbg);color:var(--green)}
 .pill.r{background:var(--rbg);color:var(--red)}
-.g{background:var(--gbg);color:var(--green);padding:.05rem .15rem;border-radius:3px;font-weight:600}
-.r{background:var(--rbg);color:var(--red);padding:.05rem .15rem;border-radius:3px;font-weight:600;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:2px}
-.full{font-size:1.05rem;padding:.85rem;background:#111;color:#f2f2f2;border-radius:12px;line-height:1.75}
-.full .g{background:#1e4d35;color:#b8f0cc}
-.full .r{background:#5c1a1a;color:#ffc9c9;text-decoration:underline}
-.tag{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.02em;padding:.1rem .4rem;border-radius:6px;margin:0 .25rem .15rem 0;vertical-align:middle}
-.tag.a{background:#c9a227;color:#111}
-.tag.b{background:#c44;color:#fff}
-.tag.c{background:#2a6f5b;color:#fff}
-.hint{font-size:.92rem;margin:.55rem 0 0;padding:.55rem .7rem;background:#fff;border:1px dashed var(--line);border-radius:8px}
+.pill.k{background:#e8e8e8;color:#222}
+/* black = normal keep */
+.draft{font-size:1.08rem;padding:1rem;background:#fff;border:1px solid var(--line);border-radius:12px;color:#111;line-height:1.85}
+/* red = delete these words (still visible, struck) */
+.del{background:var(--rbg);color:var(--red);text-decoration:line-through;padding:.05rem .12rem;border-radius:3px;font-weight:600}
+/* green = add these words */
+.add{background:var(--gbg);color:var(--green);padding:.05rem .12rem;border-radius:3px;font-weight:700}
+.sec{display:block;font-size:.8rem;font-weight:800;color:var(--acc);margin:1rem 0 .35rem}
+.sec:first-child{margin-top:0}
 .meta{color:var(--muted);font-size:.88rem}
+.hint{font-size:.9rem;color:#333;margin-top:.7rem;padding:.6rem .75rem;background:#fafafa;border:1px dashed var(--line);border-radius:8px}
 ol{margin:.4rem 0 0;padding-left:1.2rem}
 li{margin:.35rem 0}
-.warn{background:#fff3cd;border:1px solid #e6d089;border-radius:10px;padding:.7rem .85rem;font-size:.92rem;margin-bottom:1rem}
+.warn{background:#e8f3ef;border:1px solid #b7d9cc;border-radius:10px;padding:.7rem .85rem;font-size:.92rem;margin-bottom:1rem}
 </style>
 </head>
 <body>
 <header>
-  <h1>CES P.25 · Full draft kept — red / green</h1>
-  <p>Every word from your preview is kept. Nothing deleted. Colour only marks what to keep vs fix.</p>
+  <h1>CES P.25 · Highlight only</h1>
+  <p>Red = delete · Green = add · Black = keep as normal. Your draft stays; colour is the edit map.</p>
 </header>
 <main>
 
-<div class="warn">Rule this time: <b>all your typed words stay on the page</b>. Highlights only. Notes are under the text, not replacements.</div>
-
-<div class="card">
-  <h2>Legend</h2>
+<div class="warn">
+  <b>Legend (your rule)</b>
   <div class="legend">
-    <span class="pill g">Green = keep</span>
-    <span class="pill r">Red = fix (words still shown)</span>
+    <span class="pill r">Red = delete that word/phrase</span>
+    <span class="pill g">Green = add that word/phrase</span>
+    <span class="pill k">Black = normal — keep</span>
   </div>
-  <p class="meta" style="margin-top:.6rem">Three big blocks: <span class="tag a">治本</span> <span class="tag b">具體</span> <span class="tag c">成效</span></p>
 </div>
 
 <div class="card">
-  <h2>Your full preview (complete text)</h2>
-  <div class="full">
-<span class="tag a">治本</span><span class="g">針對部分青少年因為缺乏對性觀念的認識</span> <span class="g">因此，應從教育入手，協助他們建立正確性觀念。</span><span class="g">如資料B所示，青少年是因為早熟及對性產生好奇，但其性教育只停留在生理知識層面，</span><span class="r">令他們在網上被不正確的資訊或不良價值觀認為正確</span><span class="g">，而導致54.7%的青少年發生性行為和35%的未滿16歲的青少年有性行為。</span>
-<span class="tag b">具體</span><span class="r">所以我認為，首先為了成效最大，把性教育放進學校書本，全港普及，讓青少年學習，其影響力廣泛度高；然後，立法強制令全港中小學把性教育設為考試內容，從根本入手，杜絕問題的成因，即是先糾正錯誤觀念，才能減少輕率行為。</span>
-<span class="tag c">成效</span><span class="r">這不但具有針對性，能聚焦地令青少年了解，又能誘因他們為了成績而溫習其課題，有利上升青少年對性教育的了解。</span><span class="g">綜上所述，此方法能有效幫助青少年建立正確性觀念。</span>
+  <h2>Your draft with highlights</h2>
+  <div class="draft">
+    <span class="sec">① 治本</span>
+    針對部分青少年因為缺乏對性觀念的認識<span class="add">，而對親密關係產生誤解。</span>
+    因此，應從教育入手，協助他們建立正確性觀念。
+    如資料B所示，青少年是因為早熟及對性產生好奇，但其性教育只停留在生理知識層面，令他們<span class="del">在網上被不正確的資訊或不良價值觀認為正確</span><span class="add">把網上不正確的資訊或不良價值觀視為正確</span>，而導致54.7%的青少年發生性行為和35%的未滿16歲的青少年有性行為。
+
+    <span class="sec">② 具體（題目只要一項方法）</span>
+    所以我認為，首先為了成效最大，把性教育放進學校書本，全港普及，讓青少年學習<span class="del">，其影響力廣泛度高</span>；<span class="del">然後，立法強制令全港中小學把性教育設為考試內容，從根本入手，杜絕問題的成因，即是先糾正錯誤觀念，才能減少輕率行為。</span><span class="add">內容應強調尊重對方意願、愛與責任，以及訂定親密界限並守法；可透過課堂、講座與討論進行。</span>
+
+    <span class="sec">③ 成效</span>
+    這不但具有針對性，能聚焦地令青少年了解<span class="del">，又能誘因他們為了成績而溫習其課題，有利上升青少年對性教育的了解</span><span class="add">，亦能糾正錯誤觀念，減少輕率行為，有助提升青少年對正確性觀念的認識</span>。
+    綜上所述，此方法能有效幫助青少年建立正確性觀念。
   </div>
   <div class="hint">
-    <b>Under-notes (not deleting your text):</b><br/>
-    · 紅「被…認為正確」→ 可改做「把…視為正確」（意思唔變，文法順啲）<br/>
-    · 紅成段具體：題要<strong>一項</strong>方法——書本普及＋立法考試＝兩項；可留你而家字，但抄紙前揀留邊一截<br/>
-    · 「影響力廣泛度高」較似成效，可之後挪去成效段（字可照留）<br/>
-    · 「誘因」→「誘使／促使」；「有利上升」→「有助提升」
+    Black words = leave them.<br/>
+    Red struck = take out when you copy to paper.<br/>
+    Green = put in (new words).<br/>
+    具體：紅掉「立法考試」整截，係因為題要<strong>一項</strong>；綠加書本內容要點——你可改自己字，但意思要有。
   </div>
 </div>
 
 <div class="card">
-  <h2>Plain copy of your words (no colour)</h2>
-  <p class="meta">方便你對稿——一字不漏（依截圖 OCR）：</p>
-  <div class="full" style="background:#222;font-size:1rem">針對部分青少年因為缺乏對性觀念的認識 因此，應從教育入手，協助他們建立正確性觀念。如資料B所示，青少年是因為早熟及對性產生好奇，但其性教育只停留在生理知識層面，令他們在網上被不正確的資訊或不良價值觀認為正確，而導致54.7%的青少年發生性行為和35%的未滿16歲的青少年有性行為。所以我認為，首先為了成效最大，把性教育放進學校書本，全港普及，讓青少年學習，其影響力廣泛度高；然後，立法強制令全港中小學把性教育設為考試內容，從根本入手，杜絕問題的成因，即是先糾正錯誤觀念，才能減少輕率行為。這不但具有針對性，能聚焦地令青少年了解，又能誘因他們為了成績而溫習其課題，有利上升青少年對性教育的了解。綜上所述，此方法能有效幫助青少年建立正確性觀念。</div>
+  <h2>Your original words (plain black, full keep)</h2>
+  <p class="meta">對稿用——一字不漏：</p>
+  <div class="draft" style="background:#fafafa">針對部分青少年因為缺乏對性觀念的認識因此，應從教育入手，協助他們建立正確性觀念。如資料B所示，青少年是因為早熟及對性產生好奇，但其性教育只停留在生理知識層面，令他們在網上被不正確的資訊或不良價值觀認為正確，而導致54.7%的青少年發生性行為和35%的未滿16歲的青少年有性行為。所以我認為，首先為了成效最大，把性教育放進學校書本，全港普及，讓青少年學習，其影響力廣泛度高；然後，立法強制令全港中小學把性教育設為考試內容，從根本入手，杜絕問題的成因，即是先糾正錯誤觀念，才能減少輕率行為。這不但具有針對性，能聚焦地令青少年了解，又能誘因他們為了成績而溫習其課題，有利上升青少年對性教育的了解。綜上所述，此方法能有效幫助青少年建立正確性觀念。</div>
 </div>
 
 <div class="card">
-  <h2>Next</h2>
+  <h2>After you edit</h2>
   <ol>
-    <li>Keep all words; only adjust red spots if you want.</li>
-    <li>For paper: still aim 治本→具體→成效 as separate lines (~12).</li>
-    <li>Rebuild on <a href="https://newgodev.com/cesq1/?v=5026de6" style="color:#8fd">cesq1</a> then new photo.</li>
+    <li>Copy following: keep black, drop red, insert green.</li>
+    <li>Optional: rebuild lines on <a href="https://newgodev.com/cesq1/?v=5026de6">cesq1</a>.</li>
+    <li>Photo new draft before real paper.</li>
   </ol>
 </div>
 
