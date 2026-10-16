@@ -3,101 +3,84 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>CES P.25 — red/green fix map v2 corrected wording</title>
+<title>CES P.25 — full draft red/green (all your words)</title>
 <style>
 :root{--bg:#f7f5f1;--ink:#1a1a1a;--muted:#666;--green:#0b6b3a;--gbg:#e6f6ec;--red:#9b1c1c;--rbg:#fde8e8;--card:#fff;--line:#ddd;--acc:#2a6f5b}
 *{box-sizing:border-box}
-body{margin:0;font-family:system-ui,"PingFang TC","Noto Sans TC",sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+body{margin:0;font-family:system-ui,"PingFang TC","Noto Sans TC",sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
 header{background:var(--acc);color:#fff;padding:1rem 1.25rem}
 header h1{margin:0;font-size:1.15rem}
 header p{margin:.4rem 0 0;opacity:.95;font-size:.9rem}
 main{max-width:760px;margin:0 auto;padding:1rem 1rem 2.5rem}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1rem;margin-bottom:1rem}
 h2{margin:0 0 .6rem;font-size:1.05rem}
-.legend{display:flex;flex-wrap:wrap;gap:.5rem;margin:.5rem 0 0}
-.pill{display:inline-flex;align-items:center;gap:.35rem;padding:.25rem .65rem;border-radius:999px;font-size:.85rem;font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:.5rem}
+.pill{padding:.25rem .65rem;border-radius:999px;font-size:.85rem;font-weight:600}
 .pill.g{background:var(--gbg);color:var(--green)}
 .pill.r{background:var(--rbg);color:var(--red)}
-.pill.n{background:#eee;color:#444}
-.g{background:var(--gbg);color:var(--green);padding:.05rem .2rem;border-radius:3px;font-weight:600}
-.r{background:var(--rbg);color:var(--red);padding:.05rem .2rem;border-radius:3px;font-weight:600;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:2px}
-.draft{font-size:1.02rem}
-.block{display:block;border-left:4px solid #ccc;padding:.75rem .85rem;margin:.75rem 0;background:#fafafa;border-radius:0 10px 10px 0}
-.block.ok{border-left-color:var(--green)}
-.block.bad{border-left-color:var(--red)}
-.block.mix{border-left-color:#c9a227}
-.block h3{margin:0 0 .45rem;font-size:.95rem}
-.hint{font-size:.92rem;color:#333;margin:.5rem 0 0;padding:.55rem .7rem;background:#fff;border:1px dashed var(--line);border-radius:8px}
+.g{background:var(--gbg);color:var(--green);padding:.05rem .15rem;border-radius:3px;font-weight:600}
+.r{background:var(--rbg);color:var(--red);padding:.05rem .15rem;border-radius:3px;font-weight:600;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:2px}
+.full{font-size:1.05rem;padding:.85rem;background:#111;color:#f2f2f2;border-radius:12px;line-height:1.75}
+.full .g{background:#1e4d35;color:#b8f0cc}
+.full .r{background:#5c1a1a;color:#ffc9c9;text-decoration:underline}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.02em;padding:.1rem .4rem;border-radius:6px;margin:0 .25rem .15rem 0;vertical-align:middle}
+.tag.a{background:#c9a227;color:#111}
+.tag.b{background:#c44;color:#fff}
+.tag.c{background:#2a6f5b;color:#fff}
+.hint{font-size:.92rem;margin:.55rem 0 0;padding:.55rem .7rem;background:#fff;border:1px dashed var(--line);border-radius:8px}
 .meta{color:var(--muted);font-size:.88rem}
-ol.steps{margin:.4rem 0 0;padding-left:1.2rem}
-ol.steps li{margin:.35rem 0}
-.note{font-size:.85rem;color:var(--muted)}
+ol{margin:.4rem 0 0;padding-left:1.2rem}
+li{margin:.35rem 0}
 .warn{background:#fff3cd;border:1px solid #e6d089;border-radius:10px;padding:.7rem .85rem;font-size:.92rem;margin-bottom:1rem}
-.p{margin:.35rem 0}
 </style>
 </head>
 <body>
 <header>
-  <h1>CES P.25 · Your draft — red / green map</h1>
-  <p>Corrected to match your preview screenshot. Target: 治本 → 具體 → 成效.</p>
+  <h1>CES P.25 · Full draft kept — red / green</h1>
+  <p>Every word from your preview is kept. Nothing deleted. Colour only marks what to keep vs fix.</p>
 </header>
 <main>
 
-<div class="warn">Earlier map used wrong wording (my error). This version follows your preview text as closely as OCR allows.</div>
+<div class="warn">Rule this time: <b>all your typed words stay on the page</b>. Highlights only. Notes are under the text, not replacements.</div>
 
 <div class="card">
   <h2>Legend</h2>
   <div class="legend">
     <span class="pill g">Green = keep</span>
-    <span class="pill r">Red = must-fix</span>
+    <span class="pill r">Red = fix (words still shown)</span>
   </div>
-  <p class="meta" style="margin-top:.7rem">Question = <b>一項</b> method · ~12 lines · 治本 2–3 → 具體 5–6 → 成效 3–4. Your tool still says 6 lines not picked — rebuild as separate lines before real paper.</p>
+  <p class="meta" style="margin-top:.6rem">Three big blocks: <span class="tag a">治本</span> <span class="tag b">具體</span> <span class="tag c">成效</span></p>
 </div>
 
 <div class="card">
-  <h2>Your preview (marked with your words)</h2>
-  <div class="draft">
-
-<div class="block mix">
-<h3>① 治本 — mostly keep</h3>
-<p class="p"><span class="g">因此，應從教育入手，協助他們建立正確性觀念。</span></p>
-<p class="p"><span class="g">如資料B所示，青少年是因為早熟及對性產生好奇，但其性教育只停留在生理知識層面，</span><span class="r">令他們在網上被不正確的資訊或不良價值觀認為正確</span><span class="g">，而導致54.7%的青少年發生性行為和35%的未滿16歲的青少年有性行為。</span></p>
-<div class="hint">✓ Keep Data B numbers + 「從教育入手」.<br/>
-✗ Red phrase grammar odd — try closer to: 令他們把網上不正確資訊或不良價值觀<strong>視為</strong>正確。<br/>
-△ If your first sentence (問題句) scrolled off the screenshot, keep it above this block.</div>
-</div>
-
-<div class="block bad">
-<h3>② 具體 — must-fix (structure)</h3>
-<p class="p"><span class="r">所以我認為，首先為了成效最大，把性教育放進學校書本，全港普及，讓青少年學習，其影響力廣泛度高；然後，立法強制令全港中小學把性教育設為考試內容，從根本入手，杜絕問題的成因，即是先糾正錯誤觀念，才能減少輕率行為。</span></p>
-<div class="hint">✗ Still <b>two</b> methods in one go（書本普及 + 立法考試）— question wants <b>一項</b>. Pick one and develop it.<br/>
-✗ 「立法強制…設為考試」偏急／似唔係書本路線；老師或會覺得怪。<br/>
-→ 具體要寫清：邊個做 + 教乜（尊重意願／愛與責任／界限守法）+ 點做。你而家跳咗呢啲書本重點。<br/>
-△ 「其影響力廣泛度高」較似成效句，唔好塞喺具體中間。</div>
-</div>
-
-<div class="block mix">
-<h3>③ 成效 — fix wording + match one method</h3>
-<p class="p"><span class="r">這不但具有針對性，能聚焦地令青少年了解，又能誘因他們為了成績而溫習其課題，有利上升青少年對性教育的了解。</span></p>
-<p class="p"><span class="g">綜上所述，此方法能有效幫助青少年建立正確性觀念。</span></p>
-<div class="hint">✗ <strong>誘因</strong> → 應用 <strong>誘使／促使</strong>。<br/>
-✗ <strong>有利上升</strong> → 較自然係 <strong>有助提升</strong>。<br/>
-△ 「為成績溫習」只喺你保留「考試」嗰招先講得通；若改做講座／正規課堂，成效改寫：糾正錯誤觀念 → 較少輕率行為／較少信網上錯誤資訊。<br/>
-✓ 收句可留。</div>
-</div>
-
+  <h2>Your full preview (complete text)</h2>
+  <div class="full">
+<span class="tag a">治本</span><span class="g">針對部分青少年因為缺乏對性觀念的認識</span> <span class="g">因此，應從教育入手，協助他們建立正確性觀念。</span><span class="g">如資料B所示，青少年是因為早熟及對性產生好奇，但其性教育只停留在生理知識層面，</span><span class="r">令他們在網上被不正確的資訊或不良價值觀認為正確</span><span class="g">，而導致54.7%的青少年發生性行為和35%的未滿16歲的青少年有性行為。</span>
+<span class="tag b">具體</span><span class="r">所以我認為，首先為了成效最大，把性教育放進學校書本，全港普及，讓青少年學習，其影響力廣泛度高；然後，立法強制令全港中小學把性教育設為考試內容，從根本入手，杜絕問題的成因，即是先糾正錯誤觀念，才能減少輕率行為。</span>
+<span class="tag c">成效</span><span class="r">這不但具有針對性，能聚焦地令青少年了解，又能誘因他們為了成績而溫習其課題，有利上升青少年對性教育的了解。</span><span class="g">綜上所述，此方法能有效幫助青少年建立正確性觀念。</span>
+  </div>
+  <div class="hint">
+    <b>Under-notes (not deleting your text):</b><br/>
+    · 紅「被…認為正確」→ 可改做「把…視為正確」（意思唔變，文法順啲）<br/>
+    · 紅成段具體：題要<strong>一項</strong>方法——書本普及＋立法考試＝兩項；可留你而家字，但抄紙前揀留邊一截<br/>
+    · 「影響力廣泛度高」較似成效，可之後挪去成效段（字可照留）<br/>
+    · 「誘因」→「誘使／促使」；「有利上升」→「有助提升」
   </div>
 </div>
 
 <div class="card">
-  <h2>Fix order</h2>
-  <ol class="steps">
-    <li>治本：keep 資料B + 從教育入手；改「被…認為正確」嗰句。</li>
-    <li>具體：只留一項方法；補 WHO／內容／點做；立法考試可先唔寫。</li>
-    <li>成效：改「誘因／有利上升」；扣返你揀嗰一項。</li>
-    <li>用 <a href="https://newgodev.com/cesq1/?v=5026de6">cesq1</a> 拆返約12行，再影新預覽。</li>
+  <h2>Plain copy of your words (no colour)</h2>
+  <p class="meta">方便你對稿——一字不漏（依截圖 OCR）：</p>
+  <div class="full" style="background:#222;font-size:1rem">針對部分青少年因為缺乏對性觀念的認識 因此，應從教育入手，協助他們建立正確性觀念。如資料B所示，青少年是因為早熟及對性產生好奇，但其性教育只停留在生理知識層面，令他們在網上被不正確的資訊或不良價值觀認為正確，而導致54.7%的青少年發生性行為和35%的未滿16歲的青少年有性行為。所以我認為，首先為了成效最大，把性教育放進學校書本，全港普及，讓青少年學習，其影響力廣泛度高；然後，立法強制令全港中小學把性教育設為考試內容，從根本入手，杜絕問題的成因，即是先糾正錯誤觀念，才能減少輕率行為。這不但具有針對性，能聚焦地令青少年了解，又能誘因他們為了成績而溫習其課題，有利上升青少年對性教育的了解。綜上所述，此方法能有效幫助青少年建立正確性觀念。</div>
+</div>
+
+<div class="card">
+  <h2>Next</h2>
+  <ol>
+    <li>Keep all words; only adjust red spots if you want.</li>
+    <li>For paper: still aim 治本→具體→成效 as separate lines (~12).</li>
+    <li>Rebuild on <a href="https://newgodev.com/cesq1/?v=5026de6" style="color:#8fd">cesq1</a> then new photo.</li>
   </ol>
-  <p class="note">Map only — not a full rewrite. Your words first.</p>
 </div>
 
 </main>
