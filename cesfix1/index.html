@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>CES P.25 — red/green fix map</title>
+<style>
+:root{--bg:#f7f5f1;--ink:#1a1a1a;--muted:#666;--green:#0b6b3a;--gbg:#e6f6ec;--red:#9b1c1c;--rbg:#fde8e8;--card:#fff;--line:#ddd;--acc:#2a6f5b}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,"PingFang TC","Noto Sans TC",sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
+header{background:var(--acc);color:#fff;padding:1rem 1.25rem}
+header h1{margin:0;font-size:1.15rem}
+header p{margin:.4rem 0 0;opacity:.95;font-size:.9rem}
+main{max-width:760px;margin:0 auto;padding:1rem 1rem 2.5rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1rem;margin-bottom:1rem}
+h2{margin:0 0 .6rem;font-size:1.05rem}
+.legend{display:flex;flex-wrap:wrap;gap:.5rem;margin:.5rem 0 0}
+.pill{display:inline-flex;align-items:center;gap:.35rem;padding:.25rem .65rem;border-radius:999px;font-size:.85rem;font-weight:600}
+.pill.g{background:var(--gbg);color:var(--green)}
+.pill.r{background:var(--rbg);color:var(--red)}
+.pill.n{background:#eee;color:#444}
+.g{background:var(--gbg);color:var(--green);padding:.05rem .15rem;border-radius:3px;font-weight:600}
+.r{background:var(--rbg);color:var(--red);padding:.05rem .15rem;border-radius:3px;font-weight:600;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:2px}
+.draft{font-size:1.02rem;white-space:pre-wrap}
+.block{border-left:4px solid #ccc;padding:.75rem 0 .75rem .85rem;margin:.75rem 0;background:#fafafa;border-radius:0 10px 10px 0}
+.block.ok{border-left-color:var(--green)}
+.block.bad{border-left-color:var(--red)}
+.block.mix{border-left-color:#c9a227}
+.block h3{margin:0 0 .4rem;font-size:.95rem}
+.hint{font-size:.92rem;color:#333;margin:.45rem 0 0;padding:.55rem .7rem;background:#fff;border:1px dashed var(--line);border-radius:8px}
+.meta{color:var(--muted);font-size:.88rem}
+ol.steps{margin:.4rem 0 0;padding-left:1.2rem}
+ol.steps li{margin:.35rem 0}
+.note{font-size:.85rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<header>
+  <h1>CES P.25 · Your draft — red / green map</h1>
+  <p>Target = three big blocks: 治本 → 具體 → 成效. Green = keep. Red = must-fix before real paper.</p>
+</header>
+<main>
+
+<div class="card">
+  <h2>Legend</h2>
+  <div class="legend">
+    <span class="pill g">Green = keep / already strong</span>
+    <span class="pill r">Red = must-fix</span>
+    <span class="pill n">Grey note = how to help</span>
+  </div>
+  <p class="meta" style="margin-top:.7rem">Question asks for <b>one</b> method (一項), ~12 lines: 治本 2–3 → 具體 5–6 → 成效 3–4.</p>
+</div>
+
+<div class="card">
+  <h2>Your preview text (marked)</h2>
+  <div class="draft">
+<span class="block mix">
+<h3>① 治本（問題＋根源）— mixed</h3>
+<span class="g">就部分青少年對性觀念缺乏認識而導致對親密關係產生誤解。</span>
+<span class="g">因此，應從教育入手，協助他們建立正確性觀念。</span>
+<span class="g">如資料B所示，青少年因早熟和好奇心對性感到好奇，但性教育只停留在生理知識層面，導致他們將網上錯誤資訊或不良價值觀視為正確，結果有54.7%青少年有性行為，35%未滿16歲青少年有性行為。</span>
+<div class="hint">✓ Keep the Data B numbers and 「從教育入手」— that is real 治本.<br/>△ Opening can be one clearer sentence: problem → root (書／資料B) → so education.</div>
+</span>
+
+<span class="block bad">
+<h3>② 具體（方法）— must-fix</h3>
+<span class="r">所以我認為，首先為求成效最大，將性教育放入學校教科書，全港普及，讓青少年學習；其影響廣。</span>
+<span class="r">然後，應立法強迫全港所有中小學將性教育設為考試內容，從根源消除問題成因，即先糾正錯誤觀念才能減少輕率行為。</span>
+<div class="hint">✗ Question = <b>一項</b> method. Textbook + law/exams = two methods → split / pick ONE.<br/>
+✗ 「立法強迫全港中小學考試」too extreme for this paper; teacher may find it weird / not from the book.<br/>
+→ Prefer ONE school path: e.g. 學校／教師講座或正規課堂性教育。<br/>
+→ 具體 must say WHO + WHAT content (尊重意願、愛與責任、親密界限／守法) + HOW (講座、討論、資源). Your draft skips those book points.</div>
+</span>
+
+<span class="block mix">
+<h3>③ 成效 — partly OK, need tighter link</h3>
+<span class="r">這不但具針對性，也能集中讓青少年明白，並可誘導他們為分數溫習該科，有利增加青少年對性教育的認識。</span>
+<span class="g">綜上所述，此方法能有效幫助青少年建立正確性觀念。</span>
+<div class="hint">△ 「針對性」can stay IF you only have one method.<br/>
+△ 「為分數溫習」only works if you keep the exam idea — if you drop exams, rewrite 成效: 糾正錯誤觀念 → 較少輕率親密行為／較少信網上錯誤資訊。<br/>
+✓ Closing line is fine.</div>
+</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>How to fix (order)</h2>
+  <ol class="steps">
+    <li><b>治本</b> — keep Data B + 「從教育入手」; make 2–3 short lines.</li>
+    <li><b>具體</b> — pick <u>one</u> method only; add WHO / content (尊重・愛與責任・界限) / HOW. Drop or park the 立法考試 line.</li>
+    <li><b>成效</b> — 3–4 lines that match THAT one method (治本 + targeted + lasting).</li>
+    <li>Rebuild on <a href="https://newgodev.com/cesq1/?v=5026de6">cesq1 pick page</a> as ~12 lines, then photo again before real paper.</li>
+  </ol>
+  <p class="note">This page is a map only — not a full rewrite. Edit in your words, then send a new preview photo.</p>
+</div>
+
+</main>
+</body>
+</html>
