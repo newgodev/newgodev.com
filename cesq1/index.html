@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>CES P.25 — 揀答案再寫紙</title>
+<style>
+:root{--bg:#f6f3ee;--card:#fff;--ink:#1a1a1a;--muted:#666;--acc:#2a6f5b;--line:#ddd;}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,"PingFang TC","Noto Sans TC",sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+header{padding:1rem 1.25rem;background:var(--acc);color:#fff}
+header h1{margin:0;font-size:1.15rem}
+header p{margin:.35rem 0 0;opacity:.9;font-size:.9rem}
+main{max-width:720px;margin:0 auto;padding:1rem}
+.q{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1rem;margin-bottom:1rem}
+.q h2{margin:0 0 .35rem;font-size:1rem}
+.q .meta{color:var(--muted);font-size:.85rem;margin-bottom:.75rem}
+.line{border-top:1px dashed var(--line);padding:.85rem 0}
+.line:first-of-type{border-top:0}
+.line label.tag{display:block;font-weight:600;font-size:.9rem;margin-bottom:.4rem}
+.opts{display:flex;flex-direction:column;gap:.35rem;margin-bottom:.45rem}
+.opts label{display:flex;gap:.5rem;align-items:flex-start;background:#fafafa;border:1px solid var(--line);border-radius:8px;padding:.45rem .6rem;cursor:pointer;font-size:.92rem}
+.opts input{margin-top:.2rem}
+.free{width:100%;padding:.5rem .6rem;border:1px solid var(--line);border-radius:8px;font:inherit;min-height:2.4rem}
+.sec{display:inline-block;background:#e8f3ef;color:var(--acc);font-size:.75rem;padding:.15rem .45rem;border-radius:999px;margin-right:.35rem}
+#preview{white-space:pre-wrap;background:#111;color:#f5f5f5;padding:1rem;border-radius:12px;font-size:.95rem;min-height:8rem}
+.actions{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
+button{font:inherit;border:0;border-radius:999px;padding:.55rem 1rem;cursor:pointer;background:var(--acc);color:#fff}
+button.secbtn{background:#444}
+.note{font-size:.85rem;color:var(--muted);margin-top:.5rem}
+</style>
+</head>
+<body>
+<header>
+  <h1>CES 單元 3.1 · 教科書 P.25（3 分）</h1>
+  <p>提出一項幫助青少年建立正確性觀念的方法。每行揀一個答案，可再自由加字；揀完先睇預覽，再抄去實紙。寫完影相畀 num 1 睇。</p>
+</header>
+<main>
+  <div class="q">
+    <h2>題目</h2>
+    <p class="meta">根據以上資料及個人所知，提出一項幫助青少年建立正確性觀念的方法。（3 分）<br/>格式：治本（約2–3行）→ 具體（約5–6行）→ 成效（約3–4行）＝共約12行</p>
+  </div>
+
+  <div class="q" id="form"></div>
+
+  <div class="actions">
+    <button type="button" id="btnPreview">更新預覽</button>
+    <button type="button" class="secbtn" id="btnCopy">複製全文</button>
+  </div>
+  <div class="q">
+    <h2>預覽（抄去實紙用）</h2>
+    <div id="preview">仲未揀……</div>
+    <p class="note">自由欄會接喺你揀嘅句子後面。留空就只用揀嘅一句。</p>
+  </div>
+</main>
+<script>
+const lines = [
+  {sec:'治本', n:1, prompt:'第1行 · 點出問題', opts:[
+    '現時部分青少年的性觀念並不正確，容易受錯誤資訊影響。',
+    '不少青少年對「性」與「愛」的關係缺乏正確認識。',
+    '青少年若缺乏正確性觀念，或會輕率作出親密行為。'
+  ]},
+  {sec:'治本', n:2, prompt:'第2行 · 講根源（書）', opts:[
+    '根源在於性知識不足，以及誤以為「有性便等於有愛」。',
+    '他們容易接觸色情資訊，因而對親密關係產生誤解。',
+    '部分人未明白親密界限與責任，以致觀念偏差。'
+  ]},
+  {sec:'治本', n:3, prompt:'第3行 · 過渡到方法', opts:[
+    '因此，應從教育入手，協助他們建立正確性觀念。',
+    '故此，需要透過正規途徑加強性教育。',
+    '（可留空／自己寫）'
+  ]},
+  {sec:'具體', n:4, prompt:'第4行 · 提出一項方法（邊個做）', opts:[
+    '建議由學校與教師舉辦性教育講座或課堂。',
+    '建議衞生署學生健康服務向青少年提供正確性知識。',
+    '建議家計會或相關非政府機構到校進行性教育活動。'
+  ]},
+  {sec:'具體', n:5, prompt:'第5行 · 對象', opts:[
+    '對象為中學生／青少年，尤其是缺乏正確認識者。',
+    '活動應面向全級或相關年級學生，確保覆蓋面。',
+    '重點對象是即將踏入青春期或已開始約會的青少年。'
+  ]},
+  {sec:'具體', n:6, prompt:'第6行 · 內容① 尊重意願', opts:[
+    '內容應強調尊重對方意願，不可強迫任何親密行為。',
+    '教導學生：即使有感情基礎，仍必須得到對方同意。',
+    '說明「同意一樣行為，不等於同意全部親密行為」。'
+  ]},
+  {sec:'具體', n:7, prompt:'第7行 · 內容② 愛與責任', opts:[
+    '亦應指出性須建基於穩固、成熟的愛與責任，而非衝動。',
+    '說明性只是表達愛的其中一種方式，並非感情的全部。',
+    '強調健康關係需要溝通、尊重與承諾，而非只追求刺激。'
+  ]},
+  {sec:'具體', n:8, prompt:'第8行 · 內容③ 守法／界限', opts:[
+    '同時講解訂定親密界限的重要，並提醒須守法。',
+    '指出與未滿16歲者性交屬違法，必須清楚法律界線。',
+    '教導學生如何用溝通表明立場，拒絕越界要求。'
+  ]},
+  {sec:'具體', n:9, prompt:'第9行 · 點樣做（途徑）', opts:[
+    '具體可透過課堂討論、講座，並輔以衞生署網上資源學習。',
+    '可安排小組活動與個案討論，讓學生練習表達界線。',
+    '可結合評估站／工作紙，檢視學生是否掌握正確觀念。'
+  ]},
+  {sec:'成效', n:10, prompt:'第10行 · 成效角度①', opts:[
+    '就成效而言，此方法具針對性，直接糾正錯誤性觀念。',
+    '就成效而言，此屬治本措施，從認知改變著手，而非只靠懲罰。',
+    '就成效而言，學校渠道覆蓋面廣，能接觸大量青少年。'
+  ]},
+  {sec:'成效', n:11, prompt:'第11行 · 成效角度②', opts:[
+    '長遠而言，學生建立正確價值後，較少因誤解而重蹈覆轍。',
+    '教育具持續影響，有助減少輕率親密行為及相關風險。',
+    '配合專業機構資料，知識較準確，說服力亦較高。'
+  ]},
+  {sec:'成效', n:12, prompt:'第12行 · 收句', opts:[
+    '因此，成效高。',
+    '因此，此方法的成效頗高。',
+    '綜上所述，此方法能有效幫助青少年建立正確性觀念。'
+  ]},
+];
+
+const form = document.getElementById('form');
+form.innerHTML = lines.map((L,i)=>{
+  const opts = L.opts.map((t,j)=>`<label><input type="radio" name="l${i}" value="${j}" ${j===0?'checked':''}/><span>${t}</span></label>`).join('');
+  return `<div class="line" data-i="${i}">
+    <label class="tag"><span class="sec">${L.sec}</span>${L.prompt}</label>
+    <div class="opts">${opts}</div>
+    <input class="free" type="text" placeholder="自由加字（可留空）" data-free="${i}"/>
+  </div>`;
+}).join('');
+
+function build(){
+  return lines.map((L,i)=>{
+    const checked = form.querySelector(`input[name="l${i}"]:checked`);
+    let t = checked ? L.opts[+checked.value] : '';
+    if (t === '（可留空／自己寫）') t = '';
+    const free = (form.querySelector(`[data-free="${i}"]`).value || '').trim();
+    if (free) t = t ? (t + free) : free;
+    return t;
+  }).filter(Boolean).join('\n');
+}
+
+function preview(){
+  document.getElementById('preview').textContent = build() || '仲未有內容……';
+}
+document.getElementById('btnPreview').onclick = preview;
+document.getElementById('btnCopy').onclick = async ()=>{
+  preview();
+  const t = build();
+  try{ await navigator.clipboard.writeText(t); alert('已複製！可以貼去備忘再抄實紙。'); }
+  catch(e){ alert('複製失敗，請手動揀預覽文字。'); }
+};
+form.addEventListener('change', preview);
+form.addEventListener('input', preview);
+preview();
+</script>
+</body>
+</html>
