@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>CES P.25 — red delete / green add / black keep</title>
+<title>CES P.25 — 一項方法 · 紅刪綠加黑留</title>
 <!-- MARKER_RED_DEL_GREEN_ADD -->
 <style>
 :root{--bg:#f7f5f1;--ink:#1a1a1a;--muted:#666;--green:#0b6b3a;--gbg:#c8f0d8;--red:#9b1c1c;--rbg:#ffc9c9;--card:#fff;--line:#ddd;--acc:#2a6f5b}
@@ -11,7 +11,7 @@
 body{margin:0;font-family:system-ui,"PingFang TC","Noto Sans TC",sans-serif;background:var(--bg);color:var(--ink);line-height:1.65}
 header{background:var(--acc);color:#fff;padding:1rem 1.25rem}
 header h1{margin:0;font-size:1.15rem}
-header p{margin:.4rem 0 0;opacity:.95;font-size:.9rem}
+header p{margin:.4rem 0 0;opacity:.95;font-size:.95rem}
 main{max-width:760px;margin:0 auto;padding:1rem 1rem 2.5rem}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1rem;margin-bottom:1rem}
 h2{margin:0 0 .6rem;font-size:1.05rem}
@@ -20,75 +20,65 @@ h2{margin:0 0 .6rem;font-size:1.05rem}
 .pill.g{background:var(--gbg);color:var(--green)}
 .pill.r{background:var(--rbg);color:var(--red)}
 .pill.k{background:#e8e8e8;color:#222}
-/* black = normal keep */
 .draft{font-size:1.08rem;padding:1rem;background:#fff;border:1px solid var(--line);border-radius:12px;color:#111;line-height:1.85}
-/* red = delete these words (still visible, struck) */
 .del{background:var(--rbg);color:var(--red);text-decoration:line-through;padding:.05rem .12rem;border-radius:3px;font-weight:600}
-/* green = add these words */
 .add{background:var(--gbg);color:var(--green);padding:.05rem .12rem;border-radius:3px;font-weight:700}
 .sec{display:block;font-size:.8rem;font-weight:800;color:var(--acc);margin:1rem 0 .35rem}
 .sec:first-child{margin-top:0}
 .meta{color:var(--muted);font-size:.88rem}
 .hint{font-size:.9rem;color:#333;margin-top:.7rem;padding:.6rem .75rem;background:#fafafa;border:1px dashed var(--line);border-radius:8px}
+.warn{background:#e8f3ef;border:1px solid #b7d9cc;border-radius:10px;padding:.7rem .85rem;font-size:.92rem;margin-bottom:1rem}
 ol{margin:.4rem 0 0;padding-left:1.2rem}
 li{margin:.35rem 0}
-.warn{background:#e8f3ef;border:1px solid #b7d9cc;border-radius:10px;padding:.7rem .85rem;font-size:.92rem;margin-bottom:1rem}
 </style>
 </head>
 <body>
 <header>
-  <h1>CES P.25 · Highlight only</h1>
-  <p>Red = delete · Green = add · Black = keep as normal. Your draft stays; colour is the edit map.</p>
+  <h1>CES P.25 · 只係標色</h1>
+  <p><b>紅＝刪</b>　<b>綠＝加</b>　<b>黑＝留</b></p>
 </header>
 <main>
 
 <div class="warn">
-  <b>Legend (your rule)</b>
+  <b>你定嘅規矩</b>
   <div class="legend">
     <span class="pill r">紅 = 刪呢啲字</span>
     <span class="pill g">綠 = 加呢啲字</span>
-    <span class="pill k">Black = normal — keep</span>
-    <span class="pill r">Red = delete that word/phrase</span>
-    <span class="pill g">Green = add that word/phrase</span>
+    <span class="pill k">黑 = 正常留</span>
   </div>
+  <p style="margin:.55rem 0 0;font-size:.9rem">今次：開頭用你句；具體兩項<b>合併成一項方法</b>。</p>
 </div>
 
 <div class="card">
-  <h2>Your draft with highlights</h2>
+  <h2>標註稿</h2>
   <div class="draft">
     <span class="sec">① 治本</span>
-    針對部分青少年因為缺乏對性觀念的認識<span class="add">，而對親密關係產生誤解。</span>
+    針對部分青少年因為缺乏對性觀念的認識帶來對親密關係的誤解。
     因此，應從教育入手，協助他們建立正確性觀念。
     如資料B所示，青少年是因為早熟及對性產生好奇，但其性教育只停留在生理知識層面，令他們<span class="del">在網上被不正確的資訊或不良價值觀認為正確</span><span class="add">把網上不正確的資訊或不良價值觀視為正確</span>，而導致54.7%的青少年發生性行為和35%的未滿16歲的青少年有性行為。
 
-    <span class="sec">② 具體（題目只要一項方法）</span>
-    所以我認為，首先為了成效最大，把性教育放進學校書本，全港普及，讓青少年學習<span class="del">，其影響力廣泛度高</span>；<span class="del">然後，立法強制令全港中小學把性教育設為考試內容，從根本入手，杜絕問題的成因，即是先糾正錯誤觀念，才能減少輕率行為。</span><span class="add">內容應強調尊重對方意願、愛與責任，以及訂定親密界限並守法；可透過課堂、講座與討論進行。</span>
+    <span class="sec">② 具體（一項方法）</span>
+    所以我認為，<span class="del">首先為了成效最大，把性教育放進學校書本，全港普及，讓青少年學習，其影響力廣泛度高；然後，立法強制令全港中小學把性教育設為考試內容，從根本入手，杜絕問題的成因，即是先糾正錯誤觀念，才能減少輕率行為。</span><span class="add">為了成效最大，把性教育放進學校書本並全港普及，同時立法強制令全港中小學把性教育設為考試內容，讓青少年學習，從根本入手，杜絕問題的成因，即是先糾正錯誤觀念，才能減少輕率行為；其影響力廣泛度高。內容可強調尊重意願、愛與責任與親密界限。</span>
 
     <span class="sec">③ 成效</span>
-    這不但具有針對性，能聚焦地令青少年了解<span class="del">，又能誘因他們為了成績而溫習其課題，有利上升青少年對性教育的了解</span><span class="add">，亦能糾正錯誤觀念，減少輕率行為，有助提升青少年對正確性觀念的認識</span>。
+    這不但具有針對性，能聚焦地令青少年了解，又能<span class="del">誘因</span><span class="add">誘使</span>他們為了成績而溫習其課題，<span class="del">有利上升</span><span class="add">有助提升</span>青少年對性教育的了解。
     綜上所述，此方法能有效幫助青少年建立正確性觀念。
   </div>
   <div class="hint">
-    Black words = leave them.<br/>
-    Red struck = take out when you copy to paper.<br/>
-    Green = put in (new words).<br/>
-    具體：紅掉「立法考試」整截，係因為題要<strong>一項</strong>；綠加書本內容要點——你可改自己字，但意思要有。
+    黑＝照抄；紅＝抄紙時刪；綠＝抄紙時加。<br/>
+    合併後只有<strong>一項</strong>：學校把性教育放入書本＋列作考試（同一套課程措施）。
   </div>
 </div>
 
 <div class="card">
-  <h2>Your original words (plain black, full keep)</h2>
-  <p class="meta">對稿用——一字不漏：</p>
-  <div class="draft" style="background:#fafafa">針對部分青少年因為缺乏對性觀念的認識因此，應從教育入手，協助他們建立正確性觀念。如資料B所示，青少年是因為早熟及對性產生好奇，但其性教育只停留在生理知識層面，令他們在網上被不正確的資訊或不良價值觀認為正確，而導致54.7%的青少年發生性行為和35%的未滿16歲的青少年有性行為。所以我認為，首先為了成效最大，把性教育放進學校書本，全港普及，讓青少年學習，其影響力廣泛度高；然後，立法強制令全港中小學把性教育設為考試內容，從根本入手，杜絕問題的成因，即是先糾正錯誤觀念，才能減少輕率行為。這不但具有針對性，能聚焦地令青少年了解，又能誘因他們為了成績而溫習其課題，有利上升青少年對性教育的了解。綜上所述，此方法能有效幫助青少年建立正確性觀念。</div>
+  <h2>合併後建議全文（跟紅刪綠加結果）</h2>
+  <p class="meta">方便你對稿：</p>
+  <div class="draft" style="background:#fafafa">針對部分青少年因為缺乏對性觀念的認識帶來對親密關係的誤解。因此，應從教育入手，協助他們建立正確性觀念。如資料B所示，青少年是因為早熟及對性產生好奇，但其性教育只停留在生理知識層面，令他們把網上不正確的資訊或不良價值觀視為正確，而導致54.7%的青少年發生性行為和35%的未滿16歲的青少年有性行為。所以我認為，為了成效最大，把性教育放進學校書本，並全港普及，立法強制令全港中小學把性教育設為考試內容，讓青少年學習，從根本入手，杜絕問題的成因，即是先糾正錯誤觀念，才能減少輕率行為；其影響力廣泛度高。內容可強調尊重意願、愛與責任與親密界限。這不但具有針對性，能聚焦地令青少年了解，又能誘使他們為了成績而溫習其課題，有助提升青少年對性教育的了解。綜上所述，此方法能有效幫助青少年建立正確性觀念。</div>
 </div>
 
 <div class="card">
-  <h2>After you edit</h2>
-  <ol>
-    <li>Copy following: keep black, drop red, insert green.</li>
-    <li>Optional: rebuild lines on <a href="https://newgodev.com/cesq1/?v=5026de6">cesq1</a>.</li>
-    <li>Photo new draft before real paper.</li>
-  </ol>
+  <h2>你原本嗰段（一字不漏，對照用）</h2>
+  <div class="draft" style="background:#fafafa;font-size:1rem">首先為了成效最大，把性教育放進學校書本，全港普及，讓青少年學習，其影響力廣泛度高；然後，立法強制令全港中小學把性教育設為考試內容，從根本入手，杜絕問題的成因，即是先糾正錯誤觀念，才能減少輕率行為。</div>
 </div>
 
 </main>
