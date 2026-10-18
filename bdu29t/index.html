@@ -50,7 +50,7 @@ th{color:var(--muted);font-weight:700}
   <div class="top">
     <span class="badge">Artifact</span>
     <span class="chip">studyroo3 · KT</span>
-    <span class="chip warn" id="ttl">expires …</span>
+    <span class="chip" id="ttl">expires …</span>
     <button class="btn" type="button" id="copy">Copy link</button>
   </div>
   <article class="wrap">
@@ -163,23 +163,16 @@ th{color:var(--muted);font-weight:700}
   </article>
 </div>
 <script>
-const EXPIRES_AT = 1792564620000;
+const EXPIRES_AT = null; // no expiry
 const gate = document.getElementById('gate');
 const live = document.getElementById('live');
 const ttl = document.getElementById('ttl');
 function tick(){
-  const left = EXPIRES_AT - Date.now();
-  if(left <= 0){
-    live.hidden = true;
-    gate.hidden = false;
-    document.title = 'Artifact expired';
-    return;
-  }
-  const h = Math.floor(left/3600000);
-  const m = Math.floor((left%3600000)/60000);
-  ttl.textContent = 'expires in ' + h + 'h ' + m + 'm';
+  ttl.textContent = 'no expiry';
+  live.hidden = false;
+  gate.hidden = true;
 }
-tick(); setInterval(tick, 30000);
+tick();
 document.getElementById('copy').onclick = async () => {
   try { await navigator.clipboard.writeText(location.href); } catch(e) {}
 };
