@@ -1,0 +1,123 @@
+<!DOCTYPE html><html lang="zh-Hant"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Memory HQ Blueprint</title>
+<style>body{font-family:-apple-system,system-ui,sans-serif;padding:16px;line-height:1.5;max-width:720px;margin:auto;white-space:pre-wrap} h1{font-size:1.25rem}</style></head>
+<body><h1>Memory HQ + Plan (phone)</h1><p>Updated 2026-10-19T01:51</p><pre>## HQ-BATCH-BLUEPRINT.md
+# Memory HQ + 20-room batch blueprint (2026-10-19)
+
+CEO: Chatty Guy · HQ room: Memory HQ (CmdOps, CmdIdea, CmdArch, CmdTest, CmdBatch)
+Existing specialist room: Memory Liquid (keep; do not duplicate)
+
+## Hard rules
+- Channel max 6 seats. CEO is NOT in every room — commanders lead; CEO only in HQ (+ optional drop-in).
+- Live memory-core FROZEN. Files under E:\ai\memory-core-v2\ are SSOT for v2 work.
+- INF portable: md/jsonl/sqlite; any AI (Grok/Claude/Codex) can read; target 100GB+ local.
+
+## 12+ job tracks (each → later a 6-bot room unless marked HQ-only)
+1. **Liquid** — FAST/DEEP modes (existing Memory Liquid)
+2. **BotMemory MCP** — adapters for any client
+3. **Embed** — local vectors / RRF / upgrade from hash
+4. **ChatVault Sync** — groksync + grokbot-chatvault ingest
+5. **Claude Parity** — memory-core + CLAUDE.md imports
+6. **I/O Trace** — capture prompts/outputs as portable JSONL
+7. **Style Bank** — per-bot voice/style packs
+8. **Temporal QA** — supersede / as_of / never leak expired
+9. **Scale Index** — 100GB+ sharding, word/char meters
+10. **Export Pack** — one-zip restore for Codex/new account
+11. **Sandbox Gate** — tests before any live talk
+12. **Prompt Lab** — prompt patterns that raise thought quality
+13. **Skill Factory** — Cursor/Claude skills wrapping tools
+14. **Security** — no secrets in recalls; path refuse
+
+## Proposed 20 rooms (batch after CEO+user OK)
+R01 Liquid (exists) · R02 MCP · R03 Embed · R04 VaultSync · R05 ClaudeParity
+R06 IOTrace · R07 Style · R08 Temporal · R09 Scale · R10 Export
+R11 Sandbox · R12 PromptLab · R13 Skills · R14 Security · R15 GraphitiStudy
+R16 DJI-FastPath · R17 SchoolHW-Memory · R18 MultiBot-Orchestration · R19 DisasterRecovery · R20 Research-Frontier
+
+Each room: 1 commander + 5 workers (CEO not seated). Naming: `&lt;Room&gt;-Lead` + 5 roles.
+
+## Phase gate
+HQ reviews blueprint → user/CEO yes → CmdBatch creates rooms in waves of 5.
+
+
+## PLAN-2026-10-19.md
+# Memory Liquid + bot-memory — Plan (2026-10-19)
+
+Lead: Chatty Guy · Room: Memory Liquid (SuperForge, GitScout, BotVault, TideFast, TideDeep)
+Safety: live `C:\Users\benbe\.claude\memory-core` FROZEN · work only under `E:\ai\memory-core-v2\` · v1 zip in `E:\ai\memory-core-v1-safe\`
+
+## Goals
+1. Faster recall for all bots (FTS done; hybrid embed next).
+2. Temporal accuracy (current-only default; as_of / valid_* always shown).
+3. **bot-memory MCP** so a NEW chat can recover Chatty Guy + other bots memory/style + mix ChatVault/groksync.
+4. **Liquid modes**: FAST (known path, thin) vs DEEP (slow research + prior memory → fail less).
+5. Skill + sandbox tests before any live cutover.
+
+## Non-goals (now)
+- No Graphiti Docker install yet.
+- No writing/replacing live memory-core.
+- No deleting superseded history.
+
+## Phases
+### P0 — Done
+- [x] v1 freeze zip
+- [x] v2 FTS index + temporal filter + tests (4/4) + ~3× bench
+- [x] Memory Liquid group + track owners
+
+### P1 — In flight (this week sandbox)
+- [x] SuperForge: superpowers design doc `docs/superpowers/specs/2026-10-19-memory-liquid-design.md`
+- [ ] GitScout: `docs/github-finds.md` (MCP/embed/prompt patterns)
+- [ ] BotVault: `mcp/bot-memory/` tools `recall_current` / `recall_bot` / `recall_chatvault`
+- [ ] Skill: `skills/bot-memory/SKILL.md`
+- [ ] TideFast/TideDeep: `docs/liquid-fast.md` + `docs/liquid-deep.md` + `--mode fast|deep`
+- [ ] Embed: `src/embed_build.py` + hybrid RRF; local if possible else offline fallback
+- [ ] Sandbox tests: temporal + hybrid + MCP unit → `docs/SANDBOX-TEST.md`
+
+### P2 — Wire bots (still sandbox)
+- [ ] Point one test agent at bot-memory MCP
+- [ ] New-chat recovery drill: open fresh chat → recall Chatty Guy style + last memory topics
+- [ ] ChatVault day recall smoke (or stub if path offline)
+
+### P3 — Cutover gate (needs your yes)
+- [ ] Parity report vs v1 recall
+- [ ] Restore drill from freeze zip
+- [ ] Explicit user OK → optional read-through mirror (still no silent overwrite)
+
+## Owners
+| Track | Owner |
+|-------|--------|
+| Process / TDD | SuperForge |
+| GitHub patterns | GitScout |
+| MCP + skill | BotVault |
+| Liquid FAST | TideFast |
+| Liquid DEEP | TideDeep |
+| Integrate / user | Chatty Guy |
+
+## Success checks
+- Default recall: 0 non-current hits
+- FAST path: known DJI/中史-class style query returns thin pack &amp;lt; ~50ms local target when indexed
+- DEEP path: returns as_of + prior-memory hints
+- MCP tools callable in sandbox; skill lists when to call which
+- All sandbox tests green before P3
+
+
+## INF / portable (USER HARD REQUIREMENT 2026-10-19)
+- SSOT is **local disk only** (scale past **100GB**; track words/chars). **No cloud dependency** for source-of-truth.
+- Format must be readable by **any** AI stack: Grok Bot, grok.com, Claude, Codex, future tools — **do not tie schema to one product**.
+- Account loss / switch: still recover **all** of: memories, words, I/O traces, bot styles, ChatVault/groksync — no vendor lock.
+- Prefer open artifacts: **markdown + JSONL + rebuildable SQLite** indexes.
+- MCP/skill are *adapters*; the **files** are the memory, not the MCP server.
+- BotVault docs: `mcp/bot-memory/README.md` + `skills/bot-memory/SKILL.md` (updated same day).
+
+
+## INF-PORTABLE.md
+# INF portable memory
+
+
+
+## INF / portable (user 2026-10-19)
+- SSOT is **local disk only** (can exceed 100GB; track words/chars).
+- Format must be readable by **any** AI stack: Grok Bot, grok.com exports, Claude, Codex, future tools.
+- Account loss / switch: still recover memories, styles, I/O traces, ChatVault/groksync days — no vendor lock.
+- Prefer open artifacts: markdown + JSONL + SQLite indexes (indexes rebuildable from files).
+- MCP/skill are *adapters*; the files are the memory, not the MCP server.
+</pre><hr/><p><b>Also:</b> unique prompts for ~120 bots generating under memory-core-v2/prompts/</p></body></html>
