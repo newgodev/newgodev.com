@@ -50,7 +50,7 @@ th{color:var(--muted);font-weight:700}
   <div class="top">
     <span class="badge">Artifact</span>
     <span class="chip">studyroo3 · KT</span>
-    <span class="chip" id="ttl">no expiry</span>
+    <span class="chip warn" id="ttl">expires …</span>
     <button class="btn" type="button" id="copy">Copy link</button>
   </div>
   <article class="wrap">
@@ -159,20 +159,27 @@ th{color:var(--muted);font-weight:700}
       <a href="https://www.coolistichk.com/pages/solo" target="_blank" rel="noopener">Coolistic</a>
     </div>
 
-    <p class="note" style="margin-top:28px">No client expiry · content stays visible · no room/Wi‑Fi passwords in this page.</p>
+    <p class="note" style="margin-top:28px">Client-side expiry gate · server file may remain until deleted · no room/Wi‑Fi passwords in this page.</p>
   </article>
 </div>
 <script>
-const EXPIRES_AT = null;
+const EXPIRES_AT = 1792564620000;
 const gate = document.getElementById('gate');
 const live = document.getElementById('live');
 const ttl = document.getElementById('ttl');
 function tick(){
-  live.hidden = false;
-  gate.hidden = true;
-  ttl.textContent = 'no expiry';
+  const left = EXPIRES_AT - Date.now();
+  if(left <= 0){
+    live.hidden = true;
+    gate.hidden = false;
+    document.title = 'Artifact expired';
+    return;
+  }
+  const h = Math.floor(left/3600000);
+  const m = Math.floor((left%3600000)/60000);
+  ttl.textContent = 'expires in ' + h + 'h ' + m + 'm';
 }
-tick();
+tick(); setInterval(tick, 30000);
 document.getElementById('copy').onclick = async () => {
   try { await navigator.clipboard.writeText(location.href); } catch(e) {}
 };
