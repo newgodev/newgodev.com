@@ -4,82 +4,125 @@
 <script>if(location.protocol==="http:")location.replace("https://"+location.host+location.pathname+location.search);</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>個人短講｜好朋友三種特質</title>
+<title>由大綱寫成短講｜好朋友三種特質</title>
 <style>
   @page { size: A4; margin: 12mm; }
   * { box-sizing: border-box; }
-  body {
-    margin: 0; padding: 16px;
-    font-family: "PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif;
-    color: #111; background: #f2f2f2; line-height: 1.65;
-  }
-  .paper {
-    max-width: 210mm; margin: 0 auto; background: #fff;
-    border: 1px solid #ccc; padding: 14mm 12mm;
-    box-shadow: 0 2px 10px rgba(0,0,0,.08);
-  }
-  h1 { font-size: 17px; margin: 0 0 4px; text-align: center; }
-  .meta { font-size: 12px; color: #555; text-align: center; margin-bottom: 12px; }
-  .box {
-    border: 1.5px solid #222; border-radius: 6px; padding: 10px 12px; margin: 10px 0;
-  }
-  .box h2 {
-    font-size: 13px; margin: 0 0 8px; padding-bottom: 4px;
-    border-bottom: 1px solid #ddd;
-  }
-  .script p { margin: 0 0 12px; font-size: 15px; text-align: justify; }
-  .pause { color: #b00020; font-weight: 700; }
-  .kw { font-weight: 700; text-decoration: underline; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th, td { border: 1px solid #333; padding: 8px; vertical-align: top; }
-  th { background: #f5f5f5; width: 26%; }
-  ul { margin: 6px 0 0; padding-left: 18px; font-size: 13px; }
-  .tip { font-size: 12px; color: #444; }
-  .note { font-size: 12px; background: #fff8e6; border: 1px solid #e6d59a; padding: 8px 10px; margin: 8px 0; border-radius: 4px; }
-  @media print {
-    body { background: #fff; padding: 0; }
-    .paper { box-shadow: none; border: none; max-width: none; padding: 0; }
-    .noprint { display: none; }
-  }
+  body { margin:0; padding:16px; font-family:"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif; color:#111; background:#f2f2f2; line-height:1.7; }
+  .paper { max-width:210mm; margin:0 auto; background:#fff; border:1px solid #ccc; padding:12mm; box-shadow:0 2px 10px rgba(0,0,0,.08); }
+  h1 { font-size:17px; margin:0 0 4px; text-align:center; }
+  .meta { font-size:12px; color:#555; text-align:center; margin-bottom:10px; }
+  .box { border:1.5px solid #222; border-radius:6px; padding:10px 12px; margin:10px 0; }
+  .box h2 { font-size:13px; margin:0 0 8px; padding-bottom:4px; border-bottom:1px solid #ddd; }
+  .script p { margin:0 0 12px; font-size:14.5px; text-align:justify; }
+  .pause { color:#b00020; font-weight:700; }
+  .kw { font-weight:700; text-decoration:underline; }
+  .flow { display:flex; flex-wrap:wrap; gap:6px; align-items:center; justify-content:center; font-size:12.5px; font-weight:700; margin:0 0 10px; }
+  .flow span { border:1.5px solid #222; border-radius:4px; padding:4px 8px; background:#f8f8f8; }
+  .flow .arr { border:none; background:transparent; font-weight:900; color:#1d70b8; padding:0 2px; }
+  .map { display:grid; grid-template-columns:1fr; gap:8px; }
+  @media(min-width:640px){ .map{grid-template-columns:1fr 1fr;} .map .full{grid-column:1/-1;} }
+  .card { border:1.5px solid #222; border-top:5px solid var(--c,#1d4ed8); border-radius:6px; padding:8px 10px; font-size:12.5px; }
+  .card h3 { margin:0 0 4px; font-size:13px; }
+  .card ol { margin:0; padding-left:1.2em; }
+  .card li { margin:2px 0; }
+  .arrow { text-align:center; font-weight:900; color:#1d70b8; margin:6px 0; font-size:14px; }
+  .note { font-size:12px; background:#fff8e6; border:1px solid #e6d59a; padding:8px 10px; margin:8px 0; border-radius:4px; }
+  .count { font-size:12px; color:#333; margin:6px 0; }
+  ul.how { margin:6px 0 0; padding-left:18px; font-size:13px; }
+  @media print { body{background:#fff;padding:0;} .paper{box-shadow:none;border:none;padding:0;} }
 </style>
 </head>
 <body>
 <div class="paper">
-  <h1>個人短講講稿紙（書面語）</h1>
+  <h1>由大綱寫成短講（書面語）</h1>
   <div class="meta">題目：你認為好朋友必須具備哪三種特質？為甚麼？</div>
-
   <div class="note">
-    <strong>時間：</strong>評分表寫明——短講<strong>不足 1 分鐘</strong>，內容最高只得 3 分。卷上<strong>沒有</strong>寫死「必須 2 分鐘」。準備時間是 <strong>5 分鐘</strong>。若老師堂上說目標約 2 分鐘，就當「約 1.5–2 分鐘、至少滿 1 分鐘」來練；本講稿按慢講約 1.5–2 分鐘寫。
+    <strong>地圖用法：</strong>結構要清楚、一眼跟到路；用詞保持書面語實力，唔會改成淺白口語。<br>
+    <strong>時間：</strong>不足一分鐘內容最高三分；準備五分鐘；慢講目標約一分半至兩分鐘。
   </div>
 
   <div class="box">
-    <h2>① 準備紙（5 分鐘只寫這些）</h2>
-    <table>
-      <tr><th>三種特質</th><td><strong>正直</strong>　／　<strong>誠實守信</strong>　／　<strong>見聞廣博</strong></td></tr>
-      <tr><th>提示</th><td>慢　·　停　｜　每段完停 2–3 秒　｜　重音：正直／誠實／廣博</td></tr>
-    </table>
+    <h2>一、完整大綱地圖（對齊全文）</h2>
+    <div class="flow">
+      <span>開場</span><span class="arr">→</span>
+      <span>正直</span><span class="arr">→</span>
+      <span>誠實守信</span><span class="arr">→</span>
+      <span>見聞廣博</span><span class="arr">→</span>
+      <span>收尾</span>
+    </div>
+    <div class="map">
+      <div class="card full" style="--c:#1d4ed8">
+        <h3>開場</h3>
+        <ol>
+          <li>打招呼、點題</li>
+          <li>提出三種特質：正直、誠實守信、見聞廣博</li>
+          <li>預告：以下說明原因</li>
+          <li>停頓</li>
+        </ol>
+      </div>
+      <div class="card" style="--c:#b45309">
+        <h3>第一　正直</h3>
+        <ol>
+          <li>點出特質：正直</li>
+          <li>不會一味迎合；犯錯時誠實指出、幫助改正</li>
+          <li>影響：不致越走越偏；品德上成長</li>
+          <li>小結：故必須具備正直</li>
+          <li>停頓</li>
+        </ol>
+      </div>
+      <div class="card" style="--c:#047857">
+        <h3>第二　誠實守信</h3>
+        <ol>
+          <li>點出特質：誠實守信</li>
+          <li>說話可靠、答應的事會做到</li>
+          <li>影響：感到安心、願意互相信任；困難時有依靠</li>
+          <li>小結：故不可或缺</li>
+          <li>停頓</li>
+        </ol>
+      </div>
+      <div class="card" style="--c:#7c3aed">
+        <h3>第三　見聞廣博</h3>
+        <ol>
+          <li>點出特質：見聞廣博</li>
+          <li>知識較豐富；帶來新想法與經驗</li>
+          <li>影響：一起進步、眼界更開闊；陪伴之外更助成長</li>
+          <li>小結：故亦必須具備</li>
+          <li>停頓</li>
+        </ol>
+      </div>
+      <div class="card full" style="--c:#be123c">
+        <h3>收尾</h3>
+        <ol>
+          <li>三者缺一不可</li>
+          <li>分述作用：走正路／建立信任／推動成長</li>
+          <li>升華：自己也應成為具備這些特質的人</li>
+          <li>結束、道謝</li>
+        </ol>
+      </div>
+    </div>
   </div>
+
+  <div class="arrow">↓ 照大綱寫成講稿（全文照讀）↓</div>
 
   <div class="box script">
-    <h2>② 講稿（書面語 · 照讀）　<span class="pause">／</span> = 停頓</h2>
-    <p>各位同學，大家好。我認為好朋友必須具備三種特質，分別是<span class="kw">正直</span>、<span class="kw">誠實守信</span>和<span class="kw">見聞廣博</span>。以下我會說明原因。<span class="pause">／</span></p>
-    <p>第一是<span class="kw">正直</span>。正直的朋友不會一味迎合我們，看見我們犯錯，會誠實指出，幫助我們改正。有這樣的朋友，我們才不會越走越偏，也能在品德上成長。所以，好朋友必須具備正直的特質。<span class="pause">／</span></p>
-    <p>第二是<span class="kw">誠實守信</span>。誠實守信的朋友說話可靠，答應的事會做到，令我們感到安心，也願意互相信任。在困難的時候，我們更需要這樣值得依靠的朋友。因此，誠實守信是好朋友不可或缺的特質。<span class="pause">／</span></p>
-    <p>第三是<span class="kw">見聞廣博</span>。見聞廣博的朋友知識較豐富，常能帶給我們新的想法和經驗，使我們一起進步、眼界更開闊。好朋友不只陪伴我們，更應幫助我們成長。所以，見聞廣博也是必須具備的特質。<span class="pause">／</span></p>
-    <p>總括而言，正直、誠實守信和見聞廣博，三種特質缺一不可。交朋友時，我們也應努力成為具備這些特質的人。我的短講到此結束，謝謝大家。</p>
+    <h2>二、講稿（書面語 · 照讀）　<span class="pause">／</span>＝停頓</h2>
+    <p class="count">全文約 <strong>386</strong> 字</p>
+    <p>各位同學，大家好。我認為好朋友必須具備三種特質，分別是正直、誠實守信和見聞廣博。以下我會說明原因。<span class="pause">／</span></p>
+    <p>第一是正直。正直的朋友不會一味迎合我們，看見我們犯錯，會誠實指出，幫助我們改正。有這樣的朋友，我們才不會越走越偏，也能在品德上成長。所以，好朋友必須具備正直的特質。<span class="pause">／</span></p>
+    <p>第二是誠實守信。誠實守信的朋友說話可靠，答應的事會做到，令我們感到安心，也願意互相信任。在困難的時候，我們更需要這樣值得依靠的朋友。因此，誠實守信是好朋友不可或缺的特質。<span class="pause">／</span></p>
+    <p>第三是見聞廣博。見聞廣博的朋友知識較豐富，常能帶給我們新的想法和經驗，使我們一起進步、眼界更開闊。好朋友不只陪伴我們，更應幫助我們成長。所以，見聞廣博也是必須具備的特質。<span class="pause">／</span></p>
+    <p>總括而言，正直、誠實守信和見聞廣博缺一不可。正直助我們走正路，誠實守信建立信任，見聞廣博推動成長。交朋友時，我們也應努力成為具備這些特質的人。我的短講到此結束，謝謝大家。</p>
   </div>
 
   <div class="box">
-    <h2>③ 怎樣講</h2>
-    <ul>
-      <li>用書面語讀，不要改回口語。</li>
-      <li>每個「／」停 2–3 秒；語速放慢。</li>
-      <li>至少滿 1 分鐘；若老師要求約 2 分鐘，三段 why 可再稍慢，或每段加一句自己例子。</li>
-      <li>講前對着這張紙讀一次。</li>
+    <h2>三、怎樣用</h2>
+    <ul class="how">
+      <li>五分鐘準備：只抄「一」嘅編號要點，唔抄全文。</li>
+      <li>正式講跟「二」讀；見紅色「／」就停兩至三秒。</li>
+      <li>地圖對齊全文每一層意思；唔好臨時加動漫例子或改回口語。</li>
     </ul>
   </div>
-
-  <p class="tip noprint">打印：瀏覽器 → 列印。連結：newgodev.com/tclkar/?v=2</p>
 </div>
 </body>
 </html>
