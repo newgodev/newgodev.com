@@ -4,60 +4,56 @@
 <script>if(location.protocol==="http:")location.replace("https://"+location.host+location.pathname+location.search);</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>由大綱寫成短講｜好朋友三種特質</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+HK:wght@400;700;900&display=swap" rel="stylesheet">
+<title>個人短講｜好朋友三種特質</title>
 <style>
-:root{--ink:#0b0c0c;--muted:#505a5f;--line:#b1b4b6;--blue:#1d70b8}
-*{box-sizing:border-box}
-body{margin:0;font-family:"Noto Sans HK",Arial,sans-serif;background:#f3f2f1;color:var(--ink);line-height:1.7}
-.top{position:sticky;top:0;z-index:10;background:#fff;border-bottom:6px solid var(--blue);padding:10px 16px}
-.tag{display:inline-block;font-weight:900;color:#fff;background:var(--blue);border-radius:4px;padding:2px 12px}
-.sub{color:var(--muted);font-size:.9rem;margin-top:4px}
-.wrap{max-width:980px;margin:0 auto;padding:16px}
-h2{font-size:1.05rem;font-weight:900;margin:18px 0 8px;border-left:6px solid var(--blue);padding-left:10px}
-.map{display:grid;grid-template-columns:1fr;gap:10px}
-@media(min-width:720px){.map{grid-template-columns:1fr 1fr}.map .card:first-child,.map .card:last-child{grid-column:1/-1}}
-.card{background:#fff;border:2px solid var(--ink);border-top:6px solid var(--c,#1d4ed8);border-radius:6px;padding:10px 12px}
-.card h3{margin:0 0 6px;font-size:1rem}
-.card ul{margin:0;padding-left:1.2em;font-size:.92rem}
-.card li{margin:2px 0}
-.arrow{text-align:center;font-weight:900;color:var(--blue);font-size:1.4rem;margin:4px 0}
-.paper{border:2px solid var(--ink);border-radius:4px;padding:14px 16px 20px;background:#fff;
-  background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 33px,#c9ccce 33px,#c9ccce 34px);line-height:34px}
-.para{margin:0 0 34px;font-size:1rem;text-indent:2em}
-.pause{color:#d4351c;font-weight:900;text-indent:0}
-.count{font-size:.9rem;margin:8px 0}
-.note{background:#fff8e6;border:1px solid #e6d59a;padding:10px 12px;border-radius:4px;font-size:.9rem;margin:10px 0}
-.tips{background:#fff;border:1px solid var(--line);padding:10px 14px;border-radius:4px;font-size:.92rem}
-@media print{.top{position:static} body{background:#fff}}
+  @page { size: A4; margin: 12mm; }
+  * { box-sizing: border-box; }
+  body { margin:0; padding:16px; font-family:"PingFang TC","Microsoft JhengHei","Noto Sans TC",sans-serif; color:#111; background:#f2f2f2; line-height:1.7; }
+  .paper { max-width:210mm; margin:0 auto; background:#fff; border:1px solid #ccc; padding:12mm; box-shadow:0 2px 10px rgba(0,0,0,.08); }
+  h1 { font-size:17px; margin:0 0 4px; text-align:center; }
+  .meta { font-size:12px; color:#555; text-align:center; margin-bottom:10px; }
+  .box { border:1.5px solid #222; border-radius:6px; padding:10px 12px; margin:10px 0; }
+  .box h2 { font-size:13px; margin:0 0 8px; padding-bottom:4px; border-bottom:1px solid #ddd; }
+  .script p { margin:0 0 12px; font-size:14.5px; text-align:justify; }
+  .pause { color:#b00020; font-weight:700; }
+  .kw { font-weight:700; text-decoration:underline; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th,td { border:1px solid #333; padding:8px; vertical-align:top; }
+  th { background:#f5f5f5; width:26%; }
+  ul { margin:6px 0 0; padding-left:18px; font-size:13px; }
+  .note { font-size:12px; background:#fff8e6; border:1px solid #e6d59a; padding:8px 10px; margin:8px 0; border-radius:4px; }
+  .count { font-size:12px; color:#333; margin:6px 0; }
+  @media print { body{background:#fff;padding:0;} .paper{box-shadow:none;border:none;padding:0;} .noprint{display:none;} }
 </style>
 </head>
 <body>
-<div class="top">
-  <span class="tag">由大綱寫成短講</span>
-  <div class="sub">個人短講 · 書面語 · 不用動漫例子 · 只談好朋友</div>
-</div>
-<div class="wrap">
-  <div class="note"><strong>卷上重點：</strong>意見題——必須說清<strong>三種特質</strong>及<strong>為甚麼</strong>；內容要圍繞主題；不足 1 分鐘內容最高 3 分；準備約 5 分鐘。評分看內容、條理、表情達意、語速語氣。<br><strong>寫法原則：</strong>大綱只留簡單關鍵詞（方便 5 分鐘抄）；下面講稿用盡字數、書面語寫滿，照稿慢讀約 2 分鐘。</div>
-
-  <h2>一、完整大綱（先睇呢幅地圖）</h2>
-  <p class="count">題目：好朋友必須具備哪三種特質？為甚麼？</p>
-  <div class="map"><div class="card" style="--c:#1d4ed8"><h3>開頭</h3><ul><li>點題</li><li>提出三種特質：正直、誠實守信、見聞廣博</li><li>一句交代：益者三友（友直、友諒、友多聞）</li></ul></div><div class="card" style="--c:#b45309"><h3>① 正直</h3><ul><li>定義：光明正大，敢於指出錯誤</li><li>why：不盲從迎合</li><li>例子：校園爭執時勸冷靜</li><li>影響：及時改正，不致誤入歧途</li><li>設若缺少…則…</li><li>扣：故此必須具備</li></ul></div><div class="card" style="--c:#047857"><h3>② 誠實守信</h3><ul><li>定義：言出必行，表裏如一</li><li>why：信任是友情基礎</li><li>例子：答應溫習／分組守約</li><li>影響：安心信賴，遇事有依靠</li><li>設若缺少…則…</li><li>扣：故此不可或缺</li></ul></div><div class="card" style="--c:#7c3aed"><h3>③ 見聞廣博</h3><ul><li>定義：知識豐富，樂於分享</li><li>why：一起進步不只玩樂</li><li>例子：分享讀書方法應付測驗</li><li>影響：眼界開闊，一同成長</li><li>設若缺少…則…</li><li>扣：故此必須具備</li></ul></div><div class="card" style="--c:#be123c"><h3>結尾</h3><ul><li>重提三者缺一不可</li><li>升華：自己也應成為這樣的朋友</li><li>多謝</li></ul></div></div>
-  <div class="arrow">↓ 照大綱寫成長講稿 ↓</div>
-
-  <h2>二、書面語講稿（照讀）</h2>
-  <p class="count">約 <strong>862</strong> 字　｜　<span class="pause">／</span> 句停　<span class="pause">／／</span> 段停　｜　慢講目標約 2 分鐘</p>
-  <div class="paper">
-    <p class="para">各位同學，大家好。今天的短講題目是：你認為好朋友必須具備哪三種特質？為甚麼？經過思考，我認為好朋友必須具備正直、誠實守信和見聞廣博這三種特質。古人亦謂益者三友：友直、友諒、友多聞。換言之，正直、誠實守信與見聞廣博，正是建立深厚友情的重要條件。以下我會逐一說明理由，並指出這些特質對朋友有甚麼正面影響。<span class="pause">／</span></p><p class="para">第一是正直。正直是指做人光明正大，不投機取巧，看見不對的事敢於指出。好朋友應該直言規勸，而不是一味迎合。真正關心我們的人，不會害怕一時得罪我們，而會把正確的道路告訴我們。例如，當我們在校園裡因為一時意氣而與同學爭執，正直的朋友會勸我們冷靜，指出我們說話過火或不妥之處，幫助我們重新思考。因此，我們能及時改正，不致誤入歧途，也能在品德上成長。設若缺少正直，朋友只懂附和，從不指出問題，我們便更容易一錯再錯。故此，正直是好朋友必須具備的特質。<span class="pause">／／</span></p><p class="para">其次是誠實守信。誠實守信是指說話可靠，不作虛假承諾，答應的事會盡力做到，並且表裏如一。朋友之間最重要的是信任。好朋友應該言出必行，令我們感到安心。例如，同學答應陪我們溫習測驗，或答應在分組報告中完成自己的部分，便會準時守約，不會隨便推搪。因此，我們敢於信賴對方，遇事時也有依靠，友情更能長久。設若缺少誠實守信，朋友經常食言或隱瞞真相，關係便難以維持，心底也難以安心。故此，誠實守信是維繫友情不可或缺的條件。<span class="pause">／／</span></p><p class="para">再者是見聞廣博。見聞廣博是指知識豐富、視野開闊，樂於學習並把有用的想法與經驗分享給朋友。好朋友不只一起玩樂，更應一起進步。見聞廣博的朋友，往往能在學習和處事上給我們啟發。例如，朋友把讀過的書、學過的溫習方法告訴我們，幫助我們應付測驗或解決難題，使我們少走彎路。因此，我們眼界更開闊，也能一同成長。設若缺少見聞廣博，友情容易流於表面，只剩消磨時間，卻缺少互相提升的力量。故此，見聞廣博同樣是好朋友必須具備的特質。<span class="pause">／／</span></p><p class="para">總括而言，正直、誠實守信和見聞廣博缺一不可。正直助我們走正路，誠實守信建立信任，見聞廣博推動成長。交朋友時，我們也應努力成為具備這些特質的人。我的短講到此結束，謝謝大家。</p>
+<div class="paper">
+  <h1>個人短講講稿紙（書面語）</h1>
+  <div class="meta">題目：你認為好朋友必須具備哪三種特質？為甚麼？</div>
+  <div class="note"><strong>時間：</strong>評分表——不足 1 分鐘，內容最高 3 分。準備 5 分鐘。若老師說過約 2 分鐘，請慢講練到約 1.5–2 分鐘以上。</div>
+  <p class="count">本講稿約 <strong>586</strong> 字（書面語）· 兩組討論後定稿</p>
+  <div class="box">
+    <h2>① 準備紙</h2>
+    <table>
+      <tr><th>三種特質</th><td><strong>正直</strong>　／　<strong>誠實守信</strong>　／　<strong>見聞廣博</strong></td></tr>
+      <tr><th>提示</th><td>慢 · 停　｜　每段完停 2–3 秒　｜　重音：正直／誠實／廣博</td></tr>
+    </table>
   </div>
-
-  <h2>三、點樣用呢張紙</h2>
-  <div class="tips">
-    <ol>
-      <li><strong>簡單大綱：</strong>5 分鐘準備只抄「一」嘅關鍵詞（定義／why／例子／影響／設若／扣），唔抄全文。</li>
-      <li><strong>字最多講稿：</strong>正式講跟「二」書面語讀；紅字 <span style="color:#d4351c;font-weight:900">／／／</span> 停；約 862 字，慢講約 2 分鐘。</li>
-      <li>唔好臨時加動漫／Rudy；只用校園好朋友例子。</li>
-    </ol>
+  <div class="box script">
+    <h2>② 講稿（書面語 · 照讀）　<span class="pause">／</span> = 停頓</h2>
+    <p>各位同學，大家好。今天的短講題目是：你認為好朋友必須具備哪三種特質？為甚麼？我認為好朋友必須具備<span class="kw">正直</span>、<span class="kw">誠實守信</span>和<span class="kw">見聞廣博</span>這三種特質。以下我會說明理由，並指出這些特質對朋友有甚麼正面影響。<span class="pause">／</span></p>
+    <p>第一是<span class="kw">正直</span>。正直是指做人光明正大，看見不對的事敢於指出。真正的好朋友不會一味迎合我們。當我們犯錯時，正直的朋友會誠實提醒，幫助我們改正，使我們避免一錯再錯，也能在品德上成長。如果朋友只懂附和，從不指出問題，對我們其實沒有益處。因此，正直是好朋友必須具備的特質。<span class="pause">／</span></p>
+    <p>第二是<span class="kw">誠實守信</span>。誠實守信是指說話可靠，答應的事會盡力做到。朋友之間最重要的是信任。誠實守信的朋友能令我們安心傾訴，也願意在困難時互相依靠。相反，如果朋友經常食言或隱瞞真相，關係便難以長久。我們成長路上難免遇到挫折，更需要值得信任的朋友支持。所以，誠實守信是維繫友情的重要條件。<span class="pause">／</span></p>
+    <p>第三是<span class="kw">見聞廣博</span>。見聞廣博是指知識豐富、視野開闊，能分享新的想法和經驗。好朋友不只一起玩樂，更應一起進步。見聞廣博的朋友常能在學習和處事上給我們啟發，使我們眼界更開闊。正如古人所說，結交見多識廣的朋友，對自己最有益處。若朋友從不帶來成長，友情便較為單薄。因此，見聞廣博同樣必須具備。<span class="pause">／</span></p>
+    <p>總括而言，正直、誠實守信和見聞廣博缺一不可。正直助我們走正路，誠實守信建立信任，見聞廣博推動成長。交朋友時，我們也應努力成為具備這些特質的人。我的短講到此結束，謝謝大家。</p>
+  </div>
+  <div class="box">
+    <h2>③ 怎樣講</h2>
+    <ul>
+      <li>用書面語讀，不要改回口語。</li>
+      <li>每個「／」停 2–3 秒；語速放慢。</li>
+      <li>至少滿 1 分鐘；目標約 2 分鐘則整篇放慢讀。</li>
+    </ul>
   </div>
 </div>
 </body>
