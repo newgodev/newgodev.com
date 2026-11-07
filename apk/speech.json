@@ -1,7 +1,7 @@
 {
   "name": "簡用聽寫",
-  "versionCode": 3,
-  "versionName": "1.2",
+  "versionCode": 4,
+  "versionName": "1.3",
   "apk": "https://raw.githubusercontent.com/newgodev/newgodev.com/main/apk/speech.apk",
-  "note": "開 app 會自己查有無新版，唔使插線。"
+  "note": "pick any mp3"
 }
