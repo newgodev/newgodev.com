@@ -14,19 +14,16 @@
   .grow { flex: 1; min-width: 0; text-align: left; font-weight: 650; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .switch { min-width: 48px; color: #1565c0; font-weight: 650; }
   .stage { flex: 1; overflow: auto; padding: 12px; }
-  .page { background: #fff; min-height: 460px; margin: 0 auto 12px; box-shadow: 0 1px 2px rgba(0,0,0,.12); display: flex; flex-direction: column; }
+  .page { background: #fff; min-height: 420px; margin: 0 auto 12px; box-shadow: 0 1px 2px rgba(0,0,0,.12); display: flex; flex-direction: column; position: relative; }
   .page b { padding: 16px 16px 0; }
-  .page p { margin: 12px 16px 16px; line-height: 1.6; }
+  .page p { margin: 12px 16px 16px; line-height: 1.6; flex: 1; }
   .sheet { width: min(100%, 280px); }
   .wide { width: 100%; }
+  .page.on { outline: 2px solid #1565c0; }
+  .onpage { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; padding: 8px; background: #f4f7fb; }
+  .onpage button { background: #fff; border-radius: 8px; min-height: 48px; }
   .foot button { flex: 1; }
   .muted { color: #5f656e; font-size: 14px; text-align: center; }
-  .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-  .thumb { background: #fff; min-height: 96px; padding: 8px; text-align: left; border: 2px solid transparent; }
-  .thumb.on { border-color: #1565c0; }
-  .tools { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 12px; }
-  .tools button, .save { background: #fff; border-radius: 8px; }
-  .save { margin: 0 12px 12px; background: #1565c0; color: #fff; border-radius: 8px; }
   .drawer { position: fixed; inset: 0 auto 0 0; width: min(280px, 80vw); background: #fff; padding: 16px; transform: translateX(-105%); transition: transform .2s; }
   .drawer.on { transform: none; }
   .note { margin: 8px 12px 0; color: #5f656e; font-size: 13px; }
@@ -39,22 +36,13 @@
     <div class="grow" id="name">功課.pdf</div>
     <button id="mode" class="switch" type="button">改</button>
   </div>
-  <p class="note" id="note">連續捲。適頁。每份檔會記住頁同放大。</p>
+  <p class="note" id="note">連續捲。適頁。</p>
   <div class="stage" id="view"></div>
-  <div class="foot" id="viewFoot">
+  <div class="foot">
     <button id="layout" type="button">單頁</button>
     <button id="zoom" type="button">適闊</button>
     <div class="muted" id="pos">1 / 4</div>
   </div>
-  <div class="tools" id="tools" hidden>
-    <button type="button" data-act="left">左轉</button>
-    <button type="button" data-act="right">右轉</button>
-    <button type="button" data-act="up">前移</button>
-    <button type="button" data-act="down">後移</button>
-    <button type="button" data-act="del">刪除</button>
-    <button type="button" data-act="blank">空白頁</button>
-  </div>
-  <button class="save" id="save" type="button" hidden>儲存</button>
 </div>
 <aside class="drawer" id="drawer">
   <strong>目錄</strong>
@@ -63,48 +51,58 @@
 </aside>
 <script>
 const pages = [
-  { t: "第 1 頁", d: "中間係頁。連續捲落去。" },
-  { t: "第 2 頁", d: "放大預設適頁。可以轉適闊。" },
-  { t: "第 3 頁", d: "改頁先按右上角「改」。" },
-  { t: "第 4 頁", d: "呢度未有簽名、辨字、出 Word。" }
+  { t: "第 1 頁", d: "中間係頁。連續捲落去。", rot: 0 },
+  { t: "第 2 頁", d: "放大預設適頁。可以轉適闊。", rot: 0 },
+  { t: "第 3 頁", d: "撳「改」，工具就喺呢頁入面。", rot: 0 },
+  { t: "第 4 頁", d: "未有簽名、辨字、出 Word。", rot: 0 }
 ];
 let continuous = true, fit = true, edit = false, current = 0;
 const view = document.getElementById("view");
-const pos = document.getElementById("pos");
 function paint() {
   document.getElementById("mode").textContent = edit ? "睇" : "改";
-  document.getElementById("viewFoot").hidden = edit;
-  document.getElementById("tools").hidden = !edit;
-  document.getElementById("save").hidden = !edit;
   document.getElementById("layout").textContent = continuous ? "單頁" : "連續";
   document.getElementById("zoom").textContent = fit ? "適闊" : "適頁";
   document.getElementById("note").textContent = edit
-    ? "改呢一頁。睇返按「睇」。"
+    ? "頁留喺度。改呢一頁就喺頁入面。"
     : (continuous ? "連續捲。" : "單頁。") + (fit ? "適頁。" : "適闊。");
-  pos.textContent = pages.length ? (current + 1) + " / " + pages.length : "0";
+  document.getElementById("pos").textContent = pages.length ? (current + 1) + " / " + pages.length : "0";
   view.innerHTML = "";
   if (!pages.length) {
     view.innerHTML = "<p class='muted'>未有頁。</p>";
     return;
   }
-  if (edit) {
-    const grid = document.createElement("div");
-    grid.className = "grid";
-    pages.forEach((p, i) => {
-      const b = document.createElement("button");
-      b.className = "thumb" + (i === current ? " on" : "");
-      b.textContent = p.t;
-      b.onclick = () => { current = i; paint(); };
-      grid.appendChild(b);
-    });
-    view.appendChild(grid);
-    return;
-  }
-  const show = continuous ? pages : [pages[current]];
-  show.forEach((p) => {
+  const show = continuous ? pages.map((p, i) => [p, i]) : [[pages[current], current]];
+  show.forEach(([p, i]) => {
     const el = document.createElement("article");
-    el.className = "page " + (fit ? "sheet" : "wide");
+    el.className = "page " + (fit ? "sheet" : "wide") + (edit && i === current ? " on" : "");
+    el.style.transform = "rotate(" + p.rot + "deg)";
     el.innerHTML = "<b>" + p.t + "</b><p>" + p.d + "</p>";
+    el.onclick = () => { current = i; if (edit) paint(); };
+    if (edit && i === current) {
+      const bar = document.createElement("div");
+      bar.className = "onpage";
+      bar.innerHTML = "<button type='button' data-act='left'>左轉</button><button type='button' data-act='right'>右轉</button><button type='button' data-act='del'>刪除</button><button type='button' data-act='up'>前移</button><button type='button' data-act='down'>後移</button><button type='button' data-act='blank'>空白頁</button>";
+      bar.onclick = (event) => {
+        event.stopPropagation();
+        const act = event.target.dataset.act;
+        if (!act) return;
+        if (act === "left") pages[current].rot = (pages[current].rot - 90) % 360;
+        if (act === "right") pages[current].rot = (pages[current].rot + 90) % 360;
+        if (act === "del") pages.splice(current, 1);
+        if (act === "blank") pages.splice(current + 1, 0, { t: "空白頁", d: "", rot: 0 });
+        if (act === "up" && current > 0) {
+          [pages[current - 1], pages[current]] = [pages[current], pages[current - 1]];
+          current -= 1;
+        }
+        if (act === "down" && current < pages.length - 1) {
+          [pages[current + 1], pages[current]] = [pages[current], pages[current + 1]];
+          current += 1;
+        }
+        current = Math.max(0, Math.min(current, Math.max(pages.length - 1, 0)));
+        paint();
+      };
+      el.appendChild(bar);
+    }
     view.appendChild(el);
   });
 }
@@ -113,24 +111,6 @@ document.getElementById("layout").onclick = () => { continuous = !continuous; pa
 document.getElementById("zoom").onclick = () => { fit = !fit; paint(); };
 document.getElementById("toc").onclick = () => document.getElementById("drawer").classList.add("on");
 document.getElementById("closeToc").onclick = () => document.getElementById("drawer").classList.remove("on");
-document.getElementById("save").onclick = () => { document.getElementById("note").textContent = "已記低。手機版先寫入你揀嘅位置。"; };
-document.getElementById("tools").onclick = (event) => {
-  const act = event.target.dataset.act;
-  if (!act || !pages.length) return;
-  if (act === "del") pages.splice(current, 1);
-  if (act === "blank") pages.splice(current + 1, 0, { t: "空白頁", d: "" });
-  if (act === "up" && current > 0) {
-    [pages[current - 1], pages[current]] = [pages[current], pages[current - 1]];
-    current -= 1;
-  }
-  if (act === "down" && current < pages.length - 1) {
-    [pages[current + 1], pages[current]] = [pages[current], pages[current + 1]];
-    current += 1;
-  }
-  if (act === "left" || act === "right") pages[current].d = (act === "left" ? "已左轉。" : "已右轉。");
-  current = Math.max(0, Math.min(current, pages.length - 1));
-  paint();
-};
 paint();
 </script>
 </body>
