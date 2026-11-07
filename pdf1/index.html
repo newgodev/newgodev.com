@@ -1,95 +1,137 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#eef0f3">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>簡用PDF</title>
 <style>
-:root{--bg:#eef0f3;--surface:#fff;--fg:#17181a;--muted:#5f656e;--primary:#1565c0;--line:#e3e5e9}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-family:"PingFang HK","Noto Sans TC",sans-serif}
-button,input{font:inherit}button{cursor:pointer}
-.wrap{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
-.out{padding:16px 16px 0;color:var(--muted);font-size:13px}
-.out a{color:var(--fg)}
-.h{font-size:24px;font-weight:650;margin:8px 0 0}
-.sub{color:var(--muted);font-size:14px;line-height:1.5}
-.pad{padding:8px 16px 24px}
-.pri,.sec{height:48px;border:0;border-radius:12px;font-weight:650}
-.pri{width:100%;background:var(--primary);color:#fff}
-.sec{background:var(--surface);color:var(--fg);box-shadow:inset 0 0 0 1px var(--line)}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
-.top{height:48px;display:flex;align-items:center;padding:0 8px}
-.top p{flex:1;margin:0;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.icon{width:44px;height:44px;border:0;background:transparent}
-.stage{margin:0 16px;min-height:420px;flex:1;display:flex;align-items:center;justify-content:center;border-radius:16px;box-shadow:inset 0 0 0 1px var(--line);overflow:hidden}
-.paper{width:176px;height:256px;background:var(--surface);padding:20px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 8px 20px rgba(23,24,26,.08), inset 0 0 0 1px var(--line)}
-.bar{height:6px;width:40px;border-radius:99px;background:var(--primary)}
-.ln{height:6px;margin-top:8px;border-radius:99px;background:var(--line)}
-.hint{text-align:center;color:var(--muted);font-size:14px;margin:8px 16px}
-.dock{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;background:var(--surface);box-shadow:inset 0 1px 0 var(--line)}
-.dock button,.dock p{height:56px;margin:0;border:0;background:transparent;display:grid;place-items:center;font-weight:650}
-.dock p{color:var(--muted);font-variant-numeric:tabular-nums}
-.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.thumb{height:112px;padding:12px;text-align:left;background:var(--surface);border:0;box-shadow:inset 0 0 0 1px var(--line);display:flex;flex-direction:column;justify-content:space-between}
-.thumb.on{box-shadow:inset 0 0 0 2px var(--primary)}
-.tools{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
-.tools button{height:48px;border:0;border-radius:12px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
-.find{height:48px;width:100%;border:0;border-radius:12px;padding:0 12px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
-.leave{height:44px;border:0;background:transparent;color:var(--muted);padding:0}
-.muted{color:var(--muted)}
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #d7dbe2; font-family: "Segoe UI", "PingFang HK", sans-serif; color: #17181a; }
+  .phone { width: min(100%, 375px); min-height: 100vh; margin: 0 auto; background: #eef0f3; display: flex; flex-direction: column; }
+  button { font: inherit; min-height: 48px; border: 0; background: transparent; color: #17181a; }
+  .bar, .foot { display: flex; align-items: center; gap: 4px; min-height: 56px; padding: 0 8px; background: #fff; }
+  .grow { flex: 1; min-width: 0; text-align: left; font-weight: 650; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .switch { min-width: 48px; color: #1565c0; font-weight: 650; }
+  .stage { flex: 1; overflow: auto; padding: 12px; }
+  .page { background: #fff; min-height: 460px; margin: 0 auto 12px; box-shadow: 0 1px 2px rgba(0,0,0,.12); display: flex; flex-direction: column; }
+  .page b { padding: 16px 16px 0; }
+  .page p { margin: 12px 16px 16px; line-height: 1.6; }
+  .sheet { width: min(100%, 280px); }
+  .wide { width: 100%; }
+  .foot button { flex: 1; }
+  .muted { color: #5f656e; font-size: 14px; text-align: center; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .thumb { background: #fff; min-height: 96px; padding: 8px; text-align: left; border: 2px solid transparent; }
+  .thumb.on { border-color: #1565c0; }
+  .tools { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 12px; }
+  .tools button, .save { background: #fff; border-radius: 8px; }
+  .save { margin: 0 12px 12px; background: #1565c0; color: #fff; border-radius: 8px; }
+  .drawer { position: fixed; inset: 0 auto 0 0; width: min(280px, 80vw); background: #fff; padding: 16px; transform: translateX(-105%); transition: transform .2s; }
+  .drawer.on { transform: none; }
+  .note { margin: 8px 12px 0; color: #5f656e; font-size: 13px; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <p class="out">呢頁只係簡用PDF。另一個 APK：<a href="/hear1/">簡用聽寫</a></p>
-  <div id="app"></div>
+<div class="phone">
+  <div class="bar">
+    <button id="toc" type="button">目錄</button>
+    <div class="grow" id="name">功課.pdf</div>
+    <button id="mode" class="switch" type="button">改</button>
+  </div>
+  <p class="note" id="note">連續捲。適頁。每份檔會記住頁同放大。</p>
+  <div class="stage" id="view"></div>
+  <div class="foot" id="viewFoot">
+    <button id="layout" type="button">單頁</button>
+    <button id="zoom" type="button">適闊</button>
+    <div class="muted" id="pos">1 / 4</div>
+  </div>
+  <div class="tools" id="tools" hidden>
+    <button type="button" data-act="left">左轉</button>
+    <button type="button" data-act="right">右轉</button>
+    <button type="button" data-act="up">前移</button>
+    <button type="button" data-act="down">後移</button>
+    <button type="button" data-act="del">刪除</button>
+    <button type="button" data-act="blank">空白頁</button>
+  </div>
+  <button class="save" id="save" type="button" hidden>儲存</button>
 </div>
+<aside class="drawer" id="drawer">
+  <strong>目錄</strong>
+  <p>呢份冇目錄。</p>
+  <button id="closeToc" type="button">關閉</button>
+</aside>
 <script>
-const pages=[]; let index=0, seq=1, mode="read", scale=1, note="";
-const app=document.getElementById("app");
-function add(kind){pages.push({title:kind+" "+(seq++),rot:0});index=pages.length-1;mode="read";scale=1;note="";draw()}
-function go(d){index=Math.max(0,Math.min(pages.length-1,index+d));scale=1;draw()}
-function rot(d){const p=pages[index];if(!p)return;p.rot=(p.rot+d+360)%360;draw()}
-function move(d){const t=index+d;if(t<0||t>=pages.length)return;const [item]=pages.splice(index,1);pages.splice(t,0,item);index=t;draw()}
-function draw(){
-  if(!pages.length){
-    app.innerHTML='<div class="pad"><h1 class="h">簡用PDF</h1><p class="sub">開一份就係成頁。改頁先入縮圖。</p><div style="margin-top:24px"><button class="pri" id="open" type="button">開啟 PDF</button><div class="row"><button class="sec" id="scan" type="button">掃描</button><button class="sec" id="gal" type="button">相簿</button></div></div></div>';
-    document.getElementById("open").onclick=()=>add("PDF");
-    document.getElementById("scan").onclick=()=>add("掃描");
-    document.getElementById("gal").onclick=()=>add("相簿");
+const pages = [
+  { t: "第 1 頁", d: "中間係頁。連續捲落去。" },
+  { t: "第 2 頁", d: "放大預設適頁。可以轉適闊。" },
+  { t: "第 3 頁", d: "改頁先按右上角「改」。" },
+  { t: "第 4 頁", d: "呢度未有簽名、辨字、出 Word。" }
+];
+let continuous = true, fit = true, edit = false, current = 0;
+const view = document.getElementById("view");
+const pos = document.getElementById("pos");
+function paint() {
+  document.getElementById("mode").textContent = edit ? "睇" : "改";
+  document.getElementById("viewFoot").hidden = edit;
+  document.getElementById("tools").hidden = !edit;
+  document.getElementById("save").hidden = !edit;
+  document.getElementById("layout").textContent = continuous ? "單頁" : "連續";
+  document.getElementById("zoom").textContent = fit ? "適闊" : "適頁";
+  document.getElementById("note").textContent = edit
+    ? "改呢一頁。睇返按「睇」。"
+    : (continuous ? "連續捲。" : "單頁。") + (fit ? "適頁。" : "適闊。");
+  pos.textContent = pages.length ? (current + 1) + " / " + pages.length : "0";
+  view.innerHTML = "";
+  if (!pages.length) {
+    view.innerHTML = "<p class='muted'>未有頁。</p>";
     return;
   }
-  const p=pages[index];
-  if(mode==="find"){
-    app.innerHTML='<div class="top"><button class="leave" id="back" type="button">返回</button></div><div class="pad"><input class="find" id="q" placeholder="搵頁入面嘅字"><p class="sub">手機要檔案本身有字，先搵到。而家個包未有搵字。</p></div>';
-    document.getElementById("back").onclick=()=>{mode="read";draw()};
+  if (edit) {
+    const grid = document.createElement("div");
+    grid.className = "grid";
+    pages.forEach((p, i) => {
+      const b = document.createElement("button");
+      b.className = "thumb" + (i === current ? " on" : "");
+      b.textContent = p.t;
+      b.onclick = () => { current = i; paint(); };
+      grid.appendChild(b);
+    });
+    view.appendChild(grid);
     return;
   }
-  if(mode==="thumbs"){
-    const cells=pages.map((item,i)=>'<button class="thumb'+(i===index?" on":"")+'" data-i="'+i+'" type="button"><span>'+item.title+'</span><span class="muted">'+item.rot+'°</span></button>').join("");
-    app.innerHTML='<div class="top"><p>縮圖</p></div><div class="pad"><div class="grid">'+cells+'</div><div class="tools"><button id="rl" type="button">左轉</button><button id="rr" type="button">右轉</button><button id="del" type="button">刪除</button><button id="mvL" type="button">前移</button><button id="mvR" type="button">後移</button><button id="add" type="button">加頁</button></div><button class="pri" id="done" type="button" style="margin-top:12px">完成</button></div>';
-    app.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>{index=+b.dataset.i;draw()});
-    document.getElementById("rl").onclick=()=>rot(-90);
-    document.getElementById("rr").onclick=()=>rot(90);
-    document.getElementById("del").onclick=()=>{pages.splice(index,1);index=Math.max(0,Math.min(index,pages.length-1));draw()};
-    document.getElementById("mvL").onclick=()=>move(-1);
-    document.getElementById("mvR").onclick=()=>move(1);
-    document.getElementById("add").onclick=()=>add("掃描");
-    document.getElementById("done").onclick=()=>{mode="read";draw()};
-    return;
-  }
-  app.innerHTML='<div class="top"><p>'+p.title+'</p><button class="icon" id="find" type="button">搵</button><button class="icon" id="share" type="button">出</button></div><div class="stage" id="stage"><article class="paper" style="transform:rotate('+p.rot+'deg) scale('+scale+')"><div><div class="bar"></div><div class="ln"></div><div class="ln" style="width:80%"></div></div><p>'+p.title+'</p></article></div><p class="hint">'+(note||"左右掃換頁。雙擊放大。")+'</p><nav class="dock"><button id="thumbs" type="button">縮圖</button><p>'+(index+1)+" / "+pages.length+'</p></nav>';
-  document.getElementById("find").onclick=()=>{mode="find";draw()};
-  document.getElementById("share").onclick=()=>{note="手機撳分享會跳出系統分享。預覽唔會出真 PDF。";draw()};
-  document.getElementById("thumbs").onclick=()=>{mode="thumbs";draw()};
-  const stage=document.getElementById("stage");
-  let x=null;
-  stage.onpointerdown=e=>{x=e.clientX};
-  stage.onpointerup=e=>{if(x==null)return;const dx=e.clientX-x;x=null;if(dx>48)go(-1);else if(dx<-48)go(1)};
-  stage.ondblclick=()=>{scale=scale===1?1.6:1;draw()};
+  const show = continuous ? pages : [pages[current]];
+  show.forEach((p) => {
+    const el = document.createElement("article");
+    el.className = "page " + (fit ? "sheet" : "wide");
+    el.innerHTML = "<b>" + p.t + "</b><p>" + p.d + "</p>";
+    view.appendChild(el);
+  });
 }
-draw();
+document.getElementById("mode").onclick = () => { edit = !edit; paint(); };
+document.getElementById("layout").onclick = () => { continuous = !continuous; paint(); };
+document.getElementById("zoom").onclick = () => { fit = !fit; paint(); };
+document.getElementById("toc").onclick = () => document.getElementById("drawer").classList.add("on");
+document.getElementById("closeToc").onclick = () => document.getElementById("drawer").classList.remove("on");
+document.getElementById("save").onclick = () => { document.getElementById("note").textContent = "已記低。手機版先寫入你揀嘅位置。"; };
+document.getElementById("tools").onclick = (event) => {
+  const act = event.target.dataset.act;
+  if (!act || !pages.length) return;
+  if (act === "del") pages.splice(current, 1);
+  if (act === "blank") pages.splice(current + 1, 0, { t: "空白頁", d: "" });
+  if (act === "up" && current > 0) {
+    [pages[current - 1], pages[current]] = [pages[current], pages[current - 1]];
+    current -= 1;
+  }
+  if (act === "down" && current < pages.length - 1) {
+    [pages[current + 1], pages[current]] = [pages[current], pages[current + 1]];
+    current += 1;
+  }
+  if (act === "left" || act === "right") pages[current].d = (act === "left" ? "已左轉。" : "已右轉。");
+  current = Math.max(0, Math.min(current, pages.length - 1));
+  paint();
+};
+paint();
 </script>
 </body>
 </html>

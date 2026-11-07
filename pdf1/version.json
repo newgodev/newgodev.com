@@ -1,7 +1,1 @@
-{
-  "name": "簡用PDF",
-  "versionCode": 1,
-  "versionName": "1.0",
-  "hasUpdate": false,
-  "note": "裝咗先。下一版先有更新掣。"
-}
+{"name":"簡用PDF","versionCode":3,"versionName":"1.2-preview","hasUpdate":false,"note":"看頁跟 Sumatra：連續捲、適頁。右上角改先入編輯。簽名、辨字、出 Word 未做。"}
