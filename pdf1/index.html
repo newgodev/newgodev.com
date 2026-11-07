@@ -7,28 +7,28 @@
 <title>簡用PDF</title>
 <style>
 :root{--bg:#eef0f3;--surface:#fff;--fg:#17181a;--muted:#5f656e;--primary:#1565c0;--line:#e3e5e9}
-*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--fg);font-family:"PingFang HK","Noto Sans TC",sans-serif}
-button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-family:"PingFang HK","Noto Sans TC",sans-serif}
+button,input{font:inherit}button{cursor:pointer}
 .wrap{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
-.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:16px 16px 0}
-.tabs button{height:44px;border:0;border-radius:12px;background:var(--surface);color:var(--muted);font-weight:650;box-shadow:inset 0 0 0 1px var(--line)}
-.tabs button.on{background:var(--primary);color:#fff;box-shadow:none}
-.pad{padding:0 16px 24px}.h{font-size:24px;font-weight:650;margin:16px 0 0}
-.sub{color:var(--muted);font-size:14px;line-height:1.5;margin:8px 0 0}
-.pri,.sec{height:48px;border-radius:12px;border:0;font-weight:650}
-.pri{background:var(--primary);color:#fff;width:100%}
+.out{padding:16px 16px 0;color:var(--muted);font-size:13px}
+.out a{color:var(--fg)}
+.h{font-size:24px;font-weight:650;margin:8px 0 0}
+.sub{color:var(--muted);font-size:14px;line-height:1.5}
+.pad{padding:8px 16px 24px}
+.pri,.sec{height:48px;border:0;border-radius:12px;font-weight:650}
+.pri{width:100%;background:var(--primary);color:#fff}
 .sec{background:var(--surface);color:var(--fg);box-shadow:inset 0 0 0 1px var(--line)}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
-.top{height:48px;display:flex;align-items:center;gap:4px;padding:0 8px}
+.top{height:48px;display:flex;align-items:center;padding:0 8px}
 .top p{flex:1;margin:0;font-weight:650;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.icon{width:44px;height:44px;border:0;background:transparent;color:var(--fg)}
-.stage{margin:0 16px;flex:1;min-height:420px;display:flex;align-items:center;justify-content:center;background:var(--bg);border-radius:16px;box-shadow:inset 0 0 0 1px var(--line);overflow:hidden}
-.paper{width:176px;height:256px;background:var(--surface);padding:20px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 8px 20px rgba(23,24,26,.08);box-shadow:0 8px 20px rgba(23,24,26,.08), inset 0 0 0 1px var(--line)}
+.icon{width:44px;height:44px;border:0;background:transparent}
+.stage{margin:0 16px;min-height:420px;flex:1;display:flex;align-items:center;justify-content:center;border-radius:16px;box-shadow:inset 0 0 0 1px var(--line);overflow:hidden}
+.paper{width:176px;height:256px;background:var(--surface);padding:20px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 8px 20px rgba(23,24,26,.08), inset 0 0 0 1px var(--line)}
 .bar{height:6px;width:40px;border-radius:99px;background:var(--primary)}
 .ln{height:6px;margin-top:8px;border-radius:99px;background:var(--line)}
-.hint{min-height:20px;text-align:center;color:var(--muted);font-size:14px;margin:8px 16px}
+.hint{text-align:center;color:var(--muted);font-size:14px;margin:8px 16px}
 .dock{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;background:var(--surface);box-shadow:inset 0 1px 0 var(--line)}
-.dock button,.dock p{height:56px;margin:0;border:0;background:transparent;display:grid;place-items:center;font-size:13px;font-weight:600}
+.dock button,.dock p{height:56px;margin:0;border:0;background:transparent;display:grid;place-items:center;font-weight:650}
 .dock p{color:var(--muted);font-variant-numeric:tabular-nums}
 .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 .thumb{height:112px;padding:12px;text-align:left;background:var(--surface);border:0;box-shadow:inset 0 0 0 1px var(--line);display:flex;flex-direction:column;justify-content:space-between}
@@ -36,58 +36,25 @@ button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus
 .tools{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
 .tools button{height:48px;border:0;border-radius:12px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
 .find{height:48px;width:100%;border:0;border-radius:12px;padding:0 12px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
-.card{margin-top:12px;padding:16px;background:var(--surface);border-radius:16px;box-shadow:inset 0 0 0 1px var(--line)}
-.file{margin:12px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.langs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.langs button{height:44px;border:0;border-radius:12px;background:var(--bg);box-shadow:inset 0 0 0 1px var(--line)}
-.langs button.on{background:var(--primary);color:#fff}
+.leave{height:44px;border:0;background:transparent;color:var(--muted);padding:0}
 .muted{color:var(--muted)}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="tabs">
-    <button id="tabPdf" class="on" type="button">簡用PDF</button>
-    <button id="tabSpeech" type="button">簡用聽寫</button>
-  </div>
-  <section id="pdf"></section>
-  <section id="speech" hidden class="pad">
-    <h1 class="h">簡用聽寫</h1>
-    <div class="card">
-      <button class="pri" id="pick" type="button">揀語音檔</button>
-      <input id="file" type="file" accept="audio/*" hidden>
-      <p class="file" id="fileName">未揀語音檔</p>
-      <div class="row">
-        <button class="sec" id="play" type="button">播放</button>
-        <button class="sec" id="toText" type="button">檔案轉字</button>
-      </div>
-    </div>
-    <p class="sub" id="speechStatus">檔案轉字係普通話。粵語對住個咪講。</p>
-    <div class="card">
-      <div class="langs">
-        <button class="on" type="button" data-lang="zh-HK">粵語</button>
-        <button type="button" data-lang="zh-CN">國語</button>
-        <button type="button" data-lang="zh-TW">台灣</button>
-      </div>
-      <button class="pri" id="listen" type="button" style="margin-top:12px">開始聽</button>
-      <p class="muted" style="font-size:12px;margin:14px 0 4px">即時</p>
-      <p id="live" class="muted"></p>
-      <p style="font-size:12px;font-weight:650;margin:8px 0 4px">結果</p>
-      <p id="out" style="min-height:64px;white-space:pre-wrap"></p>
-      <button class="sec" id="copy" type="button" style="width:100%;margin-top:8px">複製</button>
-    </div>
-  </section>
+  <p class="out">呢頁只係簡用PDF。另一個 APK：<a href="/hear1/">簡用聽寫</a></p>
+  <div id="app"></div>
 </div>
 <script>
 const pages=[]; let index=0, seq=1, mode="read", scale=1, note="";
-const pdf=document.getElementById("pdf");
+const app=document.getElementById("app");
 function add(kind){pages.push({title:kind+" "+(seq++),rot:0});index=pages.length-1;mode="read";scale=1;note="";draw()}
 function go(d){index=Math.max(0,Math.min(pages.length-1,index+d));scale=1;draw()}
 function rot(d){const p=pages[index];if(!p)return;p.rot=(p.rot+d+360)%360;draw()}
 function move(d){const t=index+d;if(t<0||t>=pages.length)return;const [item]=pages.splice(index,1);pages.splice(t,0,item);index=t;draw()}
 function draw(){
   if(!pages.length){
-    pdf.innerHTML='<div class="pad"><h1 class="h">簡用PDF</h1><p class="sub">開一份就係成頁。改頁先入縮圖，唔會一屏堆晒掣。</p><div style="margin-top:24px"><button class="pri" id="open" type="button">開啟 PDF</button><div class="row"><button class="sec" id="scan" type="button">掃描</button><button class="sec" id="gal" type="button">相簿</button></div></div></div>';
+    app.innerHTML='<div class="pad"><h1 class="h">簡用PDF</h1><p class="sub">開一份就係成頁。改頁先入縮圖。</p><div style="margin-top:24px"><button class="pri" id="open" type="button">開啟 PDF</button><div class="row"><button class="sec" id="scan" type="button">掃描</button><button class="sec" id="gal" type="button">相簿</button></div></div></div>';
     document.getElementById("open").onclick=()=>add("PDF");
     document.getElementById("scan").onclick=()=>add("掃描");
     document.getElementById("gal").onclick=()=>add("相簿");
@@ -95,15 +62,14 @@ function draw(){
   }
   const p=pages[index];
   if(mode==="find"){
-    pdf.innerHTML='<div class="top"><button class="icon" id="back" type="button">返回</button><p>搵字</p></div><div class="pad"><input class="find" id="q" placeholder="搵頁入面嘅字"><p class="sub" id="qout">未輸入。手機要檔案本身有字，先搵到。而家個包未有搵字。</p></div>';
+    app.innerHTML='<div class="top"><button class="leave" id="back" type="button">返回</button></div><div class="pad"><input class="find" id="q" placeholder="搵頁入面嘅字"><p class="sub">手機要檔案本身有字，先搵到。而家個包未有搵字。</p></div>';
     document.getElementById("back").onclick=()=>{mode="read";draw()};
-    document.getElementById("q").oninput=e=>{document.getElementById("qout").textContent=e.target.value?"預覽冇真 PDF 文字層，搵唔到。":"未輸入。手機要檔案本身有字，先搵到。而家個包未有搵字。"};
     return;
   }
   if(mode==="thumbs"){
     const cells=pages.map((item,i)=>'<button class="thumb'+(i===index?" on":"")+'" data-i="'+i+'" type="button"><span>'+item.title+'</span><span class="muted">'+item.rot+'°</span></button>').join("");
-    pdf.innerHTML='<div class="top"><p style="padding-left:8px">縮圖</p></div><div class="pad"><div class="grid">'+cells+'</div><div class="tools"><button type="button" id="rl">左轉</button><button type="button" id="rr">右轉</button><button type="button" id="del">刪除</button><button type="button" id="mvL">前移</button><button type="button" id="mvR">後移</button><button type="button" id="add">加頁</button></div><button class="pri" id="done" type="button" style="margin-top:12px">完成</button></div>';
-    pdf.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>{index=+b.dataset.i;draw()});
+    app.innerHTML='<div class="top"><p>縮圖</p></div><div class="pad"><div class="grid">'+cells+'</div><div class="tools"><button id="rl" type="button">左轉</button><button id="rr" type="button">右轉</button><button id="del" type="button">刪除</button><button id="mvL" type="button">前移</button><button id="mvR" type="button">後移</button><button id="add" type="button">加頁</button></div><button class="pri" id="done" type="button" style="margin-top:12px">完成</button></div>';
+    app.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>{index=+b.dataset.i;draw()});
     document.getElementById("rl").onclick=()=>rot(-90);
     document.getElementById("rr").onclick=()=>rot(90);
     document.getElementById("del").onclick=()=>{pages.splice(index,1);index=Math.max(0,Math.min(index,pages.length-1));draw()};
@@ -113,8 +79,7 @@ function draw(){
     document.getElementById("done").onclick=()=>{mode="read";draw()};
     return;
   }
-  pdf.innerHTML='<div class="top"><button class="icon" id="close" type="button" aria-label="關閉">‹</button><p>'+p.title+'</p><button class="icon" id="find" type="button" aria-label="搵字">搜</button><button class="icon" id="share" type="button" aria-label="分享">出</button></div><div class="stage" id="stage"><article class="paper" style="transform:rotate('+p.rot+'deg) scale('+scale+')"><div><div class="bar"></div><div class="ln"></div><div class="ln" style="width:80%"></div><div class="ln" style="width:60%"></div></div><p>'+p.title+'</p></article></div><p class="hint">'+(note||"左右掃換頁。雙擊放大。")+'</p><nav class="dock"><button id="thumbs" type="button">縮圖</button><p>'+(index+1)+" / "+pages.length+'</p></nav>';
-  document.getElementById("close").onclick=()=>{pages.length=0;index=0;mode="read";draw()};
+  app.innerHTML='<div class="top"><p>'+p.title+'</p><button class="icon" id="find" type="button">搵</button><button class="icon" id="share" type="button">出</button></div><div class="stage" id="stage"><article class="paper" style="transform:rotate('+p.rot+'deg) scale('+scale+')"><div><div class="bar"></div><div class="ln"></div><div class="ln" style="width:80%"></div></div><p>'+p.title+'</p></article></div><p class="hint">'+(note||"左右掃換頁。雙擊放大。")+'</p><nav class="dock"><button id="thumbs" type="button">縮圖</button><p>'+(index+1)+" / "+pages.length+'</p></nav>';
   document.getElementById("find").onclick=()=>{mode="find";draw()};
   document.getElementById("share").onclick=()=>{note="手機撳分享會跳出系統分享。預覽唔會出真 PDF。";draw()};
   document.getElementById("thumbs").onclick=()=>{mode="thumbs";draw()};
@@ -125,28 +90,6 @@ function draw(){
   stage.ondblclick=()=>{scale=scale===1?1.6:1;draw()};
 }
 draw();
-document.getElementById("tabPdf").onclick=()=>{document.getElementById("pdf").hidden=false;document.getElementById("speech").hidden=true;document.getElementById("tabPdf").classList.add("on");document.getElementById("tabSpeech").classList.remove("on")};
-document.getElementById("tabSpeech").onclick=()=>{document.getElementById("pdf").hidden=true;document.getElementById("speech").hidden=false;document.getElementById("tabSpeech").classList.add("on");document.getElementById("tabPdf").classList.remove("on")};
-const fileInput=document.getElementById("file");
-const speechStatus=document.getElementById("speechStatus");
-let url=null,audio=null,playing=false,lang="zh-HK",rec=null;
-document.getElementById("pick").onclick=()=>fileInput.click();
-fileInput.onchange=()=>{const f=fileInput.files&&fileInput.files[0];if(!f)return;if(audio){audio.pause();audio=null}if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(f);playing=false;document.getElementById("play").textContent="播放";document.getElementById("fileName").textContent=f.name;speechStatus.textContent="已揀檔。播放得。轉字要喺手機先會跑。"};
-document.getElementById("play").onclick=()=>{if(!url)return;if(!audio){audio=new Audio(url);audio.onended=()=>{playing=false;document.getElementById("play").textContent="播放"}}if(playing){audio.pause();playing=false;document.getElementById("play").textContent="播放";return}audio.src=url;audio.play().then(()=>{playing=true;document.getElementById("play").textContent="停止"}).catch(()=>{speechStatus.textContent="播唔到呢個檔"})};
-document.getElementById("toText").onclick=()=>{if(!url)return;speechStatus.textContent="預覽唔下載模型。手機先轉字，普通話，第一次約 40MB。"};
-document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{lang=b.dataset.lang;document.querySelectorAll("[data-lang]").forEach(x=>x.classList.toggle("on",x===b))});
-document.getElementById("listen").onclick=()=>{
-  const btn=document.getElementById("listen");
-  if(rec){rec.stop();rec=null;btn.textContent="開始聽";return}
-  const Ctor=window.SpeechRecognition||window.webkitSpeechRecognition;
-  if(!Ctor){speechStatus.textContent="呢個瀏覽器冇語音引擎。手機先用電話自己嘅引擎。";return}
-  rec=new Ctor();rec.lang=lang;rec.interimResults=true;btn.textContent="停止";speechStatus.textContent="聽緊…";
-  rec.onresult=e=>{const said=e.results[0][0].transcript;if(e.results[0].isFinal){const out=document.getElementById("out");out.textContent=out.textContent?out.textContent+"\n"+said:said;document.getElementById("live").textContent="";btn.textContent="開始聽";rec=null;speechStatus.textContent=""}else document.getElementById("live").textContent=said};
-  rec.onerror=()=>{btn.textContent="開始聽";rec=null;speechStatus.textContent="呢度聽唔到。手機先穩陣。"};
-  rec.onend=()=>{btn.textContent="開始聽";rec=null};
-  rec.start();
-};
-document.getElementById("copy").onclick=async()=>{const v=document.getElementById("out").textContent.trim();if(!v){speechStatus.textContent="冇字可以複製";return}try{await navigator.clipboard.writeText(v);speechStatus.textContent="已複製"}catch(e){speechStatus.textContent="複製失敗"}};
 </script>
 </body>
 </html>

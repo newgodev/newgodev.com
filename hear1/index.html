@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#eef0f3">
+<title>簡用聽寫</title>
+<style>
+:root{--bg:#eef0f3;--surface:#fff;--fg:#17181a;--muted:#5f656e;--primary:#1565c0;--line:#e3e5e9}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-family:"PingFang HK","Noto Sans TC",sans-serif}
+button{font:inherit;cursor:pointer}
+.wrap{max-width:430px;margin:0 auto;padding:0 16px 32px}
+.out{padding-top:16px;color:var(--muted);font-size:13px}
+.out a{color:var(--fg)}
+h1{font-size:24px;font-weight:650;margin:12px 0}
+.card{padding:16px;background:var(--surface);border-radius:16px;box-shadow:inset 0 0 0 1px var(--line)}
+.pri,.sec{height:48px;border:0;border-radius:12px;font-weight:650}
+.pri{width:100%;background:var(--primary);color:#fff}
+.sec{background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.file{margin:12px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sub{color:var(--muted);font-size:14px;line-height:1.5}
+.langs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.langs button{height:44px;border:0;border-radius:12px;background:var(--bg);box-shadow:inset 0 0 0 1px var(--line)}
+.langs button.on{background:var(--primary);color:#fff}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="out">呢頁只係簡用聽寫。另一個 APK：<a href="/pdf1/">簡用PDF</a></p>
+  <h1>簡用聽寫</h1>
+  <div class="card">
+    <button class="pri" id="pick" type="button">揀語音檔</button>
+    <input id="file" type="file" accept="audio/*" hidden>
+    <p class="file" id="fileName">未揀語音檔</p>
+    <div class="row">
+      <button class="sec" id="play" type="button">播放</button>
+      <button class="sec" id="toText" type="button">檔案轉字</button>
+    </div>
+  </div>
+  <p class="sub" id="speechStatus">檔案轉字係普通話。粵語對住個咪講。</p>
+  <div class="card" style="margin-top:8px">
+    <div class="langs">
+      <button class="on" type="button" data-lang="zh-HK">粵語</button>
+      <button type="button" data-lang="zh-CN">國語</button>
+      <button type="button" data-lang="zh-TW">台灣</button>
+    </div>
+    <button class="pri" id="listen" type="button" style="margin-top:12px">開始聽</button>
+    <p class="sub">即時</p>
+    <p id="live" class="sub"></p>
+    <p style="font-weight:650;margin:8px 0 4px">結果</p>
+    <p id="out" style="min-height:64px;white-space:pre-wrap"></p>
+    <button class="sec" id="copy" type="button" style="width:100%;margin-top:8px">複製</button>
+  </div>
+</div>
+<script>
+const fileInput=document.getElementById("file");
+const speechStatus=document.getElementById("speechStatus");
+let url=null,audio=null,playing=false,lang="zh-HK",rec=null;
+document.getElementById("pick").onclick=()=>fileInput.click();
+fileInput.onchange=()=>{const f=fileInput.files&&fileInput.files[0];if(!f)return;if(audio){audio.pause();audio=null}if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(f);playing=false;document.getElementById("play").textContent="播放";document.getElementById("fileName").textContent=f.name;speechStatus.textContent="已揀檔。播放得。轉字要喺手機先會跑。"};
+document.getElementById("play").onclick=()=>{if(!url)return;if(!audio){audio=new Audio(url);audio.onended=()=>{playing=false;document.getElementById("play").textContent="播放"}}if(playing){audio.pause();playing=false;document.getElementById("play").textContent="播放";return}audio.src=url;audio.play().then(()=>{playing=true;document.getElementById("play").textContent="停止"}).catch(()=>{speechStatus.textContent="播唔到呢個檔"})};
+document.getElementById("toText").onclick=()=>{if(!url)return;speechStatus.textContent="預覽唔下載模型。手機先轉字，普通話，第一次約 40MB。"};
+document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{lang=b.dataset.lang;document.querySelectorAll("[data-lang]").forEach(x=>x.classList.toggle("on",x===b))});
+document.getElementById("listen").onclick=()=>{
+  const btn=document.getElementById("listen");
+  if(rec){rec.stop();rec=null;btn.textContent="開始聽";return}
+  const Ctor=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!Ctor){speechStatus.textContent="呢個瀏覽器冇語音引擎。手機先用電話自己嘅引擎。";return}
+  rec=new Ctor();rec.lang=lang;rec.interimResults=true;btn.textContent="停止";speechStatus.textContent="聽緊…";
+  rec.onresult=e=>{const said=e.results[0][0].transcript;if(e.results[0].isFinal){const out=document.getElementById("out");out.textContent=out.textContent?out.textContent+"\n"+said:said;document.getElementById("live").textContent="";btn.textContent="開始聽";rec=null;speechStatus.textContent=""}else document.getElementById("live").textContent=said};
+  rec.onerror=()=>{btn.textContent="開始聽";rec=null;speechStatus.textContent="呢度聽唔到。手機先穩陣。"};
+  rec.onend=()=>{btn.textContent="開始聽";rec=null};
+  rec.start();
+};
+document.getElementById("copy").onclick=async()=>{const v=document.getElementById("out").textContent.trim();if(!v){speechStatus.textContent="冇字可以複製";return}try{await navigator.clipboard.writeText(v);speechStatus.textContent="已複製"}catch(e){speechStatus.textContent="複製失敗"}};
+</script>
+</body>
+</html>
