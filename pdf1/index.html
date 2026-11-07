@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Cache-Control" content="no-cache" />
 <title>簡用PDF</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
@@ -13,42 +14,48 @@
   button, input { font: inherit; color: inherit; }
   .phone { width: min(100%, 375px); min-height: 100vh; margin: 0 auto; background: #eef0f3; display: flex; flex-direction: column; position: relative; }
   .bar, .foot { display: flex; align-items: center; gap: 8px; min-height: 56px; padding: 0 8px; background: #fff; }
-  .bar button, .foot button, .menu button, .onpage button { min-height: 48px; border: 0; background: transparent; }
+  .bar button, .foot button, .menu button, .onpage button, .drawer button { min-height: 48px; border: 0; background: transparent; }
   .name { flex: 1; min-width: 0; text-align: left; font-weight: 650; background: transparent; border: 0; min-height: 48px; padding: 0 8px; }
   .name:focus { outline: 2px solid #1565c0; }
-  .switch { flex: none; min-width: 48px; color: #1565c0; font-weight: 650; }
-  .stage { flex: 1; overflow: auto; padding: 12px; }
+  .switch { flex: none; min-width: 64px; color: #1565c0; font-weight: 650; }
+  .stage { flex: 1; overflow: auto; padding: 12px; position: relative; }
   .page { background: #fff; margin: 0 auto 12px; box-shadow: 0 1px 2px rgba(0,0,0,.12); }
-  .page.on { outline: 2px solid #1565c0; }
-  .page canvas { display: block; width: 100%; height: auto; }
+  .page canvas, video { display: block; width: 100%; height: auto; }
+  .page.full { width: 100%; }
+  .qnote { margin: 0; padding: 8px 10px 0; font-size: 13px; color: #3d4450; }
   .sheet { width: min(100%, 280px); }
-  .wide { width: 100%; }
+  .wide, .full { width: 100%; }
   .onpage { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px; padding: 8px; background: #f4f7fb; }
   .onpage button { background: #fff; border-radius: 8px; }
   .foot button { flex: 1; }
-  .muted { color: #5f656e; text-align: center; padding: 32px 16px; }
-  .menu { position: absolute; top: 52px; left: 8px; z-index: 2; background: #fff; min-width: 180px; box-shadow: 0 8px 24px rgba(0,0,0,.16); display: none; }
+  .muted { color: #5f656e; text-align: center; padding: 24px 16px; }
+  .menu { position: absolute; top: 52px; left: 8px; z-index: 3; background: #fff; min-width: 180px; box-shadow: 0 8px 24px rgba(0,0,0,.16); display: none; }
   .menu.on { display: block; }
   .menu button { display: block; width: 100%; text-align: left; padding: 0 16px; }
-  .drawer { position: absolute; inset: 56px auto 56px 0; width: min(280px, 86%); background: #fff; z-index: 2; padding: 8px 0; display: none; overflow: auto; }
+  .drawer { position: absolute; inset: 56px auto 56px 0; width: min(280px, 86%); background: #fff; z-index: 3; padding: 8px 0; display: none; overflow: auto; }
   .drawer.on { display: block; }
-  .drawer button { display: block; width: 100%; min-height: 48px; text-align: left; padding: 0 16px; border: 0; background: transparent; }
+  .drawer button, .drawer strong { display: block; width: 100%; text-align: left; padding: 0 16px; }
+  .scanbox { position: absolute; inset: 0; background: #111; z-index: 4; display: flex; flex-direction: column; }
+  .scanbox p { color: #fff; text-align: center; margin: 8px; }
+  .scanbox button { min-height: 48px; border: 0; background: transparent; color: #fff; font: inherit; }
+  .scanbox video { flex: 1; width: 100%; height: 100%; object-fit: contain; background: #000; }
 </style>
 </head>
 <body>
-<div class="phone">
+<div class="phone" id="phone">
   <div class="bar">
     <button id="menuBtn" type="button">選單</button>
     <input id="name" class="name" value="未有檔" aria-label="檔名" />
-    <button id="mode" class="switch" type="button">改</button>
+    <button id="mode" class="switch" type="button">入去</button>
   </div>
   <div class="menu" id="menu">
     <button id="upload" type="button">上傳</button>
+    <button id="scan" type="button">掃描</button>
     <button id="download" type="button">下載</button>
     <button id="toc" type="button">目錄</button>
   </div>
   <div class="stage" id="view"><p class="muted">未有檔。去選單上傳。</p></div>
-  <div class="foot">
+  <div class="foot" id="foot">
     <button id="layout" type="button">單頁</button>
     <button id="zoom" type="button">適闊</button>
     <div class="muted" id="pos" style="padding:0">0</div>
@@ -58,85 +65,186 @@
 <input id="file" type="file" accept="application/pdf,image/jpeg,image/png" hidden />
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-let bytes = null, order = [], continuous = true, fit = true, edit = false, current = 0, outlines = [], gen = 0;
+let bytes = null, continuous = true, fit = true, inside = false, current = 0, outlines = [], gen = 0;
+let scanTimer = 0, scanStream = null, storedName = "", scrollTick = 0, capturing = false, restoring = false, enterZoom = 1;
 const view = document.getElementById("view");
 const menu = document.getElementById("menu");
 const drawer = document.getElementById("drawer");
+const nameEl = document.getElementById("name");
+const phone = document.getElementById("phone");
 function closeMenus() { menu.classList.remove("on"); drawer.classList.remove("on"); }
+function db() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open("pdf-hist", 1);
+    req.onupgradeneeded = () => req.result.createObjectStore("files", { keyPath: "name" });
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+function mbText() {
+  return bytes ? (bytes.byteLength / 1048576).toFixed(2) + " MB" : "";
+}
+function showPos() {
+  document.getElementById("pos").textContent = count ? (current + 1) + " / " + count + "  " + mbText() : "0";
+}
+async function remember() {
+  const name = nameEl.value.trim();
+  if (!bytes || !name || name === "未有檔") return;
+  const database = await db();
+  const tx = database.transaction("files", "readwrite");
+  const store = tx.objectStore("files");
+  if (storedName && storedName !== name) store.delete(storedName);
+  const copy = bytes.slice(0);
+  store.put({ name, bytes: copy.buffer, page: current, time: Date.now(), size: copy.byteLength });
+  storedName = name;
+  localStorage.setItem("pdf-last", name);
+  await new Promise((resolve, reject) => {
+    tx.oncomplete = () => resolve();
+    tx.onerror = () => reject(tx.error);
+    tx.onabort = () => reject(tx.error || new Error("abort"));
+  });
+}
+async function recent() {
+  const store = (await db()).transaction("files").objectStore("files");
+  return await new Promise((resolve, reject) => {
+    const out = [];
+    const req = store.openCursor();
+    req.onerror = () => reject(req.error);
+    req.onsuccess = (event) => {
+      const cursor = event.target.result;
+      if (!cursor) { out.sort((a, b) => b.time - a.time); resolve(out); return; }
+      out.push(cursor.value);
+      cursor.continue();
+    };
+  });
+}
+function asBytes(value) {
+  if (!value) return null;
+  if (value instanceof Uint8Array) return value;
+  return new Uint8Array(value);
+}
 function setStatus(text) {
   view.innerHTML = "";
   const p = document.createElement("p");
   p.className = "muted";
   p.textContent = text;
   view.appendChild(p);
-  document.getElementById("pos").textContent = order.length ? (current + 1) + " / " + order.length : "0";
+  showPos();
 }
-async function loadBytes(next, title) {
+let count = 0;
+function flatOutline(list, out) {
+  (list || []).forEach((item) => {
+    out.push(item);
+    if (item.items && item.items.length) flatOutline(item.items, out);
+  });
+  return out;
+}
+async function loadBytes(next, title, page) {
   bytes = next;
   const doc = await PDFLib.PDFDocument.load(bytes);
-  order = doc.getPageIndices();
-  current = 0;
-  if (title) document.getElementById("name").value = title.replace(/\.pdf$/i, "");
+  count = doc.getPageCount();
+  current = Math.max(0, Math.min(page || 0, count - 1));
+  if (title) nameEl.value = String(title).replace(/\.pdf$/i, "");
+  storedName = nameEl.value.trim();
   outlines = [];
   try {
     const pdf = await pdfjsLib.getDocument({ data: bytes.slice(0) }).promise;
-    outlines = (await pdf.getOutline()) || [];
+    outlines = flatOutline(await pdf.getOutline(), []);
   } catch (e) { outlines = []; }
+  try { await remember(); } catch (e) { /* 檔仍可睇，紀錄失敗就下次再寫 */ }
   await paint();
 }
 async function mutate(fn) {
   if (!bytes) return;
   const doc = await PDFLib.PDFDocument.load(bytes);
   await fn(doc);
-  if (doc.getPageCount() === 0) { bytes = null; order = []; setStatus("未有頁。"); return; }
+  if (doc.getPageCount() === 0) {
+    bytes = null; count = 0; inside = false;
+    try { await remember(); } catch (e) {}
+    setStatus("未有頁。");
+    return;
+  }
   bytes = await doc.save();
-  order = Array.from({ length: doc.getPageCount() }, (_, i) => i);
-  current = Math.max(0, Math.min(current, order.length - 1));
+  count = doc.getPageCount();
+  current = Math.max(0, Math.min(current, count - 1));
+  try { await remember(); } catch (e) {}
   await paint();
+}
+function visiblePage() {
+  const pages = view.querySelectorAll(".page");
+  if (!pages.length) return current;
+  let best = 0, bestDist = Infinity;
+  pages.forEach((el, i) => {
+    const dist = Math.abs(el.offsetTop - view.scrollTop);
+    if (dist < bestDist) { bestDist = dist; best = i; }
+  });
+  return best;
 }
 async function paint() {
   const id = ++gen;
-  document.getElementById("mode").textContent = edit ? "睇" : "改";
+  document.getElementById("mode").textContent = inside ? "出返" : "入去";
+  document.getElementById("foot").hidden = inside;
   document.getElementById("layout").textContent = continuous ? "單頁" : "連續";
   document.getElementById("zoom").textContent = fit ? "適闊" : "適頁";
-  document.getElementById("pos").textContent = order.length ? (current + 1) + " / " + order.length : "0";
-  if (!bytes || !order.length) { setStatus("未有檔。去選單上傳。"); return; }
+  showPos();
+  if (!bytes || !count) { setStatus("未有檔。去選單上傳。"); return; }
   view.innerHTML = "";
   const pdf = await pdfjsLib.getDocument({ data: bytes.slice(0) }).promise;
   if (id !== gen) return;
-  const list = continuous ? order.map((_, i) => i) : [current];
+  const list = inside || !continuous ? [current] : Array.from({ length: count }, (_, i) => i);
+  const dpr = Math.min(window.devicePixelRatio || 1, 3);
   for (const i of list) {
     if (id !== gen) return;
     const page = await pdf.getPage(i + 1);
     const base = page.getViewport({ scale: 1 });
-    const boxW = Math.max(120, view.clientWidth - 24);
-    const boxH = Math.max(200, view.clientHeight - 24);
-    const scale = fit ? Math.min(boxW / base.width, boxH / base.height) : boxW / base.width;
-    const viewport = page.getViewport({ scale: Math.min(scale, 2) });
+    const boxW = Math.max(120, view.clientWidth - (inside ? 8 : 24));
+    let scale = boxW / base.width;
+    if (!inside && fit) scale = Math.min(scale, (Math.max(200, view.clientHeight - 24)) / base.height);
+    if (inside) {
+      const zoom = enterZoom;
+      scale = Math.min(3200, boxW * zoom * Math.max(dpr, 2)) / base.width;
+    }
+    const viewport = page.getViewport({ scale });
     const canvas = document.createElement("canvas");
     canvas.width = Math.floor(viewport.width);
     canvas.height = Math.floor(viewport.height);
     await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+    if (id !== gen) return;
     const el = document.createElement("article");
-    el.className = "page " + (fit ? "sheet" : "wide") + (edit && i === current ? " on" : "");
+    el.className = "page " + (inside ? "full" : fit ? "sheet" : "wide");
+    if (inside) canvas.style.width = (100 * enterZoom) + "%";
     el.appendChild(canvas);
-    el.onclick = () => { current = i; if (edit) paint(); };
-    if (edit && i === current) {
+    if (!inside) el.onclick = () => { current = i; showPos(); remember().catch(() => {}); };
+    if (inside) {
+      const note = document.createElement("p");
+      note.className = "qnote";
+      note.textContent = "檔案 " + mbText() + "。入去唔會壓檔，淨係轉、刪、空白頁先改檔。";
       const bar = document.createElement("div");
       bar.className = "onpage";
-      [["left","左轉"],["right","右轉"],["del","刪除"],["up","前移"],["down","後移"],["blank","空白頁"]].forEach(([act, label]) => {
+      [["left", "左轉"], ["right", "右轉"], ["del", "刪除"], ["blank", "空白頁"], ["zin", "放大"], ["zout", "縮小"]].forEach(([act, label]) => {
         const b = document.createElement("button");
         b.type = "button";
         b.textContent = label;
-        b.onclick = (event) => { event.stopPropagation(); actOn(act); };
+        b.onclick = () => actOn(act);
         bar.appendChild(b);
       });
+      el.appendChild(note);
       el.appendChild(bar);
     }
     view.appendChild(el);
   }
+  if (!inside && continuous && current > 0) {
+    const el = view.querySelectorAll(".page")[current];
+    if (el) {
+      restoring = true;
+      el.scrollIntoView({ block: "start" });
+      setTimeout(() => { restoring = false; }, 120);
+    }
+  }
 }
 async function actOn(act) {
+  if (act === "zin") { enterZoom = Math.min(3, enterZoom + 1); await paint(); return; }
+  if (act === "zout") { enterZoom = Math.max(1, enterZoom - 1); await paint(); return; }
   if (act === "left" || act === "right") {
     await mutate((doc) => {
       const page = doc.getPage(current);
@@ -146,22 +254,6 @@ async function actOn(act) {
   }
   if (act === "del") await mutate((doc) => doc.removePage(current));
   if (act === "blank") await mutate((doc) => doc.insertPage(current + 1, [595.28, 841.89]));
-  if (act === "up" && current > 0) await move(-1);
-  if (act === "down" && current < order.length - 1) await move(1);
-}
-async function move(dir) {
-  const next = current + dir;
-  await mutate(async (doc) => {
-    const src = await PDFLib.PDFDocument.load(bytes);
-    const pages = await doc.copyPages(src, src.getPageIndices());
-    while (doc.getPageCount()) doc.removePage(0);
-    const seq = src.getPageIndices();
-    const [item] = seq.splice(current, 1);
-    seq.splice(next, 0, item);
-    seq.forEach((n) => doc.addPage(pages[n]));
-  });
-  current = next;
-  await paint();
 }
 document.getElementById("menuBtn").onclick = (event) => {
   event.stopPropagation();
@@ -173,11 +265,13 @@ document.getElementById("file").onchange = async () => {
   const file = document.getElementById("file").files[0];
   document.getElementById("file").value = "";
   if (!file) return;
-  setStatus("讀緊…");
+  setStatus("讀緊… " + (file.size / 1048576).toFixed(2) + " MB");
   try {
     const raw = new Uint8Array(await file.arrayBuffer());
     if (file.type === "application/pdf" || /\.pdf$/i.test(file.name)) {
-      await loadBytes(raw, file.name);
+      const saved = await recent().catch(() => []);
+      const old = saved.find((item) => item.name === file.name.replace(/\.pdf$/i, ""));
+      await loadBytes(raw, file.name, old ? old.page : 0);
       return;
     }
     const doc = bytes ? await PDFLib.PDFDocument.load(bytes) : await PDFLib.PDFDocument.create();
@@ -185,55 +279,188 @@ document.getElementById("file").onchange = async () => {
     const page = doc.addPage([595.28, 841.89]);
     const margin = 28;
     const s = Math.min((page.getWidth() - margin * 2) / img.width, (page.getHeight() - margin * 2) / img.height);
-    const w = img.width * s, h = img.height * s;
-    page.drawImage(img, { x: (page.getWidth() - w) / 2, y: (page.getHeight() - h) / 2, width: w, height: h });
-    const title = bytes ? document.getElementById("name").value : file.name.replace(/\.(jpe?g|png)$/i, "");
-    await loadBytes(await doc.save(), title);
+    page.drawImage(img, { x: (page.getWidth() - img.width * s) / 2, y: (page.getHeight() - img.height * s) / 2, width: img.width * s, height: img.height * s });
+    await loadBytes(await doc.save(), bytes ? nameEl.value : file.name.replace(/\.(jpe?g|png)$/i, ""), doc.getPageCount() - 1);
   } catch (error) {
-    const message = String(error && error.message || "");
-    setStatus(/password|encrypt/i.test(message) ? "呢份有密碼，開唔到。" : "讀唔到呢份檔。");
+    setStatus(/password|encrypt/i.test(String(error && error.message || "")) ? "呢份有密碼，開唔到。" : "讀唔到呢份檔。");
   }
 };
 document.getElementById("download").onclick = () => {
   closeMenus();
   if (!bytes) { setStatus("未有檔。去選單上傳。"); return; }
-  const blob = new Blob([bytes], { type: "application/pdf" });
   const a = document.createElement("a");
-  const title = document.getElementById("name").value.trim() || "未命名";
-  a.href = URL.createObjectURL(blob);
+  const title = nameEl.value.trim() || "未命名";
+  a.href = URL.createObjectURL(new Blob([bytes], { type: "application/pdf" }));
   a.download = title.toLowerCase().endsWith(".pdf") ? title : title + ".pdf";
   a.click();
   URL.revokeObjectURL(a.href);
 };
-document.getElementById("toc").onclick = () => {
+async function jumpOutline(item) {
+  if (!bytes || !item.dest) return;
+  const pdf = await pdfjsLib.getDocument({ data: bytes.slice(0) }).promise;
+  let dest = item.dest;
+  if (typeof dest === "string") dest = await pdf.getDestination(dest);
+  if (!dest) return;
+  current = await pdf.getPageIndex(dest[0]);
+  inside = false;
+  closeMenus();
+  try { await remember(); } catch (e) {}
+  await paint();
+}
+document.getElementById("toc").onclick = async () => {
   menu.classList.remove("on");
   drawer.innerHTML = "";
-  const title = document.createElement("strong");
-  title.textContent = "目錄";
-  title.style.display = "block";
-  title.style.padding = "12px 16px";
-  drawer.appendChild(title);
-  if (!outlines.length) {
+  const head = document.createElement("strong");
+  head.textContent = "最近";
+  drawer.appendChild(head);
+  let items = [];
+  try { items = await recent(); } catch (e) { items = []; }
+  if (!items.length) {
     const p = document.createElement("p");
     p.className = "muted";
-    p.textContent = "呢份冇目錄。";
+    p.textContent = "未有紀錄。開一份之後先會記住頁。";
+    drawer.appendChild(p);
+  }
+  items.slice(0, 12).forEach((item) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.textContent = item.name + "  第" + ((item.page || 0) + 1) + "頁";
+    b.onclick = async () => {
+      const raw = asBytes(item.bytes);
+      if (!raw) return;
+      closeMenus();
+      await loadBytes(raw, item.name, item.page || 0);
+    };
+    drawer.appendChild(b);
+  });
+  const tocHead = document.createElement("strong");
+  tocHead.textContent = "目錄";
+  drawer.appendChild(tocHead);
+  const linked = outlines.filter((item) => item.dest);
+  if (!linked.length) {
+    const p = document.createElement("p");
+    p.className = "muted";
+    p.textContent = outlines.length ? "呢份目錄去唔到頁。" : "呢份冇目錄。";
     drawer.appendChild(p);
   } else {
-    outlines.forEach((item) => {
+    linked.forEach((item) => {
       const b = document.createElement("button");
       b.type = "button";
       b.textContent = item.title || "未命名";
+      b.onclick = () => jumpOutline(item).catch(() => {});
       drawer.appendChild(b);
     });
   }
   drawer.classList.add("on");
 };
-document.getElementById("mode").onclick = () => { edit = !edit; closeMenus(); paint(); };
+async function openCamera() {
+  const tries = [
+    { audio: false, video: { facingMode: { ideal: "environment" }, width: { ideal: 3840 }, height: { ideal: 2160 } } },
+    { audio: false, video: { facingMode: "environment" } },
+    { audio: false, video: true }
+  ];
+  let last;
+  for (const constraints of tries) {
+    try { return await navigator.mediaDevices.getUserMedia(constraints); }
+    catch (error) { last = error; }
+  }
+  throw last;
+}
+function stopScan() {
+  clearInterval(scanTimer);
+  scanTimer = 0;
+  capturing = false;
+  if (scanStream) scanStream.getTracks().forEach((track) => track.stop());
+  scanStream = null;
+  const box = document.getElementById("scanbox");
+  if (box) box.remove();
+}
+document.getElementById("scan").onclick = async () => {
+  closeMenus();
+  stopScan();
+  const box = document.createElement("div");
+  box.id = "scanbox";
+  box.className = "scanbox";
+  box.innerHTML = "<p>擺穩就會自動影。</p><video playsinline autoplay muted></video><button type='button' id='stopScan'>取消</button>";
+  phone.appendChild(box);
+  document.getElementById("stopScan").onclick = stopScan;
+  try {
+    scanStream = await openCamera();
+  } catch (e) {
+    stopScan();
+    setStatus("相機未允許。");
+    return;
+  }
+  const video = box.querySelector("video");
+  video.srcObject = scanStream;
+  await video.play();
+  const probe = document.createElement("canvas");
+  probe.width = 32; probe.height = 24;
+  const ctx = probe.getContext("2d", { willReadFrequently: true });
+  let prev = null, stable = 0, ticks = 0;
+  scanTimer = setInterval(async () => {
+    if (capturing || !video.videoWidth) return;
+    ticks += 1;
+    ctx.drawImage(video, 0, 0, 32, 24);
+    const data = ctx.getImageData(0, 0, 32, 24).data;
+    if (ticks < 6) { prev = data; return; }
+    let diff = 0;
+    if (prev) for (let i = 0; i < data.length; i += 16) diff += Math.abs(data[i] - prev[i]);
+    prev = data;
+    stable = diff < 40 ? stable + 1 : 0;
+    if (stable < 6) return;
+    capturing = true;
+    clearInterval(scanTimer);
+    scanTimer = 0;
+    const shot = document.createElement("canvas");
+    shot.width = video.videoWidth;
+    shot.height = video.videoHeight;
+    shot.getContext("2d").drawImage(video, 0, 0);
+    const blob = await new Promise((resolve) => shot.toBlob(resolve, "image/jpeg", 0.95));
+    stopScan();
+    if (!blob) { setStatus("影唔到。"); return; }
+    const raw = new Uint8Array(await blob.arrayBuffer());
+    const doc = bytes ? await PDFLib.PDFDocument.load(bytes) : await PDFLib.PDFDocument.create();
+    const img = await doc.embedJpg(raw);
+    const page = doc.addPage([img.width, img.height]);
+    page.drawImage(img, { x: 0, y: 0, width: img.width, height: img.height });
+    const title = bytes ? nameEl.value : "掃描";
+    await loadBytes(await doc.save(), title, doc.getPageCount() - 1);
+    inside = true;
+    enterZoom = 1;
+    await paint();
+  }, 250);
+};
+document.getElementById("mode").onclick = async () => {
+  if (!bytes) return;
+  if (!inside && continuous) current = visiblePage();
+  inside = !inside;
+  if (!inside) enterZoom = 1;
+  closeMenus();
+  try { await remember(); } catch (e) {}
+  await paint();
+};
 document.getElementById("layout").onclick = () => { continuous = !continuous; paint(); };
 document.getElementById("zoom").onclick = () => { fit = !fit; paint(); };
+nameEl.addEventListener("change", () => { remember().catch(() => {}); });
 document.body.addEventListener("click", (event) => {
   if (!menu.contains(event.target) && event.target.id !== "menuBtn") menu.classList.remove("on");
 });
+view.addEventListener("scroll", () => {
+  if (restoring || inside || !continuous || !count) return;
+  const page = visiblePage();
+  if (page === current) return;
+  current = page;
+  showPos();
+  clearTimeout(scrollTick);
+  scrollTick = setTimeout(() => { remember().catch(() => {}); }, 500);
+}, { passive: true });
+recent().then(async (items) => {
+  const last = localStorage.getItem("pdf-last");
+  const item = items.find((row) => row.name === last) || items[0];
+  const raw = item && asBytes(item.bytes);
+  if (raw) await loadBytes(raw, item.name, item.page || 0);
+}).catch(() => {});
 </script>
 </body>
 </html>
