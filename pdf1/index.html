@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#eef0f3">
+<title>簡用</title>
+<style>
+:root{--bg:#eef0f3;--surface:#fff;--fg:#17181a;--muted:#5f656e;--primary:#1565c0;--line:#e3e5e9}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font-family:"PingFang HK","Noto Sans TC","Microsoft JhengHei",sans-serif}
+button{font:inherit;cursor:pointer}
+button:disabled{opacity:.4;cursor:default}
+button:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.wrap{max-width:430px;margin:0 auto;padding:20px 16px 48px}
+.note{margin:0;color:var(--muted);font-size:13px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 16px;padding:4px;background:var(--surface);border:1px solid var(--line);border-radius:16px}
+.tabs button,.key{height:48px;border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+.tabs button{border:0;color:var(--muted);font-weight:650}
+.tabs button.on,.key.pri{background:var(--primary);color:#fff}
+h1{margin:0 0 10px;font-size:24px}
+h2{margin:14px 0 8px;font-size:16px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.row4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
+.stack{display:grid;gap:8px;margin-top:10px}
+.status{min-height:20px;margin:8px 0;color:var(--muted);font-size:14px}
+.stage{display:flex;height:250px;align-items:center;justify-content:center;background:var(--surface);border:1px solid var(--line);border-radius:16px}
+.paper{width:140px;height:200px;padding:16px;background:#fff;box-shadow:0 8px 20px rgba(23,24,26,.08);display:flex;flex-direction:column;justify-content:space-between}
+.bar{height:6px;width:32px;border-radius:99px;background:var(--primary)}
+.line{height:6px;margin-top:8px;border-radius:99px;background:var(--line)}
+.card{padding:16px;background:var(--surface);border:1px solid var(--line);border-radius:16px}
+.count{margin:8px 0;text-align:center;color:var(--muted);font-size:14px}
+.file{margin:12px 0;font-size:16px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.langs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.langs button.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+.live{min-height:24px;color:var(--muted)}
+.out{min-height:64px;white-space:pre-wrap}
+details{margin-top:22px;color:var(--fg)}
+summary{font-weight:650}
+li{margin:6px 0}
+.muted{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="note">未裝上手機。出面開呢頁就睇到畫面。</p>
+  <div class="tabs">
+    <button id="tabPdf" class="on" type="button">簡用PDF</button>
+    <button id="tabSpeech" type="button">簡用聽寫</button>
+  </div>
+  <section id="pdf">
+    <h1>簡用PDF</h1>
+    <p class="note">睇頁、轉頁、刪頁、拼成新 PDF。而家改唔到入面嘅字。</p>
+    <div class="row3" style="margin-top:12px">
+      <button class="key pri" id="scan" type="button">掃描</button>
+      <button class="key" id="gallery" type="button">相簿</button>
+      <button class="key" id="import" type="button">PDF</button>
+    </div>
+    <p class="status" id="pdfStatus">未有文件</p>
+    <div class="stage" id="stage"><p class="muted">頁面會顯示喺呢度</p></div>
+    <p class="count" id="count"></p>
+    <div class="row4">
+      <button class="key" id="left" type="button">左轉</button>
+      <button class="key" id="right" type="button">右轉</button>
+      <button class="key" id="prev" type="button">上頁</button>
+      <button class="key" id="next" type="button">下頁</button>
+    </div>
+    <div class="row3" style="margin-top:8px">
+      <button class="key" id="up" type="button">前移</button>
+      <button class="key" id="down" type="button">後移</button>
+      <button class="key" id="del" type="button">刪除</button>
+    </div>
+    <button class="key pri" id="save" type="button" style="width:100%;margin-top:8px">下載</button>
+  </section>
+  <section id="speech" hidden>
+    <h1>簡用聽寫</h1>
+    <h2>語音檔</h2>
+    <div class="card">
+      <button class="key pri" id="pick" type="button" style="width:100%">揀語音檔</button>
+      <input id="file" type="file" accept="audio/*" hidden>
+      <p class="file" id="fileName">未揀語音檔</p>
+      <div class="stack">
+        <button class="key" id="play" type="button">播放</button>
+        <button class="key" id="toText" type="button">檔案轉字</button>
+      </div>
+    </div>
+    <p class="status" id="speechStatus">檔案轉字係普通話。粵語對住個咪講。</p>
+    <h2>麥克風聽寫</h2>
+    <div class="card">
+      <div class="langs">
+        <button class="on" type="button" data-lang="zh-HK">粵語</button>
+        <button type="button" data-lang="zh-CN">國語</button>
+        <button type="button" data-lang="zh-TW">台灣</button>
+      </div>
+      <button class="key pri" id="listen" type="button" style="width:100%;margin-top:12px">開始聽</button>
+      <p class="muted" style="margin:14px 0 4px;font-size:12px">即時</p>
+      <p class="live" id="live"></p>
+      <p style="margin:8px 0 4px;font-size:12px;font-weight:650">結果</p>
+      <p class="out" id="out"></p>
+      <button class="key" id="copy" type="button" style="width:100%">複製</button>
+    </div>
+  </section>
+  <details>
+    <summary>下一版先加咩</summary>
+    <p class="muted">對過機上常見做法。而家個包未有檢查更新。你裝完先，下一版先彈「有更新」。</p>
+    <ul>
+      <li>睇：雙指放大、滑去下一頁、跳頁。而家只係一頁一頁撳。</li>
+      <li>改頁：合併、分割、壓細、裁邊。改唔到句子。</li>
+      <li>匯入盡量留原 PDF，唔好一開就變相。</li>
+      <li>更新：App 自己問呢頁有冇新包，你撳先至安裝。電話唔准佢自己裝。</li>
+    </ul>
+  </details>
+</div>
+<script>
+const pages=[]; let index=0; let seq=1;
+const status=document.getElementById("pdfStatus");
+const stage=document.getElementById("stage");
+const count=document.getElementById("count");
+function show(){
+  const page=pages[index];
+  if(!page){stage.innerHTML='<p class="muted">頁面會顯示喺呢度</p>';count.textContent="";status.textContent=pages.length?"已刪一頁":"未有文件";return}
+  stage.innerHTML='<article class="paper" style="transform:rotate('+page.rot+'deg)"><div><div class="bar"></div><div class="line"></div><div class="line" style="width:80%"></div><p>'+page.title+'</p></div><p class="muted">第 '+(index+1)+' 頁</p></article>';
+  count.textContent="第 "+(index+1)+" / "+pages.length+" 頁";
+}
+function add(kind){
+  pages.push({title:kind+" "+(seq++),rot:0});
+  index=pages.length-1;
+  status.textContent=kind==="PDF"?"加咗一頁。手機先會讀真 PDF，最多頭 20 頁。":"加咗一頁。手機先會開相機或相簿。";
+  show();
+}
+document.getElementById("scan").onclick=()=>add("掃描");
+document.getElementById("gallery").onclick=()=>add("相簿");
+document.getElementById("import").onclick=()=>add("PDF");
+function rot(d){const p=pages[index];if(!p)return;p.rot=(p.rot+d+360)%360;status.textContent="已轉 "+p.rot+"°";show()}
+document.getElementById("left").onclick=()=>rot(-90);
+document.getElementById("right").onclick=()=>rot(90);
+document.getElementById("prev").onclick=()=>{if(index>0){index--;show()}};
+document.getElementById("next").onclick=()=>{if(index<pages.length-1){index++;show()}};
+function move(d){const t=index+d;if(t<0||t>=pages.length)return;const [item]=pages.splice(index,1);pages.splice(t,0,item);index=t;status.textContent="已調次序";show()}
+document.getElementById("up").onclick=()=>move(-1);
+document.getElementById("down").onclick=()=>move(1);
+document.getElementById("del").onclick=()=>{if(!pages[index])return;pages.splice(index,1);index=Math.max(0,Math.min(index,pages.length-1));status.textContent="已刪一頁";show()};
+document.getElementById("save").onclick=()=>{if(!pages.length)return;status.textContent="預覽唔會出真 PDF。手機撳下載會跳出分享。"};
+document.getElementById("tabPdf").onclick=()=>{document.getElementById("pdf").hidden=false;document.getElementById("speech").hidden=true;document.getElementById("tabPdf").classList.add("on");document.getElementById("tabSpeech").classList.remove("on")};
+document.getElementById("tabSpeech").onclick=()=>{document.getElementById("pdf").hidden=true;document.getElementById("speech").hidden=false;document.getElementById("tabSpeech").classList.add("on");document.getElementById("tabPdf").classList.remove("on")};
+const fileInput=document.getElementById("file");
+const speechStatus=document.getElementById("speechStatus");
+let url=null,audio=null,playing=false,lang="zh-HK",rec=null;
+document.getElementById("pick").onclick=()=>fileInput.click();
+fileInput.onchange=()=>{const f=fileInput.files&&fileInput.files[0];if(!f)return;if(audio){audio.pause();audio=null}if(url)URL.revokeObjectURL(url);url=URL.createObjectURL(f);playing=false;document.getElementById("play").textContent="播放";document.getElementById("fileName").textContent=f.name;speechStatus.textContent="已揀檔。播放得。轉字要喺手機先會跑。"};
+document.getElementById("play").onclick=()=>{if(!url)return;if(!audio){audio=new Audio(url);audio.onended=()=>{playing=false;document.getElementById("play").textContent="播放"}}if(playing){audio.pause();playing=false;document.getElementById("play").textContent="播放";return}audio.src=url;audio.play().then(()=>{playing=true;document.getElementById("play").textContent="停止"}).catch(()=>{speechStatus.textContent="播唔到呢個檔"})};
+document.getElementById("toText").onclick=()=>{if(!url)return;speechStatus.textContent="預覽唔下載模型。手機先轉字，普通話，第一次約 40MB。"};
+document.querySelectorAll("[data-lang]").forEach(b=>b.onclick=()=>{lang=b.dataset.lang;document.querySelectorAll("[data-lang]").forEach(x=>x.classList.toggle("on",x===b))});
+document.getElementById("listen").onclick=()=>{
+  const btn=document.getElementById("listen");
+  if(rec){rec.stop();rec=null;btn.textContent="開始聽";return}
+  const Ctor=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!Ctor){speechStatus.textContent="呢個瀏覽器冇語音引擎。手機先用電話自己嘅引擎。";return}
+  rec=new Ctor();rec.lang=lang;rec.interimResults=true;btn.textContent="停止";speechStatus.textContent="聽緊…";
+  rec.onresult=e=>{const said=e.results[0][0].transcript;if(e.results[0].isFinal){const out=document.getElementById("out");out.textContent=out.textContent?out.textContent+"\n"+said:said;document.getElementById("live").textContent="";btn.textContent="開始聽";rec=null;speechStatus.textContent=""}else document.getElementById("live").textContent=said};
+  rec.onerror=()=>{btn.textContent="開始聽";rec=null;speechStatus.textContent="呢度聽唔到。手機先穩陣。"};
+  rec.onend=()=>{btn.textContent="開始聽";rec=null};
+  rec.start();
+};
+document.getElementById("copy").onclick=async()=>{const v=document.getElementById("out").textContent.trim();if(!v){speechStatus.textContent="冇字可以複製";return}try{await navigator.clipboard.writeText(v);speechStatus.textContent="已複製"}catch(e){speechStatus.textContent="複製失敗"}};
+</script>
+</body>
+</html>
