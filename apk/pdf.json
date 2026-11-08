@@ -1,7 +1,7 @@
 {
   "name": "簡用PDF",
-  "versionCode": 7,
-  "versionName": "1.6",
+  "versionCode": 8,
+  "versionName": "1.7",
   "apk": "https://raw.githubusercontent.com/newgodev/newgodev.com/main/apk/pdf.apk",
-  "note": "left swipe next page, history cards, text find"
+  "note": "tap a line to edit, local ocr, local embed, thumbs, fit width, night"
 }
