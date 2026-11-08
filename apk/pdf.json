@@ -1,7 +1,7 @@
 {
   "name": "簡用PDF",
-  "versionCode": 9,
-  "versionName": "1.71",
+  "versionCode": 10,
+  "versionName": "1.72",
   "apk": "https://raw.githubusercontent.com/newgodev/newgodev.com/main/apk/pdf.apk",
-  "note": "asks before update, on open and every minute"
+  "note": "ocr edit mode, view or edit, history preview and last edited time"
 }
