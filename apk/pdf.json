@@ -1,7 +1,7 @@
 {
   "name": "簡用PDF",
-  "versionCode": 8,
-  "versionName": "1.7",
+  "versionCode": 9,
+  "versionName": "1.71",
   "apk": "https://raw.githubusercontent.com/newgodev/newgodev.com/main/apk/pdf.apk",
-  "note": "tap a line to edit, local ocr, local embed, thumbs, fit width, night"
+  "note": "asks before update, on open and every minute"
 }
