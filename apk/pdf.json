@@ -1,7 +1,7 @@
 {
   "name": "簡用PDF",
-  "versionCode": 11,
-  "versionName": "1.73",
+  "versionCode": 12,
+  "versionName": "1.74",
   "apk": "https://raw.githubusercontent.com/newgodev/newgodev.com/main/apk/pdf.apk",
-  "note": "tap a word to edit, delete line, pen and highlight colors"
+  "note": "quieter chrome, grouped edit tools, card history"
 }
