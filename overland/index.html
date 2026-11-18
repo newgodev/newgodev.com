@@ -65,6 +65,7 @@
   <div class="row">
     <button id="btnAll" type="button" class="primary">睇晒全部</button>
     <button id="btnMax" type="button">放到最大</button>
+    <button id="btnHome" type="button">屋企</button>
     <button id="btnSchool" type="button">循道中學</button>
     <button id="btnCarmel" type="button">迦密中學</button>
   </div>
@@ -93,7 +94,9 @@
   const STORE = "overland-map-ui-v3";
   const SCHOOL = [22.30920, 114.17172];
   const CARMEL = [22.30984, 114.17996];
+  const HOME = [22.32037, 114.22712];
   const PLACES = [
+    { name: "屋企", lat: 22.32037, lng: 114.22712 },
     { name: "循道中學", lat: 22.30920, lng: 114.17172 },
     { name: "迦密中學", lat: 22.30984, lng: 114.17996 },
     { name: "逸東軒", lat: 22.30837, lng: 114.171062 },
@@ -236,6 +239,7 @@
     if (state.bounds) map.fitBounds(state.bounds, { padding: [8, 8], maxZoom: 22 });
     else map.setZoom(22);
   };
+  document.getElementById("btnHome").onclick = function () { map.setView(HOME, 18); };
   document.getElementById("btnSchool").onclick = function () { map.setView(SCHOOL, 18); };
   document.getElementById("btnCarmel").onclick = function () { map.setView(CARMEL, 18); };
   document.getElementById("btnWeekdays").onclick = function () {
