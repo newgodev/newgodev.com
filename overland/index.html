@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<title>Overland 行蹤</title>
+<link rel="stylesheet" href="leaflet.css">
+<style>
+  :root { --bg:#0e1116; --panel:#161b22ee; --ink:#e8eef4; --muted:#9aa7b4; --line:#3d4a58; --acc:#ffe566; }
+  * { box-sizing:border-box; }
+  html,body,#map { margin:0; height:100%; background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif; }
+  #map { z-index:0; }
+  #bar {
+    position:absolute; left:12px; right:12px; top:12px; z-index:500;
+    display:flex; gap:8px; align-items:flex-start; pointer-events:none;
+  }
+  #bar > * { pointer-events:auto; }
+  #stats {
+    flex:1; background:var(--panel); backdrop-filter:blur(10px);
+    border:1px solid var(--line); border-radius:12px; padding:10px 12px;
+    box-shadow:0 8px 24px #0006;
+  }
+  #stats h1 { margin:0; font-size:15px; font-weight:650; }
+  #stats p { margin:3px 0 0; font-size:12px; color:var(--muted); line-height:1.45; }
+  #stats b { color:var(--acc); font-weight:650; }
+  #toggle, #panel button, #panel .row button {
+    appearance:none; border:1px solid var(--line); background:#1c232c; color:var(--ink);
+    border-radius:10px; padding:8px 10px; font-size:13px; cursor:pointer;
+  }
+  #toggle { white-space:nowrap; background:#1c232c; }
+  #panel {
+    position:absolute; top:78px; right:12px; width:min(340px, calc(100vw - 24px));
+    max-height:calc(100vh - 100px); overflow:auto; z-index:500;
+    background:var(--panel); backdrop-filter:blur(12px);
+    border:1px solid var(--line); border-radius:14px; padding:12px;
+    box-shadow:0 12px 32px #0008;
+  }
+  #panel.hidden { display:none; }
+  #panel h2 { margin:14px 0 8px; font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); font-weight:700; }
+  #panel h2:first-child { margin-top:0; }
+  .row { display:flex; gap:6px; flex-wrap:wrap; margin:0 0 8px; }
+  .row button { flex:1; min-width:90px; }
+  .row button.primary { background:#2a2410; border-color:#8a7a30; color:var(--acc); }
+  label.field { display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:13px; margin:6px 0; }
+  label.field input[type=range], label.field input[type=color] { width:130px; }
+  label.check { display:flex; gap:8px; align-items:center; font-size:13px; margin:4px 0; }
+  #days { max-height:220px; overflow:auto; border-top:1px solid var(--line); padding-top:6px; }
+  #days label { display:flex; gap:8px; align-items:center; font-size:12px; padding:3px 0; color:var(--muted); }
+  #days label span { margin-left:auto; }
+  .leaflet-control-attribution { font-size:10px; }
+  .line-tip { font-size:12px; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="bar">
+  <div id="stats">
+    <h1>Overland 行蹤</h1>
+    <p>載入緊…</p>
+  </div>
+  <button id="toggle" type="button">設定</button>
+</div>
+<aside id="panel" class="hidden">
+  <h2>捷徑</h2>
+  <div class="row">
+    <button id="btnAll" type="button" class="primary">睇晒全部</button>
+    <button id="btnMax" type="button">放到最大</button>
+    <button id="btnSchool" type="button">學校附近</button>
+  </div>
+  <h2>簡單設定</h2>
+  <label class="field">顏色 <input id="color" type="color" value="#ffe566"></label>
+  <label class="field">線寬 <input id="width" type="range" min="0.8" max="5" step="0.1" value="3"></label>
+  <label class="field">透明度 <input id="opacity" type="range" min="0.15" max="0.9" step="0.05" value="0.5"></label>
+  <h2>進階</h2>
+  <div class="row">
+    <button id="bmOsm" type="button">OpenStreetMap</button>
+    <button id="bmCarto" type="button">Carto</button>
+    <button id="bmSat" type="button">衛星</button>
+  </div>
+  <label class="check"><input id="places" type="checkbox"> 顯示地名（純文字，唔用圓點）</label>
+  <div class="row">
+    <button id="btnWeekdays" type="button">平日</button>
+    <button id="btnWeekends" type="button">週末</button>
+    <button id="btnNone" type="button">全部隱藏</button>
+  </div>
+  <h2>每一日嘅行蹤線</h2>
+  <div id="days"></div>
+</aside>
+<script src="leaflet.js"></script>
+<script>
+(function () {
+  const STORE = "overland-map-ui-v3";
+  const SCHOOL = [22.30920, 114.17172];
+  const PLACES = [
+    { name: "循道中學", lat: 22.30920, lng: 114.17172 },
+    { name: "逸東軒", lat: 22.30837, lng: 114.171062 },
+    { name: "上海街251", lat: 22.309254, lng: 114.169811 },
+    { name: "文明里", lat: 22.311661, lng: 114.170939 }
+  ];
+
+  function decode(str) {
+    const pts = [];
+    let i = 0, lat = 0, lng = 0;
+    while (i < str.length) {
+      let b, s = 0, r = 0;
+      do { b = str.charCodeAt(i++) - 63; r |= (b & 31) << s; s += 5; } while (b >= 32);
+      lat += (r & 1) ? ~(r >> 1) : (r >> 1);
+      s = 0; r = 0;
+      do { b = str.charCodeAt(i++) - 63; r |= (b & 31) << s; s += 5; } while (b >= 32);
+      lng += (r & 1) ? ~(r >> 1) : (r >> 1);
+      pts.push([lat / 1e5, lng / 1e5]);
+    }
+    return pts;
+  }
+
+  function loadSettings() {
+    const d = { color: "#ffe566", width: 3, opacity: 0.5, places: false, basemap: "osm" };
+    try { Object.assign(d, JSON.parse(localStorage.getItem(STORE) || "{}")); } catch (e) {}
+    return d;
+  }
+  function saveSettings() {
+    localStorage.setItem(STORE, JSON.stringify({
+      color: colorEl.value, width: +widthEl.value, opacity: +opacityEl.value,
+      places: placesEl.checked, basemap: state.basemap
+    }));
+  }
+
+  const map = L.map("map", { zoomSnap: 0, zoomDelta: 0.5, maxZoom: 22, attributionControl: true });
+  const osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 22, maxNativeZoom: 19, attribution: "&copy; OpenStreetMap"
+  });
+  const carto = L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png", {
+    maxZoom: 22, maxNativeZoom: 21, attribution: "&copy; OpenStreetMap, &copy; CARTO"
+  });
+  const sat = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+    maxZoom: 22, maxNativeZoom: 19, attribution: "Tiles &copy; Esri"
+  });
+  const basemaps = { osm, carto, sat };
+
+  const state = { basemap: "osm", days: [], layers: [], placeLayer: L.layerGroup(), bounds: null };
+  const statsEl = document.querySelector("#stats p");
+  const panel = document.getElementById("panel");
+  const colorEl = document.getElementById("color");
+  const widthEl = document.getElementById("width");
+  const opacityEl = document.getElementById("opacity");
+  const placesEl = document.getElementById("places");
+  const daysEl = document.getElementById("days");
+  const s = loadSettings();
+  colorEl.value = s.color; widthEl.value = s.width; opacityEl.value = s.opacity;
+  placesEl.checked = !!s.places; state.basemap = s.basemap in basemaps ? s.basemap : "osm";
+  basemaps[state.basemap].addTo(map);
+  state.placeLayer.addTo(map);
+
+  function style() {
+    return {
+      color: colorEl.value,
+      weight: +widthEl.value,
+      opacity: +opacityEl.value,
+      lineJoin: "round",
+      lineCap: "round",
+      bubblingMouseEvents: false
+    };
+  }
+
+  function applyStyle() {
+    const st = style();
+    state.layers.forEach(function (layer) { layer.setStyle(st); });
+    saveSettings();
+  }
+
+  function setBasemap(name) {
+    Object.keys(basemaps).forEach(function (k) { if (map.hasLayer(basemaps[k])) map.removeLayer(basemaps[k]); });
+    state.basemap = name;
+    basemaps[name].addTo(map);
+    saveSettings();
+  }
+
+  function weekend(iso) {
+    const d = new Date(iso + "T12:00:00");
+    const w = d.getDay();
+    return w === 0 || w === 6;
+  }
+
+  function setDay(i, on) {
+    const day = state.days[i];
+    day.on = on;
+    day.lines.forEach(function (layer) {
+      if (on) layer.addTo(map); else map.removeLayer(layer);
+    });
+    const box = daysEl.querySelector('input[data-i="' + i + '"]');
+    if (box) box.checked = on;
+    recount();
+  }
+
+  function recount() {
+    let n = 0, km = 0;
+    state.days.forEach(function (d) { if (d.on) { n += d.n; km += d.km; } });
+    const totalLines = state.days.reduce(function (a, d) { return a + d.n; }, 0);
+    statsEl.innerHTML =
+      "而家顯示 <b>" + n + "</b> / " + totalLines + " 條行蹤線 · 地圖線總長 " + km.toFixed(1) + " km<br>" +
+      "每一趟行過都係獨立一條線，同一條路行過幾多次就有幾多條，唔會合併覆蓋。<br>" +
+      "Overland App 顯示：1355 km · 約 1529 小時（由行程開始計，含坐同瞓）。";
+  }
+
+  function renderPlaces() {
+    state.placeLayer.clearLayers();
+    if (!placesEl.checked) return;
+    PLACES.forEach(function (p) {
+      const icon = L.divIcon({
+        className: "",
+        html: '<div style="background:transparent;color:#ffe566;font:700 11px/1.2 sans-serif;text-shadow:0 0 4px #000,0 1px 2px #000;white-space:nowrap;">' + p.name + "</div>",
+        iconSize: [0, 0], iconAnchor: [0, 0]
+      });
+      L.marker([p.lat, p.lng], { icon: icon, interactive: false, keyboard: false }).addTo(state.placeLayer);
+    });
+  }
+
+  document.getElementById("toggle").onclick = function () { panel.classList.toggle("hidden"); };
+  document.getElementById("btnAll").onclick = function () {
+    state.days.forEach(function (_, i) { setDay(i, true); });
+    if (state.bounds) map.fitBounds(state.bounds, { padding: [24, 24] });
+  };
+  document.getElementById("btnMax").onclick = function () {
+    if (state.bounds) map.fitBounds(state.bounds, { padding: [8, 8], maxZoom: 22 });
+    else map.setZoom(22);
+  };
+  document.getElementById("btnSchool").onclick = function () { map.setView(SCHOOL, 18); };
+  document.getElementById("btnWeekdays").onclick = function () {
+    state.days.forEach(function (d, i) { setDay(i, !weekend(d.d)); });
+  };
+  document.getElementById("btnWeekends").onclick = function () {
+    state.days.forEach(function (d, i) { setDay(i, weekend(d.d)); });
+  };
+  document.getElementById("btnNone").onclick = function () {
+    state.days.forEach(function (_, i) { setDay(i, false); });
+  };
+  document.getElementById("bmOsm").onclick = function () { setBasemap("osm"); };
+  document.getElementById("bmCarto").onclick = function () { setBasemap("carto"); };
+  document.getElementById("bmSat").onclick = function () { setBasemap("sat"); };
+  colorEl.oninput = widthEl.oninput = opacityEl.oninput = applyStyle;
+  placesEl.onchange = function () { renderPlaces(); saveSettings(); };
+
+  if (window.matchMedia("(max-width: 700px)").matches) panel.classList.add("hidden");
+
+  fetch("tracks.json", { cache: "no-store" }).then(function (r) {
+    if (!r.ok) throw new Error("tracks " + r.status);
+    return r.json();
+  }).then(function (data) {
+    const all = [];
+    data.forEach(function (day, i) {
+      const lines = [];
+      (day.p || []).forEach(function (enc, j) {
+        const latlngs = decode(enc);
+        if (latlngs.length < 2) return;
+        const layer = L.polyline(latlngs, style());
+        layer.bindPopup(
+          '<div class="line-tip"><b>' + day.d + "</b> 第 " + (j + 1) + " / " + day.n + " 趟<br>" +
+          (day.a || "") + "–" + (day.b || "") + " · 呢日共 " + day.n + " 條線 · " + day.km + " km</div>"
+        );
+        layer.on("mouseover", function () { layer.setStyle({ weight: +widthEl.value + 1.5, opacity: Math.min(0.95, +opacityEl.value + 0.3) }); layer.bringToFront(); });
+        layer.on("mouseout", function () { layer.setStyle(style()); });
+        layer.addTo(map);
+        lines.push(layer);
+        all.push(layer);
+        latlngs.forEach(function (ll) { /* bounds below */ });
+      });
+      state.days.push({ d: day.d, n: day.n, km: day.km, on: true, lines: lines });
+    });
+    state.layers = all;
+    if (all.length) {
+      state.bounds = all.reduce(function (b, layer) { return b.extend(layer.getBounds()); }, all[0].getBounds());
+      map.fitBounds(state.bounds, { padding: [24, 24] });
+    } else {
+      map.setView(SCHOOL, 15);
+    }
+    daysEl.innerHTML = state.days.map(function (d, i) {
+      return '<label><input type="checkbox" checked data-i="' + i + '"> ' + d.d + "　" + d.n + " 條線<span>" + d.km.toFixed(2) + " km</span></label>";
+    }).join("");
+    daysEl.onchange = function (ev) {
+      const t = ev.target;
+      if (t && t.dataset.i) setDay(+t.dataset.i, t.checked);
+    };
+    renderPlaces();
+    recount();
+  }).catch(function (err) {
+    statsEl.textContent = "載入行蹤失敗：" + err;
+  });
+})();
+</script>
+</body>
+</html>
