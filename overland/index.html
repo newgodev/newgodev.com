@@ -164,7 +164,10 @@
 
   function applyStyle() {
     const st = style();
-    state.layers.forEach(function (layer) { layer.setStyle(st); });
+    state.layers.forEach(function (layer) {
+      layer.setStyle(st);
+      if (layer._casing) layer._casing.setStyle({ weight: st.weight + 1.6, opacity: 0.45 });
+    });
     saveSettings();
   }
 
@@ -185,7 +188,13 @@
     const day = state.days[i];
     day.on = on;
     day.lines.forEach(function (layer) {
-      if (on) layer.addTo(map); else map.removeLayer(layer);
+      if (on) {
+        if (layer._casing) layer._casing.addTo(map);
+        layer.addTo(map);
+      } else {
+        map.removeLayer(layer);
+        if (layer._casing) map.removeLayer(layer._casing);
+      }
     });
     const box = daysEl.querySelector('input[data-i="' + i + '"]');
     if (box) box.checked = on;
@@ -252,14 +261,24 @@
       (day.p || []).forEach(function (enc, j) {
         const latlngs = decode(enc);
         if (latlngs.length < 2) return;
+        const casing = L.polyline(latlngs, { color: "#111111", weight: +widthEl.value + 1.6, opacity: 0.45, lineJoin: "round", lineCap: "round", interactive: false });
         const layer = L.polyline(latlngs, style());
+        casing.addTo(map);
+        layer.addTo(map);
+        layer._casing = casing;
         layer.bindPopup(
-          '<div class="line-tip"><b>' + day.d + "</b> 第 " + (j + 1) + " / " + day.n + " 趟<br>" +
+          '<div class="line-tip"><b>' + day.d + "</b> 第 " + (j + 1) + " / " + day.n + " 段<br>" +
           (day.a || "") + "–" + (day.b || "") + " · 呢日共 " + day.n + " 條線 · " + day.km + " km</div>"
         );
-        layer.on("mouseover", function () { layer.setStyle({ weight: +widthEl.value + 1.5, opacity: Math.min(0.95, +opacityEl.value + 0.3) }); layer.bringToFront(); });
-        layer.on("mouseout", function () { layer.setStyle(style()); });
-        layer.addTo(map);
+        layer.on("mouseover", function () {
+          layer.setStyle({ weight: +widthEl.value + 1.5, opacity: Math.min(0.95, +opacityEl.value + 0.3) });
+          if (layer._casing) layer._casing.setStyle({ weight: +widthEl.value + 3 });
+          layer.bringToFront();
+        });
+        layer.on("mouseout", function () {
+          layer.setStyle(style());
+          if (layer._casing) layer._casing.setStyle({ weight: +widthEl.value + 1.6, opacity: 0.45 });
+        });
         lines.push(layer);
         all.push(layer);
         latlngs.forEach(function (ll) { /* bounds below */ });
