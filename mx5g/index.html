@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f1a16">
+<title>第5組｜孟子·仁愛謙和 · HTML簡報＋轉盤遊戲</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<canvas id="fx" aria-hidden="true"></canvas>
+<img class="fx-burst" id="burstImg" src="./assets/burst.gif" alt="" hidden>
+<img class="fx-confetti" id="confettiImg" src="./assets/confetti.png" alt="" hidden>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="mark"></span>
+    <div>
+      <strong>3G 第5組 · 孟子</strong>
+      <small>仁愛謙和 · 人格論 ·《孟子》</small>
+    </div>
+  </div>
+  <nav class="modes">
+    <button type="button" class="mode on" data-mode="deck">簡報</button>
+    <button type="button" class="mode" data-mode="game">轉盤遊戲</button>
+  </nav>
+  <div class="progress" id="progress"><i></i></div>
+</header>
+
+<main id="deck" class="stage">
+  <!-- slides injected -->
+</main>
+
+<section id="game" class="game hidden" aria-label="轉盤抽人問答">
+  <div class="game-grid">
+    <div class="wheel-panel">
+      <div class="wheel-wrap">
+        <img class="wheel-glow" src="./assets/wheel-glow.png" alt="">
+        <div class="pointer"></div>
+        <canvas id="wheel" width="560" height="560"></canvas>
+        <div class="hub">
+          <span>抽座號</span>
+          <b id="pickedNum">?</b>
+        </div>
+      </div>
+      <div class="wheel-actions">
+        <button type="button" class="btn primary big" id="spinBtn">轉盤抽人</button>
+        <button type="button" class="btn ghost" id="reshuffleBtn">重設 1–30</button>
+      </div>
+      <p class="hintline">真正隨機（crypto）· 1–30 · 抽中後問答 · 可給提示／揭答案／近似答案也算</p>
+    </div>
+
+    <div class="quiz-panel">
+      <div class="quiz-meta">
+        <span class="pill" id="diffPill">易</span>
+        <span class="pill soft" id="qIndex">題 0 / 0</span>
+        <span class="pill soft" id="scorePill">分 0</span>
+      </div>
+      <h2 id="qTitle">先轉盤抽同學，再出題</h2>
+      <p class="who" id="whoLine">等待抽人…</p>
+      <div class="choices" id="choices"></div>
+      <div class="answer-box">
+        <label for="typed">口述／打字答案（近似也 OK）</label>
+        <input id="typed" type="text" placeholder="用自己的話答…" autocomplete="off">
+      </div>
+      <div class="quiz-actions">
+        <button type="button" class="btn" id="hintBtn" disabled>提示</button>
+        <button type="button" class="btn" id="nearBtn" disabled>看近似答案</button>
+        <button type="button" class="btn warn" id="revealBtn" disabled>揭曉答案</button>
+        <button type="button" class="btn primary" id="checkBtn" disabled>核對</button>
+        <button type="button" class="btn ghost" id="nextQBtn" disabled>下一題</button>
+      </div>
+      <div class="feedback" id="feedback" hidden></div>
+      <div class="help-cards">
+        <div class="card" id="hintCard" hidden><h3>提示</h3><p id="hintText"></p></div>
+        <div class="card" id="nearCard" hidden><h3>近似答案（也算對）</h3><p id="nearText"></p></div>
+        <div class="card reveal" id="revealCard" hidden><h3>正確答案</h3><p id="revealText"></p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="deck-nav" id="deckNav">
+  <button type="button" class="btn ghost" id="prevBtn">上一頁</button>
+  <span id="pageLabel">1 / 1</span>
+  <button type="button" class="btn primary" id="nextBtn">下一頁</button>
+  <button type="button" class="btn accent" id="toGameBtn">開始轉盤遊戲 →</button>
+</footer>
+
+<script src="./questions.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>
