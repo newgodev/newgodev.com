@@ -94,21 +94,71 @@
   background:rgba(42,143,102,.2);border:1px dashed rgba(125,206,160,.5);
   font-size:.55em;font-weight:700;color:#c8f0d8;
 }
-.reveal .fs-hint{
-  position:fixed;right:14px;top:14px;z-index:40;
-  border:0;border-radius:999px;padding:10px 14px;font:inherit;font-weight:800;font-size:14px;
+.reveal .fs-hint,
+button.fs-hint{
+  position:fixed;right:max(14px, env(safe-area-inset-right));
+  top:max(14px, env(safe-area-inset-top));
+  z-index:40;
+  border:0;border-radius:999px;padding:14px 20px;font:inherit;font-weight:900;font-size:17px;
   background:linear-gradient(180deg,var(--gold2),var(--gold));color:#1a1206;cursor:pointer;
-  box-shadow:0 6px 18px rgba(0,0,0,.35);
+  box-shadow:0 8px 0 #8a6820,0 10px 24px rgba(0,0,0,.35);
+  -webkit-tap-highlight-color:transparent;
 }
+.reveal .fs-hint:active{transform:translateY(3px);box-shadow:0 3px 0 #8a6820}
+/* Hide chrome hint when already launched from Home Screen */
+html.standalone .fs-hint,
+html.standalone #ipadHelp{display:none!important}
+
+#ipadHelp{
+  position:fixed;inset:0;z-index:80;background:rgba(6,12,10,.88);
+  display:none;align-items:center;justify-content:center;padding:max(16px, env(safe-area-inset-top)) 16px;
+  -webkit-overflow-scrolling:touch;
+}
+#ipadHelp.open{display:flex}
+#ipadHelp .sheet{
+  width:min(560px,94vw);max-height:min(88vh,720px);overflow:auto;
+  background:linear-gradient(165deg,#15241e,#0f1a16 70%);color:#f2f7f4;
+  border-radius:20px;padding:22px 20px;border:2px solid rgba(239,211,154,.35);
+  font-size:17px;line-height:1.55;
+}
+#ipadHelp h2{margin:0 0 10px;font-size:1.35rem;color:#efd39a;font-family:var(--r-heading-font)}
+#ipadHelp ol{margin:0;padding-left:1.25rem}
+#ipadHelp li{margin:.45em 0}
+#ipadHelp .warn{
+  margin:12px 0;padding:12px;border-radius:12px;
+  background:rgba(181,61,50,.18);border:1px solid rgba(181,61,50,.35);font-size:.95rem;
+}
+#ipadHelp .ok{
+  margin:12px 0;padding:12px;border-radius:12px;
+  background:rgba(42,143,102,.18);border:1px solid rgba(42,143,102,.4);font-size:.95rem;
+}
+#ipadHelp .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+#ipadHelp button{
+  border:0;border-radius:12px;padding:12px 16px;font:inherit;font-weight:800;cursor:pointer;
+}
+#ipadHelp .primary{background:linear-gradient(180deg,#efd39a,#c8962e);color:#1a1206}
+#ipadHelp .ghost{background:transparent;color:#eef4f0;border:1px solid rgba(255,255,255,.2)}
+
+/* Prefer landscape presentation on tablets */
+@media (orientation: portrait) and (max-width: 1100px){
+  #rotateHint{
+    display:flex;position:fixed;inset:0;z-index:70;background:rgba(8,14,12,.92);
+    align-items:center;justify-content:center;padding:24px;text-align:center;color:#efd39a;
+    font-size:1.25rem;font-weight:800;line-height:1.5;
+  }
+}
+#rotateHint{display:none}
 .reveal .light-slide{color:var(--ink)}
 .reveal .light-slide h1,.reveal .light-slide h2,.reveal .light-slide h3{color:var(--jade)}
 .reveal .light-slide .kicker{color:var(--jade2)}
 .reveal .light-slide .quote-box{background:rgba(27,94,69,.12);color:var(--jade)}
 .reveal .btn-link{
-  display:inline-block;margin-top:.8em;padding:.55em 1em;border-radius:12px;
+  display:inline-block;margin-top:.8em;padding:.7em 1.25em;border-radius:14px;
   background:linear-gradient(180deg,var(--gold2),var(--gold));color:#1a1206!important;
-  font-weight:800;font-size:.55em;text-decoration:none!important;
+  font-weight:800;font-size:.6em;text-decoration:none!important;
+  box-shadow:0 8px 0 #8a6820;-webkit-tap-highlight-color:transparent;
 }
+.reveal .btn-link:active{transform:translateY(3px);box-shadow:0 3px 0 #8a6820}
 .reveal .small{font-size:.55em;opacity:.85;line-height:1.5}
 .reveal .credits{font-size:.4em;opacity:.6;margin-top:1.2em}
 

@@ -4,15 +4,30 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#0e1714">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./assets/icon-192.png">
 <title>轉盤問答｜第5組孟子</title>
+<link rel="stylesheet" href="./theme-mx5g.css">
 <link rel="stylesheet" href="./wheel.css">
 </head>
 <body>
+<div id="ipadHelp" role="dialog" aria-modal="true">
+  <div class="sheet">
+    <h2>iPad 全螢幕</h2>
+    <div class="warn">Safari 有時會擋網頁全螢幕。最穩：分享 → 加入主畫面 → 由主畫面打開。</div>
+    <div class="row">
+      <button type="button" class="primary" id="ipadHelpTry">再試一次全螢幕</button>
+      <button type="button" class="ghost" id="ipadHelpClose">關閉</button>
+    </div>
+  </div>
+</div>
 <header class="bar">
   <a class="back" href="./index.html">← 返回簡報</a>
   <strong>轉盤抽人 · 1–30</strong>
-  <button type="button" class="fs" id="fsBtn">全螢幕</button>
+  <button type="button" class="fs" data-fs-btn>全螢幕</button>
 </header>
 
 <main class="wrap">
@@ -51,7 +66,9 @@
   </div>
 </div>
 
+<script src="./fs.js"></script>
 <script src="./questions.js"></script>
 <script src="./wheel.js"></script>
+<script>MX5FS.wire();</script>
 </body>
 </html>

@@ -4,15 +4,38 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="孟子簡報">
 <meta name="theme-color" content="#0e1714">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./assets/icon-192.png">
 <title>3G 第5組｜孟子 · Reveal.js 簡報</title>
 <link rel="stylesheet" href="./vendor/reveal/dist/reset.css">
 <link rel="stylesheet" href="./vendor/reveal/dist/reveal.css">
 <link rel="stylesheet" href="./theme-mx5g.css">
 </head>
 <body>
-<button type="button" class="fs-hint" id="fsBtn">全螢幕 F</button>
+<button type="button" class="fs-hint" data-fs-btn>全螢幕</button>
+<div id="rotateHint">請把 iPad <strong>打橫</strong>（橫向）再演講報</div>
+
+<div id="ipadHelp" role="dialog" aria-modal="true" aria-labelledby="ipadHelpTitle">
+  <div class="sheet">
+    <h2 id="ipadHelpTitle">iPad 全螢幕</h2>
+    <div class="warn">Safari 有時會擋網頁全螢幕。最穩係「加入主畫面」再開，就冇網址列。</div>
+    <ol>
+      <li>先把 iPad <strong>打橫</strong></li>
+      <li>撳底部分享掣 <strong>□↑</strong></li>
+      <li>揀 <strong>加入主畫面</strong> → 加入</li>
+      <li>去主畫面撳 <strong>孟子簡報</strong> 圖示打開＝真正全螢幕</li>
+    </ol>
+    <div class="ok">或者撳下面「再試一次」——新版 iPadOS Safari 有時可以直接全螢幕。</div>
+    <div class="row">
+      <button type="button" class="primary" id="ipadHelpTry">再試一次全螢幕</button>
+      <button type="button" class="ghost" id="ipadHelpClose">關閉</button>
+    </div>
+  </div>
+</div>
 
 <div class="reveal">
   <div class="slides">
@@ -21,15 +44,18 @@
     <section data-background="linear-gradient(145deg,#0e1714,#173028 55%,#101c18)">
       <div class="hero">
         <div>
-          <p class="kicker">3G 第5組 · 頁11–12、14 · 用 reveal.js</p>
+          <p class="kicker">3G 第5組 · 頁11–12、14 · iPad 簡報</p>
           <h1>孟子思想<br>用校園講明白</h1>
           <p class="lead">仁愛謙和 · 三反其身 · 舍生取義 · 以德服人 · 天賦尊嚴</p>
+          <p style="margin:.8em 0 0">
+            <button type="button" class="btn-link" data-fs-btn style="border:0;cursor:pointer;font:inherit">全螢幕</button>
+          </p>
           <div class="chip-row">
             <span class="chip">古典畫像（唔用人臉相）</span>
-            <span class="chip">滑動手勢／空白鍵</span>
-            <span class="chip">撳「全螢幕」</span>
+            <span class="chip">左右掃換頁</span>
+            <span class="chip">撳金色「全螢幕」</span>
           </div>
-          <p class="small" style="margin-top:1em">引擎：<a href="https://revealjs.com/" target="_blank" rel="noopener">reveal.js</a>（開源 HTML 簡報框架，專為觸控／投影設計）</p>
+          <p class="small" style="margin-top:1em">引擎：<a href="https://revealjs.com/" target="_blank" rel="noopener">reveal.js</a> · 專為觸控平板設計</p>
         </div>
         <div>
           <img src="./assets/photo-mencius.png" alt="孟子古典畫像">
@@ -256,19 +282,22 @@
       <h1>轉盤抽人問答</h1>
       <p class="lead">1–30 真隨機 → 問題＋提示 → 揭曉答案／近似 → 5 秒返回</p>
       <p><a class="btn-link" href="./wheel.html">打開轉盤遊戲 →</a></p>
-      <p class="small" style="margin-top:1em">提示：簡報用空白鍵／左右掃；全螢幕撳右上角或鍵盤 <strong>F</strong>；總覽撳 <strong>Esc</strong>。</p>
+      <p style="margin-top:.7em"><button type="button" class="btn-link" data-fs-btn style="border:0;cursor:pointer;font:inherit">全螢幕</button></p>
+      <p class="small" style="margin-top:1em">iPad：左右掃換頁 · 撳「全螢幕」 · 總覽用雙指捏合／Esc</p>
       <p class="credits">簡報框架：reveal.js (MIT) · 圖像：古典畫像／畫風素材 · 唔用 emoji、唔用人臉照片</p>
     </section>
 
   </div>
 </div>
 
+<script src="./fs.js"></script>
 <script src="./vendor/reveal/dist/reveal.js"></script>
 <script src="./vendor/reveal/plugin/notes/notes.js"></script>
 <script>
   Reveal.initialize({
     hash: true,
     controls: true,
+    controlsTutorial: true,
     progress: true,
     center: false,
     touch: true,
@@ -277,23 +306,12 @@
     backgroundTransition: "fade",
     width: 1280,
     height: 720,
-    margin: 0.06,
-    minScale: 0.35,
-    maxScale: 1.6,
+    margin: 0.04,
+    minScale: 0.2,
+    maxScale: 2,
     plugins: [RevealNotes]
   });
-
-  function toggleFs() {
-    const el = document.documentElement;
-    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-      const req = el.requestFullscreen || el.webkitRequestFullscreen;
-      if (req) req.call(el);
-    } else {
-      const exit = document.exitFullscreen || document.webkitExitFullscreen;
-      if (exit) exit.call(document);
-    }
-  }
-  document.getElementById("fsBtn").onclick = toggleFs;
+  MX5FS.wire();
 </script>
 </body>
 </html>

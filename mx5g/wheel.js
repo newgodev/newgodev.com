@@ -250,14 +250,6 @@
   };
   $("showAnswerBtn").onclick = openAnswer;
   $("backNowBtn").onclick = returnWheel;
-  $("fsBtn").onclick = () => {
-    const el = document.documentElement;
-    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-      (el.requestFullscreen || el.webkitRequestFullscreen).call(el);
-    } else {
-      (document.exitFullscreen || document.webkitExitFullscreen).call(document);
-    }
-  };
 
   drawWheel();
   hide(qModal);
