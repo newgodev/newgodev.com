@@ -41,14 +41,11 @@
   }
 
   const MENG_LINES = [
-    "同學，唔好扮睇電話，我喺畫像入面都睇到你。",
-    "以力服人？即係靠大聲？我亞聖都搖頭。",
-    "魚好食，但抄襲唔好食——記住舍生取義。",
-    "三反其身：第一步，先反省點解你而家笑。",
-    "仁愛謙和：請把筆記分享，唔好只 share meme。",
-    "老師打分緊，你哋玩得開心＝表達分＋＋",
-    "霸者靠罰分，王者靠公道。班長你揀邊條路？",
-    "呢個簡報係 HTML，唔係 Canva——所以我可以飛出嚟講嘢。"
+    "仁愛謙和：仁愛、恭敬謙讓、和為貴。",
+    "三反其身：行有不得，皆反求諸己。",
+    "舍生取義：義禮比生命更重要（守底線）。",
+    "以德服人：心悅誠服；以力服人：暫時屈服。",
+    "憐憫之心＋羞恥之心 → 尊嚴人格。"
   ];
 
   const SLIDES = [
@@ -56,25 +53,20 @@
       tone: "dark",
       html: `<div class="hero-split">
         <div class="hero-copy">
-          <div class="kicker">3G 第5組 · 孟子搞笑版（認真內容＋失控互動）</div>
-          <h1>孟子上線：專治班房亂局</h1>
+          <div class="kicker">3G 第5組 · 中文單元二</div>
+          <h1>孟子：仁愛謙和</h1>
           <p class="lead">仁愛謙和 · 三反其身 · 舍生取義 · 以德服人 · 天賦尊嚴<br>
-          呢個唔係靜態 PPT——<strong>每頁都撳得</strong>，孟子會出嚟吐嘈你。</p>
-          <button type="button" class="gag-btn" data-bug-boot>⚠ 系統偵測：同學太清醒 → 啟動笑場模式</button>
+          用校園例子講清楚四字詞同理據。撳「全螢幕」後用下一頁繼續。</p>
           <div class="chip-row" style="margin-top:8px">
             <span class="chip">古典畫像 · 無人臉照片</span>
-            <span class="chip">撳完有 punchline</span>
+            <span class="chip">內容＋理據</span>
             <span class="chip">全螢幕（iPad 適用）</span>
           </div>
-          <p class="click-hint">提示：撳「全螢幕」→ 金色掣 → 孟子 → 下一頁</p>
+          <p class="click-hint">提示：撳「全螢幕」→ 下一頁</p>
         </div>
         <div class="hero-media">
           <img src="./assets/photo-mencius.png" alt="孟子古典畫像">
-          <div class="cap">孟子（孟軻）· 古典半身畫像（非真人照片）· 吐嘈主持</div>
-          <div class="meng-host" data-meng-host>
-            <div class="meng-bubble" data-meng-line>撳我！我有話想講…</div>
-            <img src="./assets/photo-mencius2.png" alt="孟子古典畫">
-          </div>
+          <div class="cap">孟子（孟軻）· 古典半身畫像（非真人照片）</div>
         </div>
       </div>`
     },
@@ -82,7 +74,7 @@
       tone: "light",
       html: `<div class="slide-inner">
         <div class="kicker">範圍地圖 · 老師請放心：重點齊</div>
-        <h2>第5組只攻這些筆記（但講法好癲）</h2>
+        <h2>第5組只攻這些筆記</h2>
         <div class="grid2">
           <div class="panel">
             <h3>頁 11–12</h3>
@@ -130,8 +122,8 @@
     {
       tone: "light",
       html: `<div class="slide-inner">
-        <div class="kicker">仁愛謙和 · 校園三場面 · 撳開 punchline</div>
-        <h2>一個精神，三種「唔好做人憎」做法</h2>
+        <div class="kicker">仁愛謙和 · 校園三場面</div>
+        <h2>一個精神，三種做法</h2>
         <div class="grid3">
           <div class="scene tap" data-tap>
             <img src="./assets/photo-book.png" alt="古典書冊圖">
@@ -139,7 +131,7 @@
               <span class="tag">① 仁愛</span>
               <strong>分享筆記</strong>
               <p>同學欠筆記你主動分享——心存仁愛，不是換名氣。</p>
-              <div class="secret">孟子吐嘈：你 share 筆記＝仁；你只 share 功課答案＝危險動作。</div>
+              <div class="secret">重點：分享筆記＝仁愛；只分享答案唔夠。</div>
             </div>
           </div>
           <div class="scene tap" data-tap>
@@ -148,7 +140,7 @@
               <span class="tag">② 恭敬謙讓</span>
               <strong>排隊有禮</strong>
               <p>對師長同學恭敬謙讓 → 得信任、少衝突。</p>
-              <div class="secret">孟子吐嘈：插隊的人，連「敬」字都未考合格。</div>
+              <div class="secret">重點：對人有禮＝恭敬謙讓。</div>
             </div>
           </div>
           <div class="scene tap" data-tap>
@@ -157,7 +149,7 @@
               <span class="tag">③ 和為貴</span>
               <strong>輸完仍一隊</strong>
               <p>班際比賽輸了也不互怪。和平安定靠仁愛之心。</p>
-              <div class="secret">孟子吐嘈：互怪＝內戰；互撐＝和為貴（分數加）。</div>
+              <div class="secret">重點：互撐＝和為貴。</div>
             </div>
           </div>
         </div>
@@ -181,7 +173,7 @@
                 <li>禮敬沒有回禮 → 反省「敬」</li>
               </ul>
               <p style="margin-top:10px">凡事得不到應有反應，先在自己身心找原因。</p>
-              <button type="button" class="gag-btn" data-glitch-btn style="margin-top:12px">模擬系統錯誤（搞笑用）</button>
+              <button type="button" class="gag-btn" data-glitch-btn style="margin-top:12px">示範：反省自己（三反其身）</button>
               <div class="bug-box" data-bug-box style="margin-top:10px;display:none"></div>
             </div>
           </div>
@@ -247,9 +239,9 @@
       tone: "dark",
       html: `<div class="slide-inner gag-stage">
         <div class="kicker">以德服人 · 逐句 unlock</div>
-        <h2>王者路 vs 霸者路（撳掣出金句）</h2>
+        <h2>王者路 vs 霸者路（撳掣出重點）</h2>
         <div class="chip-row">
-          <button type="button" class="gag-btn" data-reveal-next>下一句吐嘈 →</button>
+          <button type="button" class="gag-btn" data-reveal-next>下一句重點 →</button>
           <span class="click-hint" data-reveal-count>0 / 4</span>
         </div>
         <div class="reveal-stack" data-reveal-stack>
@@ -267,8 +259,8 @@
     {
       tone: "light",
       html: `<div class="slide-inner gag-stage">
-        <div class="kicker">人格論 · 頁14 · 笑完記得重點</div>
-        <h2>天賦尊嚴（撳卡開 punchline）</h2>
+        <div class="kicker">人格論 · 頁14</div>
+        <h2>天賦尊嚴（撳卡開重點）</h2>
         <div class="grid2">
           <div class="joke-board">
             <div class="joke-card" data-joke>
@@ -284,8 +276,8 @@
               <div class="punch">君子要堂堂正正：成人之美、言行一致、不走歪路。</div>
             </div>
             <div class="joke-card" data-joke>
-              <div class="setup">笑場進度條（班房氣氛）</div>
-              <div class="punch">笑完請舉手：邊個而家記得「憐憫＋羞恥→尊嚴」？<div class="laugh-meter"><i data-laugh style="width:12%"></i></div></div>
+              <div class="setup">記住這句</div>
+              <div class="punch">憐憫＋羞恥 → 尊嚴人格。請舉手複述一次。</div>
             </div>
           </div>
           <div class="hero-media" style="border-radius:16px;min-height:280px">
@@ -313,28 +305,10 @@
               <li>三反其身：仁／智／敬</li>
               <li>憐憫＋羞恥 → 尊嚴人格</li>
             </ul>
-            <p style="margin-top:10px">孟子吐嘈：記數字可以，但要識解釋「點解緊要」。</p>
+            <p style="margin-top:10px">記數字可以，但要識解釋「點解緊要」。</p>
           </div>
           <div class="img-frame cover"><img src="./assets/photo-loom.png" alt="孟母教子典故圖像"></div>
         </div>
-      </div>`
-    },
-    {
-      tone: "light",
-      html: `<div class="slide-inner gag-stage">
-        <div class="kicker">Bonus · 角色吐嘈時間</div>
-        <h2>孟子專場：專寸你班日常</h2>
-        <p class="lead">撳掣換一句。內容係玩，重點仍然係筆記四字詞。</p>
-        <button type="button" class="gag-btn" data-roast>下一句孟子吐嘈</button>
-        <div class="bubble" data-roast-line style="font-size:1.35rem;margin-top:8px">準備好未？撳掣。</div>
-        <div class="chip-row">
-          <span class="chip">仁愛謙和</span>
-          <span class="chip">三反其身</span>
-          <span class="chip">舍生取義</span>
-          <span class="chip">以德服人</span>
-          <span class="chip">天賦尊嚴</span>
-        </div>
-        <div class="quote">玩完 → 轉盤抽人問答。近似答案都算對，唔好驚。</div>
       </div>`
     },
     {
@@ -413,8 +387,8 @@
     root.querySelectorAll("[data-bug-boot]").forEach((btn) => {
       btn.onclick = () => {
         const host = root.querySelector("[data-meng-line]");
-        if (host) host.textContent = "笑場模式 ON。請同學盡量出聲，老師會當你投入。";
-        btn.textContent = "✓ 已啟動：全班可以笑（內容仍然係孟子）";
+        if (host) host.textContent = "簡報開始。請專心聽重點。";
+        btn.textContent = "✓ 已開始";
         celebrate();
       };
     });
