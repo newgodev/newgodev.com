@@ -136,9 +136,9 @@
       html: `<div class="slide-inner">
         <div class="kicker">仁愛謙和 · 校園三場面</div>
         <h2>一個精神，三種做法</h2>
-        <div class="grid3">
-          <div class="scene tap" data-tap>
-            <img src="./assets/photo-book.png" alt="古典書冊圖">
+        <div class="grid3 ren-grid">
+          <div class="scene scene-tall tap" data-tap>
+            <img src="./assets/photo-book.png?v=20251123m" alt="古典書冊圖">
             <div>
               <span class="tag">① 仁愛</span>
               <strong>分享筆記</strong>
@@ -146,8 +146,8 @@
               <div class="secret">重點：分享筆記＝仁愛；只分享答案唔夠。</div>
             </div>
           </div>
-          <div class="scene tap" data-tap>
-            <img src="./assets/photo-pupils.png" alt="古典教子畫">
+          <div class="scene scene-tall tap" data-tap>
+            <img src="./assets/photo-pupils.png?v=20251123m" alt="古典教子畫">
             <div>
               <span class="tag">② 恭敬謙讓</span>
               <strong>排隊有禮</strong>
@@ -155,8 +155,8 @@
               <div class="secret">重點：對人有禮＝恭敬謙讓。</div>
             </div>
           </div>
-          <div class="scene tap" data-tap>
-            <img src="./assets/photo-loom.png" alt="孟母斷機古典畫">
+          <div class="scene scene-tall tap" data-tap>
+            <img src="./assets/photo-loom.png?v=20251123m" alt="孟母斷機古典畫">
             <div>
               <span class="tag">③ 和為貴</span>
               <strong>輸完仍一隊</strong>
@@ -428,7 +428,7 @@
         const f = root.querySelector("[data-force]");
         if (f) f.classList.add("fall");
         const msg = root.querySelector("[data-vote-msg]");
-        if (msg) msg.textContent = "正確：以德服人 → 心悅誠服。班長請抄低呢句。";
+        if (msg) msg.textContent = "正確：以德服人 → 心悅誠服。";
         celebrate();
       };
     });
