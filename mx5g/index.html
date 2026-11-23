@@ -20,7 +20,7 @@
     <span class="mark"></span>
     <div>
       <strong>3G 第5組 · 孟子</strong>
-      <small>仁愛謙和 · 人格論 ·《孟子》</small>
+      <small>好玩例子 · 轉盤抽人 · 彈出問答</small>
     </div>
   </div>
   <nav class="modes">
@@ -30,58 +30,65 @@
   <div class="progress" id="progress"><i></i></div>
 </header>
 
-<main id="deck" class="stage">
-  <!-- slides injected -->
-</main>
+<main id="deck" class="stage"></main>
 
 <section id="game" class="game hidden" aria-label="轉盤抽人問答">
-  <div class="game-grid">
-    <div class="wheel-panel">
-      <div class="wheel-wrap">
-        <img class="wheel-glow" src="./assets/wheel-glow.png" alt="">
-        <div class="pointer"></div>
-        <canvas id="wheel" width="560" height="560"></canvas>
-        <div class="hub">
-          <span>抽座號</span>
-          <b id="pickedNum">?</b>
-        </div>
-      </div>
-      <div class="wheel-actions">
-        <button type="button" class="btn primary big" id="spinBtn">轉盤抽人</button>
-        <button type="button" class="btn ghost" id="reshuffleBtn">重設 1–30</button>
-      </div>
-      <p class="hintline">真正隨機（crypto）· 1–30 · 抽中後問答 · 可給提示／揭答案／近似答案也算</p>
-    </div>
-
-    <div class="quiz-panel">
-      <div class="quiz-meta">
-        <span class="pill" id="diffPill">易</span>
-        <span class="pill soft" id="qIndex">題 0 / 0</span>
-        <span class="pill soft" id="scorePill">分 0</span>
-      </div>
-      <h2 id="qTitle">先轉盤抽同學，再出題</h2>
-      <p class="who" id="whoLine">等待抽人…</p>
-      <div class="choices" id="choices"></div>
-      <div class="answer-box">
-        <label for="typed">口述／打字答案（近似也 OK）</label>
-        <input id="typed" type="text" placeholder="用自己的話答…" autocomplete="off">
-      </div>
-      <div class="quiz-actions">
-        <button type="button" class="btn" id="hintBtn" disabled>提示</button>
-        <button type="button" class="btn" id="nearBtn" disabled>看近似答案</button>
-        <button type="button" class="btn warn" id="revealBtn" disabled>揭曉答案</button>
-        <button type="button" class="btn primary" id="checkBtn" disabled>核對</button>
-        <button type="button" class="btn ghost" id="nextQBtn" disabled>下一題</button>
-      </div>
-      <div class="feedback" id="feedback" hidden></div>
-      <div class="help-cards">
-        <div class="card" id="hintCard" hidden><h3>提示</h3><p id="hintText"></p></div>
-        <div class="card" id="nearCard" hidden><h3>近似答案（也算對）</h3><p id="nearText"></p></div>
-        <div class="card reveal" id="revealCard" hidden><h3>正確答案</h3><p id="revealText"></p></div>
+  <div class="wheel-only">
+    <div class="wheel-wrap big">
+      <img class="wheel-glow" src="./assets/wheel-glow.png" alt="">
+      <div class="pointer"></div>
+      <canvas id="wheel" width="560" height="560"></canvas>
+      <div class="hub">
+        <span>抽座號</span>
+        <b id="pickedNum">?</b>
       </div>
     </div>
+    <div class="wheel-actions">
+      <button type="button" class="btn primary big" id="spinBtn">轉盤抽人</button>
+      <button type="button" class="btn ghost" id="reshuffleBtn">重設 1–30</button>
+    </div>
+    <p class="hintline">抽中 → 問題＋提示彈出 → 撳掣睇答案／近似 → 5 秒自動返轉盤</p>
+    <p class="scoreline">累積分：<b id="scorePill">0</b> · 已玩 <b id="qIndex">0</b> 題</p>
   </div>
 </section>
+
+<!-- Popup 1: question + hint -->
+<div class="modal" id="qModal" hidden>
+  <div class="modal-card pop-in">
+    <div class="modal-top">
+      <span class="pill" id="diffPill">易</span>
+      <span class="who-badge" id="whoBadge">座號 ?</span>
+    </div>
+    <h2 id="qTitle">問題</h2>
+    <div class="choices" id="choices"></div>
+    <div class="hint-box">
+      <div class="hint-label">提示（已顯示）</div>
+      <p id="hintText"></p>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn accent big" id="showAnswerBtn">揭曉正確答案＋近似答案</button>
+    </div>
+  </div>
+</div>
+
+<!-- Popup 2: final + near answers -->
+<div class="modal" id="aModal" hidden>
+  <div class="modal-card answer pop-in">
+    <div class="modal-top">
+      <span class="pill soft">答案卡</span>
+      <span class="countdown" id="countdown">5 秒後返回轉盤</span>
+    </div>
+    <h2>正確答案</h2>
+    <p class="final-ans" id="revealText"></p>
+    <h3>近似答案（這樣講都 OK）</h3>
+    <p class="near-ans" id="nearText"></p>
+    <p class="explain" id="explainText"></p>
+    <div class="modal-actions">
+      <button type="button" class="btn primary" id="backNowBtn">立刻返回轉盤</button>
+    </div>
+    <div class="bar"><i id="cdBar"></i></div>
+  </div>
+</div>
 
 <footer class="deck-nav" id="deckNav">
   <button type="button" class="btn ghost" id="prevBtn">上一頁</button>

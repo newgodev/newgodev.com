@@ -6,78 +6,171 @@
       tone: "dark",
       html: `
         <div class="slide-inner">
-          <div class="kicker">Form 3 · Unit 2 · Group 5</div>
-          <h1>孟子：仁愛謙和與人格尊嚴</h1>
-          <p class="lead">根據「學術思想」筆記頁 11–12、14，為同學設計練習與轉盤問答。先看重點，再玩遊戲。</p>
-          <div class="grid3" style="margin-top:18px">
-            <div class="panel stat"><b>仁</b><span>仁愛謙和</span></div>
-            <div class="panel stat"><b>義</b><span>舍生取義</span></div>
-            <div class="panel stat"><b>尊</b><span>天賦尊嚴</span></div>
+          <div class="kicker">3G · 第5組 · 唔好訓呀</div>
+          <div class="hero-row">
+            <div>
+              <h1>孟子其實好「校園」</h1>
+              <p class="lead">仁愛謙和、舍生取義、天賦尊嚴——用生活例子講明，再轉盤抽人問答。</p>
+              <div class="chip-row" style="margin-top:14px">
+                <span class="chip">有情境</span>
+                <span class="chip">有對決</span>
+                <span class="chip">有轉盤</span>
+              </div>
+            </div>
+            <img class="hero-art" src="./assets/ex-friends.png" alt="">
           </div>
-          <div class="motif"></div>
         </div>`
     },
     {
       tone: "light",
       html: `
         <div class="slide-inner">
-          <div class="kicker">範圍</div>
-          <h2>今天只攻第 5 組重點</h2>
+          <div class="kicker">開場挑戰</div>
+          <h2>如果你係班長，點算？</h2>
           <div class="grid2">
-            <div class="panel">
-              <h3>頁 11–12</h3>
-              <ul>
-                <li>仁愛謙和：仁愛、恭敬謙讓、和為貴</li>
-                <li>三反其身（自我反省）</li>
-                <li>生命與義禮：舍生取義</li>
-                <li>以德服人 vs 以力服人</li>
-              </ul>
+            <div class="scene tap" data-tap>
+              <img src="./assets/ex-devforce.png" alt="">
+              <div>
+                <span class="tag">情境 A</span>
+                <strong>用大聲嚇到全班聽話</strong>
+                <p>「再嘈就扣分！」大家即刻靜——但係心裏面翻白眼。</p>
+                <div class="secret">= 以力服人（暫時屈服）</div>
+              </div>
             </div>
-            <div class="panel">
-              <h3>頁 14</h3>
-              <ul>
-                <li>人格論：天賦尊嚴</li>
-                <li>君子美德：成人之美、言行一致</li>
-                <li>代表著作：《孟子》</li>
-              </ul>
+            <div class="scene tap" data-tap>
+              <img src="./assets/ex-friends.png" alt="">
+              <div>
+                <span class="tag">情境 B</span>
+                <strong>講清楚、聽意見、帶頭做</strong>
+                <p>同學覺得你公道，自願配合，氣氛都好啲。</p>
+                <div class="secret">= 以德服人（心悅誠服）· 撳我睇答案</div>
+              </div>
             </div>
           </div>
-          <div class="quote">評分關鍵：內容掌握 + 清晰好玩（之後轉盤遊戲衝表達分）</div>
+          <div class="quote">撳上面兩格睇答案 → 孟子話：君子應該以德服人</div>
         </div>`
     },
     {
       tone: "light",
       html: `
         <div class="slide-inner">
-          <div class="kicker">仁愛謙和</div>
-          <h2>三個精神，一個方向</h2>
+          <div class="kicker">仁愛謙和 · 校園版</div>
+          <h2>三個場面，三個重點</h2>
           <div class="grid3">
-            <div class="panel"><h3>① 仁愛</h3><p>為君、為臣、為民的思想基礎。心存仁愛，行為才高尚。</p></div>
-            <div class="panel"><h3>② 恭敬謙讓</h3><p>以恭敬待人，得信任、少恥辱、少失誤；社會互相尊重。</p></div>
-            <div class="panel"><h3>③ 和為貴</h3><p>和平安定是多數人心願；前提是仁愛之心。</p></div>
+            <div class="scene">
+              <img src="./assets/ex-friends.png" alt="">
+              <div>
+                <span class="tag">① 仁愛</span>
+                <strong>借筆記唔係施捨</strong>
+                <p>同學欠筆記，你主動分享——因為心存仁愛，唔係想換名氣。</p>
+              </div>
+            </div>
+            <div class="scene">
+              <img src="./assets/ex-mirror.png" alt="">
+              <div>
+                <span class="tag">② 恭敬謙讓</span>
+                <strong>排隊唔插隊</strong>
+                <p>對師長、同學有禮；謙讓一步，衝突少咗，信任多咗。</p>
+              </div>
+            </div>
+            <div class="scene">
+              <img src="./assets/ex-dignity.png" alt="">
+              <div>
+                <span class="tag">③ 和為貴</span>
+                <strong>吵完照一隊</strong>
+                <p>班際比賽輸咗都唔互相怪責——和平安定先嚟玩得長。</p>
+              </div>
+            </div>
           </div>
-          <div class="quote">沒有愛人的心 → 難有符合義禮的行為 → 難達和平安定</div>
         </div>`
     },
     {
       tone: "light",
       html: `
         <div class="slide-inner">
-          <div class="kicker">自我修養</div>
-          <h2>三反其身</h2>
-          <div class="grid2">
-            <div class="panel">
-              <h3>遇到三種情況</h3>
-              <ul>
-                <li>我愛人，別人不親我 → 反省「仁」</li>
-                <li>我管理人，管不好 → 反省「智」</li>
-                <li>我禮敬人，人不回敬 → 反省「敬」</li>
-              </ul>
+          <div class="kicker">三反其身 · 超實用</div>
+          <h2>別人唔買帳？先照鏡</h2>
+          <div class="hero-row">
+            <div>
+              <div class="bubble">「我對佢好好，點解佢疏遠我？」</div>
+              <p class="lead" style="margin-top:16px">孟子教：愛人不親 → 反省「仁」夠唔夠真；管人唔掂 → 反省「智」；禮敬冇回禮 → 反省「敬」。</p>
+              <div class="chip-row">
+                <span class="chip">唔好即刻怪別人</span>
+                <span class="chip">自己端正 → 關係先好</span>
+              </div>
             </div>
-            <div class="panel">
-              <h3>結論</h3>
-              <p>凡事得不到應有反應，先在自己身心找原因。自己端正了，天下才會歸順。</p>
-              <p style="margin-top:10px">校園版：先問「我有沒有做得不夠好？」再怪別人。</p>
+            <img class="hero-art" src="./assets/ex-mirror.png" alt="">
+          </div>
+        </div>`
+    },
+    {
+      tone: "dark",
+      html: `
+        <div class="slide-inner">
+          <div class="kicker">舍生取義 · 比喻大對決</div>
+          <h2>魚 VS 熊掌</h2>
+          <div class="vs">
+            <div class="side bad">
+              <img src="./assets/ex-fishbear.png" alt="">
+              <h3>魚 ≈ 生命</h3>
+              <p>我想活、我想舒服、我想避麻煩</p>
+            </div>
+            <div class="mid">VS</div>
+            <div class="side good">
+              <img src="./assets/ex-dignity.png" alt="">
+              <h3>熊掌 ≈ 義</h3>
+              <p>誠信、公義、做人底線</p>
+            </div>
+          </div>
+          <div class="quote">兩者唔可以一齊要？→ 舍生取義（守住義，唔係叫你亂送命）</div>
+        </div>`
+    },
+    {
+      tone: "light",
+      html: `
+        <div class="slide-inner">
+          <div class="kicker">今日校園版「取義」</div>
+          <h2>你會揀邊邊？</h2>
+          <div class="grid2">
+            <div class="scene tap" data-tap>
+              <img src="./assets/ex-fishbear.png" alt="">
+              <div>
+                <span class="tag">考試</span>
+                <strong>好友要你傳答案</strong>
+                <p>幫＝人情；拒絕＝得罪人。你點揀？</p>
+                <div class="secret">取義：拒絕作弊，用其他方法幫温習 = 守誠信</div>
+              </div>
+            </div>
+            <div class="scene tap" data-tap>
+              <img src="./assets/ex-friends.png" alt="">
+              <div>
+                <span class="tag">操場</span>
+                <strong>見到有人被欺負</strong>
+                <p>裝冇睇見好安全；出聲可能麻煩。</p>
+                <div class="secret">取義：通報老師／陪伴求助 = 義 > 怕事</div>
+              </div>
+            </div>
+          </div>
+          <div class="quote">撳格仔揭「取義」做法 · 匯報時可問全班舉手</div>
+        </div>`
+    },
+    {
+      tone: "light",
+      html: `
+        <div class="slide-inner">
+          <div class="kicker">以德服人</div>
+          <h2>班長對決：德 vs 力</h2>
+          <div class="vs">
+            <div class="side good">
+              <img src="./assets/ex-devforce.png" alt="">
+              <h3>德 · 王者路</h3>
+              <p>真心、帶頭、公道 → 同學<strong>心悅誠服</strong></p>
+            </div>
+            <div class="mid">PK</div>
+            <div class="side bad">
+              <img src="./assets/ex-devforce.png" alt="">
+              <h3>力 · 霸者路</h3>
+              <p>恐嚇、罰、壓場 → 只係<strong>暫時屈服</strong></p>
             </div>
           </div>
         </div>`
@@ -86,58 +179,18 @@
       tone: "dark",
       html: `
         <div class="slide-inner">
-          <div class="kicker">價值抉擇</div>
-          <h2>舍生取義</h2>
-          <p class="lead">魚，我所欲也；熊掌，亦我所欲也。二者不可得兼，舍魚而取熊掌。生與義不可得兼，舍生而取義。</p>
-          <div class="grid2">
-            <div class="panel"><h3>比喻</h3><p>魚＝生命；熊掌＝義禮。喜歡兩者，但不能同時擁有時，選更重要的。</p></div>
-            <div class="panel"><h3>意思</h3><p>義禮比生命更重要。不是叫人隨便送命，而是守住做人底線。</p></div>
-          </div>
-          <div class="motif"></div>
-        </div>`
-    },
-    {
-      tone: "light",
-      html: `
-        <div class="slide-inner">
-          <div class="kicker">政治與待人</div>
-          <h2>以德服人</h2>
-          <div class="grid2">
-            <div class="panel">
-              <h3>王者 · 德</h3>
-              <p>出於仁愛真心，憑德行降服別人 → 對方<strong>心悅誠服</strong>。</p>
+          <div class="kicker">人格論</div>
+          <div class="hero-row">
+            <div>
+              <h2>天賦尊嚴：你本來就有</h2>
+              <p class="lead">憐憫之心 → 知善惡<br>羞恥之心 → 知該做／唔該做<br>→ 仁義 → 堂堂正正做人</p>
+              <div class="chip-row">
+                <span class="chip">成人之美</span>
+                <span class="chip">言行一致</span>
+                <span class="chip">唔走歪路</span>
+              </div>
             </div>
-            <div class="panel">
-              <h3>霸者 · 力</h3>
-              <p>假借仁義、用武力 → 對方只因力量不足而<strong>暫時屈服</strong>。</p>
-            </div>
-          </div>
-          <div class="quote">君子應該以德服人，而不是只靠外力強迫。</div>
-        </div>`
-    },
-    {
-      tone: "light",
-      html: `
-        <div class="slide-inner">
-          <div class="kicker">頁 14</div>
-          <h2>人格論：天賦尊嚴</h2>
-          <div class="grid2">
-            <div class="panel">
-              <h3>心理基礎</h3>
-              <ul>
-                <li>憐憫之心 → 知善惡</li>
-                <li>羞恥之心 → 知該做／不該做</li>
-                <li>→ 仁義之心 → 尊嚴人格</li>
-              </ul>
-            </div>
-            <div class="panel">
-              <h3>君子美德</h3>
-              <ul>
-                <li>成人之美、與人為善</li>
-                <li>言行一致、真誠正直</li>
-                <li>不投機取巧；對毀譽保持清醒</li>
-              </ul>
-            </div>
+            <img class="hero-art" src="./assets/ex-dignity.png" alt="">
           </div>
         </div>`
     },
@@ -145,24 +198,24 @@
       tone: "light",
       html: `
         <div class="slide-inner">
-          <div class="kicker">著作</div>
-          <h2>《孟子》一書</h2>
+          <div class="kicker">《孟子》速記</div>
+          <h2>記住三個數就夠上台</h2>
           <div class="grid3">
-            <div class="panel stat"><b>7</b><span>篇（各分上下）</span></div>
+            <div class="panel stat"><b>7</b><span>篇（上下）</span></div>
             <div class="panel stat"><b>261</b><span>章左右</span></div>
-            <div class="panel stat"><b>語錄</b><span>記錄孟子言行</span></div>
+            <div class="panel stat"><b>語錄</b><span>言行記錄</span></div>
           </div>
-          <p class="lead" style="margin-top:8px">作者說法不一：或孟子自著、或弟子追記、或師生共同完成。唐代以後地位提升，研究日多。</p>
+          <div class="quote">下一頁：轉盤抽座號 → 問題彈出 → 提示已顯示 → 撳掣睇答案 → 5 秒自動返嚟</div>
         </div>`
     },
     {
       tone: "dark",
       html: `
         <div class="slide-inner">
-          <div class="kicker">Next</div>
-          <h1>轉盤時間</h1>
-          <p class="lead">隨機抽座號 1–30 → 出題 → 可要提示／近似答案 → 揭曉 → 繼續下一題。多數是易題，夾少量難題。</p>
-          <p class="cta-note">按右下「開始轉盤遊戲」，或頂部切換到「轉盤遊戲」。</p>
+          <div class="kicker">Game time</div>
+          <h1>轉盤 · 彈出問答</h1>
+          <p class="lead">1–30 真隨機抽人 → 問題＋提示即彈 → 同學答完 → 撳金色掣睇正確＋近似答案 → 倒數 5 秒自動返回轉盤再玩。</p>
+          <p class="cta-note">撳右下「開始轉盤遊戲」即開波！</p>
           <div class="motif"></div>
         </div>`
     }
@@ -176,10 +229,18 @@
   let idx = 0;
   let mode = "deck";
 
+  function wireTaps(root) {
+    root.querySelectorAll("[data-tap]").forEach((el) => {
+      el.addEventListener("click", () => el.classList.toggle("open"));
+    });
+  }
+
   function renderSlides() {
-    deckEl.innerHTML = SLIDES.map((s, i) =>
-      `<article class="slide ${s.tone}${i === 0 ? " on" : ""}" data-i="${i}">${s.html}</article>`
+    deckEl.innerHTML = SLIDES.map(
+      (s, i) =>
+        `<article class="slide ${s.tone}${i === 0 ? " on" : ""}" data-i="${i}">${s.html}</article>`
     ).join("");
+    wireTaps(deckEl);
     updateDeckUI();
   }
 
@@ -220,7 +281,7 @@
 
   window.addEventListener("keydown", (e) => {
     if (mode !== "deck") {
-      if (e.code === "Space" && !spinning) {
+      if (e.code === "Space" && !spinning && qModal.hidden && aModal.hidden) {
         e.preventDefault();
         spin();
       }
@@ -233,7 +294,6 @@
     if (e.key === "ArrowLeft") document.getElementById("prevBtn").click();
   });
 
-  // ——— random utils ———
   function randInt(max) {
     const buf = new Uint32Array(1);
     crypto.getRandomValues(buf);
@@ -248,7 +308,6 @@
     return a;
   }
 
-  // ——— wheel ———
   const canvas = document.getElementById("wheel");
   const ctx = canvas.getContext("2d");
   const COLORS = [
@@ -260,6 +319,8 @@
   let rotation = 0;
   let spinning = false;
   let picked = null;
+  let score = 0;
+  let played = 0;
 
   function drawWheel() {
     const n = numbers.length;
@@ -288,10 +349,6 @@
       ctx.fillText(String(numbers[i]), r - 18, 7);
       ctx.restore();
     }
-    ctx.beginPath();
-    ctx.arc(cx, cy, 46, 0, Math.PI * 2);
-    ctx.fillStyle = "#0f1a16";
-    ctx.fill();
   }
 
   let audioCtx = null;
@@ -328,21 +385,17 @@
     setTimeout(() => {
       burst.classList.remove("show");
       conf.classList.remove("show");
-    }, 1600);
-    spawnCanvasConfetti();
-  }
-
-  function spawnCanvasConfetti() {
+    }, 1400);
     const fx = document.getElementById("fx");
     const fctx = fx.getContext("2d");
     fx.width = innerWidth;
     fx.height = innerHeight;
-    const parts = Array.from({ length: 90 }, () => ({
+    const parts = Array.from({ length: 80 }, () => ({
       x: fx.width / 2,
-      y: fx.height * 0.42,
+      y: fx.height * 0.4,
       vx: (Math.random() - 0.5) * 14,
       vy: -Math.random() * 12 - 2,
-      life: 60 + randInt(40),
+      life: 55 + randInt(35),
       color: COLORS[randInt(COLORS.length)],
       s: 3 + randInt(6)
     }));
@@ -354,18 +407,129 @@
         p.x += p.vx;
         p.y += p.vy;
         p.life -= 1;
-        fctx.globalAlpha = Math.max(0, p.life / 80);
+        fctx.globalAlpha = Math.max(0, p.life / 70);
         fctx.fillStyle = p.color;
-        fctx.fillRect(p.x, p.y, p.s, p.s * 1.6);
+        fctx.fillRect(p.x, p.y, p.s, p.s * 1.5);
       });
       frame++;
-      if (frame < 90) requestAnimationFrame(loop);
+      if (frame < 85) requestAnimationFrame(loop);
       else fctx.clearRect(0, 0, fx.width, fx.height);
     })();
   }
 
+  // ——— popups ———
+  const qModal = document.getElementById("qModal");
+  const aModal = document.getElementById("aModal");
+  let qOrder = [];
+  let qPos = -1;
+  let current = null;
+  let backTimer = null;
+  let backRaf = null;
+
+  function pickQuestion() {
+    if (!qOrder.length || qPos >= qOrder.length - 1) {
+      const bank = window.MX5_QUESTIONS || [];
+      const weighted = [];
+      bank.forEach((q) => {
+        const w = q.diff === "easy" ? 3 : q.diff === "medium" ? 2 : 1;
+        for (let i = 0; i < w; i++) weighted.push(q);
+      });
+      qOrder = shuffle(weighted);
+      qPos = 0;
+    } else qPos += 1;
+    current = qOrder[qPos];
+  }
+
+  function openQuestionPopup() {
+    pickQuestion();
+    played += 1;
+    document.getElementById("qIndex").textContent = String(played);
+    document.getElementById("whoBadge").textContent = `座號 ${picked}`;
+    const pill = document.getElementById("diffPill");
+    pill.textContent = current.diff === "easy" ? "易" : current.diff === "medium" ? "中" : "難";
+    pill.className = "pill" + (current.diff === "hard" ? " hard" : "");
+    document.getElementById("qTitle").textContent = current.q;
+    document.getElementById("hintText").textContent = current.hint;
+
+    const box = document.getElementById("choices");
+    box.innerHTML = "";
+    if (current.type === "mc") {
+      shuffle(current.choices).forEach((c) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "choice";
+        b.textContent = c;
+        b.onclick = () => {
+          [...box.children].forEach((x) => x.classList.remove("on"));
+          b.classList.add("on");
+          if (c === current.answer) {
+            b.classList.add("good");
+            score += 1;
+            document.getElementById("scorePill").textContent = String(score);
+          } else b.classList.add("bad");
+        };
+        box.appendChild(b);
+      });
+    } else {
+      box.innerHTML =
+        `<p style="opacity:.8;margin:0;line-height:1.5">開放題：請座號 ${picked} 用自己的話答（近似意思都算）。答完撳下面金色掣。</p>`;
+    }
+
+    aModal.hidden = true;
+    qModal.hidden = false;
+    celebrate();
+  }
+
+  function clearBackTimer() {
+    if (backTimer) {
+      clearTimeout(backTimer);
+      backTimer = null;
+    }
+    if (backRaf) {
+      cancelAnimationFrame(backRaf);
+      backRaf = null;
+    }
+  }
+
+  function returnToWheel() {
+    clearBackTimer();
+    qModal.hidden = true;
+    aModal.hidden = true;
+    document.getElementById("spinBtn").disabled = false;
+  }
+
+  function openAnswerPopup() {
+    if (!current) return;
+    qModal.hidden = true;
+    document.getElementById("revealText").textContent = current.answer;
+    document.getElementById("nearText").textContent = (current.near || []).join("　／　");
+    document.getElementById("explainText").textContent = current.explain || "";
+    aModal.hidden = false;
+    celebrate();
+
+    clearBackTimer();
+    const bar = document.getElementById("cdBar");
+    const label = document.getElementById("countdown");
+    const total = 5000;
+    const t0 = performance.now();
+    function tickCd(now) {
+      const left = Math.max(0, total - (now - t0));
+      const sec = Math.ceil(left / 1000);
+      label.textContent = `${sec} 秒後返回轉盤`;
+      bar.style.transform = `scaleX(${left / total})`;
+      if (left > 0) backRaf = requestAnimationFrame(tickCd);
+    }
+    bar.style.transform = "scaleX(1)";
+    backRaf = requestAnimationFrame(tickCd);
+    backTimer = setTimeout(returnToWheel, total);
+  }
+
+  document.getElementById("showAnswerBtn").onclick = openAnswerPopup;
+  document.getElementById("backNowBtn").onclick = returnToWheel;
+
   function spin() {
     if (spinning || numbers.length < 2) return;
+    if (!qModal.hidden || !aModal.hidden) return;
     spinning = true;
     document.getElementById("spinBtn").disabled = true;
     const hub = document.querySelector(".hub");
@@ -376,14 +540,14 @@
     const extra = (5 + Math.random() * 4) * Math.PI * 2;
     const target =
       extra +
-      ((Math.PI * 2) - (winIdx * arc + arc * (0.25 + Math.random() * 0.5)) - (rotation % (Math.PI * 2)));
+      ((Math.PI * 2) -
+        (winIdx * arc + arc * (0.25 + Math.random() * 0.5)) -
+        (rotation % (Math.PI * 2)));
     const start = rotation;
-    const dur = 4800;
+    const dur = 4500;
     const t0 = performance.now();
     let lastSeg = -1;
-    function ease(t) {
-      return 1 - Math.pow(1 - t, 4);
-    }
+    const ease = (t) => 1 - Math.pow(1 - t, 4);
     function frame(now) {
       const p = Math.min(1, (now - t0) / dur);
       rotation = start + target * ease(p);
@@ -396,15 +560,10 @@
       if (p < 1) requestAnimationFrame(frame);
       else {
         spinning = false;
-        document.getElementById("spinBtn").disabled = false;
         picked = numbers[winnerIndex()];
         document.getElementById("pickedNum").textContent = picked;
         hub.classList.add("win");
-        celebrate();
-        document.getElementById("whoLine").textContent =
-          `座號 ${picked} 請作答！（可請鄰近同學幫手，但答案要自己講）`;
-        enableQuiz(true);
-        serveQuestion(true);
+        openQuestionPopup();
       }
     }
     requestAnimationFrame(frame);
@@ -418,145 +577,6 @@
     drawWheel();
   };
 
-  // ——— quiz ———
-  let qOrder = [];
-  let qPos = -1;
-  let score = 0;
-  let current = null;
-  let selected = null;
-  let revealed = false;
-
-  function enableQuiz(on) {
-    ["hintBtn", "nearBtn", "revealBtn", "checkBtn", "nextQBtn"].forEach((id) => {
-      document.getElementById(id).disabled = !on;
-    });
-  }
-
-  function norm(s) {
-    return String(s || "")
-      .toLowerCase()
-      .replace(/\s+/g, "")
-      .replace(/[，。！？、,.!?;；：:\-—_]/g, "");
-  }
-
-  function isNearMatch(input, item) {
-    const t = norm(input);
-    if (!t) return false;
-    if (t === norm(item.answer)) return true;
-    return (item.near || []).some((n) => {
-      const nn = norm(n);
-      return t === nn || t.includes(nn) || nn.includes(t);
-    });
-  }
-
-  function serveQuestion(freshPack) {
-    if (freshPack || !qOrder.length || qPos >= qOrder.length - 1) {
-      const bank = window.MX5_QUESTIONS || [];
-      // mostly easy: weight easy x3, medium x2, hard x1 then shuffle
-      const weighted = [];
-      bank.forEach((q) => {
-        const w = q.diff === "easy" ? 3 : q.diff === "medium" ? 2 : 1;
-        for (let i = 0; i < w; i++) weighted.push(q);
-      });
-      qOrder = shuffle(weighted);
-      qPos = 0;
-    } else qPos += 1;
-
-    current = qOrder[qPos];
-    revealed = false;
-    selected = null;
-    document.getElementById("typed").value = "";
-    document.getElementById("feedback").hidden = true;
-    document.getElementById("hintCard").hidden = true;
-    document.getElementById("nearCard").hidden = true;
-    document.getElementById("revealCard").hidden = true;
-
-    const pill = document.getElementById("diffPill");
-    pill.textContent = current.diff === "easy" ? "易" : current.diff === "medium" ? "中" : "難";
-    pill.className = "pill" + (current.diff === "hard" ? " hard" : "");
-    document.getElementById("qIndex").textContent = `題 ${qPos + 1} / ${qOrder.length}`;
-    document.getElementById("scorePill").textContent = `分 ${score}`;
-    document.getElementById("qTitle").textContent = current.q;
-
-    const box = document.getElementById("choices");
-    box.innerHTML = "";
-    if (current.type === "mc") {
-      shuffle(current.choices).forEach((c) => {
-        const b = document.createElement("button");
-        b.type = "button";
-        b.className = "choice";
-        b.textContent = c;
-        b.onclick = () => {
-          [...box.children].forEach((x) => x.classList.remove("on"));
-          b.classList.add("on");
-          selected = c;
-        };
-        box.appendChild(b);
-      });
-    } else {
-      box.innerHTML = `<p style="opacity:.75;margin:0">開放題：打字或口述後按「核對」。近似意思也算對。</p>`;
-    }
-  }
-
-  document.getElementById("hintBtn").onclick = () => {
-    if (!current) return;
-    document.getElementById("hintText").textContent = current.hint;
-    document.getElementById("hintCard").hidden = false;
-  };
-  document.getElementById("nearBtn").onclick = () => {
-    if (!current) return;
-    document.getElementById("nearText").textContent = (current.near || []).join("　／　");
-    document.getElementById("nearCard").hidden = false;
-  };
-  document.getElementById("revealBtn").onclick = () => {
-    if (!current) return;
-    revealed = true;
-    document.getElementById("revealText").textContent =
-      current.answer + (current.explain ? " —— " + current.explain : "");
-    document.getElementById("revealCard").hidden = false;
-    markChoices(true);
-  };
-
-  function markChoices(showCorrect) {
-    if (current.type !== "mc") return;
-    [...document.getElementById("choices").children].forEach((b) => {
-      if (showCorrect && b.textContent === current.answer) b.classList.add("good");
-    });
-  }
-
-  document.getElementById("checkBtn").onclick = () => {
-    if (!current || !picked) return;
-    const typed = document.getElementById("typed").value;
-    let ok = false;
-    if (current.type === "mc") {
-      ok = selected === current.answer || isNearMatch(typed, current);
-    } else {
-      ok = isNearMatch(typed, current);
-    }
-    const fb = document.getElementById("feedback");
-    fb.hidden = false;
-    if (ok) {
-      if (!revealed) score += current.diff === "hard" ? 3 : current.diff === "medium" ? 2 : 1;
-      fb.className = "feedback ok";
-      fb.textContent = `做得好！座號 ${picked} 答對。${current.explain || ""}`;
-      celebrate();
-    } else {
-      fb.className = "feedback no";
-      fb.textContent = "未中。可按提示／近似答案，或揭曉後再試下一題。";
-    }
-    document.getElementById("scorePill").textContent = `分 ${score}`;
-    markChoices(true);
-  };
-
-  document.getElementById("nextQBtn").onclick = () => {
-    if (!picked) {
-      document.getElementById("whoLine").textContent = "請先轉盤抽人！";
-      return;
-    }
-    serveQuestion(false);
-  };
-
   renderSlides();
   drawWheel();
-  enableQuiz(false);
 })();
