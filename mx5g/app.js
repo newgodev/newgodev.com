@@ -72,30 +72,41 @@
     },
     {
       tone: "light",
-      html: `<div class="slide-inner">
-        <div class="kicker">範圍地圖 · 老師請放心：重點齊</div>
-        <h2>第5組只攻這些筆記</h2>
-        <div class="grid2">
-          <div class="panel">
-            <h3>頁 11–12</h3>
-            <ul>
-              <li>仁愛謙和：仁愛、恭敬謙讓、和為貴</li>
-              <li>三反其身（自我反省——唔好只反省人）</li>
-              <li>生命與義禮：舍生取義（魚與熊掌 PK）</li>
-              <li>以德服人 vs 以力服人</li>
-            </ul>
-          </div>
-          <div class="panel">
-            <h3>頁 14</h3>
-            <ul>
-              <li>人格論：天賦尊嚴</li>
-              <li>心理基礎：憐憫之心、羞恥之心</li>
-              <li>君子美德：成人之美、言行一致</li>
-              <li>代表著作：《孟子》（七篇／語錄）</li>
-            </ul>
-          </div>
+      html: `<div class="slide-inner map-slide">
+        <div class="kicker">範圍地圖 · 每點有解釋＋校園例子</div>
+        <h2>第5組重點一覽</h2>
+        <div class="map-grid">
+          <article class="map-card">
+            <h3>仁愛謙和</h3>
+            <p class="map-ex"><b>解釋：</b>對人有仁愛、恭敬謙讓，以和為貴。</p>
+            <p class="map-eg"><b>例子：</b>同學欠筆記你主動 share；排隊唔插隊；比賽輸咗都唔互怪。</p>
+          </article>
+          <article class="map-card">
+            <h3>三反其身</h3>
+            <p class="map-ex"><b>解釋：</b>事情唔順利，先反省自己有冇仁、智、敬。</p>
+            <p class="map-eg"><b>例子：</b>朋友疏遠你 → 唔好先鬧佢，先問自己有冇做得唔夠好。</p>
+          </article>
+          <article class="map-card">
+            <h3>舍生取義</h3>
+            <p class="map-ex"><b>解釋：</b>魚＝生命／舒服；熊掌＝義。兩者唔能兼得就取義。</p>
+            <p class="map-eg"><b>例子：</b>寧願自己溫書，都唔抄功課；見人被欺負要出聲。</p>
+          </article>
+          <article class="map-card">
+            <h3>以德服人 vs 以力服人</h3>
+            <p class="map-ex"><b>解釋：</b>德服→心悅誠服（長久）；力服→暫時屈服（唔真心）。</p>
+            <p class="map-eg"><b>例子：</b>班長靠公道帶頭 vs 靠罰分恐嚇同學聽話。</p>
+          </article>
+          <article class="map-card">
+            <h3>人格論 · 天賦尊嚴</h3>
+            <p class="map-ex"><b>解釋：</b>人人天生有尊嚴；憐憫之心＋羞恥之心→仁義。</p>
+            <p class="map-eg"><b>例子：</b>見人跌倒想扶＝惻隱；覺得抄襲唔對＝羞惡之心。</p>
+          </article>
+          <article class="map-card">
+            <h3>君子美德 ·《孟子》</h3>
+            <p class="map-ex"><b>解釋：</b>成人之美、言行一致；著作《孟子》七篇語錄。</p>
+            <p class="map-eg"><b>例子：</b>幫同學進步而唔踩低佢；講到做到，唔講一套做一套。</p>
+          </article>
         </div>
-        <div class="quote">評分關鍵：內容掌握＋理據（70%）｜清晰好玩（30%）← 我哋兩樣都要</div>
       </div>`
     },
     {
