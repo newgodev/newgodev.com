@@ -117,9 +117,9 @@
         <p class="lead">撳左邊或右邊作答。</p>
         <div class="vs-pick">
           <button type="button" class="force-card" data-force>
-            <img src="./assets/photo-hand.png?v=20251123h" alt="熊掌 · 三道刮痕＝暴力（無血）">
+            <img src="./assets/photo-hand.png?v=20251123i" alt="純劍一揮 · 綠墨血 · 以力服人">
             <h3>以力服人</h3>
-            <p>恐嚇／罰分／大聲嗌＝暴力刮痕<br>→ <strong>暫時屈服</strong></p>
+            <p>靠武力／恐嚇強迫 → 暴力<br>→ <strong>暫時屈服</strong></p>
           </button>
           <div class="vs-mid">VS</div>
           <button type="button" class="virtue-card" data-virtue>
