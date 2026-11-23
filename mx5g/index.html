@@ -16,7 +16,6 @@
 <link rel="stylesheet" href="./theme-mx5g.css">
 </head>
 <body>
-<button type="button" class="fs-hint" data-fs-btn>全螢幕</button>
 <div id="rotateHint">請把 iPad <strong>打橫</strong>（橫向）再演講報</div>
 
 <div id="ipadHelp" role="dialog" aria-modal="true" aria-labelledby="ipadHelpTitle">
@@ -40,29 +39,34 @@
 <div class="reveal">
   <div class="slides">
 
-    <!-- 1 cover -->
+    <!-- 1 cover: joke hook — Mencius roast host -->
     <section data-background="linear-gradient(145deg,#0e1714,#173028 55%,#101c18)">
       <div class="hero">
         <div>
-          <p class="kicker">3G 第5組 · 頁11–12、14 · iPad 簡報</p>
-          <h1>孟子思想<br>用校園講明白</h1>
-          <p class="lead">仁愛謙和 · 三反其身 · 舍生取義 · 以德服人 · 天賦尊嚴</p>
-          <p style="margin:.8em 0 0">
-            <button type="button" class="btn-link" data-fs-btn style="border:0;cursor:pointer;font:inherit">全螢幕</button>
+          <p class="kicker">3G 第5組 · 搞笑版（內容認真 · 講法失控）</p>
+          <h1>孟子上線：<br>專治班房亂局</h1>
+          <p class="lead">呢頁唔係「標題完事」——係<strong>笑場開關</strong>。<br>
+          撳孟子頭像換吐嘈句；撳金色掣開全螢幕；再掃去下一頁。</p>
+          <p style="margin:.7em 0 0;display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+            <button type="button" class="gag-tap" id="laughBoot">⚠ 同學太清醒 → 啟動笑場</button>
+            <button type="button" class="btn-link" data-fs-btn style="border:0;cursor:pointer;font:inherit;margin:0">全螢幕</button>
           </p>
           <div class="chip-row">
-            <span class="chip">古典畫像（唔用人臉相）</span>
-            <span class="chip">左右掃換頁</span>
-            <span class="chip">撳金色「全螢幕」</span>
+            <span class="chip">每頁有 punchline</span>
+            <span class="chip">撳孟子吐嘈</span>
+            <span class="chip">內容照樣有理據</span>
           </div>
-          <p class="small" style="margin-top:1em">引擎：<a href="https://revealjs.com/" target="_blank" rel="noopener">reveal.js</a> · 專為觸控平板設計</p>
+          <div class="roast-host" id="mengHost" title="撳我換吐嘈">
+            <img src="./assets/photo-mencius2.png" alt="孟子">
+            <div class="roast-bubble" id="mengLine">撳我！我有話想寸你班…</div>
+          </div>
         </div>
         <div>
           <img src="./assets/photo-mencius.png" alt="孟子古典畫像">
-          <p class="cap">孟子（孟軻）· 古典半身畫像 · 公開領域</p>
+          <p class="cap">孟子客串吐嘈主持 · 古典畫像（唔用人臉相）</p>
         </div>
       </div>
-      <aside class="notes">開場：自我介紹第5組範圍，請同學留意四個關鍵詞。</aside>
+      <aside class="notes">開場笑完先講：我哋用校園例子講孟子，之後轉盤考全班。</aside>
     </section>
 
     <!-- 2 map -->
@@ -110,6 +114,7 @@
         </div>
       </div>
       <div class="quote-box fragment">孟子：君子應該以德服人，不是只靠外力強迫。</div>
+      <div class="joke-line fragment">吐嘈：靠罰分噤聲＝暫時屈服；公道帶頭先叫心悅誠服。</div>
     </section>
 
     <!-- 4 ren ai -->
@@ -121,19 +126,19 @@
           <img src="./assets/photo-book.png" alt="古典書冊" style="width:70%;margin:0 auto;display:block">
           <h3>① 仁愛</h3>
           <p class="small">分享筆記——心存仁愛，不是換名氣。</p>
-          <div class="punch fragment">筆記：為君為臣為民都應有的思想基礎</div>
+          <div class="punch fragment">孟子吐嘈：share 筆記＝仁；只 share 答案＝危險動作</div>
         </div>
         <div class="panel light fragment fade-up">
           <img src="./assets/photo-pupils.png" alt="古典教子" style="width:70%;margin:0 auto;display:block">
           <h3>② 恭敬謙讓</h3>
           <p class="small">對師長同學有禮 → 得信任、少衝突。</p>
-          <div class="punch fragment">社會互相尊重，矛盾自然消解</div>
+          <div class="punch fragment">孟子吐嘈：插隊嘅人，「敬」字未考合格</div>
         </div>
         <div class="panel light fragment fade-up">
           <img src="./assets/photo-loom.png" alt="孟母斷機" style="width:70%;margin:0 auto;display:block">
           <h3>③ 和為貴</h3>
           <p class="small">輸完仍一隊——和平安定靠仁愛之心。</p>
-          <div class="punch fragment">沒有愛人的心 → 難達和平安定</div>
+          <div class="punch fragment">孟子吐嘈：互怪＝內戰；互撐＝和為貴（加分）</div>
         </div>
       </div>
     </section>
@@ -160,6 +165,7 @@
           <img src="./assets/photo-mirror.png" alt="銅鏡圖" style="max-height:48vh;width:auto">
           <p class="cap">銅鏡意象圖 · 自我反省</p>
           <div class="punch fragment">自己端正了，天下才會歸順</div>
+          <div class="joke-line fragment">吐嘈：唔好先鬧人——鏡先照你。</div>
         </div>
       </div>
     </section>
@@ -182,6 +188,7 @@
         </div>
       </div>
       <div class="quote-box fragment">「二者不可得兼，舍生而取義。」</div>
+      <div class="joke-line fragment">吐嘈：魚好食，抄襲唔好食——義先至係熊掌。</div>
     </section>
 
     <!-- 7 campus take yi -->
@@ -193,13 +200,13 @@
           <img src="./assets/photo-book.png" alt="書" style="width:45%;margin:0 auto;display:block">
           <h3>考試：好友要你傳答案</h3>
           <p class="small">幫＝人情；拒絕＝得罪人？</p>
-          <div class="punch fragment">取義：拒絕作弊，改為幫温習＝守誠信</div>
+          <div class="punch fragment">取義：拒絕作弊，改為幫温習＝守誠信<br>孟子：人情唔可以食義。</div>
         </div>
         <div class="panel light">
           <img src="./assets/photo-loom.png" alt="古典畫" style="width:45%;margin:0 auto;display:block">
           <h3>操場：見到有人被欺負</h3>
           <p class="small">裝看不見較安全？</p>
-          <div class="punch fragment">取義：通報老師／陪伴求助＝義 &gt; 怕事</div>
+          <div class="punch fragment">取義：通報老師／陪伴求助＝義 &gt; 怕事<br>孟子：裝盲＝力服恐懼。</div>
         </div>
       </div>
       <div class="quote-box fragment">不是叫人亂送命，而是價值排序：義禮 &gt; 只顧舒服</div>
@@ -276,28 +283,86 @@
       </div>
     </section>
 
-    <!-- 11 game CTA -->
-    <section data-background="linear-gradient(145deg,#0e1714,#173028)">
-      <p class="kicker">Game time</p>
-      <h1>轉盤抽人問答</h1>
-      <p class="lead">1–30 真隨機 → 問題＋提示 → 揭曉答案／近似 → 5 秒返回</p>
-      <p><a class="btn-link" href="./wheel.html">打開轉盤遊戲 →</a></p>
-      <p style="margin-top:.7em"><button type="button" class="btn-link" data-fs-btn style="border:0;cursor:pointer;font:inherit">全螢幕</button></p>
-      <p class="small" style="margin-top:1em">iPad：左右掃換頁 · 撳「全螢幕」 · 總覽用雙指捏合／Esc</p>
-      <p class="credits">簡報框架：reveal.js (MIT) · 圖像：古典畫像／畫風素材 · 唔用 emoji、唔用人臉照片</p>
+    <!-- roast bonus -->
+    <section data-background="#f4efe4" class="light-slide">
+      <p class="kicker">Bonus · 角色吐嘈時間</p>
+      <h2>孟子專場：專寸你班日常</h2>
+      <p class="lead">撳掣換一句。笑完記住四字詞仍然要識解釋。</p>
+      <p><button type="button" class="gag-tap" id="roastBtn">下一句孟子吐嘈</button></p>
+      <div class="panel light" style="margin-top:14px">
+        <p class="small" style="font-size:.85em;margin:0;font-weight:800" id="roastLine">準備好未？撳掣。</p>
+      </div>
+      <div class="chip-row" style="margin-top:12px">
+        <span class="chip" style="background:rgba(27,94,69,.12);color:#1b5e45">仁愛謙和</span>
+        <span class="chip" style="background:rgba(27,94,69,.12);color:#1b5e45">三反其身</span>
+        <span class="chip" style="background:rgba(27,94,69,.12);color:#1b5e45">舍生取義</span>
+        <span class="chip" style="background:rgba(27,94,69,.12);color:#1b5e45">以德服人</span>
+      </div>
+    </section>
+
+    <!-- wheel stays INSIDE this deck (same fullscreen) -->
+    <section id="wheelSlide" data-background="linear-gradient(145deg,#0e1714,#101c18)" data-wheel-slide>
+      <p class="kicker">Game time · 唔會離開簡報</p>
+      <h2 style="margin:0 0 .3em">轉盤抽人問答</h2>
+      <div class="wheel-embed">
+        <div class="wheel-box">
+          <div class="pointer"></div>
+          <canvas id="wheel" width="560" height="560"></canvas>
+          <div class="hub" id="hub"><span>抽座號</span><b id="pickedNum">?</b></div>
+        </div>
+        <div class="wheel-actions">
+          <button type="button" class="dock-btn primary" id="spinBtn">轉盤抽人</button>
+          <button type="button" class="dock-btn ghost" id="reshuffleBtn">重設 1–30</button>
+        </div>
+        <p class="wheel-meta">累積分 <b id="scorePill">0</b> · 已玩 <b id="playedPill">0</b> · 近似答案都算對</p>
+      </div>
     </section>
 
   </div>
 </div>
 
+<!-- always-on iPad dock: stays in fullscreen -->
+<nav class="ipad-dock" id="ipadDock" aria-label="簡報控制">
+  <button type="button" class="dock-btn" id="dockPrev">上一頁</button>
+  <button type="button" class="dock-btn primary" id="dockNext">下一頁</button>
+  <button type="button" class="dock-btn accent" id="dockWheel">轉盤</button>
+  <button type="button" class="dock-btn gold" data-fs-btn>全螢幕</button>
+</nav>
+
+<div class="modal hide" id="qModal">
+  <div class="card">
+    <div class="top"><span class="pill" id="diffPill">易</span><span class="who" id="whoBadge">座號 ?</span></div>
+    <h2 id="qTitle">問題</h2>
+    <div class="choices" id="choices"></div>
+    <div class="hint"><div class="hl">提示</div><p id="hintText"></p></div>
+    <button type="button" class="dock-btn accent" id="showAnswerBtn">揭曉正確答案＋近似答案</button>
+  </div>
+</div>
+<div class="modal hide" id="aModal">
+  <div class="card">
+    <div class="top"><span class="pill soft">答案卡</span><span id="countdown">5 秒後返回</span></div>
+    <h2>正確答案</h2>
+    <p class="ans" id="revealText"></p>
+    <h3>近似答案</h3>
+    <p id="nearText"></p>
+    <p class="explain" id="explainText"></p>
+    <button type="button" class="dock-btn primary" id="backNowBtn">立刻返回轉盤</button>
+    <div class="barline"><i id="cdBar"></i></div>
+  </div>
+</div>
+
 <script src="./fs.js"></script>
+<script src="./jokes.js"></script>
+<script src="./questions.js"></script>
 <script src="./vendor/reveal/dist/reveal.js"></script>
 <script src="./vendor/reveal/plugin/notes/notes.js"></script>
+<script src="./wheel.js"></script>
 <script>
   Reveal.initialize({
     hash: true,
     controls: true,
-    controlsTutorial: true,
+    controlsTutorial: false,
+    controlsLayout: "bottom-right",
     progress: true,
     center: false,
     touch: true,
@@ -306,12 +371,40 @@
     backgroundTransition: "fade",
     width: 1280,
     height: 720,
-    margin: 0.04,
+    margin: 0.08,
     minScale: 0.2,
     maxScale: 2,
     plugins: [RevealNotes]
+  }).then(() => {
+    MX5FS.wire();
+    MX5Jokes.wire();
+
+    const dock = document.getElementById("ipadDock");
+    dock.addEventListener("click", (e) => e.stopPropagation());
+    dock.addEventListener("touchstart", (e) => e.stopPropagation(), { passive: true });
+
+    document.getElementById("dockPrev").onclick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      Reveal.prev();
+    };
+    document.getElementById("dockNext").onclick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      Reveal.next();
+    };
+    document.getElementById("dockWheel").onclick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      // Jump to embedded wheel slide — stay in same fullscreen page
+      const slides = Reveal.getSlides();
+      let idx = slides.length - 1;
+      for (let i = 0; i < slides.length; i++) {
+        if (slides[i].hasAttribute("data-wheel-slide")) { idx = i; break; }
+      }
+      Reveal.slide(idx);
+    };
   });
-  MX5FS.wire();
 </script>
 </body>
 </html>

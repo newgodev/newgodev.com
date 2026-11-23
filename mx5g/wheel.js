@@ -36,9 +36,11 @@
 
   const $ = (id) => document.getElementById(id);
   const canvas = $("wheel");
+  if (!canvas) return; // page without wheel
   const ctx = canvas.getContext("2d");
   const qModal = $("qModal");
   const aModal = $("aModal");
+  if (!qModal || !aModal) return;
 
   let numbers = Array.from({ length: 30 }, (_, i) => i + 1);
   let rotation = 0;
