@@ -264,6 +264,19 @@ h1,h2,h3{font-family:var(--serif);margin:0;line-height:1.15}
   width:min(220px,38vw);max-height:38vh;object-fit:contain;display:block;
   border-radius:8px;background:rgba(0,0,0,.2);
 }
+.force-stage{
+  width:min(280px,70vw);aspect-ratio:280/200;margin:0 auto 4px;
+  border-radius:12px;background:radial-gradient(circle at 40% 30%,#2a2218,#12100c 75%);
+  border:1px solid rgba(239,211,154,.22);overflow:hidden;position:relative;
+}
+.force-svg{width:100%;height:100%;display:block}
+.force-sword,.force-body{transform-box:fill-box;will-change:transform}
+.force-tag{
+  position:absolute;left:8px;bottom:6px;font-size:.65rem;font-weight:800;
+  letter-spacing:.04em;color:rgba(239,211,154,.85);
+  background:rgba(0,0,0,.35);padding:3px 7px;border-radius:6px;
+}
+.force-card.fall .force-stage{filter:grayscale(.15) brightness(.95)}
 .force-card{background:rgba(181,61,50,.16);border:2px solid rgba(181,61,50,.45)}
 .virtue-card{background:rgba(42,143,102,.16);border:2px solid rgba(42,143,102,.45)}
 .force-card h3,.virtue-card h3{margin:0;font-size:clamp(1.2rem,2.4vw,1.6rem)}

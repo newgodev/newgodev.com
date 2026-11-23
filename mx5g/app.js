@@ -117,7 +117,26 @@
         <p class="lead">撳左邊或右邊作答。</p>
         <div class="vs-pick">
           <button type="button" class="force-card" data-force>
-            <img src="./assets/photo-hand.png?v=20251123j" alt="純劍一揮 · 綠墨血 · 以力服人">
+            <div class="force-stage" data-force-stage aria-hidden="true">
+              <svg class="force-svg" viewBox="0 0 280 200" width="280" height="200">
+                <g class="force-body">
+                  <circle cx="208" cy="80" r="12" fill="#1a1510"/>
+                  <path d="M196 94 L220 98 L224 148 L194 152 Z" fill="#1a1510"/>
+                  <path d="M198 150 L210 154 L206 188 L192 182 Z" fill="#1a1510"/>
+                  <path d="M212 152 L226 148 L238 186 L218 188 Z" fill="#1a1510"/>
+                  <path d="M198 106 L180 128" stroke="#1a1510" stroke-width="10" stroke-linecap="round"/>
+                </g>
+                <g class="force-sword">
+                  <rect x="62" y="102" width="16" height="36" rx="3" fill="#5a3d22"/>
+                  <rect x="52" y="96" width="36" height="10" rx="2" fill="#3a2818"/>
+                  <path d="M65 96 L75 96 L73 -8 L70 -18 L67 -8 Z" fill="#2c2620"/>
+                  <path d="M70 96 L71.5 -8" stroke="#8a8070" stroke-width="1.2"/>
+                </g>
+                <path class="force-arc" d="M40 130 Q90 40 170 70" fill="none" stroke="rgba(40,30,20,.35)" stroke-width="2" stroke-dasharray="6 6"/>
+                <g class="force-splats"></g>
+              </svg>
+              <div class="force-tag">CODE 動效 · 純劍一揮</div>
+            </div>
             <h3>以力服人</h3>
             <p>靠武力／恐嚇強迫 → 暴力<br>→ <strong>暫時屈服</strong></p>
           </button>
@@ -411,10 +430,67 @@
       };
     });
 
-    // Force vs virtue
+    // Force vs virtue — coded sword swing (anime.js), no bad static image
+    function playForceSwing(card) {
+      const stage = card.querySelector("[data-force-stage]");
+      if (!stage) return;
+      const sword = stage.querySelector(".force-sword");
+      const body = stage.querySelector(".force-body");
+      const splats = stage.querySelector(".force-splats");
+      if (!sword || !window.anime) {
+        card.classList.add("fall");
+        return;
+      }
+      // spawn green ink dots
+      if (splats) {
+        splats.innerHTML = "";
+        for (let i = 0; i < 14; i++) {
+          const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          c.setAttribute("cx", String(130 + Math.random() * 70));
+          c.setAttribute("cy", String(70 + Math.random() * 60));
+          c.setAttribute("r", String(3 + Math.random() * 9));
+          c.setAttribute("fill", `rgba(40,${140 + (i % 40)},70,0)`);
+          c.classList.add("gdot");
+          splats.appendChild(c);
+        }
+      }
+      const dots = stage.querySelectorAll(".gdot");
+      anime.remove([sword, body, ...dots]);
+      sword.style.transformOrigin = "70px 110px";
+      body.style.transformOrigin = "208px 120px";
+      anime.set(sword, { rotate: -50, translateX: 0, translateY: 0 });
+      anime.set(body, { rotate: 0, translateX: 0, translateY: 0, opacity: 1 });
+      anime.set(dots, { opacity: 0, translateY: 0 });
+      anime.timeline({ easing: "easeOutExpo" })
+        .add({
+          targets: sword,
+          rotate: [-50, 42],
+          translateX: [0, 36],
+          translateY: [0, -18],
+          duration: 560
+        })
+        .add({
+          targets: body,
+          rotate: [0, 26],
+          translateX: [0, 22],
+          translateY: [0, 28],
+          opacity: [1, 0.5],
+          duration: 420
+        }, "-=240")
+        .add({
+          targets: dots,
+          opacity: [0, 0.9],
+          translateY: () => anime.random(8, 32),
+          delay: anime.stagger(16),
+          duration: 420,
+          easing: "easeOutCubic"
+        }, "-=320");
+      card.classList.add("fall");
+    }
+
     root.querySelectorAll("[data-force]").forEach((el) => {
       el.onclick = () => {
-        el.classList.add("fall");
+        playForceSwing(el);
         const v = root.querySelector("[data-virtue]");
         if (v) v.classList.add("glow");
         const msg = root.querySelector("[data-vote-msg]");
@@ -426,7 +502,10 @@
       el.onclick = () => {
         el.classList.add("glow");
         const f = root.querySelector("[data-force]");
-        if (f) f.classList.add("fall");
+        if (f) {
+          f.classList.add("fall");
+          playForceSwing(f);
+        }
         const msg = root.querySelector("[data-vote-msg]");
         if (msg) msg.textContent = "正確：以德服人 → 心悅誠服。";
         celebrate();
