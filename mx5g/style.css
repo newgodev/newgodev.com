@@ -211,15 +211,28 @@ h1,h2,h3{font-family:var(--serif);margin:0;line-height:1.15}
 .force-card.fall{transform:rotate(18deg) translateY(40px);opacity:.35}
 .virtue-card.glow{transform:scale(1.05);box-shadow:0 0 0 6px rgba(42,143,102,.2)}
 .mirror-zone{position:relative;cursor:pointer;border-radius:16px;overflow:hidden;min-height:0;flex:1}
-.mirror-zone img{width:100%;height:100%;object-fit:contain;display:block;transition:filter .3s}
-.mirror-zone.crack img{filter:contrast(1.2) saturate(.7);animation:crackFlash .5s ease}
+.mirror-zone img{width:100%;height:100%;object-fit:contain;display:block;transition:filter .3s,transform .35s}
+.mirror-zone.crack img{filter:contrast(1.35) saturate(.55) hue-rotate(-10deg);animation:crackFlash .55s ease;transform:scale(1.03) rotate(-1deg)}
+.mirror-zone.crack::before,.mirror-zone.crack::after{
+  content:"";position:absolute;inset:8% 12%;pointer-events:none;z-index:2;
+  background:linear-gradient(115deg,transparent 46%,rgba(255,255,255,.85) 49%,transparent 52%),
+             linear-gradient(65deg,transparent 40%,rgba(255,255,255,.7) 48%,transparent 55%),
+             linear-gradient(20deg,transparent 55%,rgba(200,220,255,.55) 58%,transparent 62%);
+  mix-blend-mode:screen;opacity:.95;
+}
+.mirror-zone.crack::after{
+  inset:18% 20% 25% 18%;
+  background:linear-gradient(-40deg,transparent 42%,rgba(255,255,255,.9) 50%,transparent 58%),
+             linear-gradient(160deg,transparent 35%,rgba(255,255,255,.55) 48%,transparent 60%);
+}
 .mirror-zone .crack-msg{
-  position:absolute;inset:auto 10% 12%;display:none;
-  background:rgba(8,14,12,.88);color:#fff;padding:14px 16px;border-radius:12px;
+  position:absolute;inset:auto 8% 10%;display:none;z-index:3;
+  background:rgba(8,14,12,.9);color:#fff;padding:14px 16px;border-radius:12px;
   font-size:1.15rem;line-height:1.45;font-weight:700;
+  border:2px dashed var(--gold);
 }
 .mirror-zone.crack .crack-msg{display:block;animation:popin .3s ease}
-@keyframes crackFlash{0%{filter:brightness(2)}100%{filter:contrast(1.2) saturate(.7)}}
+@keyframes crackFlash{0%{filter:brightness(2.2)}100%{filter:contrast(1.35) saturate(.55) hue-rotate(-10deg)}}
 .laugh-meter{
   height:14px;border-radius:99px;background:rgba(0,0,0,.12);overflow:hidden;margin-top:8px;
 }
