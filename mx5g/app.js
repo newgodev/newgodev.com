@@ -7,7 +7,7 @@
       diff: "easy",
       q: "仁愛謙和的第一個重點是？",
       type: "mc",
-      choices: ["強調仁愛", "強調法治", "強調武力", "強調財利"],
+      choices: ["強調財利", "強調武力", "強調法治", "強調仁愛"],
       answer: "強調仁愛",
       near: ["仁愛", "愛人", "仁"],
       hint: "為君為臣為民的思想基礎。",
@@ -17,7 +17,7 @@
       diff: "easy",
       q: "魚與熊掌不能兼得時，孟子教人？",
       type: "mc",
-      choices: ["舍生取義", "舍義取生", "兩者都不要", "先求財利"],
+      choices: ["舍義取生", "兩者都不要", "先求財利", "舍生取義"],
       answer: "舍生取義",
       near: ["取義", "捨生取義"],
       hint: "生命＝魚；義＝熊掌。",
@@ -27,7 +27,7 @@
       diff: "easy",
       q: "以德服人，對方通常會？",
       type: "mc",
-      choices: ["心悅誠服", "暫時屈服", "立刻造反", "完全不理"],
+      choices: ["暫時屈服", "立刻造反", "心悅誠服", "完全不理"],
       answer: "心悅誠服",
       near: ["誠心信服", "真心服"],
       hint: "對比以力服人。",
@@ -115,19 +115,19 @@
             <div class="force-stage" data-force-stage aria-hidden="true">
               <svg class="force-svg" viewBox="0 0 280 200" width="280" height="200">
                 <g class="force-body">
-                  <circle cx="208" cy="80" r="12" fill="#1a1510"/>
-                  <path d="M196 94 L220 98 L224 148 L194 152 Z" fill="#1a1510"/>
-                  <path d="M198 150 L210 154 L206 188 L192 182 Z" fill="#1a1510"/>
-                  <path d="M212 152 L226 148 L238 186 L218 188 Z" fill="#1a1510"/>
-                  <path d="M198 106 L180 128" stroke="#1a1510" stroke-width="10" stroke-linecap="round"/>
+                  <circle cx="208" cy="80" r="14" fill="#c9b59a"/>
+                  <path d="M194 94 L222 98 L226 150 L192 154 Z" fill="#b8a48a"/>
+                  <path d="M196 152 L212 156 L208 192 L190 184 Z" fill="#a89478"/>
+                  <path d="M210 154 L228 148 L242 188 L220 190 Z" fill="#a89478"/>
+                  <path d="M196 106 L176 130" stroke="#c9b59a" stroke-width="12" stroke-linecap="round"/>
                 </g>
                 <g class="force-sword">
-                  <rect x="62" y="102" width="16" height="36" rx="3" fill="#5a3d22"/>
-                  <rect x="52" y="96" width="36" height="10" rx="2" fill="#3a2818"/>
-                  <path d="M65 96 L75 96 L73 -8 L70 -18 L67 -8 Z" fill="#2c2620"/>
-                  <path d="M70 96 L71.5 -8" stroke="#8a8070" stroke-width="1.2"/>
+                  <rect x="60" y="100" width="20" height="42" rx="3" fill="#7a5230"/>
+                  <rect x="48" y="94" width="44" height="12" rx="2" fill="#5a3a20"/>
+                  <path d="M62 94 L78 94 L76 -12 L70 -24 L64 -12 Z" fill="#e8e2d4"/>
+                  <path d="M70 94 L71.5 -12" stroke="#9a9488" stroke-width="1.6"/>
                 </g>
-                <path class="force-arc" d="M40 130 Q90 40 170 70" fill="none" stroke="rgba(40,30,20,.35)" stroke-width="2" stroke-dasharray="6 6"/>
+                <path class="force-arc" d="M36 132 Q90 36 172 68" fill="none" stroke="rgba(239,211,154,.45)" stroke-width="2.5" stroke-dasharray="6 6"/>
                 <g class="force-splats"></g>
               </svg>
               <div class="force-tag">CODE 動效 · 純劍一揮</div>
@@ -224,14 +224,14 @@
         <p class="lead">撳你撐嘅一邊加氣勢；滿 5 下孟子宣判（義勝）。</p>
         <div class="fight-arena">
           <div class="fighter fish" data-fight="fish">
-            <img src="./assets/photo-fish.png?v=20251123q" alt="古典魚圖">
+            <img src="./assets/photo-fish.png?v=20251123r" alt="古典魚圖">
             <h3>魚 ≈ 生命／舒服</h3>
             <p>想避麻煩、少得罪人</p>
             <div class="hpbar"><i data-fish-bar style="width:0%"></i></div>
             <span class="chip" data-fish-hp>氣勢 0</span>
           </div>
           <div class="fighter bear" data-fight="bear">
-            <img src="./assets/photo-bear.png?v=20251123q" alt="古典木刻熊">
+            <img src="./assets/photo-bear.png?v=20251123r" alt="古典木刻熊">
             <h3>熊掌 ≈ 義</h3>
             <p>誠信、公義、做人底線</p>
             <div class="hpbar"><i data-bear-bar style="width:0%"></i></div>
@@ -379,6 +379,7 @@
   let picked = null;
   let score = 0;
   let played = 0;
+  let pickedChoice = null;
   let qOrder = [];
   let qPos = -1;
   let current = null;
@@ -451,15 +452,15 @@
         card.classList.add("fall");
         return;
       }
-      // spawn green ink dots
+      // spawn green ink dots (opaque fill; opacity animated)
       if (splats) {
         splats.innerHTML = "";
-        for (let i = 0; i < 14; i++) {
+        for (let i = 0; i < 16; i++) {
           const c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-          c.setAttribute("cx", String(130 + Math.random() * 70));
-          c.setAttribute("cy", String(70 + Math.random() * 60));
-          c.setAttribute("r", String(3 + Math.random() * 9));
-          c.setAttribute("fill", `rgba(40,${140 + (i % 40)},70,0)`);
+          c.setAttribute("cx", String(128 + Math.random() * 78));
+          c.setAttribute("cy", String(68 + Math.random() * 64));
+          c.setAttribute("r", String(4 + Math.random() * 10));
+          c.setAttribute("fill", `rgb(36,${150 + (i % 50)},78)`);
           c.classList.add("gdot");
           splats.appendChild(c);
         }
@@ -471,54 +472,64 @@
       anime.set(sword, { rotate: -50, translateX: 0, translateY: 0 });
       anime.set(body, { rotate: 0, translateX: 0, translateY: 0, opacity: 1 });
       anime.set(dots, { opacity: 0, translateY: 0 });
+      // ≥3 seconds total so classmates can see the swing
       anime.timeline({ easing: "easeOutExpo" })
         .add({
           targets: sword,
           rotate: [-50, 42],
-          translateX: [0, 36],
-          translateY: [0, -18],
-          duration: 560
+          translateX: [0, 40],
+          translateY: [0, -20],
+          duration: 1800
         })
         .add({
           targets: body,
-          rotate: [0, 26],
-          translateX: [0, 22],
-          translateY: [0, 28],
-          opacity: [1, 0.5],
-          duration: 420
-        }, "-=240")
+          rotate: [0, 28],
+          translateX: [0, 24],
+          translateY: [0, 30],
+          opacity: [1, 0.45],
+          duration: 1400
+        }, "-=900")
         .add({
           targets: dots,
-          opacity: [0, 0.9],
-          translateY: () => anime.random(8, 32),
-          delay: anime.stagger(16),
-          duration: 420,
+          opacity: [0, 1],
+          translateY: () => anime.random(10, 36),
+          delay: anime.stagger(55),
+          duration: 1200,
           easing: "easeOutCubic"
-        }, "-=320");
+        }, "-=1000");
       card.classList.add("fall");
     }
 
+    let voteLock = false;
     root.querySelectorAll("[data-force]").forEach((el) => {
       el.onclick = () => {
+        if (voteLock) return;
+        voteLock = true;
         playForceSwing(el);
         const v = root.querySelector("[data-virtue]");
         if (v) v.classList.add("glow");
         const msg = root.querySelector("[data-vote-msg]");
-        if (msg) msg.textContent = "力服跌倒了：暫時屈服冇用。孟子宣判——以德服人勝！";
-        celebrate();
+        // Hold ≥3s so both sides stay readable
+        setTimeout(() => {
+          if (msg) msg.textContent = "力服跌倒了：暫時屈服冇用。孟子宣判——以德服人勝！";
+          celebrate();
+          voteLock = false;
+        }, 3200);
       };
     });
     root.querySelectorAll("[data-virtue]").forEach((el) => {
       el.onclick = () => {
+        if (voteLock) return;
+        voteLock = true;
         el.classList.add("glow");
         const f = root.querySelector("[data-force]");
-        if (f) {
-          f.classList.add("fall");
-          playForceSwing(f);
-        }
+        if (f) playForceSwing(f);
         const msg = root.querySelector("[data-vote-msg]");
-        if (msg) msg.textContent = "正確：以德服人 → 心悅誠服。";
-        celebrate();
+        setTimeout(() => {
+          if (msg) msg.textContent = "正確：以德服人 → 心悅誠服。";
+          celebrate();
+          voteLock = false;
+        }, 3200);
       };
     });
 
@@ -530,8 +541,9 @@
         cards.forEach((c) => c.classList.remove("show"));
         // force reflow then stagger in
         void el.offsetWidth;
+        // ≥3s total so each reflect card can be read (~1s each)
         cards.forEach((c, i) => {
-          setTimeout(() => c.classList.add("show"), 120 + i * 160);
+          setTimeout(() => c.classList.add("show"), 200 + i * 1000);
         });
         const hint = root.querySelector("[data-mirror-hint]");
         if (hint) hint.textContent = "✓ 三面鏡已開：仁／智／敬 —— 再撳可重播動畫";
@@ -839,20 +851,22 @@
 
       const box = $("choices");
       box.innerHTML = "";
+      pickedChoice = null;
       if (current.type === "mc" && Array.isArray(current.choices)) {
-        shuffle(current.choices).forEach((c) => {
+        // Always randomize option order — correct answer can be A/B/C/D, never fixed slot
+        const letters = ["A", "B", "C", "D", "E", "F"];
+        const opts = shuffle(current.choices);
+        opts.forEach((c, i) => {
           const btn = document.createElement("button");
           btn.type = "button";
           btn.className = "choice";
-          btn.textContent = c;
+          btn.dataset.value = c;
+          btn.innerHTML = `<span class="choice-key">${letters[i] || i + 1}</span><span class="choice-text">${c}</span>`;
           btn.onclick = () => {
+            // Select only (white) — do NOT grade until「睇正確答案」
             [...box.children].forEach((x) => x.classList.remove("on", "good", "bad"));
             btn.classList.add("on");
-            if (c === current.answer) {
-              btn.classList.add("good");
-              score += 1;
-              $("scorePill").textContent = String(score);
-            } else btn.classList.add("bad");
+            pickedChoice = c;
           };
           box.appendChild(btn);
         });
@@ -881,11 +895,25 @@
     clearBackTimer();
     hide(qModal);
     hide(aModal);
+    pickedChoice = null;
     $("spinBtn").disabled = false;
   }
 
   function openAnswerPopup() {
     if (!current) current = FALLBACK_QS[0];
+    // Grade on reveal (not on option click)
+    if (current.type === "mc" && pickedChoice != null) {
+      const box = $("choices");
+      [...box.children].forEach((btn) => {
+        const v = btn.dataset.value;
+        if (v === current.answer) btn.classList.add("good");
+        else if (btn.classList.contains("on")) btn.classList.add("bad");
+      });
+      if (pickedChoice === current.answer) {
+        score += 1;
+        $("scorePill").textContent = String(score);
+      }
+    }
     hide(qModal);
     $("revealText").textContent = current.answer || "";
     $("nearText").textContent = (current.near || []).join("　／　");

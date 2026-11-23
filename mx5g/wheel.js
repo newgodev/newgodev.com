@@ -48,6 +48,7 @@
   let picked = null;
   let score = 0;
   let played = 0;
+  let pickedChoice = null;
   let qOrder = [];
   let qPos = -1;
   let current = null;
@@ -148,20 +149,19 @@
     $("hintText").textContent = current.hint || "";
     const box = $("choices");
     box.innerHTML = "";
+    pickedChoice = null;
     if (current.type === "mc" && Array.isArray(current.choices)) {
-      shuffle(current.choices).forEach((c) => {
+      const letters = ["A", "B", "C", "D", "E", "F"];
+      shuffle(current.choices).forEach((c, i) => {
         const btn = document.createElement("button");
         btn.type = "button";
         btn.className = "choice";
-        btn.textContent = c;
+        btn.dataset.value = c;
+        btn.innerHTML = `<span class="choice-key">${letters[i] || i + 1}</span><span class="choice-text">${c}</span>`;
         btn.onclick = () => {
           [...box.children].forEach((x) => x.classList.remove("on", "good", "bad"));
           btn.classList.add("on");
-          if (c === current.answer) {
-            btn.classList.add("good");
-            score += 1;
-            $("scorePill").textContent = String(score);
-          } else btn.classList.add("bad");
+          pickedChoice = c;
         };
         box.appendChild(btn);
       });
@@ -181,10 +181,23 @@
     clearBack();
     hide(qModal);
     hide(aModal);
+    pickedChoice = null;
     $("spinBtn").disabled = false;
   }
 
   function openAnswer() {
+    if (current && current.type === "mc" && pickedChoice != null) {
+      const box = $("choices");
+      [...box.children].forEach((btn) => {
+        const v = btn.dataset.value;
+        if (v === current.answer) btn.classList.add("good");
+        else if (btn.classList.contains("on")) btn.classList.add("bad");
+      });
+      if (pickedChoice === current.answer) {
+        score += 1;
+        $("scorePill").textContent = String(score);
+      }
+    }
     hide(qModal);
     $("revealText").textContent = current.answer || "";
     $("nearText").textContent = (current.near || []).join("　／　");
