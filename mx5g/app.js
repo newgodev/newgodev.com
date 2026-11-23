@@ -327,9 +327,9 @@
         <div class="kicker">代表著作 · 速記＋理據</div>
         <h2>《孟子》速記（老師愛聽呢啲）</h2>
         <div class="grid3" data-stats>
-          <div class="panel stat"><b data-count="7">0</b><span>篇（各分上下）</span></div>
-          <div class="panel stat"><b data-count="261">0</b><span>章左右</span></div>
-          <div class="panel stat"><b data-count-text="語錄">·</b><span>記錄言行</span></div>
+          <div class="panel stat"><b data-count="7">0</b><span style="color:#fff">篇（各分上下）</span></div>
+          <div class="panel stat"><b data-count="261">0</b><span style="color:#fff">章左右</span></div>
+          <div class="panel stat"><b data-count-text="語錄">·</b><span style="color:#fff">記錄言行</span></div>
         </div>
         <div class="grid2" style="flex:1;min-height:0;margin-top:8px">
           <div class="panel"><h3>上台必講</h3>
@@ -394,9 +394,14 @@
 
   const COLORS = ["#1f7a55","#245c48","#c44b3c","#8a3a30","#d4a017","#9a7510","#2f6f8f","#1f4f66","#3d8b6e","#5a6b63"];
 
-  function show(el) { el.classList.remove("is-hide"); }
-  function hide(el) { el.classList.add("is-hide"); }
-  function isHidden(el) { return el.classList.contains("is-hide"); }
+  function show(el) { if (el) el.classList.remove("is-hide"); }
+  function hide(el) { if (el) el.classList.add("is-hide"); }
+  function isHidden(el) { return !el || el.classList.contains("is-hide"); }
+  function syncModalChrome() {
+    const quizOpen = !isHidden(qModal) || !isHidden(aModal);
+    if (quizOpen) hide(deckNav);
+    else if (mode === "deck" || mode === "game") show(deckNav);
+  }
 
   function wireTaps(root) {
     root.querySelectorAll("[data-tap]").forEach((el) => {
@@ -876,6 +881,7 @@
 
       hide(aModal);
       show(qModal);
+      syncModalChrome();
       celebrate();
     } catch (err) {
       console.error(err);
@@ -896,49 +902,75 @@
     hide(qModal);
     hide(aModal);
     pickedChoice = null;
+    syncModalChrome();
     $("spinBtn").disabled = false;
   }
 
-  function openAnswerPopup() {
-    if (!current) current = FALLBACK_QS[0];
-    // Grade on reveal (not on option click)
-    if (current.type === "mc" && pickedChoice != null) {
-      const box = $("choices");
-      [...box.children].forEach((btn) => {
-        const v = btn.dataset.value;
-        if (v === current.answer) btn.classList.add("good");
-        else if (btn.classList.contains("on")) btn.classList.add("bad");
-      });
-      if (pickedChoice === current.answer) {
-        score += 1;
-        $("scorePill").textContent = String(score);
+  function openAnswerPopup(ev) {
+    if (ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
+    }
+    try {
+      if (!current) current = FALLBACK_QS[0];
+      // Grade on reveal (not on option click)
+      if (current.type === "mc" && pickedChoice != null) {
+        const box = $("choices");
+        [...box.children].forEach((btn) => {
+          const v = btn.dataset.value;
+          if (v === current.answer) btn.classList.add("good");
+          else if (btn.classList.contains("on")) btn.classList.add("bad");
+        });
+        if (pickedChoice === current.answer) {
+          score += 1;
+          $("scorePill").textContent = String(score);
+        }
       }
-    }
-    hide(qModal);
-    $("revealText").textContent = current.answer || "";
-    $("nearText").textContent = (current.near || []).join("　／　");
-    $("explainText").textContent = current.explain || "";
-    show(aModal);
-    celebrate();
+      hide(qModal);
+      const reveal = $("revealText");
+      const near = $("nearText");
+      const explain = $("explainText");
+      if (reveal) reveal.textContent = current.answer || "";
+      if (near) near.textContent = (current.near || []).join("　／　");
+      if (explain) explain.textContent = current.explain || "";
+      show(aModal);
+      syncModalChrome();
+      celebrate();
 
-    clearBackTimer();
-    const bar = $("cdBar");
-    const label = $("countdown");
-    const total = 5000;
-    const t0 = performance.now();
-    bar.style.transform = "scaleX(1)";
-    function tickCd(now) {
-      const left = Math.max(0, total - (now - t0));
-      label.textContent = `${Math.ceil(left / 1000)} 秒後返回轉盤`;
-      bar.style.transform = `scaleX(${left / total})`;
-      if (left > 0) backRaf = requestAnimationFrame(tickCd);
+      clearBackTimer();
+      const bar = $("cdBar");
+      const label = $("countdown");
+      const total = 5000;
+      const t0 = performance.now();
+      if (bar) bar.style.transform = "scaleX(1)";
+      function tickCd(now) {
+        const left = Math.max(0, total - (now - t0));
+        if (label) label.textContent = `${Math.ceil(left / 1000)} 秒後返回轉盤`;
+        if (bar) bar.style.transform = `scaleX(${left / total})`;
+        if (left > 0) backRaf = requestAnimationFrame(tickCd);
+      }
+      backRaf = requestAnimationFrame(tickCd);
+      backTimer = setTimeout(returnToWheel, total);
+    } catch (err) {
+      console.error("[mx5g] reveal failed", err);
+      alert("揭曉失敗，再撳一次。");
     }
-    backRaf = requestAnimationFrame(tickCd);
-    backTimer = setTimeout(returnToWheel, total);
   }
 
-  $("showAnswerBtn").onclick = openAnswerPopup;
-  $("backNowBtn").onclick = returnToWheel;
+  let revealGuard = 0;
+  function revealOnce(ev) {
+    const now = Date.now();
+    if (now - revealGuard < 600) return;
+    revealGuard = now;
+    openAnswerPopup(ev);
+  }
+  const showAnsBtn = $("showAnswerBtn");
+  if (showAnsBtn) {
+    showAnsBtn.addEventListener("click", revealOnce);
+    showAnsBtn.addEventListener("pointerup", revealOnce);
+  }
+  const backBtn = $("backNowBtn");
+  if (backBtn) backBtn.addEventListener("click", returnToWheel);
 
   function spin() {
     if (spinning || numbers.length < 2) return;
