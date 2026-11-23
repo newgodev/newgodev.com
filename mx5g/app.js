@@ -170,28 +170,36 @@
     },
     {
       tone: "light",
-      html: `<div class="slide-inner">
-        <div class="kicker">三反其身 · 校園例子</div>
-        <h2>別人唔買帳？先反求諸己</h2>
-        <p class="lead">唔好一嚟就怪人——孟子叫你先照三面「鏡」：仁、智、敬。</p>
-        <div class="map-grid sanfan-grid">
-          <article class="map-card">
-            <h3>① 仁不夠？</h3>
-            <p class="map-ex"><b>筆記：</b>愛人不親 → 反省自己仁愛夠唔夠真。</p>
-            <p class="map-eg"><b>例子：</b>你成日幫同學抄功課，但從來唔聽佢心事；佢疏遠你，唔係佢涼薄——係你「幫」得表面，仁愛唔到位。</p>
-          </article>
-          <article class="map-card">
-            <h3>② 智不夠？</h3>
-            <p class="map-ex"><b>筆記：</b>管人管不好 → 反省自己夠唔夠智。</p>
-            <p class="map-eg"><b>例子：</b>你做組長派工亂嚟、死線講唔清，組員做到喊；唔好鬧佢懶——先問：你計劃清唔清楚？分工合唔合理？</p>
-          </article>
-          <article class="map-card">
-            <h3>③ 敬不夠？</h3>
-            <p class="map-ex"><b>筆記：</b>禮敬沒有回禮 → 反省自己恭敬夠唔夠。</p>
-            <p class="map-eg"><b>例子：</b>你叫人「師兄」、借筆記，但借完唔道謝、仲公開嘲笑人；下次人唔想理你——先反省自己有冇真敬重人。</p>
-          </article>
+      html: `<div class="slide-inner sanfan-stage">
+        <div class="kicker">三反其身 · 撳鏡看動畫</div>
+        <h2>別人唔買帳？先照銅鏡</h2>
+        <p class="lead click-hint" data-mirror-hint>👉 撳右邊漢代銅鏡 —— 裂開後彈出三個校園例子</p>
+        <div class="sanfan-layout">
+          <div class="mirror-zone" data-mirror tabindex="0" role="button" aria-label="撳鏡反省">
+            <img src="./assets/photo-mirror.png?v=20251123k" alt="漢代青銅鏡 · 自我反省">
+            <div class="mirror-tap">撳我反省</div>
+            <div class="crack-msg">鏡光一閃：先反求諸己，唔好先鬧人。</div>
+            <div class="mirror-shine" aria-hidden="true"></div>
+          </div>
+          <div class="reflect-stack" data-reflect-stack>
+            <article class="reflect-card" data-reflect>
+              <h3>① 仁</h3>
+              <p><b>愛人不親</b> → 反省仁愛夠唔夠真</p>
+              <p class="eg">例子：成日幫人抄功課但唔聽心事 → 疏遠你＝仁愛得表面</p>
+            </article>
+            <article class="reflect-card" data-reflect>
+              <h3>② 智</h3>
+              <p><b>管人管不好</b> → 反省夠唔夠智</p>
+              <p class="eg">例子：組長派工亂、死線唔清 → 組員喊＝先改計劃</p>
+            </article>
+            <article class="reflect-card" data-reflect>
+              <h3>③ 敬</h3>
+              <p><b>禮敬沒回禮</b> → 反省恭敬夠唔夠</p>
+              <p class="eg">例子：借筆記唔道謝仲嘲笑人 → 下次冇人理＝欠敬</p>
+            </article>
+          </div>
         </div>
-        <div class="quote">金句：行有不得，皆反求諸己。——自己端正了，別人才較易靠近你。</div>
+        <div class="quote">行有不得，皆反求諸己。——自己端正了，別人才較易靠近你。</div>
       </div>`
     },
     {
@@ -425,29 +433,27 @@
       };
     });
 
-    // Mirror crack + glitch bug box
+    // Mirror crack + staggered reflect cards
     root.querySelectorAll("[data-mirror]").forEach((el) => {
-      el.onclick = () => {
-        el.classList.toggle("crack");
-        const g = root.querySelector("[data-glitch]");
-        if (g) {
-          g.classList.add("is-buggy");
-          setTimeout(() => g.classList.remove("is-buggy"), 900);
-        }
+      const run = () => {
+        el.classList.add("crack");
+        const cards = root.querySelectorAll("[data-reflect]");
+        cards.forEach((c) => c.classList.remove("show"));
+        // force reflow then stagger in
+        void el.offsetWidth;
+        cards.forEach((c, i) => {
+          setTimeout(() => c.classList.add("show"), 120 + i * 160);
+        });
+        const hint = root.querySelector("[data-mirror-hint]");
+        if (hint) hint.textContent = "✓ 三面鏡已開：仁／智／敬 —— 再撳可重播動畫";
+        celebrate();
       };
-    });
-    root.querySelectorAll("[data-glitch-btn]").forEach((btn) => {
-      btn.onclick = () => {
-        const box = root.querySelector("[data-bug-box]");
-        if (!box) return;
-        box.style.display = "block";
-        box.classList.remove("fixed");
-        box.textContent = "ERROR 503：找不到「別人錯」模組。建議安裝「三反其身.dll」……";
-        setTimeout(() => {
-          box.classList.add("fixed");
-          box.textContent = "FIXED：已載入三反其身——仁／智／敬。自己端正了，天下才會歸順。";
-          celebrate();
-        }, 900);
+      el.onclick = () => {
+        if (el.classList.contains("crack")) {
+          el.classList.remove("crack");
+          root.querySelectorAll("[data-reflect]").forEach((c) => c.classList.remove("show"));
+          setTimeout(run, 80);
+        } else run();
       };
     });
 
