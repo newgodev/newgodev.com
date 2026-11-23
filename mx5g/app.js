@@ -40,187 +40,316 @@
     return Array.isArray(q) && q.length ? q : FALLBACK_QS;
   }
 
+  const MENG_LINES = [
+    "同學，唔好扮睇電話，我喺畫像入面都睇到你。",
+    "以力服人？即係靠大聲？我亞聖都搖頭。",
+    "魚好食，但抄襲唔好食——記住舍生取義。",
+    "三反其身：第一步，先反省點解你而家笑。",
+    "仁愛謙和：請把筆記分享，唔好只 share meme。",
+    "老師打分緊，你哋玩得開心＝表達分＋＋",
+    "霸者靠罰分，王者靠公道。班長你揀邊條路？",
+    "呢個簡報係 HTML，唔係 Canva——所以我可以飛出嚟講嘢。"
+  ];
+
   const SLIDES = [
     {
       tone: "dark",
-      html: `<div class="slide-inner">
-        <div class="kicker">3G · 第5組</div>
-        <div class="hero-row">
-          <div>
-            <h1>孟子其實好「校園」</h1>
-            <p class="lead">仁愛謙和、舍生取義、天賦尊嚴——用生活例子講明，再轉盤抽人問答。</p>
-            <div class="chip-row"><span class="chip">有情境</span><span class="chip">有對決</span><span class="chip">有轉盤</span></div>
+      html: `<div class="hero-split">
+        <div class="hero-copy">
+          <div class="kicker">3G 第5組 · 孟子搞笑版（認真內容＋失控互動）</div>
+          <h1>孟子上線：專治班房亂局</h1>
+          <p class="lead">仁愛謙和 · 三反其身 · 舍生取義 · 以德服人 · 天賦尊嚴<br>
+          呢個唔係靜態 PPT——<strong>每頁都撳得</strong>，孟子會出嚟吐嘈你。</p>
+          <button type="button" class="gag-btn" data-bug-boot>⚠ 系統偵測：同學太清醒 → 啟動笑場模式</button>
+          <div class="chip-row" style="margin-top:8px">
+            <span class="chip">真圖 · 唔用 emoji</span>
+            <span class="chip">撳完有 punchline</span>
+            <span class="chip">內容照樣有理據</span>
           </div>
-          <img class="hero-art" src="./assets/char-student.png" alt="">
+          <p class="click-hint">提示：撳金色掣 / 撳孟子 / 撳下一頁</p>
+        </div>
+        <div class="hero-media">
+          <img src="./assets/photo-mencius.png" alt="孟子畫像">
+          <div class="cap">孟子（孟軻）· 公開領域畫像 · 今日客串吐嘈主持</div>
+          <div class="meng-host" data-meng-host>
+            <div class="meng-bubble" data-meng-line>撳我！我有話想講…</div>
+            <img src="./assets/photo-mencius2.png" alt="孟子">
+          </div>
         </div>
       </div>`
     },
     {
       tone: "light",
       html: `<div class="slide-inner">
-        <div class="kicker">開場挑戰</div>
-        <h2>如果你係班長，點算？</h2>
+        <div class="kicker">範圍地圖 · 老師請放心：重點齊</div>
+        <h2>第5組只攻這些筆記（但講法好癲）</h2>
         <div class="grid2">
-          <div class="scene tap" data-tap>
-            <img src="./assets/char-fist.png" alt="">
-            <div><span class="tag">情境 A</span><strong>用大聲嚇到全班聽話</strong>
-            <p>「再嘈就扣分！」即刻靜——但心裏面翻白眼。</p>
-            <div class="secret">= 以力服人（暫時屈服）</div></div>
+          <div class="panel">
+            <h3>頁 11–12</h3>
+            <ul>
+              <li>仁愛謙和：仁愛、恭敬謙讓、和為貴</li>
+              <li>三反其身（自我反省——唔好只反省人）</li>
+              <li>生命與義禮：舍生取義（魚與熊掌 PK）</li>
+              <li>以德服人 vs 以力服人</li>
+            </ul>
           </div>
-          <div class="scene tap" data-tap>
-            <img src="./assets/char-student.png" alt="">
-            <div><span class="tag">情境 B</span><strong>講清楚、聽意見、帶頭做</strong>
-            <p>同學覺得你公道，自願配合。</p>
-            <div class="secret">= 以德服人（心悅誠服）</div></div>
+          <div class="panel">
+            <h3>頁 14</h3>
+            <ul>
+              <li>人格論：天賦尊嚴</li>
+              <li>心理基礎：憐憫之心、羞恥之心</li>
+              <li>君子美德：成人之美、言行一致</li>
+              <li>代表著作：《孟子》（七篇／語錄）</li>
+            </ul>
           </div>
         </div>
-        <div class="quote">撳上面兩格睇答案 → 君子應該以德服人</div>
+        <div class="quote">評分關鍵：內容掌握＋理據（70%）｜清晰好玩（30%）← 我哋兩樣都要</div>
+      </div>`
+    },
+    {
+      tone: "dark",
+      html: `<div class="slide-inner gag-stage">
+        <div class="kicker">開場互動 · 全班投票</div>
+        <h2>如果你是班長，你揀邊種？</h2>
+        <p class="lead">撳左邊／右邊——睇邊個會「跌倒」。</p>
+        <div class="grid2 eq">
+          <div class="force-card" data-force>
+            <img src="./assets/photo-classroom.png" alt="壓場" style="width:min(220px,50%);margin:0 auto;display:block;object-fit:contain">
+            <h3>以力服人</h3>
+            <p>靠恐嚇、罰分、大聲嗌<br>→ 暫時屈服</p>
+          </div>
+          <div class="virtue-card" data-virtue>
+            <img src="./assets/photo-students.png" alt="公道領導" style="width:min(220px,50%);margin:0 auto;display:block;object-fit:contain">
+            <h3>以德服人</h3>
+            <p>公道、帶頭、聽意見<br>→ 心悅誠服</p>
+          </div>
+        </div>
+        <div class="quote proof" data-vote-msg>孟子：君子應該以德服人，不是只靠外力強迫。（撳卡先）</div>
       </div>`
     },
     {
       tone: "light",
       html: `<div class="slide-inner">
-        <div class="kicker">仁愛謙和 · 校園版</div>
-        <h2>三個場面，三個重點</h2>
+        <div class="kicker">仁愛謙和 · 校園三場面 · 撳開 punchline</div>
+        <h2>一個精神，三種「唔好做人憎」做法</h2>
         <div class="grid3">
-          <div class="scene"><img src="./assets/char-book.png" alt=""><div>
-            <span class="tag">① 仁愛</span><strong>借筆記唔係施捨</strong>
-            <p>主動分享，因為仁愛，唔係換名氣。</p></div></div>
-          <div class="scene"><img src="./assets/char-mirror.png" alt=""><div>
-            <span class="tag">② 恭敬謙讓</span><strong>排隊唔插隊</strong>
-            <p>有禮謙讓 → 衝突少、信任多。</p></div></div>
-          <div class="scene"><img src="./assets/char-heart.png" alt=""><div>
-            <span class="tag">③ 和為貴</span><strong>吵完照一隊</strong>
-            <p>輸比賽都唔互相怪責。</p></div></div>
+          <div class="scene tap" data-tap>
+            <img src="./assets/photo-book.png" alt="書本">
+            <div>
+              <span class="tag">① 仁愛</span>
+              <strong>分享筆記</strong>
+              <p>同學欠筆記你主動分享——心存仁愛，不是換名氣。</p>
+              <div class="secret">孟子吐嘈：你 share 筆記＝仁；你只 share 功課答案＝危險動作。</div>
+            </div>
+          </div>
+          <div class="scene tap" data-tap>
+            <img src="./assets/photo-pupils.png" alt="師生講學">
+            <div>
+              <span class="tag">② 恭敬謙讓</span>
+              <strong>排隊有禮</strong>
+              <p>對師長同學恭敬謙讓 → 得信任、少衝突。</p>
+              <div class="secret">孟子吐嘈：插隊的人，連「敬」字都未考合格。</div>
+            </div>
+          </div>
+          <div class="scene tap" data-tap>
+            <img src="./assets/photo-classroom.png" alt="課堂氣氛">
+            <div>
+              <span class="tag">③ 和為貴</span>
+              <strong>輸完仍一隊</strong>
+              <p>班際比賽輸了也不互怪。和平安定靠仁愛之心。</p>
+              <div class="secret">孟子吐嘈：互怪＝內戰；互撐＝和為貴（分數加）。</div>
+            </div>
+          </div>
         </div>
+        <div class="quote">沒有愛人的心 → 難有符合義禮的行為 → 難達和平安定</div>
       </div>`
     },
     {
       tone: "light",
-      html: `<div class="slide-inner">
-        <div class="kicker">三反其身</div>
-        <h2>別人唔買帳？先照鏡</h2>
-        <div class="hero-row">
+      html: `<div class="slide-inner gag-stage">
+        <div class="kicker">三反其身 · 互動照鏡</div>
+        <h2>別人唔買帳？先 <span class="glitch" data-glitch>照鏡</span></h2>
+        <p class="lead click-hint">撳右邊鏡子 → 「裂開」出反省清單（假 bug 真道理）</p>
+        <div class="grid2">
           <div>
             <div class="bubble">「我對佢好好，點解疏遠我？」</div>
-            <p class="lead" style="margin-top:14px">愛人不親→反省仁；管人唔掂→反省智；禮敬冇回禮→反省敬。</p>
-            <div class="chip-row"><span class="chip">唔好即刻怪別人</span><span class="chip">自己端正先</span></div>
+            <div class="panel" style="margin-top:14px">
+              <h3>孟子教你三步</h3>
+              <ul>
+                <li>愛人不親 → 反省「仁」夠不夠真</li>
+                <li>管人管不好 → 反省「智」</li>
+                <li>禮敬沒有回禮 → 反省「敬」</li>
+              </ul>
+              <p style="margin-top:10px">凡事得不到應有反應，先在自己身心找原因。</p>
+              <button type="button" class="gag-btn" data-glitch-btn style="margin-top:12px">模擬系統錯誤（搞笑用）</button>
+              <div class="bug-box" data-bug-box style="margin-top:10px;display:none"></div>
+            </div>
           </div>
-          <img class="hero-art" src="./assets/char-mirror.png" alt="">
+          <div class="mirror-zone" data-mirror>
+            <img src="./assets/photo-mirror.png" alt="鏡子：自我反省">
+            <div class="crack-msg">鏡破了？唔係 bug——係提醒你：先反求諸己，唔好先鬧人。</div>
+          </div>
         </div>
       </div>`
     },
     {
       tone: "dark",
-      html: `<div class="slide-inner">
-        <div class="kicker">舍生取義</div>
-        <h2>魚 VS 熊掌</h2>
-        <div class="vs">
-          <div class="side bad"><img src="./assets/char-fish.png" alt=""><h3>魚 ≈ 生命</h3><p>想活、想舒服、想避麻煩</p></div>
-          <div class="mid">VS</div>
-          <div class="side good"><img src="./assets/char-bear.png" alt=""><h3>熊掌 ≈ 義</h3><p>誠信、公義、做人底線</p></div>
+      html: `<div class="slide-inner gag-stage">
+        <div class="kicker">舍生取義 · 擂台對決</div>
+        <h2>魚 VS 熊掌 —— 撳邊邊贏？</h2>
+        <p class="lead">玩法：狂撳你撐嘅一邊。孟子會宣判真正贏家（劇透：義）。</p>
+        <div class="fight-arena">
+          <div class="fighter fish" data-fight="fish">
+            <img src="./assets/photo-fish.png" alt="真魚照片">
+            <h3>魚 ≈ 生命／舒服</h3>
+            <p>想避麻煩、少得罪人</p>
+            <span class="chip" data-fish-hp>氣勢 0</span>
+          </div>
+          <div class="fighter bear" data-fight="bear">
+            <img src="./assets/photo-bear.png" alt="真熊掌照片">
+            <h3>熊掌 ≈ 義</h3>
+            <p>誠信、公義、做人底線</p>
+            <span class="chip" data-bear-hp>氣勢 0</span>
+          </div>
         </div>
-        <div class="quote">唔可以一齊要？→ 舍生取義（守義，唔係亂送命）</div>
+        <div class="quote proof" data-fight-msg>「二者不可得兼，舍生而取義。」（《孟子·告子上》）—— 先打一場再講</div>
       </div>`
     },
     {
       tone: "light",
       html: `<div class="slide-inner">
-        <div class="kicker">校園版取義</div>
-        <h2>你會揀邊邊？（撳格揭曉）</h2>
+        <div class="kicker">校園版取義 · 撳格揭曉</div>
+        <h2>兩個場面，你會點揀？（班房爆笑位）</h2>
+        <div class="grid2 eq">
+          <div class="scene tap" data-tap>
+            <img src="./assets/photo-book.png" alt="">
+            <div>
+              <span class="tag">考試</span>
+              <strong>好友要你傳答案</strong>
+              <p>幫＝人情；拒絕＝得罪人。孟子會點睇？</p>
+              <div class="secret">取義：拒絕作弊，改為幫温習＝守誠信（義 &gt; 避麻煩）<br><span class="stamp">孟子蓋章：合格</span></div>
+            </div>
+          </div>
+          <div class="scene tap" data-tap>
+            <img src="./assets/photo-students.png" alt="">
+            <div>
+              <span class="tag">操場</span>
+              <strong>見到有人被欺負</strong>
+              <p>裝看不見較安全；出聲可能麻煩。</p>
+              <div class="secret">取義：通報老師／陪伴求助＝義 &gt; 怕事<br><span class="stamp">君子認證</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="quote">不是叫人亂送命，而是價值排序：義禮重要過只顧舒服。</div>
+      </div>`
+    },
+    {
+      tone: "dark",
+      html: `<div class="slide-inner gag-stage">
+        <div class="kicker">以德服人 · 逐句 unlock</div>
+        <h2>王者路 vs 霸者路（撳掣出金句）</h2>
+        <div class="chip-row">
+          <button type="button" class="gag-btn" data-reveal-next>下一句吐嘈 →</button>
+          <span class="click-hint" data-reveal-count>0 / 4</span>
+        </div>
+        <div class="reveal-stack" data-reveal-stack>
+          <div class="reveal-line">德 · 王者：出於仁愛真心 → 對方<strong>心悅誠服</strong></div>
+          <div class="reveal-line">力 · 霸者：假借仁義、用武力 → 只是<strong>暫時屈服</strong></div>
+          <div class="reveal-line">校園翻譯：罰分可以噤聲，但唔可以令人真心跟你。</div>
+          <div class="reveal-line">匯報金句：<strong>心服才長久，力屈只一時。</strong></div>
+        </div>
+        <div class="grid2" style="flex:0;margin-top:8px">
+          <div class="img-frame" style="min-height:140px"><img src="./assets/photo-mencius2.png" alt="孟子"></div>
+          <div class="img-frame" style="min-height:140px"><img src="./assets/photo-classroom.png" alt="課堂"></div>
+        </div>
+      </div>`
+    },
+    {
+      tone: "light",
+      html: `<div class="slide-inner gag-stage">
+        <div class="kicker">人格論 · 頁14 · 笑完記得重點</div>
+        <h2>天賦尊嚴（撳卡開 punchline）</h2>
         <div class="grid2">
-          <div class="scene tap" data-tap>
-            <img src="./assets/char-fish.png" alt="">
-            <div><span class="tag">考試</span><strong>好友要你傳答案</strong>
-            <p>幫＝人情；拒絕＝得罪人？</p>
-            <div class="secret">取義：拒絕作弊，改為幫温習</div></div>
+          <div class="joke-board">
+            <div class="joke-card" data-joke>
+              <div class="setup">憐憫之心 → 知善惡</div>
+              <div class="punch">見同學跌倒你想扶＝惻隱；見人抄襲你覺得怪＝羞惡開始發光。</div>
+            </div>
+            <div class="joke-card" data-joke>
+              <div class="setup">羞恥之心 → 知該做／不該做</div>
+              <div class="punch">孟子：有羞恥先有底線；冇底線就只剩「我以為冇人知」。</div>
+            </div>
+            <div class="joke-card" data-joke>
+              <div class="setup">仁義之心 → 尊嚴人格</div>
+              <div class="punch">君子要堂堂正正：成人之美、言行一致、不走歪路。</div>
+            </div>
+            <div class="joke-card" data-joke>
+              <div class="setup">笑場進度條（班房氣氛）</div>
+              <div class="punch">笑完請舉手：邊個而家記得「憐憫＋羞恥→尊嚴」？<div class="laugh-meter"><i data-laugh style="width:12%"></i></div></div>
+            </div>
           </div>
-          <div class="scene tap" data-tap>
-            <img src="./assets/char-student.png" alt="">
-            <div><span class="tag">操場</span><strong>見到有人被欺負</strong>
-            <p>裝冇睇見好安全？</p>
-            <div class="secret">取義：通報老師／陪伴求助</div></div>
+          <div class="hero-media" style="border-radius:16px;min-height:280px">
+            <img src="./assets/photo-heart.png" alt="心：憐憫與羞恥（真實雕塑照片）">
+            <div class="cap">心理基礎圖像 · 真圖去背 · 唔係 emoji 心心</div>
           </div>
-        </div>
-      </div>`
-    },
-    {
-      tone: "light",
-      html: `<div class="slide-inner">
-        <div class="kicker">以德服人</div>
-        <h2>班長對決：德 vs 力</h2>
-        <div class="vs">
-          <div class="side good"><img src="./assets/char-crown.png" alt=""><h3>德 · 王者</h3><p>真心帶頭 → <strong>心悅誠服</strong></p></div>
-          <div class="mid">PK</div>
-          <div class="side bad"><img src="./assets/char-fist.png" alt=""><h3>力 · 霸者</h3><p>恐嚇壓場 → <strong>暫時屈服</strong></p></div>
         </div>
       </div>`
     },
     {
       tone: "dark",
       html: `<div class="slide-inner">
-        <div class="kicker">人格論</div>
-        <div class="hero-row">
-          <div>
-            <h2>天賦尊嚴</h2>
-            <p class="lead">憐憫→知善惡<br>羞恥→知該／唔該做<br>→仁義→堂堂正正</p>
-            <div class="chip-row"><span class="chip">成人之美</span><span class="chip">言行一致</span></div>
-          </div>
-          <img class="hero-art" src="./assets/char-heart.png" alt="">
-        </div>
-      </div>`
-    },
-    {
-      tone: "light",
-      html: `<div class="slide-inner">
-        <div class="kicker">《孟子》速記</div>
-        <h2>三個數就夠上台</h2>
+        <div class="kicker">代表著作 · 速記＋理據</div>
+        <h2>《孟子》速記（老師愛聽呢啲）</h2>
         <div class="grid3">
-          <div class="panel stat"><b>7</b><span>篇（上下）</span></div>
+          <div class="panel stat"><b>7</b><span>篇（各分上下）</span></div>
           <div class="panel stat"><b>261</b><span>章左右</span></div>
-          <div class="panel stat"><b>語錄</b><span>言行記錄</span></div>
+          <div class="panel stat"><b>語錄</b><span>記錄言行</span></div>
         </div>
-        <div class="quote">下一頁：筆記理據（衝內容分）</div>
-      </div>`
-    },
-    {
-      tone: "dark",
-      html: `<div class="slide-inner">
-        <div class="kicker">內容分 · 理據</div>
-        <h2>上台一定要講到嘅句</h2>
-        <div class="grid2">
-          <div class="panel"><h3>舍生取義</h3>
-            <p>「生，亦我所欲也；義，亦我所欲也。二者不可得兼，舍生而取義。」（《孟子·告子上》）</p></div>
-          <div class="panel"><h3>三反其身</h3>
-            <p>愛人不親→反省仁；治人不得→反省智；禮人不答→反省敬。先求諸己。</p></div>
-          <div class="panel"><h3>以德服人</h3>
-            <p>德→心悅誠服；力→暫時屈服。君子以德服人。</p></div>
-          <div class="panel"><h3>天賦尊嚴</h3>
-            <p>憐憫＋羞恥→仁義→尊嚴人格；君子成人之美、言行一致。</p></div>
+        <div class="grid2" style="flex:1;min-height:0;margin-top:8px">
+          <div class="panel"><h3>上台必講</h3>
+            <ul>
+              <li>舍生取義原文出自《孟子·告子上》</li>
+              <li>德服／力服對比 → 心悅誠服 vs 暫時屈服</li>
+              <li>三反其身：仁／智／敬</li>
+              <li>憐憫＋羞恥 → 尊嚴人格</li>
+            </ul>
+            <p style="margin-top:10px">孟子吐嘈：記數字可以，但要識解釋「點解緊要」。</p>
+          </div>
+          <div class="img-frame cover"><img src="./assets/photo-loom.png" alt="孟母教子典故圖像"></div>
         </div>
       </div>`
     },
     {
       tone: "light",
-      html: `<div class="slide-inner">
-        <div class="kicker">動畫複習（可邊播邊講）</div>
-        <h2>五段 GIF · 對住 SCRIPT.md</h2>
-        <div class="grid3" style="align-items:start">
-          <div class="panel" style="text-align:center"><img src="./anim/01_de_vs_li.gif" alt="" style="width:100%;border-radius:10px"><p>德 vs 力</p></div>
-          <div class="panel" style="text-align:center"><img src="./anim/02_ren_ai.gif" alt="" style="width:100%;border-radius:10px"><p>仁愛謙和</p></div>
-          <div class="panel" style="text-align:center"><img src="./anim/04_yu_xiong.gif" alt="" style="width:100%;border-radius:10px"><p>舍生取義</p></div>
+      html: `<div class="slide-inner gag-stage">
+        <div class="kicker">Bonus · 角色吐嘈時間</div>
+        <h2>孟子專場：專寸你班日常</h2>
+        <p class="lead">撳掣換一句。內容係玩，重點仍然係筆記四字詞。</p>
+        <button type="button" class="gag-btn" data-roast>下一句孟子吐嘈</button>
+        <div class="bubble" data-roast-line style="font-size:1.35rem;margin-top:8px">準備好未？撳掣。</div>
+        <div class="chip-row">
+          <span class="chip">仁愛謙和</span>
+          <span class="chip">三反其身</span>
+          <span class="chip">舍生取義</span>
+          <span class="chip">以德服人</span>
+          <span class="chip">天賦尊嚴</span>
         </div>
-        <div class="quote">完整講稿：SCRIPT.md　高分攻略：HIGH_MARKS.md</div>
+        <div class="quote">玩完 → 轉盤抽人問答。近似答案都算對，唔好驚。</div>
       </div>`
     },
     {
       tone: "dark",
-      html: `<div class="slide-inner">
-        <div class="kicker">Game</div>
-        <h1>轉盤 · 彈出問答</h1>
-        <p class="lead">1–30 真隨機 → 問題＋提示彈出 → 金色掣睇正確＋近似答案 → 5 秒自動返回。</p>
-        <p class="cta-note">撳右下「開始轉盤遊戲」！</p>
-        <div class="motif"></div>
+      html: `<div class="hero-split">
+        <div class="hero-copy">
+          <div class="kicker">Game time</div>
+          <h1>轉盤抽人問答</h1>
+          <p class="lead">1–30 真隨機抽座號 → 問題＋提示彈出 → 撳金色掣睇正確答案同近似答案 → 5 秒自動返回轉盤。</p>
+          <p class="cta-note">撳右下「開始轉盤遊戲」！被抽中唔好喊——孟子話呢個叫「鍛鍊膽識」。</p>
+        </div>
+        <div class="hero-media">
+          <img src="./assets/photo-pupils.png" alt="課堂師生">
+          <div class="cap">全班一起玩 · 近似答案也算對</div>
+        </div>
       </div>`
     }
   ];
@@ -248,6 +377,11 @@
   let backTimer = null;
   let backRaf = null;
   let intendedWin = 0;
+  let mengI = 0;
+  let roastI = 0;
+  let fishHp = 0;
+  let bearHp = 0;
+  let laugh = 12;
 
   const COLORS = ["#1f7a55","#245c48","#c44b3c","#8a3a30","#d4a017","#9a7510","#2f6f8f","#1f4f66","#3d8b6e","#5a6b63"];
 
@@ -261,11 +395,156 @@
     });
   }
 
+  function wireComedy(root) {
+    // Mencius floating host
+    root.querySelectorAll("[data-meng-host]").forEach((host) => {
+      host.style.pointerEvents = "auto";
+      host.style.cursor = "pointer";
+      const line = host.querySelector("[data-meng-line]");
+      host.onclick = (e) => {
+        e.stopPropagation();
+        mengI = (mengI + 1) % MENG_LINES.length;
+        if (line) line.textContent = MENG_LINES[mengI];
+        celebrate();
+      };
+    });
+
+    // Fake bug boot on title
+    root.querySelectorAll("[data-bug-boot]").forEach((btn) => {
+      btn.onclick = () => {
+        const host = root.querySelector("[data-meng-line]");
+        if (host) host.textContent = "笑場模式 ON。請同學盡量出聲，老師會當你投入。";
+        btn.textContent = "✓ 已啟動：全班可以笑（內容仍然係孟子）";
+        celebrate();
+      };
+    });
+
+    // Force vs virtue
+    root.querySelectorAll("[data-force]").forEach((el) => {
+      el.onclick = () => {
+        el.classList.add("fall");
+        const v = root.querySelector("[data-virtue]");
+        if (v) v.classList.add("glow");
+        const msg = root.querySelector("[data-vote-msg]");
+        if (msg) msg.textContent = "力服跌倒了：暫時屈服冇用。孟子宣判——以德服人勝！";
+        celebrate();
+      };
+    });
+    root.querySelectorAll("[data-virtue]").forEach((el) => {
+      el.onclick = () => {
+        el.classList.add("glow");
+        const f = root.querySelector("[data-force]");
+        if (f) f.classList.add("fall");
+        const msg = root.querySelector("[data-vote-msg]");
+        if (msg) msg.textContent = "正確：以德服人 → 心悅誠服。班長請抄低呢句。";
+        celebrate();
+      };
+    });
+
+    // Mirror crack + glitch bug box
+    root.querySelectorAll("[data-mirror]").forEach((el) => {
+      el.onclick = () => {
+        el.classList.toggle("crack");
+        const g = root.querySelector("[data-glitch]");
+        if (g) {
+          g.classList.add("is-buggy");
+          setTimeout(() => g.classList.remove("is-buggy"), 900);
+        }
+      };
+    });
+    root.querySelectorAll("[data-glitch-btn]").forEach((btn) => {
+      btn.onclick = () => {
+        const box = root.querySelector("[data-bug-box]");
+        if (!box) return;
+        box.style.display = "block";
+        box.classList.remove("fixed");
+        box.textContent = "ERROR 503：找不到「別人錯」模組。建議安裝「三反其身.dll」……";
+        setTimeout(() => {
+          box.classList.add("fixed");
+          box.textContent = "FIXED：已載入三反其身——仁／智／敬。自己端正了，天下才會歸順。";
+          celebrate();
+        }, 900);
+      };
+    });
+
+    // Fish vs bear fight
+    root.querySelectorAll("[data-fight]").forEach((el) => {
+      el.onclick = () => {
+        const side = el.getAttribute("data-fight");
+        el.classList.remove("hit");
+        void el.offsetWidth;
+        el.classList.add("hit");
+        if (side === "fish") {
+          fishHp += 1;
+          const hp = root.querySelector("[data-fish-hp]");
+          if (hp) hp.textContent = `氣勢 ${fishHp}`;
+        } else {
+          bearHp += 1;
+          const hp = root.querySelector("[data-bear-hp]");
+          if (hp) hp.textContent = `氣勢 ${bearHp}`;
+        }
+        const total = fishHp + bearHp;
+        if (total >= 5) {
+          const fish = root.querySelector('[data-fight="fish"]');
+          const bear = root.querySelector('[data-fight="bear"]');
+          if (fish) { fish.classList.add("lose"); fish.classList.remove("win"); }
+          if (bear) { bear.classList.add("win"); bear.classList.remove("lose"); }
+          const msg = root.querySelector("[data-fight-msg]");
+          if (msg) msg.textContent = "裁判孟子：就算魚氣勢高，最後都要舍生取義——熊掌（義）勝！";
+          celebrate();
+        }
+      };
+    });
+
+    // Reveal stack
+    root.querySelectorAll("[data-reveal-next]").forEach((btn) => {
+      let step = 0;
+      const lines = root.querySelectorAll("[data-reveal-stack] .reveal-line");
+      const count = root.querySelector("[data-reveal-count]");
+      btn.onclick = () => {
+        if (step < lines.length) {
+          lines[step].classList.add("show");
+          step += 1;
+          if (count) count.textContent = `${step} / ${lines.length}`;
+          if (step === lines.length) celebrate();
+        } else {
+          lines.forEach((l) => l.classList.remove("show"));
+          step = 0;
+          if (count) count.textContent = `0 / ${lines.length}`;
+        }
+      };
+    });
+
+    // Joke cards + laugh meter
+    root.querySelectorAll("[data-joke]").forEach((card) => {
+      card.onclick = () => {
+        card.classList.toggle("open");
+        if (card.classList.contains("open")) {
+          laugh = Math.min(100, laugh + 22);
+          const bar = root.querySelector("[data-laugh]");
+          if (bar) bar.style.width = laugh + "%";
+        }
+      };
+    });
+
+    // Roast lines
+    root.querySelectorAll("[data-roast]").forEach((btn) => {
+      const line = root.querySelector("[data-roast-line]");
+      btn.onclick = () => {
+        roastI = (roastI + 1) % MENG_LINES.length;
+        if (line) line.textContent = MENG_LINES[roastI];
+        celebrate();
+      };
+    });
+  }
+
   function renderSlides() {
-    deckEl.innerHTML = SLIDES.map(
-      (s, i) => `<article class="slide ${s.tone}${i === 0 ? " on" : ""}">${s.html}</article>`
-    ).join("");
+    deckEl.innerHTML = SLIDES.map((s, i) => {
+      const bleed = s.html.includes("hero-split") ? " bleed" : "";
+      return `<article class="slide ${s.tone}${bleed}${i === 0 ? " on" : ""}">${s.html}</article>`;
+    }).join("");
     wireTaps(deckEl);
+    wireComedy(deckEl);
     updateDeckUI();
   }
 
@@ -493,7 +772,6 @@
     const n = numbers.length;
     intendedWin = randInt(n);
     const arc = (Math.PI * 2) / n;
-    // Pointer at top (-PI/2). Land near center of intended segment.
     const land =
       (Math.PI * 2) -
       (intendedWin * arc + arc * 0.5) -
@@ -518,11 +796,8 @@
       if (p < 1) requestAnimationFrame(frame);
       else {
         spinning = false;
-        // Force exact intended winner (true random already chosen)
         picked = numbers[intendedWin];
-        // Snap rotation so intended segment is under pointer
         rotation = (Math.PI * 2) - (intendedWin * arc + arc * 0.5) - Math.PI / 2;
-        // normalize visually via redraw with consistent formula used in drawWheel
         rotation = rotation - Math.floor(rotation / (Math.PI * 2)) * (Math.PI * 2);
         drawWheel();
         $("pickedNum").textContent = String(picked);
@@ -556,13 +831,12 @@
     }
   });
 
-  // boot
   try {
     renderSlides();
     drawWheel();
     hide(qModal);
     hide(aModal);
-    console.log("[mx5g] ready · questions:", bank().length);
+    console.log("[mx5g] ready · funny mode · questions:", bank().length);
   } catch (err) {
     console.error(err);
     document.body.insertAdjacentHTML(
