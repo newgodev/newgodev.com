@@ -66,7 +66,7 @@
         </div>
         <div class="hero-media">
           <img src="./assets/photo-mencius.png" alt="孟子古典畫像">
-          <div class="cap">孟子（孟軻）· 古典半身畫像（非真人照片）</div>
+          <div class="cap">孟子（孟軻）· 古典半身畫像</div>
         </div>
       </div>`
     },
