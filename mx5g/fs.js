@@ -1,4 +1,4 @@
-/* iPad-first fullscreen helper */
+/* iPad-first fullscreen helper — never cover the whole deck with help */
 (function (global) {
   "use strict";
 
@@ -8,11 +8,6 @@
       window.matchMedia("(display-mode: standalone)").matches ||
       window.matchMedia("(display-mode: fullscreen)").matches
     );
-  }
-
-  function isIOS() {
-    const ua = navigator.userAgent || "";
-    return /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
   }
 
   function isFs() {
@@ -64,14 +59,10 @@
     if (box) box.classList.remove("open");
   }
 
-  function markStandalone() {
-    if (isStandalone()) document.documentElement.classList.add("standalone");
-  }
-
   function syncButtons() {
     document.querySelectorAll("[data-fs-btn]").forEach((btn) => {
       if (isStandalone()) {
-        btn.style.display = "none";
+        btn.textContent = "已全螢幕";
         return;
       }
       btn.textContent = isFs() ? "退出全螢幕" : "全螢幕";
@@ -79,8 +70,9 @@
   }
 
   async function toggleFs() {
+    closeHelp();
     if (isStandalone()) {
-      openHelp();
+      syncButtons();
       return;
     }
     if (isFs()) {
@@ -91,11 +83,10 @@
     try {
       await requestFs(document.documentElement);
       syncButtons();
-      // If still not fullscreen (common on older iPad Safari), show help
       setTimeout(() => {
-        if (!isFs()) openHelp();
+        if (!isFs()) openHelp(); // small toast only — not a full-screen blocker
         syncButtons();
-      }, 350);
+      }, 400);
     } catch (_) {
       openHelp();
       syncButtons();
@@ -103,7 +94,7 @@
   }
 
   function wire() {
-    markStandalone();
+    if (isStandalone()) document.documentElement.classList.add("standalone");
     syncButtons();
     document.querySelectorAll("[data-fs-btn]").forEach((btn) => {
       btn.addEventListener("click", (e) => {

@@ -545,7 +545,8 @@
     } else {
       hide(deckEl);
       show(gameEl);
-      deckNav.classList.add("is-hide");
+      // Keep bottom 上一頁/下一頁/轉盤 bar visible in game mode too
+      deckNav.classList.remove("is-hide");
       $("progressBar").style.width = "100%";
       drawWheel();
     }
@@ -554,10 +555,15 @@
   $("modeDeck").onclick = () => setMode("deck");
   $("modeGame").onclick = () => setMode("game");
   $("prevBtn").onclick = () => {
+    if (mode === "game") {
+      setMode("deck");
+      return;
+    }
     idx = Math.max(0, idx - 1);
     updateDeckUI();
   };
   $("nextBtn").onclick = () => {
+    if (mode === "game") return;
     if (idx < SLIDES.length - 1) {
       idx += 1;
       updateDeckUI();
@@ -832,7 +838,7 @@
     drawWheel();
     hide(qModal);
     hide(aModal);
-    console.log("[mx5g] ready · funny mode · questions:", bank().length);
+    console.log("[mx5g] ready · questions:", bank().length);
   } catch (err) {
     console.error(err);
     document.body.insertAdjacentHTML(

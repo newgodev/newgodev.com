@@ -7,375 +7,115 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="孟子簡報">
-<meta name="theme-color" content="#0e1714">
+<meta name="theme-color" content="#0f1a16">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="apple-touch-icon" href="./assets/icon-192.png">
-<title>3G 第5組｜孟子 · Reveal.js 簡報</title>
-<link rel="stylesheet" href="./vendor/reveal/dist/reset.css">
-<link rel="stylesheet" href="./vendor/reveal/dist/reveal.css">
-<link rel="stylesheet" href="./theme-mx5g.css">
+<title>3G 第5組｜孟子 · 簡報＋轉盤</title>
+<link rel="stylesheet" href="./style.css?v=20251123b">
 </head>
 <body>
-<div id="rotateHint">請把 iPad <strong>打橫</strong>（橫向）再演講報</div>
+<canvas id="fx" aria-hidden="true"></canvas>
+<img class="fx-burst" id="burstImg" src="./assets/burst.gif" alt="">
+<img class="fx-confetti" id="confettiImg" src="./assets/confetti.png" alt="">
 
-<div id="ipadHelp" role="dialog" aria-modal="true" aria-labelledby="ipadHelpTitle">
-  <div class="sheet">
-    <h2 id="ipadHelpTitle">iPad 全螢幕</h2>
-    <div class="warn">Safari 有時會擋網頁全螢幕。最穩係「加入主畫面」再開，就冇網址列。</div>
-    <ol>
-      <li>先把 iPad <strong>打橫</strong></li>
-      <li>撳底部分享掣 <strong>□↑</strong></li>
-      <li>揀 <strong>加入主畫面</strong> → 加入</li>
-      <li>去主畫面撳 <strong>孟子簡報</strong> 圖示打開＝真正全螢幕</li>
-    </ol>
-    <div class="ok">或者撳下面「再試一次」——新版 iPadOS Safari 有時可以直接全螢幕。</div>
-    <div class="row">
-      <button type="button" class="primary" id="ipadHelpTry">再試一次全螢幕</button>
-      <button type="button" class="ghost" id="ipadHelpClose">關閉</button>
+<header class="topbar">
+  <div class="brand">
+    <span class="mark"></span>
+    <div>
+      <strong>3G 第5組 · 孟子</strong>
+      <small>仁愛謙和 · 轉盤問答</small>
+    </div>
+  </div>
+  <nav class="modes">
+    <button type="button" class="mode on" id="modeDeck">簡報</button>
+    <button type="button" class="mode" id="modeGame">轉盤</button>
+  </nav>
+  <button type="button" class="mode gold" data-fs-btn>全螢幕</button>
+  <div class="progress"><i id="progressBar"></i></div>
+</header>
+
+<main id="deck" class="stage"></main>
+
+<section id="game" class="game is-hide" aria-label="轉盤">
+  <div class="wheel-only">
+    <div class="wheel-wrap">
+      <img class="wheel-glow" src="./assets/wheel-glow.png" alt="">
+      <div class="pointer"></div>
+      <canvas id="wheel" width="560" height="560"></canvas>
+      <div class="hub" id="hub">
+        <span>抽座號</span>
+        <b id="pickedNum">?</b>
+      </div>
+    </div>
+    <div class="wheel-actions">
+      <button type="button" class="btn primary big" id="spinBtn">轉盤抽人</button>
+      <button type="button" class="btn ghost" id="reshuffleBtn">重設 1–30</button>
+    </div>
+    <p class="hintline">抽中 → 問題＋提示 → 揭曉答案／近似 → 5 秒返轉盤</p>
+    <p class="scoreline">累積分：<b id="scorePill">0</b> · 已玩 <b id="playedPill">0</b> 題</p>
+  </div>
+</section>
+
+<div class="modal is-hide" id="qModal">
+  <div class="modal-card">
+    <div class="modal-top">
+      <span class="pill" id="diffPill">易</span>
+      <span class="who-badge" id="whoBadge">座號 ?</span>
+    </div>
+    <h2 id="qTitle">問題</h2>
+    <div class="choices" id="choices"></div>
+    <div class="hint-box">
+      <div class="hint-label">提示</div>
+      <p id="hintText"></p>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn accent big" id="showAnswerBtn">揭曉正確答案＋近似答案</button>
     </div>
   </div>
 </div>
 
-<div class="reveal">
-  <div class="slides">
-
-    <!-- 1 cover -->
-    <section data-background="linear-gradient(145deg,#0e1714,#173028 55%,#101c18)">
-      <div class="hero">
-        <div>
-          <p class="kicker">3G 第5組 · 中文單元二</p>
-          <h1>孟子：仁愛謙和</h1>
-          <p class="lead">用校園例子講清楚四字詞同理據。<br>
-          撳金色掣開全螢幕；用底欄翻頁；最後用轉盤問答。</p>
-          <p style="margin:.7em 0 0;display:flex;flex-wrap:wrap;gap:10px;align-items:center">
-            <button type="button" class="btn-link" data-fs-btn style="border:0;cursor:pointer;font:inherit;margin:0">全螢幕</button>
-          </p>
-          <div class="chip-row">
-            <span class="chip">仁愛謙和</span>
-            <span class="chip">三反其身</span>
-            <span class="chip">舍生取義</span>
-            <span class="chip">以德服人</span>
-          </div>
-        </div>
-        <div>
-          <img src="./assets/photo-mencius.png" alt="孟子古典畫像">
-          <p class="cap">孟子古典畫像（唔用人臉相）</p>
-        </div>
-      </div>
-      <aside class="notes">開場：範圍頁 11–12、14；之後轉盤考全班。</aside>
-    </section>
-
-    <!-- 2 map -->
-    <section data-background="#f4efe4" class="light-slide">
-      <p class="kicker">範圍地圖 · 老師要聽清楚</p>
-      <h2>第5組只攻這些筆記</h2>
-      <div class="grid2">
-        <div class="panel light">
-          <h3>頁 11–12</h3>
-          <ul>
-            <li class="fragment fade-up">仁愛謙和：仁愛、恭敬謙讓、和為貴</li>
-            <li class="fragment fade-up">三反其身（自我反省）</li>
-            <li class="fragment fade-up">舍生取義（魚與熊掌）</li>
-            <li class="fragment fade-up">以德服人 vs 以力服人</li>
-          </ul>
-        </div>
-        <div class="panel light">
-          <h3>頁 14</h3>
-          <ul>
-            <li class="fragment fade-up">人格論：天賦尊嚴</li>
-            <li class="fragment fade-up">憐憫之心、羞恥之心</li>
-            <li class="fragment fade-up">成人之美、言行一致</li>
-            <li class="fragment fade-up">《孟子》七篇／語錄</li>
-          </ul>
-        </div>
-      </div>
-      <div class="quote-box fragment">評分：內容＋理據 70%｜清晰好玩 30%</div>
-    </section>
-
-    <!-- 3 vote -->
-    <section data-background="linear-gradient(145deg,#0e1714,#173028)">
-      <p class="kicker">開場互動 · 全班舉手</p>
-      <h2>如果你是班長，你揀邊種？</h2>
-      <div class="vs" style="margin-top:1em">
-        <div class="side bad fragment fade-right">
-          <img src="./assets/photo-classroom.png" alt="古典教子圖">
-          <h3>以力服人</h3>
-          <p>恐嚇／罰分 → <strong>暫時屈服</strong></p>
-        </div>
-        <div class="mid fragment">VS</div>
-        <div class="side good fragment fade-left">
-          <img src="./assets/photo-students.png" alt="古典教子圖">
-          <h3>以德服人</h3>
-          <p>公道／帶頭 → <strong>心悅誠服</strong></p>
-        </div>
-      </div>
-      <div class="quote-box fragment">孟子：君子應該以德服人，不是只靠外力強迫。</div>
-    </section>
-
-    <!-- 4 ren ai -->
-    <section data-background="#f4efe4" class="light-slide">
-      <p class="kicker">仁愛謙和 · 三種校園做法</p>
-      <h2>一個精神，三種做法</h2>
-      <div class="grid3" style="margin-top:.6em">
-        <div class="panel light fragment fade-up">
-          <img src="./assets/photo-book.png" alt="古典書冊" style="width:70%;margin:0 auto;display:block">
-          <h3>① 仁愛</h3>
-          <p class="small">分享筆記——心存仁愛，不是換名氣。</p>
-        </div>
-        <div class="panel light fragment fade-up">
-          <img src="./assets/photo-pupils.png" alt="古典教子" style="width:70%;margin:0 auto;display:block">
-          <h3>② 恭敬謙讓</h3>
-          <p class="small">對師長同學有禮 → 得信任、少衝突。</p>
-        </div>
-        <div class="panel light fragment fade-up">
-          <img src="./assets/photo-loom.png" alt="孟母斷機" style="width:70%;margin:0 auto;display:block">
-          <h3>③ 和為貴</h3>
-          <p class="small">輸完仍一隊——和平安定靠仁愛之心。</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 5 san fan -->
-    <section data-background="#f4efe4" class="light-slide">
-      <p class="kicker">三反其身</p>
-      <h2>別人唔買帳？先反求諸己</h2>
-      <div class="grid2" style="margin-top:.5em">
-        <div>
-          <div class="panel light">
-            <p class="small" style="font-size:.7em;margin:0">「我對佢好好，點解疏遠我？」</p>
-          </div>
-          <div class="panel light" style="margin-top:14px">
-            <h3>孟子三步</h3>
-            <ul>
-              <li class="fragment">愛人不親 → 反省「仁」</li>
-              <li class="fragment">管人管不好 → 反省「智」</li>
-              <li class="fragment">禮敬沒有回禮 → 反省「敬」</li>
-            </ul>
-          </div>
-        </div>
-        <div style="text-align:center">
-          <img src="./assets/photo-mirror.png" alt="銅鏡圖" style="max-height:48vh;width:auto">
-          <p class="cap">銅鏡意象圖 · 自我反省</p>
-          <div class="punch fragment">自己端正了，天下才會歸順</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 6 yu xiong -->
-    <section data-background="linear-gradient(145deg,#0e1714,#173028)" data-auto-animate>
-      <p class="kicker">舍生取義 ·《孟子·告子上》</p>
-      <h2>魚 VS 熊掌</h2>
-      <div class="vs">
-        <div class="side bad" data-id="fish">
-          <img src="./assets/photo-fish.png" alt="魚·畫風">
-          <h3>魚 ≈ 生命／舒服</h3>
-          <p>想避麻煩、少得罪人</p>
-        </div>
-        <div class="mid">VS</div>
-        <div class="side good" data-id="bear">
-          <img src="./assets/photo-bear.png" alt="熊掌·畫風">
-          <h3>熊掌 ≈ 義</h3>
-          <p>誠信、公義、做人底線</p>
-        </div>
-      </div>
-      <div class="quote-box fragment">「二者不可得兼，舍生而取義。」</div>
-    </section>
-
-    <!-- 7 campus take yi -->
-    <section data-background="#f4efe4" class="light-slide">
-      <p class="kicker">校園版取義</p>
-      <h2>兩個場面，你會點揀？</h2>
-      <div class="grid2" style="margin-top:.5em">
-        <div class="panel light">
-          <img src="./assets/photo-book.png" alt="書" style="width:45%;margin:0 auto;display:block">
-          <h3>考試：好友要你傳答案</h3>
-          <p class="small">幫＝人情；拒絕＝得罪人？</p>
-          <div class="punch fragment">取義：拒絕作弊，改為幫温習＝守誠信<br>孟子：人情唔可以食義。</div>
-        </div>
-        <div class="panel light">
-          <img src="./assets/photo-loom.png" alt="古典畫" style="width:45%;margin:0 auto;display:block">
-          <h3>操場：見到有人被欺負</h3>
-          <p class="small">裝看不見較安全？</p>
-          <div class="punch fragment">取義：通報老師／陪伴求助＝義 &gt; 怕事<br>孟子：裝盲＝力服恐懼。</div>
-        </div>
-      </div>
-      <div class="quote-box fragment">不是叫人亂送命，而是價值排序：義禮 &gt; 只顧舒服</div>
-    </section>
-
-    <!-- 8 de vs li -->
-    <section data-background="linear-gradient(145deg,#0e1714,#173028)">
-      <p class="kicker">以德服人</p>
-      <h2>王者路 vs 霸者路</h2>
-      <div class="vs" style="margin-top:.8em">
-        <div class="side good fragment fade-up">
-          <img src="./assets/photo-mencius2.png" alt="孟子">
-          <h3>德 · 王者</h3>
-          <p>出於仁愛真心 → <strong>心悅誠服</strong></p>
-        </div>
-        <div class="mid fragment">PK</div>
-        <div class="side bad fragment fade-up">
-          <img src="./assets/photo-classroom.png" alt="古典畫">
-          <h3>力 · 霸者</h3>
-          <p>假借仁義／武力 → <strong>暫時屈服</strong></p>
-        </div>
-      </div>
-      <div class="quote-box fragment grow">匯報金句：心服才長久，力屈只一時。</div>
-    </section>
-
-    <!-- 9 dignity -->
-    <section data-background="#f4efe4" class="light-slide">
-      <p class="kicker">人格論 · 頁14</p>
-      <h2>天賦尊嚴</h2>
-      <div class="hero" style="margin-top:.4em">
-        <div>
-          <ul style="font-size:.7em;line-height:1.6">
-            <li class="fragment">憐憫之心 → 知善惡</li>
-            <li class="fragment">羞恥之心 → 知該做／不該做</li>
-            <li class="fragment">→ 仁義之心 → <strong>尊嚴人格</strong></li>
-          </ul>
-          <div class="chip-row fragment">
-            <span class="chip" style="background:rgba(27,94,69,.12);color:#1b5e45">成人之美</span>
-            <span class="chip" style="background:rgba(27,94,69,.12);color:#1b5e45">言行一致</span>
-            <span class="chip" style="background:rgba(27,94,69,.12);color:#1b5e45">不走歪路</span>
-          </div>
-          <div class="quote-box fragment">君子要堂堂正正做人：這是天賦尊嚴。</div>
-        </div>
-        <div>
-          <img src="./assets/photo-heart.png" alt="古典畫意象">
-          <p class="cap">古典畫意象 · 唔用真人臉相</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- 10 book -->
-    <section data-background="linear-gradient(145deg,#0e1714,#173028)">
-      <p class="kicker">代表著作</p>
-      <h2>《孟子》速記</h2>
-      <div class="grid3" style="margin-top:.8em">
-        <div class="panel fragment"><h3 style="font-size:2.2em;margin:0;color:var(--gold2)">7</h3><p class="small">篇（各分上下）</p></div>
-        <div class="panel fragment"><h3 style="font-size:2.2em;margin:0;color:var(--gold2)">261</h3><p class="small">章左右</p></div>
-        <div class="panel fragment"><h3 style="font-size:1.6em;margin:0;color:var(--gold2)">語錄</h3><p class="small">記錄言行</p></div>
-      </div>
-      <div class="grid2" style="margin-top:18px">
-        <div class="panel fragment">
-          <h3>上台必講</h3>
-          <ul>
-            <li>舍生取義出自《孟子·告子上》</li>
-            <li>德服／力服：心悅誠服 vs 暫時屈服</li>
-            <li>三反其身：仁／智／敬</li>
-            <li>憐憫＋羞恥 → 尊嚴</li>
-          </ul>
-        </div>
-        <div class="fragment" style="text-align:center">
-          <img src="./assets/photo-loom.png" alt="孟母教子" style="max-height:40vh">
-          <p class="cap">孟母教子典故古典畫</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- wheel stays INSIDE this deck (same fullscreen) -->
-    <section id="wheelSlide" data-background="linear-gradient(145deg,#0e1714,#101c18)" data-wheel-slide>
-      <p class="kicker">Game time · 唔會離開簡報</p>
-      <h2 style="margin:0 0 .3em">轉盤抽人問答</h2>
-      <div class="wheel-embed">
-        <div class="wheel-box">
-          <div class="pointer"></div>
-          <canvas id="wheel" width="560" height="560"></canvas>
-          <div class="hub" id="hub"><span>抽座號</span><b id="pickedNum">?</b></div>
-        </div>
-        <div class="wheel-actions">
-          <button type="button" class="dock-btn primary" id="spinBtn">轉盤抽人</button>
-          <button type="button" class="dock-btn ghost" id="reshuffleBtn">重設 1–30</button>
-        </div>
-        <p class="wheel-meta">累積分 <b id="scorePill">0</b> · 已玩 <b id="playedPill">0</b> · 近似答案都算對</p>
-      </div>
-    </section>
-
-  </div>
-</div>
-
-<!-- always-on iPad dock: stays in fullscreen -->
-<nav class="ipad-dock" id="ipadDock" aria-label="簡報控制">
-  <button type="button" class="dock-btn" id="dockPrev">上一頁</button>
-  <button type="button" class="dock-btn primary" id="dockNext">下一頁</button>
-  <button type="button" class="dock-btn accent" id="dockWheel">轉盤</button>
-  <button type="button" class="dock-btn gold" data-fs-btn>全螢幕</button>
-</nav>
-
-<div class="modal hide" id="qModal">
-  <div class="card">
-    <div class="top"><span class="pill" id="diffPill">易</span><span class="who" id="whoBadge">座號 ?</span></div>
-    <h2 id="qTitle">問題</h2>
-    <div class="choices" id="choices"></div>
-    <div class="hint"><div class="hl">提示</div><p id="hintText"></p></div>
-    <button type="button" class="dock-btn accent" id="showAnswerBtn">揭曉正確答案＋近似答案</button>
-  </div>
-</div>
-<div class="modal hide" id="aModal">
-  <div class="card">
-    <div class="top"><span class="pill soft">答案卡</span><span id="countdown">5 秒後返回</span></div>
+<div class="modal is-hide" id="aModal">
+  <div class="modal-card answer">
+    <div class="modal-top">
+      <span class="pill soft">答案卡</span>
+      <span class="countdown" id="countdown">5 秒後返回轉盤</span>
+    </div>
     <h2>正確答案</h2>
-    <p class="ans" id="revealText"></p>
-    <h3>近似答案</h3>
-    <p id="nearText"></p>
+    <p class="final-ans" id="revealText"></p>
+    <h3>近似答案（這樣講都 OK）</h3>
+    <p class="near-ans" id="nearText"></p>
     <p class="explain" id="explainText"></p>
-    <button type="button" class="dock-btn primary" id="backNowBtn">立刻返回轉盤</button>
-    <div class="barline"><i id="cdBar"></i></div>
+    <div class="modal-actions">
+      <button type="button" class="btn primary" id="backNowBtn">立刻返回轉盤</button>
+    </div>
+    <div class="bar"><i id="cdBar"></i></div>
   </div>
 </div>
 
-<script src="./fs.js"></script>
-<script src="./questions.js"></script>
-<script src="./vendor/reveal/dist/reveal.js"></script>
-<script src="./vendor/reveal/plugin/notes/notes.js"></script>
-<script src="./wheel.js"></script>
+<footer class="deck-nav" id="deckNav">
+  <button type="button" class="btn ghost" id="prevBtn">上一頁</button>
+  <span id="pageLabel">1 / 1</span>
+  <button type="button" class="btn primary" id="nextBtn">下一頁</button>
+  <button type="button" class="btn accent" id="toGameBtn">轉盤 →</button>
+  <button type="button" class="btn gold" data-fs-btn>全螢幕</button>
+</footer>
+
+<div id="ipadHelp" role="dialog" aria-modal="true" aria-labelledby="ipadHelpTitle">
+  <div class="sheet">
+    <h2 id="ipadHelpTitle">iPad 全螢幕</h2>
+    <p>Safari 有時擋網頁全螢幕。最穩：分享 → <strong>加入主畫面</strong> → 再開「孟子簡報」。</p>
+    <div class="row">
+      <button type="button" class="btn primary" id="ipadHelpTry">再試一次</button>
+      <button type="button" class="btn ghost" id="ipadHelpClose">關閉</button>
+    </div>
+  </div>
+</div>
+
+<script src="./questions.js?v=20251123b"></script>
+<script src="./fs.js?v=20251123b"></script>
+<script src="./app.js?v=20251123b"></script>
 <script>
-  Reveal.initialize({
-    hash: true,
-    controls: true,
-    controlsTutorial: false,
-    controlsLayout: "bottom-right",
-    progress: true,
-    center: false,
-    touch: true,
-    loop: false,
-    transition: "slide",
-    backgroundTransition: "fade",
-    width: 1280,
-    height: 720,
-    margin: 0.08,
-    minScale: 0.2,
-    maxScale: 2,
-    plugins: [RevealNotes]
-  }).then(() => {
-    MX5FS.wire();
-
-    const dock = document.getElementById("ipadDock");
-    dock.addEventListener("click", (e) => e.stopPropagation());
-    dock.addEventListener("touchstart", (e) => e.stopPropagation(), { passive: true });
-
-    document.getElementById("dockPrev").onclick = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      Reveal.prev();
-    };
-    document.getElementById("dockNext").onclick = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      Reveal.next();
-    };
-    document.getElementById("dockWheel").onclick = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      // Jump to embedded wheel slide — stay in same fullscreen page
-      const slides = Reveal.getSlides();
-      let idx = slides.length - 1;
-      for (let i = 0; i < slides.length; i++) {
-        if (slides[i].hasAttribute("data-wheel-slide")) { idx = i; break; }
-      }
-      Reveal.slide(idx);
-    };
-  });
+  if (window.MX5FS) MX5FS.wire();
 </script>
 </body>
 </html>
