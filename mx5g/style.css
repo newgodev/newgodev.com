@@ -200,14 +200,36 @@ h1,h2,h3{font-family:var(--serif);margin:0;line-height:1.15}
 .fighter.lose{filter:grayscale(1) brightness(.7);transform:rotate(-8deg) scale(.92)}
 .fighter.win{transform:scale(1.06);border-color:var(--jade2);box-shadow:0 0 0 4px rgba(42,143,102,.25)}
 @keyframes wobble{0%,100%{transform:rotate(0)}25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}
-.force-card,.virtue-card{
-  cursor:pointer;border-radius:16px;padding:18px;text-align:center;
-  transition:transform .45s cubic-bezier(.2,1.4,.3,1),opacity .35s;
+.vs-pick{
+  display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:stretch;
+  flex:1;min-height:0;
 }
-.force-card{background:rgba(181,61,50,.16);border:2px solid rgba(181,61,50,.4)}
-.virtue-card{background:rgba(42,143,102,.16);border:2px solid rgba(42,143,102,.4)}
-.force-card.fall{transform:rotate(18deg) translateY(40px);opacity:.35}
-.virtue-card.glow{transform:scale(1.05);box-shadow:0 0 0 6px rgba(42,143,102,.2)}
+.vs-mid{
+  align-self:center;font-family:var(--serif);font-weight:900;font-size:1.4rem;
+  color:var(--gold2);opacity:.85;
+}
+.force-card,.virtue-card{
+  cursor:pointer;border-radius:16px;padding:14px 12px;text-align:center;
+  transition:opacity .3s,filter .3s,box-shadow .3s,border-color .3s;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;
+  font:inherit;color:inherit;width:100%;min-height:0;
+}
+.force-card img,.virtue-card img{
+  width:min(220px,38vw);max-height:38vh;object-fit:contain;display:block;
+  border-radius:8px;background:rgba(0,0,0,.2);
+}
+.force-card{background:rgba(181,61,50,.16);border:2px solid rgba(181,61,50,.45)}
+.virtue-card{background:rgba(42,143,102,.16);border:2px solid rgba(42,143,102,.45)}
+.force-card h3,.virtue-card h3{margin:0;font-size:clamp(1.2rem,2.4vw,1.6rem)}
+.force-card p,.virtue-card p{margin:0;font-size:clamp(.95rem,1.6vw,1.15rem);line-height:1.4;opacity:.92}
+/* No crazy rotate — keep layout stable on iPad */
+.force-card.fall{opacity:.45;filter:grayscale(1);border-color:rgba(255,255,255,.2)}
+.virtue-card.glow{border-color:var(--jade2);box-shadow:0 0 0 4px rgba(42,143,102,.28)}
+@media (max-width:900px){
+  .vs-pick{grid-template-columns:1fr;gap:10px}
+  .vs-mid{text-align:center}
+  .force-card img,.virtue-card img{max-height:22vh}
+}
 .mirror-zone{position:relative;cursor:pointer;border-radius:16px;overflow:hidden;min-height:0;flex:1}
 .mirror-zone img{width:100%;height:100%;object-fit:contain;display:block;transition:filter .3s,transform .35s}
 .mirror-zone.crack img{filter:contrast(1.35) saturate(.55) hue-rotate(-10deg);animation:crackFlash .55s ease;transform:scale(1.03) rotate(-1deg)}

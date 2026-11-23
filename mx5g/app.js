@@ -100,21 +100,22 @@
     },
     {
       tone: "dark",
-      html: `<div class="slide-inner gag-stage">
+      html: `<div class="slide-inner">
         <div class="kicker">開場互動 · 全班投票</div>
         <h2>如果你是班長，你揀邊種？</h2>
-        <p class="lead">撳左邊／右邊——睇邊個會「跌倒」。</p>
-        <div class="grid2 eq">
-          <div class="force-card" data-force>
-            <img src="./assets/photo-classroom.png" alt="古典教子圖" style="width:min(260px,70%);margin:0 auto;display:block;object-fit:contain">
+        <p class="lead">撳左邊或右邊作答。</p>
+        <div class="vs-pick">
+          <button type="button" class="force-card" data-force>
+            <img src="./assets/photo-bear.png" alt="古典熊掌圖 · 力">
             <h3>以力服人</h3>
-            <p>靠恐嚇、罰分、大聲嗌<br>→ 暫時屈服</p>
-          </div>
-          <div class="virtue-card" data-virtue>
-            <img src="./assets/photo-students.png" alt="古典教子圖" style="width:min(260px,70%);margin:0 auto;display:block;object-fit:contain">
+            <p>恐嚇／罰分／大聲嗌<br>→ <strong>暫時屈服</strong></p>
+          </button>
+          <div class="vs-mid">VS</div>
+          <button type="button" class="virtue-card" data-virtue>
+            <img src="./assets/photo-mencius.png" alt="孟子古典畫像 · 德">
             <h3>以德服人</h3>
-            <p>公道、帶頭、聽意見<br>→ 心悅誠服</p>
-          </div>
+            <p>公道／帶頭／聽意見<br>→ <strong>心悅誠服</strong></p>
+          </button>
         </div>
         <div class="quote proof" data-vote-msg>孟子：君子應該以德服人，不是只靠外力強迫。（撳卡先）</div>
       </div>`
