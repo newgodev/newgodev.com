@@ -117,7 +117,7 @@
         <p class="lead">撳左邊或右邊作答。</p>
         <div class="vs-pick">
           <button type="button" class="force-card" data-force>
-            <img src="./assets/photo-bear.png" alt="古典熊掌圖 · 力">
+            <img src="./assets/photo-hand.png" alt="古典手掌木刻 · 三道刮痕（無血）">
             <h3>以力服人</h3>
             <p>恐嚇／罰分／大聲嗌<br>→ <strong>暫時屈服</strong></p>
           </button>
@@ -210,7 +210,7 @@
             <span class="chip" data-fish-hp>氣勢 0</span>
           </div>
           <div class="fighter bear" data-fight="bear">
-            <img src="./assets/photo-bear.png" alt="熊掌：版畫風">
+            <img src="./assets/photo-bear.png" alt="熊 · 古典木刻">
             <h3>熊掌 ≈ 義</h3>
             <p>誠信、公義、做人底線</p>
             <span class="chip" data-bear-hp>氣勢 0</span>

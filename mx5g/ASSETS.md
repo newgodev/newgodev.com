@@ -25,7 +25,8 @@
 | `photo-mencius.png` / `photo-mencius2.png` | 孟子古典半身畫像 |
 | `photo-students.png` 等 | 古典教子畫（Educating a Son） |
 | `photo-loom.png` | 孟母教子典故畫 |
-| `photo-fish.png` / `photo-bear.png` | 畫風魚／熊掌 |
+| `photo-fish.png` / `photo-bear.png` | 魚圖／古典木刻熊（非 Python 幾何圖） |
+| `photo-hand.png` | 古典手掌木刻＋三道刮痕（無血）· 以力服人 |
 | `photo-mirror.png` / `photo-book.png` | 銅鏡／書冊畫風 |
 | `photo-heart.png` | 古典畫意象 |
 
