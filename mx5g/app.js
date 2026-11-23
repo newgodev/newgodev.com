@@ -649,15 +649,7 @@
   }
 
   function celebrate() {
-    const burst = $("burstImg");
-    const conf = $("confettiImg");
-    burst.classList.add("show");
-    conf.classList.add("show");
-    burst.src = "./assets/burst.gif?" + Date.now();
-    setTimeout(() => {
-      burst.classList.remove("show");
-      conf.classList.remove("show");
-    }, 1200);
+    // no spark / burst / confetti
   }
 
   function pickQuestion() {

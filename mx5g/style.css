@@ -18,11 +18,6 @@ body{
   font-family:var(--sans);color:var(--ink);
   background:#0b1210;overflow:hidden;
 }
-#fx{position:fixed;inset:0;pointer-events:none;z-index:40}
-.fx-burst,.fx-confetti{position:fixed;pointer-events:none;z-index:41;left:50%;top:40%;transform:translate(-50%,-50%);width:min(420px,70vw);opacity:0}
-.fx-burst.show,.fx-confetti.show{opacity:1}
-.fx-confetti{top:14%;width:min(920px,96vw);mix-blend-mode:screen}
-
 .topbar{
   position:fixed;top:0;left:0;right:0;z-index:30;
   display:flex;align-items:center;gap:10px;flex-wrap:wrap;
