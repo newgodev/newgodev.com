@@ -62,18 +62,18 @@
           呢個唔係靜態 PPT——<strong>每頁都撳得</strong>，孟子會出嚟吐嘈你。</p>
           <button type="button" class="gag-btn" data-bug-boot>⚠ 系統偵測：同學太清醒 → 啟動笑場模式</button>
           <div class="chip-row" style="margin-top:8px">
-            <span class="chip">真圖 · 唔用 emoji</span>
+            <span class="chip">古典畫像 · 無人臉照片</span>
             <span class="chip">撳完有 punchline</span>
-            <span class="chip">內容照樣有理據</span>
+            <span class="chip">全螢幕（iPad 適用）</span>
           </div>
-          <p class="click-hint">提示：撳金色掣 / 撳孟子 / 撳下一頁</p>
+          <p class="click-hint">提示：撳「全螢幕」→ 金色掣 → 孟子 → 下一頁</p>
         </div>
         <div class="hero-media">
-          <img src="./assets/photo-mencius.png" alt="孟子畫像">
-          <div class="cap">孟子（孟軻）· 公開領域畫像 · 今日客串吐嘈主持</div>
+          <img src="./assets/photo-mencius.png" alt="孟子古典畫像">
+          <div class="cap">孟子（孟軻）· 古典半身畫像（非真人照片）· 吐嘈主持</div>
           <div class="meng-host" data-meng-host>
             <div class="meng-bubble" data-meng-line>撳我！我有話想講…</div>
-            <img src="./assets/photo-mencius2.png" alt="孟子">
+            <img src="./assets/photo-mencius2.png" alt="孟子古典畫">
           </div>
         </div>
       </div>`
@@ -114,12 +114,12 @@
         <p class="lead">撳左邊／右邊——睇邊個會「跌倒」。</p>
         <div class="grid2 eq">
           <div class="force-card" data-force>
-            <img src="./assets/photo-classroom.png" alt="壓場" style="width:min(220px,50%);margin:0 auto;display:block;object-fit:contain">
+            <img src="./assets/photo-classroom.png" alt="古典教子圖" style="width:min(260px,70%);margin:0 auto;display:block;object-fit:contain">
             <h3>以力服人</h3>
             <p>靠恐嚇、罰分、大聲嗌<br>→ 暫時屈服</p>
           </div>
           <div class="virtue-card" data-virtue>
-            <img src="./assets/photo-students.png" alt="公道領導" style="width:min(220px,50%);margin:0 auto;display:block;object-fit:contain">
+            <img src="./assets/photo-students.png" alt="古典教子圖" style="width:min(260px,70%);margin:0 auto;display:block;object-fit:contain">
             <h3>以德服人</h3>
             <p>公道、帶頭、聽意見<br>→ 心悅誠服</p>
           </div>
@@ -134,7 +134,7 @@
         <h2>一個精神，三種「唔好做人憎」做法</h2>
         <div class="grid3">
           <div class="scene tap" data-tap>
-            <img src="./assets/photo-book.png" alt="書本">
+            <img src="./assets/photo-book.png" alt="古典書冊圖">
             <div>
               <span class="tag">① 仁愛</span>
               <strong>分享筆記</strong>
@@ -143,7 +143,7 @@
             </div>
           </div>
           <div class="scene tap" data-tap>
-            <img src="./assets/photo-pupils.png" alt="師生講學">
+            <img src="./assets/photo-pupils.png" alt="古典教子畫">
             <div>
               <span class="tag">② 恭敬謙讓</span>
               <strong>排隊有禮</strong>
@@ -152,7 +152,7 @@
             </div>
           </div>
           <div class="scene tap" data-tap>
-            <img src="./assets/photo-classroom.png" alt="課堂氣氛">
+            <img src="./assets/photo-loom.png" alt="孟母斷機古典畫">
             <div>
               <span class="tag">③ 和為貴</span>
               <strong>輸完仍一隊</strong>
@@ -200,13 +200,13 @@
         <p class="lead">玩法：狂撳你撐嘅一邊。孟子會宣判真正贏家（劇透：義）。</p>
         <div class="fight-arena">
           <div class="fighter fish" data-fight="fish">
-            <img src="./assets/photo-fish.png" alt="真魚照片">
+            <img src="./assets/photo-fish.png" alt="魚：水墨畫風">
             <h3>魚 ≈ 生命／舒服</h3>
             <p>想避麻煩、少得罪人</p>
             <span class="chip" data-fish-hp>氣勢 0</span>
           </div>
           <div class="fighter bear" data-fight="bear">
-            <img src="./assets/photo-bear.png" alt="真熊掌照片">
+            <img src="./assets/photo-bear.png" alt="熊掌：版畫風">
             <h3>熊掌 ≈ 義</h3>
             <p>誠信、公義、做人底線</p>
             <span class="chip" data-bear-hp>氣勢 0</span>
@@ -231,7 +231,7 @@
             </div>
           </div>
           <div class="scene tap" data-tap>
-            <img src="./assets/photo-students.png" alt="">
+            <img src="./assets/photo-loom.png" alt="古典畫">
             <div>
               <span class="tag">操場</span>
               <strong>見到有人被欺負</strong>
@@ -259,8 +259,8 @@
           <div class="reveal-line">匯報金句：<strong>心服才長久，力屈只一時。</strong></div>
         </div>
         <div class="grid2" style="flex:0;margin-top:8px">
-          <div class="img-frame" style="min-height:140px"><img src="./assets/photo-mencius2.png" alt="孟子"></div>
-          <div class="img-frame" style="min-height:140px"><img src="./assets/photo-classroom.png" alt="課堂"></div>
+          <div class="img-frame" style="min-height:160px"><img src="./assets/photo-mencius2.png" alt="孟子古典畫"></div>
+          <div class="img-frame" style="min-height:160px"><img src="./assets/photo-students.png" alt="古典教子畫"></div>
         </div>
       </div>`
     },
@@ -289,8 +289,8 @@
             </div>
           </div>
           <div class="hero-media" style="border-radius:16px;min-height:280px">
-            <img src="./assets/photo-heart.png" alt="心：憐憫與羞恥（真實雕塑照片）">
-            <div class="cap">心理基礎圖像 · 真圖去背 · 唔係 emoji 心心</div>
+            <img src="./assets/photo-heart.png" alt="古典畫：心性／九歌意象">
+            <div class="cap">古典畫意象 · 唔用真人臉 · 唔用 emoji</div>
           </div>
         </div>
       </div>`
@@ -347,8 +347,8 @@
           <p class="cta-note">撳右下「開始轉盤遊戲」！被抽中唔好喊——孟子話呢個叫「鍛鍊膽識」。</p>
         </div>
         <div class="hero-media">
-          <img src="./assets/photo-pupils.png" alt="課堂師生">
-          <div class="cap">全班一起玩 · 近似答案也算對</div>
+          <img src="./assets/photo-students.png" alt="古典教子畫">
+          <div class="cap">全班一起玩 · 近似答案也算對 · 古典畫</div>
         </div>
       </div>`
     }
@@ -468,8 +468,10 @@
     });
 
     // Fish vs bear fight
+    let fightOver = false;
     root.querySelectorAll("[data-fight]").forEach((el) => {
       el.onclick = () => {
+        if (fightOver) return;
         const side = el.getAttribute("data-fight");
         el.classList.remove("hit");
         void el.offsetWidth;
@@ -485,6 +487,7 @@
         }
         const total = fishHp + bearHp;
         if (total >= 5) {
+          fightOver = true;
           const fish = root.querySelector('[data-fight="fish"]');
           const bear = root.querySelector('[data-fight="bear"]');
           if (fish) { fish.classList.add("lose"); fish.classList.remove("win"); }
@@ -569,6 +572,7 @@
       hide(deckEl);
       show(gameEl);
       deckNav.classList.add("is-hide");
+      $("progressBar").style.width = "100%";
       drawWheel();
     }
   }
@@ -600,6 +604,23 @@
       [a[i], a[j]] = [a[j], a[i]];
     }
     return a;
+  }
+
+  // Wheel: rotation=0 puts segment 0 starting at the top.
+  // Pointer is fixed at the top; segment i is under the pointer when
+  // rotation === -(i*arc + arc/2) (normalized to [0, 2π)).
+  function normAngle(a) {
+    const t = Math.PI * 2;
+    a %= t;
+    return a < 0 ? a + t : a;
+  }
+  function rotationForIndex(i, n) {
+    const arc = (Math.PI * 2) / n;
+    return normAngle(-(i * arc + arc * 0.5));
+  }
+  function indexAtPointer(rot, n) {
+    const arc = (Math.PI * 2) / n;
+    return Math.floor(normAngle(-rot) / arc) % n;
   }
 
   function drawWheel() {
@@ -771,14 +792,13 @@
 
     const n = numbers.length;
     intendedWin = randInt(n);
-    const arc = (Math.PI * 2) / n;
-    const land =
-      (Math.PI * 2) -
-      (intendedWin * arc + arc * 0.5) -
-      (rotation % (Math.PI * 2));
-    const extra = (5 + Math.random() * 3) * Math.PI * 2;
-    const target = extra + ((land % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+    const finalRot = rotationForIndex(intendedWin, n);
     const start = rotation;
+    // Shortest forward distance (≥ full turns) from start → finalRot
+    let delta = normAngle(finalRot - normAngle(start));
+    if (delta < 0.0001) delta = Math.PI * 2;
+    const extra = (5 + Math.random() * 3) * Math.PI * 2;
+    const target = extra + delta;
     const dur = 4200;
     const t0 = performance.now();
     let lastSeg = -1;
@@ -788,7 +808,7 @@
       const p = Math.min(1, (now - t0) / dur);
       rotation = start + target * ease(p);
       drawWheel();
-      const seg = Math.floor((((Math.PI * 2) - ((rotation + Math.PI / 2) % (Math.PI * 2))) % (Math.PI * 2)) / arc) % n;
+      const seg = indexAtPointer(rotation, n);
       if (seg !== lastSeg) {
         tickSound();
         lastSeg = seg;
@@ -796,10 +816,12 @@
       if (p < 1) requestAnimationFrame(frame);
       else {
         spinning = false;
-        picked = numbers[intendedWin];
-        rotation = (Math.PI * 2) - (intendedWin * arc + arc * 0.5) - Math.PI / 2;
-        rotation = rotation - Math.floor(rotation / (Math.PI * 2)) * (Math.PI * 2);
+        rotation = finalRot;
         drawWheel();
+        // Trust geometry: hub must match whatever is under the pointer
+        const landed = indexAtPointer(rotation, n);
+        intendedWin = landed;
+        picked = numbers[landed];
         $("pickedNum").textContent = String(picked);
         $("hub").classList.add("win");
         openQuestionPopup();

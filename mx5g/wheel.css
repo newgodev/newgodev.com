@@ -1,0 +1,59 @@
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  font-family:"Noto Sans TC","PingFang HK","Microsoft JhengHei",sans-serif;
+  background:#0b1210;color:#eef4f0;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+.bar{
+  display:flex;align-items:center;gap:12px;justify-content:space-between;
+  padding:10px 14px;background:rgba(8,14,12,.95);border-bottom:1px solid rgba(255,255,255,.08);
+}
+.back,.fs{color:#efd39a;text-decoration:none;border:1px solid rgba(239,211,154,.35);background:transparent;
+  border-radius:999px;padding:8px 12px;font:inherit;font-weight:700;cursor:pointer}
+.wrap{max-width:560px;margin:0 auto;padding:16px;min-height:calc(100vh - 60px);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.wheel-box{position:relative;width:min(460px,88vw);aspect-ratio:1;margin:0 auto 14px}
+#wheel{width:100%;height:100%;border-radius:50%;display:block;box-shadow:0 0 0 6px rgba(239,211,154,.25),0 18px 50px rgba(0,0,0,.45);background:#0b1411}
+.pointer{position:absolute;top:-4px;left:50%;transform:translateX(-50%);z-index:5;width:0;height:0;
+  border-left:14px solid transparent;border-right:14px solid transparent;border-top:28px solid #efd39a}
+.hub{position:absolute;inset:36%;border-radius:50%;background:radial-gradient(circle at 40% 35%,#24483a,#0f1a16 70%);
+  border:3px solid rgba(239,211,154,.55);display:grid;place-items:center;text-align:center;z-index:3}
+.hub span{font-size:.72rem;opacity:.7}
+.hub b{font-family:"Noto Serif TC",serif;font-size:2.3rem;line-height:1;color:#efd39a}
+.hub.win{animation:pop .65s cubic-bezier(.2,1.4,.3,1)}
+@keyframes pop{0%{transform:scale(.7)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
+.actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+button.primary,button.accent,button.ghost{
+  border:0;border-radius:12px;padding:14px 20px;font:inherit;font-weight:800;cursor:pointer;min-width:140px
+}
+button.primary{background:linear-gradient(180deg,#2a8f66,#1b5e45);color:#fff}
+button.accent{background:linear-gradient(180deg,#efd39a,#c8962e);color:#1a1206}
+button.ghost{background:transparent;color:#eef4f0;border:1px solid rgba(255,255,255,.18)}
+button:disabled{opacity:.45}
+.meta{opacity:.75;font-size:.9rem;margin-top:12px}
+.meta b{color:#efd39a}
+.modal{position:fixed;inset:0;z-index:50;background:rgba(6,12,10,.8);display:flex;align-items:center;justify-content:center;padding:16px}
+.modal.hide{display:none!important}
+.card{width:min(640px,96vw);max-height:88vh;overflow:auto;background:linear-gradient(165deg,#15241e,#0f1a16 70%);
+  border-radius:20px;padding:22px;border:1px solid rgba(239,211,154,.3)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.pill{font-size:.75rem;font-weight:700;padding:4px 10px;border-radius:999px;background:rgba(42,143,102,.25);color:#c8f0d8}
+.pill.soft{background:rgba(255,255,255,.1);color:rgba(238,244,240,.85)}
+.pill.hard{background:rgba(181,61,50,.28);color:#ffd0c8}
+.who{font-weight:800;color:#1a1206;background:linear-gradient(180deg,#efd39a,#c8962e);padding:6px 12px;border-radius:999px}
+.choices{display:grid;gap:8px;margin:10px 0}
+.choice{text-align:left;border-radius:12px;padding:14px 16px;cursor:pointer;font:inherit;font-size:1.05rem;
+  border:2px solid rgba(255,255,255,.22);background:rgba(0,0,0,.35);color:#eef4f0}
+.choice:hover{border-color:#efd39a}
+.choice.on{border-color:#2a8f66;background:rgba(42,143,102,.22)}
+.choice.good{border-color:#3dba7d;background:rgba(61,186,125,.22)}
+.choice.bad{border-color:#e07a6c;background:rgba(181,61,50,.22)}
+.hint{margin:10px 0 14px;padding:12px;border-radius:14px;background:rgba(42,143,102,.16);border:1px solid rgba(42,143,102,.3)}
+.hl{font-size:.72rem;font-weight:800;color:#b7ebc9;margin-bottom:4px}
+.hint p{margin:0;line-height:1.5}
+.ans{font-family:"Noto Serif TC",serif;font-size:1.25rem;font-weight:800;line-height:1.45;margin:0;padding:12px;
+  border-radius:14px;background:rgba(200,150,46,.14);border:1px solid rgba(200,150,46,.35)}
+.explain{opacity:.78;font-size:.95rem;line-height:1.45}
+.barline{height:5px;background:rgba(255,255,255,.1);border-radius:99px;margin-top:12px;overflow:hidden}
+.barline i{display:block;height:100%;width:100%;transform-origin:left center;background:linear-gradient(90deg,#2a8f66,#c8962e)}
+#countdown{color:#efd39a;font-weight:700;font-size:.85rem}

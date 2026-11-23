@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0e1714">
+<title>轉盤問答｜第5組孟子</title>
+<link rel="stylesheet" href="./wheel.css">
+</head>
+<body>
+<header class="bar">
+  <a class="back" href="./index.html">← 返回簡報</a>
+  <strong>轉盤抽人 · 1–30</strong>
+  <button type="button" class="fs" id="fsBtn">全螢幕</button>
+</header>
+
+<main class="wrap">
+  <div class="wheel-box">
+    <div class="pointer"></div>
+    <canvas id="wheel" width="560" height="560"></canvas>
+    <div class="hub"><span>抽座號</span><b id="pickedNum">?</b></div>
+  </div>
+  <div class="actions">
+    <button type="button" class="primary" id="spinBtn">轉盤抽人</button>
+    <button type="button" class="ghost" id="reshuffleBtn">重設 1–30</button>
+  </div>
+  <p class="meta">累積分 <b id="scorePill">0</b> · 已玩 <b id="playedPill">0</b> 題</p>
+</main>
+
+<div class="modal hide" id="qModal">
+  <div class="card">
+    <div class="top"><span class="pill" id="diffPill">易</span><span class="who" id="whoBadge">座號 ?</span></div>
+    <h2 id="qTitle">問題</h2>
+    <div class="choices" id="choices"></div>
+    <div class="hint"><div class="hl">提示</div><p id="hintText"></p></div>
+    <button type="button" class="accent" id="showAnswerBtn">揭曉正確答案＋近似答案</button>
+  </div>
+</div>
+
+<div class="modal hide" id="aModal">
+  <div class="card">
+    <div class="top"><span class="pill soft">答案卡</span><span id="countdown">5 秒後返回</span></div>
+    <h2>正確答案</h2>
+    <p class="ans" id="revealText"></p>
+    <h3>近似答案</h3>
+    <p id="nearText"></p>
+    <p class="explain" id="explainText"></p>
+    <button type="button" class="primary" id="backNowBtn">立刻返回轉盤</button>
+    <div class="barline"><i id="cdBar"></i></div>
+  </div>
+</div>
+
+<script src="./questions.js"></script>
+<script src="./wheel.js"></script>
+</body>
+</html>
