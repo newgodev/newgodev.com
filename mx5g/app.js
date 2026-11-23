@@ -55,14 +55,8 @@
         <div class="hero-copy">
           <div class="kicker">3G 第5組 · 中文單元二</div>
           <h1>孟子：仁愛謙和</h1>
-          <p class="lead">仁愛謙和 · 三反其身 · 舍生取義 · 以德服人 · 天賦尊嚴<br>
-          用校園例子講清楚四字詞同理據。撳「全螢幕」後用下一頁繼續。</p>
-          <div class="chip-row" style="margin-top:8px">
-            <span class="chip">古典畫像 · 無人臉照片</span>
-            <span class="chip">內容＋理據</span>
-            <span class="chip">全螢幕（iPad 適用）</span>
-          </div>
-          <p class="click-hint">提示：撳「全螢幕」→ 下一頁</p>
+          <p class="lead">仁愛謙和 · 三反其身 · 舍生取義 · 以德服人 · 天賦尊嚴</p>
+          <p class="click-hint">全螢幕 → 下一頁</p>
         </div>
         <div class="hero-media">
           <img src="./assets/photo-mencius.png" alt="孟子古典畫像">
@@ -73,40 +67,41 @@
     {
       tone: "light",
       html: `<div class="slide-inner map-slide">
-        <div class="kicker">範圍地圖 · 每點有解釋＋校園例子</div>
+        <div class="kicker">範圍地圖 · 撳卡睇例子</div>
         <h2>第5組重點一覽</h2>
-        <div class="map-grid">
-          <article class="map-card">
+        <div class="map-grid map-grid-tap">
+          <article class="map-card tap" data-tap>
             <h3>仁愛謙和</h3>
-            <p class="map-ex"><b>解釋：</b>對人有仁愛、恭敬謙讓，以和為貴。</p>
-            <p class="map-eg"><b>例子：</b>同學欠筆記你主動 share；排隊唔插隊；比賽輸咗都唔互怪。</p>
+            <p class="map-ex">仁愛、恭敬謙讓、和為貴</p>
+            <p class="map-eg secret">例子：share 筆記；排隊唔插隊；輸完都唔互怪</p>
           </article>
-          <article class="map-card">
+          <article class="map-card tap" data-tap>
             <h3>三反其身</h3>
-            <p class="map-ex"><b>解釋：</b>事情唔順利，先反省自己有冇仁、智、敬。</p>
-            <p class="map-eg"><b>例子：</b>朋友疏遠你 → 唔好先鬧佢，先問自己有冇做得唔夠好。</p>
+            <p class="map-ex">唔順利 → 先反省仁／智／敬</p>
+            <p class="map-eg secret">例子：朋友疏遠 → 先問自己做得夠唔夠</p>
           </article>
-          <article class="map-card">
+          <article class="map-card tap" data-tap>
             <h3>舍生取義</h3>
-            <p class="map-ex"><b>解釋：</b>魚＝生命／舒服；熊掌＝義。兩者唔能兼得就取義。</p>
-            <p class="map-eg"><b>例子：</b>寧願自己溫書，都唔抄功課；見人被欺負要出聲。</p>
+            <p class="map-ex">魚＝舒服；熊掌＝義 → 取義</p>
+            <p class="map-eg secret">例子：唔抄功課；見欺負要出聲</p>
           </article>
-          <article class="map-card">
-            <h3>以德服人 vs 以力服人</h3>
-            <p class="map-ex"><b>解釋：</b>德服→心悅誠服（長久）；力服→暫時屈服（唔真心）。</p>
-            <p class="map-eg"><b>例子：</b>班長靠公道帶頭 vs 靠罰分恐嚇同學聽話。</p>
+          <article class="map-card tap" data-tap>
+            <h3>德服 vs 力服</h3>
+            <p class="map-ex">心悅誠服 vs 暫時屈服</p>
+            <p class="map-eg secret">例子：公道帶頭 vs 罰分恐嚇</p>
           </article>
-          <article class="map-card">
-            <h3>人格論 · 天賦尊嚴</h3>
-            <p class="map-ex"><b>解釋：</b>人人天生有尊嚴；憐憫之心＋羞恥之心→仁義。</p>
-            <p class="map-eg"><b>例子：</b>見人跌倒想扶＝惻隱；覺得抄襲唔對＝羞惡之心。</p>
+          <article class="map-card tap" data-tap>
+            <h3>天賦尊嚴</h3>
+            <p class="map-ex">憐憫＋羞恥 → 仁義人格</p>
+            <p class="map-eg secret">例子：扶跌倒＝惻隱；厭抄襲＝羞惡</p>
           </article>
-          <article class="map-card">
-            <h3>君子美德 ·《孟子》</h3>
-            <p class="map-ex"><b>解釋：</b>成人之美、言行一致；著作《孟子》七篇語錄。</p>
-            <p class="map-eg"><b>例子：</b>幫同學進步而唔踩低佢；講到做到，唔講一套做一套。</p>
+          <article class="map-card tap" data-tap>
+            <h3>《孟子》</h3>
+            <p class="map-ex">七篇語錄；成人之美、言行一致</p>
+            <p class="map-eg secret">例子：幫人進步；講到做到</p>
           </article>
         </div>
+        <p class="click-hint">提示：撳每一格 → 出校園例子</p>
       </div>`
     },
     {
@@ -157,7 +152,7 @@
         <h2>一個精神，三種做法</h2>
         <div class="grid3 ren-grid">
           <div class="scene scene-tall tap" data-tap>
-            <img src="./assets/photo-book.png?v=20251123m" alt="古典書冊圖">
+            <img src="./assets/photo-mencius2.png?v=20251123q" alt="孟子畫像 · 仁愛">
             <div>
               <span class="tag">① 仁愛</span>
               <strong>分享筆記</strong>
@@ -166,7 +161,7 @@
             </div>
           </div>
           <div class="scene scene-tall tap" data-tap>
-            <img src="./assets/photo-pupils.png?v=20251123m" alt="古典教子畫">
+            <img src="./assets/photo-pupils.png?v=20251123q" alt="古典教子畫">
             <div>
               <span class="tag">② 恭敬謙讓</span>
               <strong>排隊有禮</strong>
@@ -175,7 +170,7 @@
             </div>
           </div>
           <div class="scene scene-tall tap" data-tap>
-            <img src="./assets/photo-loom.png?v=20251123m" alt="孟母斷機古典畫">
+            <img src="./assets/photo-loom.png?v=20251123q" alt="孟母斷機古典畫">
             <div>
               <span class="tag">③ 和為貴</span>
               <strong>輸完仍一隊</strong>
@@ -226,32 +221,34 @@
       html: `<div class="slide-inner gag-stage">
         <div class="kicker">舍生取義 · 擂台對決</div>
         <h2>魚 VS 熊掌 —— 撳邊邊贏？</h2>
-        <p class="lead">玩法：狂撳你撐嘅一邊。孟子會宣判真正贏家（劇透：義）。</p>
+        <p class="lead">撳你撐嘅一邊加氣勢；滿 5 下孟子宣判（義勝）。</p>
         <div class="fight-arena">
           <div class="fighter fish" data-fight="fish">
-            <img src="./assets/photo-fish.png" alt="魚：水墨畫風">
+            <img src="./assets/photo-fish.png?v=20251123q" alt="古典魚圖">
             <h3>魚 ≈ 生命／舒服</h3>
             <p>想避麻煩、少得罪人</p>
+            <div class="hpbar"><i data-fish-bar style="width:0%"></i></div>
             <span class="chip" data-fish-hp>氣勢 0</span>
           </div>
           <div class="fighter bear" data-fight="bear">
-            <img src="./assets/photo-bear.png" alt="熊 · 古典木刻">
+            <img src="./assets/photo-bear.png?v=20251123q" alt="古典木刻熊">
             <h3>熊掌 ≈ 義</h3>
             <p>誠信、公義、做人底線</p>
+            <div class="hpbar"><i data-bear-bar style="width:0%"></i></div>
             <span class="chip" data-bear-hp>氣勢 0</span>
           </div>
         </div>
-        <div class="quote proof" data-fight-msg>「二者不可得兼，舍生而取義。」（《孟子·告子上》）—— 先打一場再講</div>
+        <div class="quote proof" data-fight-msg>「二者不可得兼，舍生而取義。」（《孟子·告子上》）</div>
       </div>`
     },
     {
       tone: "light",
       html: `<div class="slide-inner">
         <div class="kicker">校園版取義 · 撳格揭曉</div>
-        <h2>兩個場面，你會點揀？（班房爆笑位）</h2>
+        <h2>兩個場面，你會點揀？</h2>
         <div class="grid2 eq">
-          <div class="scene tap" data-tap>
-            <img src="./assets/photo-book.png" alt="">
+          <div class="scene scene-tall tap" data-tap>
+            <img src="./assets/photo-loom.png?v=20251123q" alt="古典畫">
             <div>
               <span class="tag">考試</span>
               <strong>好友要你傳答案</strong>
@@ -259,8 +256,8 @@
               <div class="secret">取義：拒絕作弊，改為幫温習＝守誠信（義 &gt; 避麻煩）<br><span class="stamp">孟子蓋章：合格</span></div>
             </div>
           </div>
-          <div class="scene tap" data-tap>
-            <img src="./assets/photo-loom.png" alt="古典畫">
+          <div class="scene scene-tall tap" data-tap>
+            <img src="./assets/photo-pupils.png?v=20251123q" alt="古典教子畫">
             <div>
               <span class="tag">操場</span>
               <strong>見到有人被欺負</strong>
@@ -329,10 +326,10 @@
       html: `<div class="slide-inner">
         <div class="kicker">代表著作 · 速記＋理據</div>
         <h2>《孟子》速記（老師愛聽呢啲）</h2>
-        <div class="grid3">
-          <div class="panel stat"><b>7</b><span>篇（各分上下）</span></div>
-          <div class="panel stat"><b>261</b><span>章左右</span></div>
-          <div class="panel stat"><b>語錄</b><span>記錄言行</span></div>
+        <div class="grid3" data-stats>
+          <div class="panel stat"><b data-count="7">0</b><span>篇（各分上下）</span></div>
+          <div class="panel stat"><b data-count="261">0</b><span>章左右</span></div>
+          <div class="panel stat"><b data-count-text="語錄">·</b><span>記錄言行</span></div>
         </div>
         <div class="grid2" style="flex:1;min-height:0;margin-top:8px">
           <div class="panel"><h3>上台必講</h3>
@@ -402,7 +399,20 @@
 
   function wireTaps(root) {
     root.querySelectorAll("[data-tap]").forEach((el) => {
-      el.onclick = () => el.classList.toggle("open");
+      el.onclick = () => {
+        el.classList.toggle("open");
+        const secret = el.querySelector(".secret");
+        if (secret && window.anime && el.classList.contains("open")) {
+          anime.remove(secret);
+          anime({
+            targets: secret,
+            opacity: [0, 1],
+            translateY: [8, 0],
+            duration: 320,
+            easing: "easeOutCubic"
+          });
+        }
+      };
     });
   }
 
@@ -536,8 +546,14 @@
       };
     });
 
-    // Fish vs bear fight
+    // Fish vs bear fight + HP bars
     let fightOver = false;
+    function syncBars() {
+      const fb = root.querySelector("[data-fish-bar]");
+      const bb = root.querySelector("[data-bear-bar]");
+      if (fb) fb.style.width = Math.min(100, fishHp * 20) + "%";
+      if (bb) bb.style.width = Math.min(100, bearHp * 20) + "%";
+    }
     root.querySelectorAll("[data-fight]").forEach((el) => {
       el.onclick = () => {
         if (fightOver) return;
@@ -545,6 +561,9 @@
         el.classList.remove("hit");
         void el.offsetWidth;
         el.classList.add("hit");
+        if (window.anime) {
+          anime({ targets: el, scale: [1, 1.06, 1], duration: 280, easing: "easeOutBack" });
+        }
         if (side === "fish") {
           fishHp += 1;
           const hp = root.querySelector("[data-fish-hp]");
@@ -554,6 +573,7 @@
           const hp = root.querySelector("[data-bear-hp]");
           if (hp) hp.textContent = `氣勢 ${bearHp}`;
         }
+        syncBars();
         const total = fishHp + bearHp;
         if (total >= 5) {
           fightOver = true;
@@ -561,6 +581,9 @@
           const bear = root.querySelector('[data-fight="bear"]');
           if (fish) { fish.classList.add("lose"); fish.classList.remove("win"); }
           if (bear) { bear.classList.add("win"); bear.classList.remove("lose"); }
+          if (window.anime && bear) {
+            anime({ targets: bear, scale: [1, 1.08], duration: 500, easing: "easeOutElastic(1, .6)" });
+          }
           const msg = root.querySelector("[data-fight-msg]");
           if (msg) msg.textContent = "裁判孟子：就算魚氣勢高，最後都要舍生取義——熊掌（義）勝！";
           celebrate();
@@ -568,14 +591,24 @@
       };
     });
 
-    // Reveal stack
+    // Reveal stack + anime fade
     root.querySelectorAll("[data-reveal-next]").forEach((btn) => {
       let step = 0;
       const lines = root.querySelectorAll("[data-reveal-stack] .reveal-line");
       const count = root.querySelector("[data-reveal-count]");
       btn.onclick = () => {
         if (step < lines.length) {
-          lines[step].classList.add("show");
+          const line = lines[step];
+          line.classList.add("show");
+          if (window.anime) {
+            anime({
+              targets: line,
+              opacity: [0, 1],
+              translateX: [-24, 0],
+              duration: 380,
+              easing: "easeOutCubic"
+            });
+          }
           step += 1;
           if (count) count.textContent = `${step} / ${lines.length}`;
           if (step === lines.length) celebrate();
@@ -587,14 +620,21 @@
       };
     });
 
-    // Joke cards + laugh meter
+    // Joke cards
     root.querySelectorAll("[data-joke]").forEach((card) => {
       card.onclick = () => {
         card.classList.toggle("open");
-        if (card.classList.contains("open")) {
-          laugh = Math.min(100, laugh + 22);
-          const bar = root.querySelector("[data-laugh]");
-          if (bar) bar.style.width = laugh + "%";
+        if (card.classList.contains("open") && window.anime) {
+          const punch = card.querySelector(".punch");
+          if (punch) {
+            anime({
+              targets: punch,
+              opacity: [0, 1],
+              translateY: [10, 0],
+              duration: 320,
+              easing: "easeOutCubic"
+            });
+          }
         }
       };
     });
@@ -620,11 +660,33 @@
     updateDeckUI();
   }
 
+  function runCountUp(slide) {
+    if (!slide || !window.anime) return;
+    slide.querySelectorAll("[data-count]").forEach((el) => {
+      const target = Number(el.getAttribute("data-count")) || 0;
+      const obj = { n: 0 };
+      anime({
+        targets: obj,
+        n: target,
+        round: 1,
+        duration: 900,
+        easing: "easeOutExpo",
+        update: () => { el.textContent = String(obj.n); }
+      });
+    });
+    slide.querySelectorAll("[data-count-text]").forEach((el) => {
+      el.textContent = el.getAttribute("data-count-text") || "";
+      anime({ targets: el, opacity: [0, 1], scale: [0.8, 1], duration: 500, easing: "easeOutBack" });
+    });
+  }
+
   function updateDeckUI() {
     const slides = deckEl.querySelectorAll(".slide");
     slides.forEach((el, i) => el.classList.toggle("on", i === idx));
     $("pageLabel").textContent = `${idx + 1} / ${SLIDES.length}`;
     $("progressBar").style.width = `${((idx + 1) / SLIDES.length) * 100}%`;
+    const on = slides[idx];
+    if (on && on.querySelector("[data-stats]")) runCountUp(on);
   }
 
   function setMode(next) {
