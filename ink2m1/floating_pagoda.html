@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Floating Pagoda</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { width:100%; height:100%; overflow:hidden; background:#1a1a2e; font-family:'Segoe UI', system-ui, sans-serif; }
+  #app { position:fixed; inset:0; }
+  canvas { display:block; }
+  .panel {
+    position:fixed; top:16px; left:16px; z-index:10;
+    background:rgba(30,30,48,0.78); backdrop-filter:blur(10px);
+    border:1px solid rgba(255,255,255,0.12); border-radius:12px;
+    padding:14px 16px; width:210px; color:#e8e6f2;
+  }
+  .panel h1 {
+    font-size:13px; letter-spacing:2.5px; font-weight:700; text-transform:uppercase;
+    margin-bottom:12px; color:#f2f0fa; display:flex; align-items:center; gap:8px;
+  }
+  .panel h1::before { content:""; width:8px; height:8px; border-radius:50%; background:#ffd29a; box-shadow:0 0 8px #ffd29a; }
+  .row { margin-bottom:10px; }
+  .row label { display:flex; justify-content:space-between; font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:#a9a4c4; margin-bottom:5px; }
+  .row label span { color:#e8e6f2; font-weight:600; letter-spacing:0.5px; }
+  input[type=range] { width:100%; appearance:none; height:4px; border-radius:2px; background:linear-gradient(90deg,#ffd29a,#7a7ea8); outline:none; cursor:pointer; }
+  input[type=range]::-webkit-slider-thumb { appearance:none; width:14px; height:14px; border-radius:50%; background:#ffd29a; border:2px solid #2a2a3e; box-shadow:0 0 6px rgba(255,210,154,.8); }
+  .hint { font-size:10px; color:#8d87ab; line-height:1.6; margin-top:10px; border-top:1px solid rgba(255,255,255,.1); padding-top:10px; }
+  .brand { position:fixed; top:18px; right:18px; z-index:10; text-align:right; color:#f2f0fa; pointer-events:none; }
+  .brand .title { font-size:20px; font-weight:800; letter-spacing:6px; }
+  .brand .sub { font-size:11px; letter-spacing:3px; color:#cfc8e8; margin-top:4px; }
+  .credit { position:fixed; bottom:18px; right:18px; z-index:10; background:rgba(20,20,32,.75); color:#e8e6f2; font-size:12px; padding:8px 12px; border-radius:6px; border:1px solid rgba(255,255,255,.12); }
+  .caption { position:fixed; bottom:16px; left:50%; transform:translateX(-50%); z-index:10; font-size:26px; font-weight:800; color:#ffe45e; text-shadow:0 2px 0 #000, 0 0 14px rgba(0,0,0,.6); letter-spacing:2px; pointer-events:none; white-space:nowrap; }
+  .mode-toggle { position:fixed; top:16px; left:50%; transform:translateX(-50%); z-index:10; display:flex; gap:8px; }
+  .mode-toggle button { border:1px solid rgba(255,255,255,.25); background:rgba(30,30,48,.7); color:#e8e6f2; padding:8px 14px; border-radius:8px; cursor:pointer; font-size:12px; letter-spacing:1px; text-transform:uppercase; transition:.2s; backdrop-filter:blur(8px); }
+  .mode-toggle button.active { background:#ffd29a; color:#2a2a3e; border-color:#ffd29a; font-weight:700; }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<div class="panel">
+  <h1>Floating Island</h1>
+  <div class="row">
+    <label>Time <span id="timeLabel">dusk</span></label>
+    <input type="range" id="timeRange" min="0" max="100" value="30">
+  </div>
+  <div class="row">
+    <label>Wind <span id="windLabel">0.5</span></label>
+    <input type="range" id="windRange" min="0" max="100" value="50">
+  </div>
+  <div class="row">
+    <label>Snow <span id="snowLabel">off</span></label>
+    <input type="range" id="snowRange" min="0" max="100" value="0">
+  </div>
+  <div class="hint">Drag to orbit · scroll to zoom<br>Right-click to pan · press R to reset</div>
+</div>
+
+<div class="brand">
+  <div class="title">FLOATING PAGODA</div>
+  <div class="sub">SKY GARDEN · 浮空之庭</div>
+</div>
+
+<div class="mode-toggle">
+  <button id="btnPagoda" class="active">Pagoda</button>
+  <button id="btnTower">Striped Tower</button>
+</div>
+
+<div class="credit">X@itsmeAjayKV · Inkling In-Q4</div>
+<div class="caption">所以它其实，只是——一座浮空的塔</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+// ---------- renderer / scene ----------
+const renderer = new THREE.WebGLRenderer({ antialias:true });
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.1;
+document.getElementById('app').appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0x2a2340, 60, 160);
+
+const camera = new THREE.PerspectiveCamera(50, innerWidth/innerHeight, 0.1, 400);
+camera.position.set(34, 26, 38);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.06;
+controls.minDistance = 18;
+controls.maxDistance = 90;
+controls.maxPolarAngle = Math.PI * 0.52;
+controls.target.set(0, 4, 0);
+
+// ---------- sky (gradient dome) ----------
+const skyGeo = new THREE.SphereGeometry(220, 32, 16);
+const skyMat = new THREE.ShaderMaterial({
+  side: THREE.BackSide,
+  depthWrite:false,
+  uniforms: {
+    topColor: { value: new THREE.Color(0x2a2340) },
+    midColor: { value: new THREE.Color(0x4a3558) },
+    botColor: { value: new THREE.Color(0xff9a5a) },
+    opacity: { value: 1 }
+  },
+  vertexShader: `
+    varying vec3 vPos;
+    void main(){ vPos = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }
+  `,
+  fragmentShader: `
+    uniform vec3 topColor; uniform vec3 midColor; uniform vec3 botColor;
+    varying vec3 vPos;
+    void main(){
+      float h = normalize(vPos).y;
+      vec3 col = mix(botColor, midColor, smoothstep(-0.15, 0.35, h));
+      col = mix(col, topColor, smoothstep(0.35, 0.9, h));
+      gl_FragColor = vec4(col, 1.0);
+    }
+  `
+});
+scene.add(new THREE.Mesh(skyGeo, skyMat));
+
+// stars
+const starGeo = new THREE.BufferGeometry();
+const starCount = 600;
+const starPos = new Float32Array(starCount*3);
+for(let i=0;i<starCount;i++){
+  const r = 200, th = Math.random()*Math.PI*2, ph = Math.acos(Math.random()*0.9);
+  starPos[i*3]   = r*Math.sin(ph)*Math.cos(th);
+  starPos[i*3+1] = Math.abs(r*Math.cos(ph))+10;
+  starPos[i*3+2] = r*Math.sin(ph)*Math.sin(th);
+}
+starGeo.setAttribute('position', new THREE.BufferAttribute(starPos,3));
+const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ color:0xffffff, size:1.4, sizeAttenuation:false, transparent:true, opacity:0.7 }));
+scene.add(stars);
+
+// sun glow
+const glow = new THREE.Mesh(new THREE.SphereGeometry(18, 16, 16),
+  new THREE.MeshBasicMaterial({ color:0xffb26b, transparent:true, opacity:0.85, fog:false }));
+glow.position.set(-60, 45, -90);
+scene.add(glow);
+const glowHalo = new THREE.Mesh(new THREE.SphereGeometry(30, 16, 16),
+  new THREE.MeshBasicMaterial({ color:0xff9a5a, transparent:true, opacity:0.25, fog:false }));
+glowHalo.position.copy(glow.position);
+scene.add(glowHalo);
+
+// ---------- lights ----------
+const hemi = new THREE.HemisphereLight(0xffd9b3, 0x3a2a4a, 0.8);
+scene.add(hemi);
+const sun = new THREE.DirectionalLight(0xffd9a8, 2.2);
+sun.position.set(-40, 50, -30);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.left = -45; sun.shadow.camera.right = 45;
+sun.shadow.camera.top = 45; sun.shadow.camera.bottom = -45;
+sun.shadow.camera.far = 160;
+scene.add(sun);
+const fill = new THREE.DirectionalLight(0x8a7ab8, 0.5);
+fill.position.set(40, 20, 40);
+scene.add(fill);
+
+// ---------- island ----------
+const island = new THREE.Group();
+scene.add(island);
+
+const grassMat = new THREE.MeshStandardMaterial({ color:0x3e7d32, roughness:0.9, flatShading:true });
+const dirtMat  = new THREE.MeshStandardMaterial({ color:0x4a3326, roughness:1, flatShading:true });
+
+// top disc
+const topGeo = new THREE.CylinderGeometry(16, 17.5, 3.2, 24);
+const top = new THREE.Mesh(topGeo, grassMat);
+top.position.y = 0;
+top.castShadow = true; top.receiveShadow = true;
+island.add(top);
+
+// rocky underside (inverted cone w/ jitter)
+const rockGeo = new THREE.CylinderGeometry(15.5, 2.5, 11, 14, 4);
+const pos = rockGeo.attributes.position;
+for(let i=0;i<pos.count;i++){
+  const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
+  const jitter = (Math.random()-0.5)*1.6;
+  pos.setX(i, x + jitter*Math.max(0,1+y/11));
+  pos.setZ(i, z + jitter*Math.max(0,1+y/11));
+}
+rockGeo.computeVertexNormals();
+const rock = new THREE.Mesh(rockGeo, dirtMat);
+rock.position.y = -7.4;
+rock.castShadow = true;
+island.add(rock);
+
+// floating shards
+const shardGroup = new THREE.Group();
+island.add(shardGroup);
+for(let i=0;i<7;i++){
+  const s = new THREE.Mesh(new THREE.DodecahedronGeometry(0.5+Math.random()*1.1, 0), dirtMat);
+  const a = Math.random()*Math.PI*2, r = 9 + Math.random()*8;
+  s.position.set(Math.cos(a)*r, -7 - Math.random()*9, Math.sin(a)*r);
+  s.rotation.set(Math.random()*3, Math.random()*3, Math.random()*3);
+  s.castShadow = true;
+  s.userData.bob = { amp: 0.4 + Math.random()*0.9, speed: 0.4+Math.random()*0.6, phase: Math.random()*6 };
+  shardGroup.add(s);
+}
+
+// ---------- pagoda (tiered) ----------
+const pagoda = new THREE.Group();
+pagoda.position.y = 1.6;
+island.add(pagoda);
+
+const woodMat = new THREE.MeshStandardMaterial({ color:0x2e2118, roughness:0.85, flatShading:true });
+const roofMat = new THREE.MeshStandardMaterial({ color:0x1e150f, roughness:0.6, flatShading:true });
+const goldMat = new THREE.MeshStandardMaterial({ color:0xe8b661, roughness:0.35, metalness:0.6 });
+const glowWin = new THREE.MeshStandardMaterial({ color:0xffd98a, emissive:0xffb84d, emissiveIntensity:1.4 });
+
+const tiers = [
+  { w: 9.5, h: 2.4, r: 11 },
+  { w: 7.5, h: 2.2, r: 11 },
+  { w: 5.7, h: 2.0, r: 11 },
+  { w: 4.1, h: 1.8, r: 9 },
+  { w: 2.6, h: 1.5, r: 9 }
+];
+let cursorY = 0;
+for(const t of tiers){
+  const body = new THREE.Mesh(new THREE.CylinderGeometry(t.w*0.55, t.w*0.6, t.h, 8), woodMat);
+  body.position.y = cursorY + t.h/2;
+  body.castShadow = true;
+  pagoda.add(body);
+  // glowing window band
+  const win = new THREE.Mesh(new THREE.CylinderGeometry(t.w*0.62, t.w*0.62, t.h*0.42, 8, 1, true), glowWin);
+  win.position.y = body.position.y;
+  pagoda.add(win);
+  // roof
+  const roof = new THREE.Mesh(new THREE.ConeGeometry(t.w*0.85, t.h*0.75, 8), roofMat);
+  roof.position.y = cursorY + t.h + t.h*0.34;
+  roof.castShadow = true;
+  pagoda.add(roof);
+  // finial knob
+  const knob = new THREE.Mesh(new THREE.SphereGeometry(t.w*0.09, 8, 8), goldMat);
+  knob.position.y = cursorY + t.h + t.h*0.7;
+  pagoda.add(knob);
+  cursorY += t.h + t.h*0.55;
+}
+// spire
+const spire = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.22, 3.2, 6), goldMat);
+spire.position.y = cursorY + 1.6;
+pagoda.add(spire);
+const spireTop = new THREE.Mesh(new THREE.SphereGeometry(0.45, 10, 10), goldMat);
+spireTop.position.y = cursorY + 3.3;
+pagoda.add(spireTop);
+
+// ---------- striped tower (alternative) ----------
+const tower = new THREE.Group();
+tower.visible = false;
+tower.position.y = 1.6;
+island.add(tower);
+const stripeMat = new THREE.MeshStandardMaterial({ color:0xf3efe2, roughness:0.55, flatShading:true });
+const maroonMat = new THREE.MeshStandardMaterial({ color:0x6e1423, roughness:0.6, flatShading:true });
+let tY = 0;
+for(let i=0;i<5;i++){
+  const w = 10 - i*1.7;
+  const base = new THREE.Mesh(new THREE.BoxGeometry(w, 1.9, w), maroonMat);
+  base.position.y = tY + 0.95;
+  base.castShadow = true;
+  tower.add(base);
+  const winBand = new THREE.Mesh(new THREE.BoxGeometry(w*0.55, 0.9, w*0.55), glowWin);
+  winBand.position.y = base.position.y;
+  tower.add(winBand);
+  const slab = new THREE.Mesh(new THREE.BoxGeometry(w+1.6, 0.7, w+1.6), stripeMat);
+  slab.position.y = tY + 2.05;
+  slab.castShadow = true;
+  tower.add(slab);
+  tY += 2.35;
+}
+const tSpire = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.32, 2.6, 6), goldMat);
+tSpire.position.y = tY + 1.3;
+tower.add(tSpire);
+const tTop = new THREE.Mesh(new THREE.SphereGeometry(0.55, 10, 10), goldMat);
+tTop.position.y = tY + 2.7;
+tower.add(tTop);
+
+// ---------- trees ----------
+const treeGroup = new THREE.Group();
+island.add(treeGroup);
+const trunkMat = new THREE.MeshStandardMaterial({ color:0x4a3326, roughness:0.9, flatShading:true });
+const leafMat = new THREE.MeshStandardMaterial({ color:0x2e5d2a, roughness:0.85, flatShading:true });
+const leafMatDark = new THREE.MeshStandardMaterial({ color:0x1f4a22, roughness:0.85, flatShading:true });
+const snowLeaf = new THREE.MeshStandardMaterial({ color:0xffffff, roughness:0.6, flatShading:true });
+
+function makeTree(x, z, s, snowy){
+  const tree = new THREE.Group();
+  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.28*s, 0.4*s, 1.4*s, 6), trunkMat);
+  trunk.position.y = 0.7*s; trunk.castShadow = true;
+  tree.add(trunk);
+  const layers = snowy ? 3 : (Math.random()<0.5 ? 3 : 2);
+  for(let i=0;i<layers;i++){
+    const r = (2.0 - i*0.5)*s;
+    const h = 1.7*s;
+    const cone = new THREE.Mesh(new THREE.ConeGeometry(r, h, 8), snowy ? (i===layers-1 ? snowLeaf : leafMatDark) : (i%2 ? leafMat : leafMatDark));
+    cone.position.y = 1.4*s + i*(h*0.62) + h/2;
+    cone.castShadow = true;
+    tree.add(cone);
+  }
+  tree.position.set(x, 1.6, z);
+  tree.userData.sway = Math.random()*6;
+  treeGroup.add(tree);
+  return tree;
+}
+const treeSpots = [
+  [-9, -3, 1.3], [-5, 7, 1.1], [8, -5, 1.4], [6, 6, 0.9],
+  [-11, 3, 0.8], [3, -9, 1.2], [0, 10, 0.9], [12, 1, 0.85],
+  [-3, -10, 1.0], [10, 8, 0.8]
+];
+const trees = [];
+for(const [x,z,s] of treeSpots) trees.push(makeTree(x,z,s,false));
+
+// ---------- path / courtyard ----------
+const path = new THREE.Mesh(new THREE.CylinderGeometry(2.6, 2.6, 0.25, 8), new THREE.MeshStandardMaterial({ color:0x9a8f80, roughness:1, flatShading:true }));
+path.position.set(6.5, 1.75, 3.5);
+path.receiveShadow = true;
+island.add(path);
+
+// lamps
+const lampGroup = new THREE.Group();
+island.add(lampGroup);
+function lamp(x, z){
+  const g = new THREE.Group();
+  const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.16, 1.6, 6), woodMat);
+  pole.position.y = 0.8; g.add(pole);
+  const head = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.5, 0.5), new THREE.MeshStandardMaterial({ color:0xffd98a, emissive:0xffb84d, emissiveIntensity:1.6 }));
+  head.position.y = 1.85; g.add(head);
+  g.position.set(x, 1.6, z);
+  lampGroup.add(g);
+}
+lamp(7.5, 5.2); lamp(4.8, 1.2);
+
+// rocks
+for(let i=0;i<8;i++){
+  const a = Math.random()*Math.PI*2, r = 10 + Math.random()*4;
+  const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(0.4+Math.random()*0.7, 0), new THREE.MeshStandardMaterial({ color:0x6e625a, roughness:1, flatShading:true }));
+  rock.position.set(Math.cos(a)*r, 1.75, Math.sin(a)*r);
+  rock.castShadow = true;
+  island.add(rock);
+}
+
+// ---------- particles (snow / motes) ----------
+const particleCount = 450;
+const pGeo = new THREE.BufferGeometry();
+const pPos = new Float32Array(particleCount*3);
+const pSpeed = new Float32Array(particleCount);
+for(let i=0;i<particleCount;i++){
+  pPos[i*3] = (Math.random()-0.5)*90;
+  pPos[i*3+1] = Math.random()*45 - 10;
+  pPos[i*3+2] = (Math.random()-0.5)*90;
+  pSpeed[i] = 0.3 + Math.random()*0.9;
+}
+pGeo.setAttribute('position', new THREE.BufferAttribute(pPos,3));
+const particles = new THREE.Points(pGeo, new THREE.PointsMaterial({ color:0xffffff, size:0.35, transparent:true, opacity:0.85, depthWrite:false }));
+scene.add(particles);
+particles.visible = false;
+
+// ---------- grass blades on island edge (instanced) ----------
+const bladeCount = 1400;
+const bladeGeo = new THREE.ConeGeometry(0.06, 1.4, 4);
+const bladeMat = new THREE.MeshStandardMaterial({ color:0x4d8f3d, roughness:0.9 });
+const blades = new THREE.InstancedMesh(bladeGeo, bladeMat, bladeCount);
+const dummy = new THREE.Object3D();
+for(let i=0;i<bladeCount;i++){
+  const a = Math.random()*Math.PI*2;
+  const r = 8 + Math.random()*7;
+  dummy.position.set(Math.cos(a)*r, 2.3, Math.sin(a)*r);
+  dummy.rotation.set((Math.random()-0.5)*0.4, Math.random()*Math.PI, (Math.random()-0.5)*0.4);
+  const s = 0.7 + Math.random()*0.9;
+  dummy.scale.set(s, s, s);
+  dummy.updateMatrix();
+  blades.setMatrixAt(i, dummy.matrix);
+}
+blades.castShadow = true;
+island.add(blades);
+
+// ---------- snow ground overlay ----------
+const snowLayer = new THREE.Mesh(new THREE.CylinderGeometry(16.2, 16.8, 0.8, 24), new THREE.MeshStandardMaterial({ color:0xf4f6f8, roughness:0.8, flatShading:true }));
+snowLayer.position.y = 1.95;
+snowLayer.visible = false;
+island.add(snowLayer);
+
+// ---------- day/dusk/night lerp ----------
+const palettes = {
+  day:   { top:0x5aa0e8, mid:0x9ec4e8, bot:0xffe4b0, sun:0xfff2d8, sunI:2.6, hemiI:1.0, star:0.0, fog:0x9ec4e8 },
+  dusk:  { top:0x2a2340, mid:0x4a3558, bot:0xff9a5a, sun:0xffd9a8, sunI:2.2, hemiI:0.8, star:0.7, fog:0x2a2340 },
+  night: { top:0x0a0a1e, mid:0x1a1a3a, bot:0x3a2a55, sun:0x8a7ac0, sunI:0.6, hemiI:0.4, star:1.0, fog:0x0a0a1e }
+};
+function applyPalette(t){
+  // t: 0=day, 0.5=dusk, 1=night
+  const a = t < 0.5 ? palettes.day : palettes.dusk;
+  const b = t < 0.5 ? palettes.dusk : palettes.night;
+  const u = t < 0.5 ? t/0.5 : (t-0.5)/0.5;
+  const lerpC = (k)=>{ const c1=new THREE.Color(a[k]), c2=new THREE.Color(b[k]); return c1.lerp(c2, u); };
+  skyMat.uniforms.topColor.value.copy(lerpC('top'));
+  skyMat.uniforms.midColor.value.copy(lerpC('mid'));
+  skyMat.uniforms.botColor.value.copy(lerpC('bot'));
+  scene.fog.color.copy(lerpC('fog'));
+  sun.color.copy(lerpC('sun'));
+  sun.intensity = THREE.MathUtils.lerp(a.sunI, b.sunI, u);
+  hemi.intensity = THREE.MathUtils.lerp(a.hemiI, b.hemiI, u);
+  stars.material.opacity = THREE.MathUtils.lerp(a.star, b.star, u);
+  const glowC = lerpC('bot');
+  glow.material.color.copy(glowC);
+  glowHalo.material.color.copy(glowC);
+  glow.material.opacity = THREE.MathUtils.lerp(0.85, 0.25, t);
+  glowHalo.material.opacity = THREE.MathUtils.lerp(0.25, 0.08, t);
+}
+
+// ---------- UI logic ----------
+const timeRange = document.getElementById('timeRange');
+const timeLabel = document.getElementById('timeLabel');
+const windRange = document.getElementById('windRange');
+const windLabel = document.getElementById('windLabel');
+const snowRange = document.getElementById('snowRange');
+const snowLabel = document.getElementById('snowLabel');
+let wind = 0.5, snow = 0;
+
+timeRange.addEventListener('input', ()=>{
+  const t = timeRange.value/100;
+  applyPalette(t);
+  timeLabel.textContent = t<0.33 ? 'day' : t<0.66 ? 'dusk' : 'night';
+});
+windRange.addEventListener('input', ()=>{ wind = windRange.value/100; windLabel.textContent = wind.toFixed(2); });
+snowRange.addEventListener('input', ()=>{
+  snow = snowRange.value/100;
+  snowLabel.textContent = snow<0.05 ? 'off' : snow<0.6 ? 'light' : 'heavy';
+  snowLayer.visible = snow > 0.05;
+  snowLayer.material.color.setHex(snow>0.05 ? 0xf4f6f8 : 0xf4f6f8);
+  blades.visible = snow < 0.5;
+  particles.visible = snow > 0.05;
+  particles.material.opacity = 0.3 + snow*0.6;
+  trees.forEach(t=>{
+    t.children.slice(1).forEach((c,i)=>{
+      c.material = snow>0.3 ? snowLeaf : (i%2?leafMat:leafMatDark);
+    });
+  });
+  grassMat.color.lerp(new THREE.Color(0x8a9a6a), snow*0.8);
+});
+
+document.getElementById('btnPagoda').addEventListener('click', ()=>{
+  pagoda.visible = true; tower.visible = false;
+  document.getElementById('btnPagoda').classList.add('active');
+  document.getElementById('btnTower').classList.remove('active');
+});
+document.getElementById('btnTower').addEventListener('click', ()=>{
+  pagoda.visible = false; tower.visible = true;
+  document.getElementById('btnTower').classList.add('active');
+  document.getElementById('btnPagoda').classList.remove('active');
+});
+
+addEventListener('keydown', (e)=>{
+  if(e.key==='r'||e.key==='R'){
+    camera.position.set(34,26,38); controls.target.set(0,4,0);
+  }
+});
+
+// ---------- animate ----------
+const clock = new THREE.Clock();
+function animate(){
+  requestAnimationFrame(animate);
+  const dt = clock.getDelta();
+  const t = clock.elapsedTime;
+
+  island.position.y = Math.sin(t*0.5)*0.7;
+  island.rotation.y = Math.sin(t*0.08)*0.08;
+
+  shardGroup.children.forEach(s=>{
+    const b = s.userData.bob;
+    s.position.y += Math.sin(t*b.speed + b.phase)*0.003;
+    s.rotation.y += dt*0.3; s.rotation.x += dt*0.15;
+  });
+  blades.rotation.y = 0;
+  treeGroup.children.forEach(tree=>{
+    const s = tree.userData.sway;
+    tree.rotation.z = Math.sin(t*1.2 + s) * 0.05 * (0.5 + wind*1.5);
+    tree.rotation.x = Math.cos(t*0.9 + s) * 0.04 * (0.5 + wind*1.5);
+  });
+
+  // particles fall
+  if(particles.visible){
+    const arr = pGeo.attributes.position.array;
+    for(let i=0;i<particleCount;i++){
+      arr[i*3+1] -= pSpeed[i]*dt*(1+snow*2);
+      arr[i*3] += Math.sin(t*0.8 + i)*dt*wind*2;
+      if(arr[i*3+1] < -12){ arr[i*3+1] = 42; arr[i*3] = (Math.random()-0.5)*90; arr[i*3+2] = (Math.random()-0.5)*90; }
+    }
+    pGeo.attributes.position.needsUpdate = true;
+  }
+
+  pagoda.children.forEach(m=>{ if(m.material && m.material.emissive) m.material.emissiveIntensity = 1.3 + Math.sin(t*2.5)*0.35; });
+
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+// initial state
+applyPalette(timeRange.value/100);
+timeLabel.textContent = 'dusk';
+timeRange.dispatchEvent(new Event('input'));
+
+addEventListener('resize', ()=>{
+  camera.aspect = innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+animate();
+</script>
+</body>
+</html>

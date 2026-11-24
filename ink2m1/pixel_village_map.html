@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Starlight Village — Harvest Idle</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#0b0c10; font-family:'Courier New', monospace; color:#e8e6df; overflow:hidden; }
+  #app { display:flex; flex-direction:column; height:100vh; }
+  #topbar { display:flex; align-items:center; justify-content:space-between; padding:6px 14px; background:#14161c; border-bottom:2px solid #262a35; font-size:12px; }
+  #topbar .logo { color:#ffd34d; font-weight:bold; letter-spacing:1px; }
+  #topbar .stats { display:flex; gap:14px; color:#9fe08a; }
+  #main { display:flex; flex:1; min-height:0; }
+  #stage { flex:1; position:relative; background:#1a1d24; overflow:hidden; }
+  canvas { width:100%; height:100%; image-rendering:pixelated; image-rendering:crisp-edges; display:block; cursor:grab; }
+  canvas:active { cursor:grabbing; }
+  #side { width:300px; background:#f4f1e8; color:#1a1a1a; display:flex; flex-direction:column; padding:14px; gap:10px; border-left:4px solid #14161c; overflow-y:auto; }
+  .side-title { font-size:11px; letter-spacing:2px; color:#b03a3a; font-weight:bold; text-transform:uppercase; }
+  .card { background:#fff; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,.35); overflow:hidden; cursor:pointer; transition:transform .15s; }
+  .card:hover { transform:translateY(-3px); }
+  .card .img { height:150px; position:relative; background:#0d0f1e; overflow:hidden; }
+  .card .img .stars { position:absolute; inset:0; background-image:radial-gradient(2px 2px at 20% 30%,#fff,transparent),radial-gradient(2px 2px at 60% 20%,#fff,transparent),radial-gradient(1px 1px at 80% 50%,#ffe,transparent),radial-gradient(1px 1px at 30% 70%,#cde,transparent),radial-gradient(2px 2px at 45% 40%,#fff,transparent); }
+  .card .img .swirl { position:absolute; top:18%; left:50%; width:70px; height:70px; margin-left:-35px; border-radius:50%; border:3px solid rgba(255,255,255,.9); box-shadow:0 0 12px 2px rgba(180,220,255,.8) inset,0 0 10px rgba(180,220,255,.6); animation:spin 6s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .card .img .hut { position:absolute; bottom:6%; left:50%; transform:translateX(-50%); color:#ffd76b; font-size:22px; text-shadow:0 0 8px #ffd76b; }
+  .card .meta { padding:10px 12px; display:flex; justify-content:space-between; align-items:baseline; }
+  .card .name { font-weight:bold; font-size:13px; }
+  .card .price { font-size:11px; color:#555; }
+  #bottombar { display:flex; gap:14px; padding:8px 14px; background:#10131a; border-top:2px solid #262a35; font-size:11px; color:#cfd3dd; align-items:center; overflow-x:auto; }
+  #bottombar .btn { background:#1e2330; border:1px solid #333a4d; border-radius:6px; padding:5px 10px; cursor:pointer; white-space:nowrap; user-select:none; }
+  #bottombar .btn:hover { background:#2a3040; border-color:#ffd34d; color:#ffd34d; }
+  #bottombar .sp { flex:1; }
+  #dialogue { position:absolute; left:50%; bottom:18px; transform:translateX(-50%); background:rgba(10,12,18,.92); border:1px solid #3a4258; border-radius:10px; padding:10px 18px; max-width:640px; width:90%; font-size:13px; line-height:1.5; display:none; z-index:5; }
+  #dialogue.show { display:block; }
+  #dialogue .who { color:#ffd34d; font-weight:bold; }
+  #hud { position:absolute; top:10px; left:10px; display:flex; gap:14px; font-size:12px; background:rgba(10,12,18,.8); padding:6px 10px; border-radius:8px; z-index:4; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="topbar">
+    <span class="logo">✦ STARLIGHT VILLAGE</span>
+    <span class="stats"><span>🌾 <span id="wheat">1,180</span></span><span>🐾 <span id="coins">1,245</span></span><span>☀️ <span id="clock">09:00</span></span></span>
+  </div>
+  <div id="main">
+    <div id="stage">
+      <canvas id="c"></canvas>
+      <div id="hud"><span>Day <b id="day">1</b></span><span id="mode">Daytime</span></div>
+      <div id="dialogue"><span class="who" id="dwho">Pip</span>: <span id="dtext"></span></div>
+    </div>
+    <aside id="side">
+      <div class="side-title">Inkling 2 Mini · Machines</div>
+      <div class="card"><div class="img"><div class="stars"></div><div class="swirl"></div><div class="hut">✦</div></div><div class="meta"><span class="name">Dreamweaver</span><span class="price">$0.028 · 3m 12s</span></div></div>
+      <div class="card"><div class="img"><div class="stars"></div><div class="swirl" style="animation-duration:4s"></div><div class="hut">✦</div></div><div class="meta"><span class="name">Starweaver</span><span class="price">$0.07 · 26m 15s</span></div></div>
+      <div class="side-title">Village Ward</div>
+      <div class="card"><div class="img" style="height:90px;background:linear-gradient(#7ec850,#5aa83a)"></div><div class="meta"><span class="name">Moss Fence</span><span class="price">Built</span></div></div>
+    </aside>
+  </div>
+  <div id="bottombar">
+    <span class="btn" id="btnPlay">▶ Pause</span>
+    <span class="btn" id="btnDay">Night Mode</span>
+    <span class="btn" id="btnMute">🔊 Sound</span>
+    <span class="btn" id="btnZoom">🔍 Zoom</span>
+    <span class="sp"></span>
+    <span style="color:#6a7a93;font-size:10px">drag to pan · click a house · click a villager</span>
+  </div>
+</div>
+
+<script>
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+let W = 960, H = 640, cam = {x:0,y:0}, zoom = 1, dragging=false, last={x:0,y:0}, night=false, paused=false, t=0, soundOn=true;
+
+const cropState = { wheat:1180 };
+
+// Sprite helper: draw pixels from rows of chars
+function drawSprite(x,y,rows,palette){
+  for(let r=0;r<rows.length;r++)for(let c=0;c<rows[r].length;c++){
+    const ch=rows[r][c]; if(ch==='.'||ch===' ')continue;
+    ctx.fillStyle=palette[ch]||'#f0f'; ctx.fillRect(x+c*4,y+r*4,4,4);
+  }
+}
+const HOUSE_HARVEST = [
+  "..RRRRRR..",
+  ".RRRRRRRR.",
+  "RRRRRRRRRR",
+  ".YYWWYYWWY",
+  ".YYWWYYWWY",
+  ".YYDDDDDDY",
+  ".YYDDDDDDY",
+];
+const HOUSE_BLUE = [
+  "..BBBBBB..",
+  ".BBBBBBBB.",
+  "BBBBBBBBBB",
+  ".GGYGGYGGG",
+  ".GGYGGYGGG",
+  ".GGDDDDDDG",
+  ".GGDDDDDDG",
+];
+const TREE_ROW = [
+  "..GGG..",
+  ".GGGGG.",
+  "GGGGGGG",
+  ".GGGGG.",
+  "..G.G..",
+  "..T.T..",
+  "..T.T..",
+];
+const ORANGE_TREE = [
+  "..OOO..",
+  ".OOOOO.",
+  "OOOOOOO",
+  ".OOOOO.",
+  "..O.O..",
+  "..T.T..",
+  "..T.T..",
+];
+const SLOPE_ROW = [
+  "...HH...",
+  "..HHHH..",
+  ".HHHHHH.",
+  ".YYYYYY.",
+  ".YYYYYY.",
+  ".YYDDYY.",
+  ".YYDDYY.",
+];
+
+const houses = [
+  {x:70,y:60,type:'harvest',color:'#c04a3a',label:'Harvest Hut'},
+  {x:30,y:150,type:'teal',color:'#4a8a6a',label:'Teal House'},
+  {x:260,y:40,type:'blue',color:'#4a6a9a',label:'Blue House'},
+  {x:560,y:50,type:'brown',color:'#8a6a4a',label:'Brown House'},
+  {x:690,y:35,type:'peach',color:'#c08a5a',label:'Peach House'},
+  {x:80,y:330,type:'purple',color:'#6a5a8a',label:'Purple House'},
+];
+const trees = [
+  {x:60,y:180,kind:'green'},{x:150,y:200,kind:'orange'},{x:250,y:150,kind:'green'},{x:180,y:235,kind:'green'},
+  {x:480,y:170,kind:'green'},{x:640,y:160,kind:'green'},{x:720,y:180,kind:'orange'},{x:540,y:230,kind:'green'},
+  {x:70,y:380,kind:'green'},{x:800,y:330,kind:'green'},{x:420,y:290,kind:'green'},{x:740,y:250,kind:'green'},
+];
+const characters = [
+  {name:'Pip',x:300,y:245,dx:1,color:'#d9d9d9',shirt:'#7a4a9a'},
+  {name:'Clem',x:520,y:215,dx:-1,color:'#d9d9d9',shirt:'#9a4a4a'},
+  {name:'Otto',x:230,y:245,dx:1,color:'#d9d9d9',shirt:'#4a7a9a'},
+  {name:'Felix',x:120,y:430,dx:1,color:'#d9d9d9',shirt:'#4a8a7a'},
+  {name:'Rufus',x:90,y:430,dx:-1,color:'#d9d9d9',shirt:'#8a7a4a'},
+];
+const bubbles = [
+  {x:40,y:200,text:'I need to put my feet up.'},
+  {x:250,y:200,text:'Wait till I stop beating 3!'},
+  {x:470,y:150,text:'with a smile of returny'},
+  {x:610,y:155,text:'aww? hahah! 10/10'},
+  {x:95,y:230,text:'I need to put my feet up.'},
+  {x:150,y:230,text:'I need to put my feet up.'},
+  {x:90,y:295,text:'poke him to dynamic house'},
+];
+
+let bubbleIdx=0, bubbleTimer=0;
+
+const dialogues = {
+  harvest:'Oh! Pip!',
+  default:'Oh! Pip!',
+  Pip:'Hi hero! Looking forward to the harvest party!',
+  Clem:'Just here for the gossip of the village.',
+  Otto:'Working hard — the crops need me too.',
+  Felix:'I love this little village...',
+  Rufus:'Hey there, traveler!',
+};
+
+function resize(){
+  cv.width = cv.clientWidth; cv.height = cv.clientHeight;
+}
+window.addEventListener('resize',resize);
+
+function rand(a,b){return a+Math.random()*(b-a);}
+
+function drawVillage(time){
+  const cw = cv.width, ch = cv.height;
+  // grass
+  const g0 = night?'#20301f':'#6cc24a', g1 = night?'#18271a':'#5aa83a';
+  ctx.fillStyle=night?'#1c2a1a':'#5fae45'; ctx.fillRect(0,0,cw,ch);
+  // sky-vignette noise-ish dots
+  for(let i=0;i<120;i++){
+    const gx = (i*97)%cw, gy=(i*53)%ch;
+    ctx.fillStyle = night?'#233023':'#66bb4d';
+    ctx.fillRect(gx,gy,3,3);
+  }
+  // dirt paths
+  ctx.fillStyle = night?'#6b5a3e':'#c9a56a';
+  ctx.fillRect(0,248,cw,28);
+  ctx.fillRect(220,80,28,260);
+  ctx.fillRect(540,80,28,180);
+  ctx.fillRect(0,330,cw,24);
+  // fountain pond
+  ctx.fillStyle=night?'#0f2a3a':'#4f9fd0';
+  ctx.beginPath(); ctx.ellipse(310,430,90,50,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle=night?'#3a2a1e':'#8a6a4a';
+  ctx.beginPath(); ctx.ellipse(310,390,110,55,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle=night?'#0f2a3a':'#4f9fd0';
+  ctx.beginPath(); ctx.ellipse(310,395,95,45,0,0,Math.PI*2); ctx.fill();
+  // fountain center
+  ctx.fillStyle='#c9c9c9'; ctx.fillRect(298,375,24,20);
+  ctx.fillStyle='#8ad0e8'; ctx.fillRect(305,365,10,12);
+  if(Math.sin(time*3)>0) { ctx.fillStyle='#c8f0ff'; ctx.fillRect(304,358,4,6); ctx.fillRect(311,356,4,8); }
+  // small pond right
+  ctx.fillStyle=night?'#0f2a3a':'#4f9fd0'; ctx.beginPath(); ctx.ellipse(380,455,30,15,0,0,Math.PI*2); ctx.fill();
+
+  // crop rows (right side)
+  ctx.fillStyle='#6a4a2a'; ctx.fillRect(640,250,160,110);
+  for(let r=0;r<5;r++)for(let c=0;c<12;c++){
+    if((r+c+Math.floor(time*0.5))%3===0) ctx.fillStyle = night?'#2a5a2a':'#3f8a3f';
+    else ctx.fillStyle = night?'#224e24':'#4aa04a';
+    ctx.fillRect(648+c*12,258+r*19,7,8);
+  }
+
+  // houses
+  houses.forEach((h,i)=>{
+    const sx=h.x*4- (canvasOffset()), sy=h.y*4; // simpler: absolute coords
+  });
+  // simpler: draw at fixed map coordinates with zoom/pan via transform
+}
+
+function canvasOffset(){return 0;}
+
+// Assets as functions (simplified)
+function drawHouse(h, night){
+  const {x,y,type,label}=h;
+  const scale=4;
+  const width=10*scale;
+  // shadow
+  ctx.fillStyle='rgba(0,0,0,.25)'; ctx.fillRect(x+4,y+70,width+4,8);
+  // body
+  let body='#f0e0b8', roof='#c04a3a', roofDark='#a03a2a';
+  if(type==='blue'){body='#dce8f0';roof='#4a6a9a';roofDark='#3a5a7a';}
+  if(type==='teal'){body='#e8f0d8';roof='#4a8a6a';roofDark='#3a6a4a';}
+  if(type==='brown'){body='#f0d8a8';roof='#8a6a4a';roofDark='#6a4a2a';}
+  if(type==='peach'){body='#f0e0c0';roof='#c08a5a';roofDark='#9a6a3a';}
+  if(type==='purple'){body='#f0e0d0';roof='#5a4a7a';roofDark='#3a2a5a';}
+  // roof (triangle-ish stacked rects)
+  ctx.fillStyle=roof;
+  ctx.fillRect(x+6,y+6,width-12,12);
+  ctx.fillRect(x+14,y,width-28,10);
+  // body
+  ctx.fillStyle=body; ctx.fillRect(x+8,y+18,width-16,46);
+  // windows
+  ctx.fillStyle=night?'#ffe08a':'#6ab0d8';
+  ctx.fillRect(x+14,y+26,12,10); ctx.fillRect(x+width-26,y+26,12,10);
+  // door
+  ctx.fillStyle='#4a3a2a'; ctx.fillRect(x+width/2-9,y+38,18,26);
+  // chimney
+  ctx.fillStyle='#7a6a5a'; ctx.fillRect(x+width-24,y+2,10,10);
+}
+
+function drawTree(t, night){
+  const x=t.x,y=t.y,kind=t.kind;
+  ctx.fillStyle='rgba(0,0,0,.25)'; ctx.fillRect(x+4,y+46,36,8);
+  ctx.fillStyle='#6a4a2a'; ctx.fillRect(x+14,y+34,10,18);
+  const green = kind==='green' ? (night?'#1e4a2a':'#3f8a3f') : (night?'#5a3a1a':'#e8a04a');
+  const light = kind==='green' ? (night?'#2a5f38':'#5ab84a') : (night?'#7a4a2a':'#f5c06a');
+  ctx.fillStyle=green;
+  ctx.fillRect(x+2,y+8,40,30); ctx.fillRect(x+8,y,28,44);
+  ctx.fillStyle=light; ctx.fillRect(x+10,y+6,16,10);
+}
+
+function drawChar(c, time){
+  const bob = Math.sin(time*4 + c.x*0.1)*2;
+  const x=c.x, y=c.y+bob;
+  ctx.fillStyle='rgba(0,0,0,.3)'; ctx.fillRect(x+6,c.y+26,16,4);
+  // body
+  ctx.fillStyle=c.shirt; ctx.fillRect(x+4,y+12,18,16);
+  // head
+  ctx.fillStyle='#f5d0b0'; ctx.fillRect(x+7,y+2,12,12);
+  // hair
+  ctx.fillStyle='#3a2a1a'; ctx.fillRect(x+7,y,12,5);
+  // legs
+  const step = Math.floor(time*6+c.x)%2===0?0:4;
+  ctx.fillStyle='#3a2a2a'; ctx.fillRect(x+6,y+28+step,5,6); ctx.fillRect(x+15,y+28-step,5,6);
+  // name tag
+  ctx.fillStyle='rgba(0,0,0,.6)'; ctx.fillRect(x-6,y-14,34,11);
+  ctx.fillStyle='#fff'; ctx.font='7px monospace'; ctx.textAlign='center';
+  ctx.fillText(c.name, x+11, y-5);
+}
+
+function drawBubbles(time){
+  ctx.textAlign='left';
+  bubbles.forEach((b,i)=>{
+    const show = (i === (Math.floor(time/4) % bubbles.length));
+    if(!show) return;
+    const txt = b.text;
+    const w = txt.length*5.2 + 14;
+    ctx.fillStyle='#fff'; ctx.strokeStyle='#333'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.roundRect(b.x,b.y,w,20,5); ctx.fill(); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(b.x+12,b.y+20); ctx.lineTo(b.x+18,b.y+26); ctx.lineTo(b.x+24,b.y+20); ctx.fillStyle='#fff'; ctx.fill(); ctx.stroke();
+    ctx.fillStyle='#222'; ctx.font='10px monospace'; ctx.fillText(txt, b.x+7, b.y+14);
+  });
+}
+
+function draw(time){
+  const cw=cv.width, ch=cv.height;
+  ctx.clearRect(0,0,cw,ch);
+  ctx.save();
+  ctx.translate(cam.x,cam.y); ctx.scale(zoom,zoom);
+  // bg
+  ctx.fillStyle=night?'#1a2418':'#5fae45'; ctx.fillRect(-2000,-2000,4000,4000);
+  // dots
+  for(let i=0;i<180;i++){
+    const gx=((i*97)%1200)-600, gy=((i*53)%800)+0;
+    ctx.fillStyle=night?'#202c1d':'#66bb4d';
+    ctx.fillRect(gx,gy,3,3);
+  }
+  // paths
+  ctx.fillStyle=night?'#6b5a3e':'#c9a56a';
+  ctx.fillRect(0,244,880,26);
+  ctx.fillRect(215,70,24,280);
+  ctx.fillRect(545,70,24,190);
+  ctx.fillRect(0,330,880,22);
+  // fountain area
+  ctx.fillStyle=night?'#1c2a1a':'#4e9640'; ctx.beginPath(); ctx.ellipse(310,420,120,60,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle=night?'#0f2a3a':'#4f9fd0'; ctx.beginPath(); ctx.ellipse(310,420,82,38,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#c9c9c9'; ctx.fillRect(300,398,22,18);
+  ctx.fillStyle='#8ad0e8'; ctx.fillRect(306,388,10,10);
+  if(Math.sin(time*3)>0.3){ctx.fillStyle='#e8faff';ctx.fillRect(305,382,4,6);ctx.fillRect(313,380,4,6);}
+  // pond
+  ctx.fillStyle=night?'#0f2a3a':'#4f9fd0'; ctx.beginPath(); ctx.ellipse(388,452,26,13,0,0,Math.PI*2); ctx.fill();
+  // crops
+  ctx.fillStyle='#5a3a1f'; ctx.fillRect(640,248,170,110);
+  for(let r=0;r<5;r++)for(let c=0;c<13;c++){
+    ctx.fillStyle=night?'#1f4a1f':'#3f8a3f';
+    ctx.fillRect(648+c*12,256+r*19,7,8);
+  }
+  ctx.fillStyle=night?'#6a4a2a':'#8a6a4a'; ctx.fillRect(620,248,12,110);
+  // housing
+  houses.forEach(h=>drawHouse(h,night));
+  trees.forEach(tr=>drawTree(tr,night));
+  characters.forEach((c,i)=>{
+    if(!paused){
+      c.x += c.dx * 0.4;
+      if(c.x<40||c.x>820) c.dx*=-1;
+    }
+    drawChar(c,time);
+  });
+  drawBubbles(time);
+  // night overlay
+  if(night){
+    ctx.fillStyle='rgba(8,10,40,.42)'; ctx.fillRect(-2000,-2000,4000,4000);
+  }
+  // vignette stars at night
+  if(night){
+    ctx.fillStyle='#fff';
+    for(let i=0;i<60;i++){
+      const sx=(i*141)%1200-600, sy=(i*89)%760-100;
+      if(Math.sin(time*2+i)>0) ctx.fillRect(sx,sy,2,2);
+    }
+  }
+  ctx.restore();
+}
+
+// input
+let pinch=false;
+cv.addEventListener('mousedown',e=>{dragging=true;last={x:e.clientX,y:e.clientY};});
+window.addEventListener('mouseup',()=>{dragging=false;});
+window.addEventListener('mousemove',e=>{
+  if(!dragging)return;
+  cam.x+=e.clientX-last.x; cam.y+=e.clientY-last.y;
+  last={x:e.clientX,y:e.clientY};
+});
+cv.addEventListener('wheel',e=>{ zoom = Math.max(0.6,Math.min(3,zoom - e.deltaY*0.001)); e.preventDefault(); },{passive:false});
+cv.addEventListener('touchstart',e=>{dragging=true;const t=e.touches[0];last={x:t.clientX,y:t.clientY};});
+window.addEventListener('touchmove',e=>{if(!dragging)return;const t=e.touches[0];cam.x+=t.clientX-last.x;cam.y+=t.clientY-last.y;last={x:t.clientX,y:t.clientY};});
+window.addEventListener('touchend',()=>dragging=false);
+
+// clicks
+cv.addEventListener('click',e=>{
+  const rect=cv.getBoundingClientRect();
+  const px=(e.clientX-rect.left - cam.x - (rect.width-cv.width)/2)/zoom + 0; // approximate
+  const mapX=(e.clientX-rect.left-cam.x)/zoom;
+  const mapY=(e.clientY-rect.top-cam.y)/zoom;
+  const dialogue=document.getElementById('dialogue');
+  const who=document.getElementById('dwho'), txt=document.getElementById('dtext');
+  let hit=false;
+  for(const c of characters){
+    if(mapX>c.x-10&&mapX<c.x+36&&mapY>c.y-18&&mapY<c.y+34){
+      who.textContent=c.name; txt.textContent=dialogues[c.name]||dialogues['default']; dialogue.classList.add('show'); hit=true;
+    }
+  }
+  if(!hit){
+    for(const h of houses){
+      if(mapX>h.x-10&&mapX<h.x+70&&mapY>h.y-10&&mapY<h.y+80){
+        who.textContent=h.label; txt.textContent='Welcome in, friend! — come closer, or visit the Harvest Hut.'; dialogue.classList.add('show'); hit=true;
+      }
+    }
+  }
+  if(!hit){ dialogue.classList.remove('show'); }
+});
+
+document.getElementById('btnPlay').onclick=function(){ paused=!paused; this.textContent=paused?'▶ Play':'⏸ Pause'; };
+document.getElementById('btnDay').onclick=function(){ night=!night; this.textContent=night?'☀ Day':'🌙 Night'; document.getElementById('mode').textContent=night?'Night':'Daytime'; };
+document.getElementById('btnMute').onclick=function(){ soundOn=!soundOn; this.textContent=soundOn?'🔊 Sound':'🔇 Muted'; };
+document.getElementById('btnZoom').onclick=function(){ zoom=Math.min(3,zoom+0.4); };
+
+setInterval(()=>{ cropState.wheat+=Math.floor(rand(1,6)); document.getElementById('wheat')+=Math.floor(rand(1,6)); document.getElementById('wheat').textContent = cropState.wheat.toLocaleString(); }, 1200);
+
+setInterval(()=>{
+  const d=new Date(Date.now()/1000*1000);
+  const mins=Math.floor(t*2)%60, hrs=(9+Math.floor(t/20))%24;
+  document.getElementById('clock').textContent=(hrs<10?'0':'')+hrs+':'+(mins<10?'0':'')+mins;
+},1000);
+
+let lastTs=0;
+function loop(ts){
+  if(!lastTs)lastTs=ts;
+  const dt=(ts-lastTs)/1000; lastTs=ts;
+  if(!paused) t+=dt;
+  draw(t);
+  requestAnimationFrame(loop);
+}
+
+function resizeInit(){
+  resize();
+  zoom=Math.min(cv.width/880, cv.height/780)*0.96;
+  cam.x=(cv.width - 880*zoom)/2;
+  cam.y=(cv.height - 780*zoom)/2 - 40*zoom;
+}
+window.addEventListener('resize',resizeInit);
+resizeInit();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>

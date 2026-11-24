@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>London - Sky Island · Voxel Diorama</title>
+<style>
+  :root{
+    --ink:#20303a;
+    --paper:#f7f3e8;
+    --red:#d94b4b;
+    --blue:#2e5f8a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:100%;height:100%;overflow:hidden;background:#5fa8d6;font-family:Georgia,'Times New Roman',serif}
+  #app{position:fixed;inset:0}
+  canvas{display:block}
+  .hud{position:fixed;z-index:10;pointer-events:none;color:var(--paper);text-shadow:0 2px 10px rgba(20,50,70,.35)}
+  .brand{top:28px;left:34px}
+  .brand h1{font-size:clamp(18px,2.2vw,28px);letter-spacing:.42em;font-weight:400}
+  .brand p{margin-top:10px;font-size:10px;letter-spacing:.28em;opacity:.9;text-transform:uppercase}
+  .caption{left:32px;bottom:24px;font-size:11px;letter-spacing:.28em;text-transform:uppercase;opacity:.85}
+  .hint{right:28px;bottom:24px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.75}
+  .badge{position:fixed;top:26px;right:30px;z-index:10;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.38);border-radius:999px;padding:8px 14px;font-size:10px;letter-spacing:.24em;color:#fff;text-transform:uppercase;backdrop-filter:blur(6px)}
+  @media (max-width:700px){.hint{display:none}.brand{left:20px;top:20px}.badge{display:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<header class="hud brand"><h1>LONDON</h1><p>Sky Island · Voxel Diorama</p></header>
+<div class="badge hud">London Sky Diorama</div>
+<footer class="hud caption">London · Floating Isle</footer>
+<div class="hud hint">Drag to orbit · Scroll to zoom</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const app = document.getElementById('app');
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x62abe0);
+scene.fog = new THREE.Fog(0x62abe0, 42, 95);
+
+const camera = new THREE.PerspectiveCamera(45, innerWidth/innerHeight, .1, 200);
+camera.position.set(24, 17, 30);
+
+const renderer = new THREE.WebGLRenderer({ antialias:true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+app.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = .06;
+controls.minDistance = 12;
+controls.maxDistance = 62;
+controls.maxPolarAngle = Math.PI * .49;
+controls.target.set(0, 1.5, 0);
+
+scene.add(new THREE.HemisphereLight(0xffffff, 0x6a7d8f, 1.35));
+const sun = new THREE.DirectionalLight(0xfff5d6, 2.2);
+sun.position.set(18, 28, 10);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.left = -28; sun.shadow.camera.right = 28;
+sun.shadow.camera.top = 28; sun.shadow.camera.bottom = -28;
+scene.add(sun);
+
+const M = (c, rough=.85, metal=0) => new THREE.MeshStandardMaterial({ color:c, roughness:rough, metalness:metal });
+const box = (w,h,d,c,x=0,y=0,z=0,parent=scene,cast=true,recv=true) => {
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), M(c));
+  m.position.set(x,y,z); m.castShadow = cast; m.receiveShadow = recv; parent.add(m); return m;
+};
+const cyl = (rt, rb, h, c, x=0,y=0,z=0, parent=scene, seg=12) => {
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, seg), M(c));
+  m.position.set(x,y,z); m.castShadow = true; m.receiveShadow = true; parent.add(m); return m;
+};
+
+function stripeTexture(colors, count=12){
+  const c = document.createElement('canvas'); c.width = 512; c.height = 256;
+  const g = c.getContext('2d');
+  for(let i=0;i<count;i++){ g.fillStyle = colors[i % colors.length]; g.fillRect(i*c.width/count,0,c.width/count+1,c.height); }
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+function unionJackTexture(){
+  const c = document.createElement('canvas'); c.width=80; c.height=50; const g=c.getContext('2d');
+  g.fillStyle='#2456a6'; g.fillRect(0,0,80,50);
+  g.strokeStyle='#fff'; g.lineWidth=10;
+  g.beginPath(); g.moveTo(0,0); g.lineTo(80,50); g.moveTo(80,0); g.lineTo(0,50); g.stroke();
+  g.strokeStyle='#d94b4b'; g.lineWidth=4;
+  g.beginPath(); g.moveTo(0,0); g.lineTo(80,50); g.moveTo(80,0); g.lineTo(0,50); g.stroke();
+  g.fillStyle='#fff'; g.fillRect(35,0,10,50); g.fillRect(0,20,80,10);
+  g.fillStyle='#d94b4b'; g.fillRect(37,0,6,50); g.fillRect(0,22,80,6);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
+function clockTexture(){
+  const c=document.createElement('canvas'); c.width=128; c.height=128; const g=c.getContext('2d');
+  g.fillStyle='#f5eeda'; g.beginPath(); g.arc(64,64,60,0,7); g.fill();
+  g.strokeStyle='#2a2a2a'; g.lineWidth=6; g.beginPath(); g.arc(64,64,58,0,7); g.stroke();
+  for(let i=0;i<12;i++){ const a=i/12*Math.PI*2; g.strokeStyle='#222'; g.lineWidth=4;
+    g.beginPath(); g.moveTo(64+Math.cos(a)*44,64+Math.sin(a)*44); g.lineTo(64+Math.cos(a)*54,64+Math.sin(a)*54); g.stroke(); }
+  g.strokeStyle='#222'; g.lineWidth=5; g.beginPath(); g.moveTo(64,64); g.lineTo(64,20); g.stroke();
+  g.beginPath(); g.moveTo(64,64); g.lineTo(96,74); g.stroke();
+  const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; return t;
+}
+const flagTex = unionJackTexture();
+const balloonRed = stripeTexture(['#c93030','#f7f2e4'], 12);
+const balloonTricolor = stripeTexture(['#c93030','#f7f2e4','#2456a6'], 15);
+const clockTex = clockTexture();
+
+const island = new THREE.Group(); scene.add(island);
+
+// Terrain body
+box(22, 2.6, 15, 0x9a6f4a, 0, 0.4, 0, island);
+box(21.2, 1.15, 14.2, 0x5d8f43, 0, 2.05, 0, island);
+box(23.2, .5, 16.2, 0x6f4f37, 0, -1.1, 0, island);
+// voxel fringe
+for(let i=0;i<42;i++){
+  const x = (Math.random()*20-10), z = (Math.random()*13-6.5);
+  const edge = Math.abs(x) > 8 || Math.abs(z) > 5.3;
+  box(1.4+Math.random()*1.4, .55+Math.random()*.9, 1.4+Math.random()*1.4, edge?0x67a04b:0x588f43, x, 2.75+Math.random()*.45, z, island);
+}
+// roots / stalactites underneath
+for(let i=0;i<26;i++){
+  const a = Math.random()*Math.PI*2, r = 4+Math.random()*7.2;
+  const x = Math.cos(a)*r*1.25, z = Math.sin(a)*r*.78;
+  const h = 2.4+Math.random()*4.4;
+  const m = cyl(.25+Math.random()*.35, .02, h, Math.random()>.5?0x5b3d2a:0x4a3526, x, -1.2-h/2, z, island, 6);
+  m.rotation.set((Math.random()-.5)*.25, 0, (Math.random()-.5)*.25);
+}
+// Thames edge
+const river = box(22.5, .34, 2.15, 0x6fd3e6, 0, 2.05, 7.35, island);
+river.material.transparent = true; river.material.opacity = .78;
+for(let i=0;i<7;i++){ const w = box(1.6+Math.random()*2.2,.06,.05,0xffffff,-9+i*3.1,2.28,7.35+Math.random()*.8,island,false,false); w.material.transparent=true; w.material.opacity=.7; }
+
+// Clock tower
+function tower(){
+  const g = new THREE.Group(); g.position.set(-5.8, 2.75, -4.2); island.add(g);
+  box(2.4, 6.2, 2.4, 0xc9a86a, 0, 3.1, 0, g);
+  box(2.9, .55, 2.9, 0x7a5a3c, 0, 6.35, 0, g);
+  for(let i=0;i<5;i++) box(.45,.6,.45,0x7a5a3c,-1.05+i*.53,6.8,-1.05,g);
+  const clock = new THREE.Mesh(new THREE.CylinderGeometry(1.02,1.02,.24,24), new THREE.MeshBasicMaterial({ map:clockTex }));
+  clock.rotation.x = Math.PI/2; clock.position.set(0,4.65,1.25); g.add(clock);
+  const roof = cyl(.05, 1.45, 2.1, 0x3b3b42, 0, 7.85, 0, g, 4); roof.rotation.y = Math.PI/4;
+  box(.5,.9,.5,0x302b24,0,8.95,0,g);
+  const flag = new THREE.Mesh(new THREE.PlaneGeometry(1, .62), new THREE.MeshBasicMaterial({ map:flagTex, side:THREE.DoubleSide }));
+  flag.position.set(.55,8.65,0); g.add(flag); flag.rotation.y=.2;
+}
+tower();
+
+// Cathedral / white domes
+function cathedral(){
+  const g = new THREE.Group(); g.position.set(-.8, 2.75, -6.2); g.scale.setScalar(.9); island.add(g);
+  box(4.6,2.4,3.1,0xefe8d8,0,1.2,0,g);
+  cyl(1.05,1.25,1.7,0xefe8d8,0,3.35,-.6,g,16);
+  const dome = new THREE.Mesh(new THREE.SphereGeometry(1.05,16,12,0,Math.PI*2,0,Math.PI/2), M(0xd8e0d6,.55)); dome.position.set(0,4.2,-.6); dome.castShadow=true; g.add(dome);
+  box(.12,.8,.12,0x5b4b3d,0,5.1,-.6,g);
+  box(1.1,.9,.16,0x5b4b3d,0,5.55,-.6,g);
+  for(let i=-1;i<=1;i++) box(.85,1.15,.95,0xefe8d8,i*1.7,3.0,.95,g);
+}
+cathedral();
+
+// Shard-like glass towers
+function shard(){
+  const g = new THREE.Group(); g.position.set(6.2, 2.75, -4.4); island.add(g);
+  for(let i=0;i<3;i++){
+    const w = 1.9-i*.45, h = 8.2 - i*1.4;
+    const t = box(w,h,w, i===1?0x2f5d7a:0x3f7d92, i*1.05, h/2, i===1?-.35:.25, g);
+    t.rotation.y = Math.PI/4;
+    box(.28,.75,.28,0xf3f7e8,i*1.05,h+.35,i===1?-.35:.25,g);
+  }
+}
+shard();
+
+// Gray neoclassical center
+function neo(){
+  const g = new THREE.Group(); g.position.set(2.4, 2.75, 2.6); island.add(g);
+  box(4.8,2.2,3.6,0xd7d7c8,0,1.1,0,g);
+  box(5.4,.55,.7,0xe8e6da,0,2.45,-1.95,g);
+  for(let i=0;i<6;i++) box(.36,2.1,.36,0xf0eee2,-2.1+i*.84,1.35,1.95,g);
+  box(5.6,.42,1.2,0xbfb fab,0,2.75,2.25,g);
+  box(1.7,1.4,1.2,0x818d91,0,3.15,0,g);
+}
+neo();
+
+// Ferris wheel
+const wheel = new THREE.Group(); wheel.position.set(3.2, 6.3, -1.4); wheel.rotation.x = Math.PI/2.15; island.add(wheel);
+const wheelTorus = new THREE.Mesh(new THREE.TorusGeometry(2.35,.12,10,32), M(0xe8e2d0,.5)); wheel.add(wheelTorus);
+for(let i=0;i<8;i++){ const s = box(.1,4.5,.1,0xe8e2d0,0,0,0,wheel); s.rotation.z = i/8*Math.PI; }
+for(let i=0;i<8;i++){ const a=i/8*Math.PI*2; const cabin = box(.5,.42,.5,i%2?0xd94b4b:0xf2ead8,Math.cos(a)*2.35,Math.sin(a)*2.35,0,wheel); }
+box(.28,3.7,.28,0x7f8d94,3.2,4.0,-1.4,island);
+
+// Trees / bushes
+function tree(x,z,s=1){
+  const g = new THREE.Group(); g.position.set(x,2.55,z); g.scale.setScalar(s); island.add(g);
+  box(.42,.95,.42,0x6b4a2e,0,.5,0,g);
+  const c1 = new THREE.Mesh(new THREE.ConeGeometry(1.15,1.75,8), M(0x3f8f43)); c1.position.y=1.75; c1.castShadow=true; g.add(c1);
+  const c2 = new THREE.Mesh(new THREE.ConeGeometry(.78,1.3,8), M(0x54aa4e)); c2.position.y=2.55; c2.castShadow=true; g.add(c2);
+}
+[[-8.3,1.2,1.1],[-6.2,3.6,.9],[-3,4.6,1.15],[-1.3,4.3,.8],[1.4,4.9,1],[5.9,4.2,1.15],[8.2,1.7,.85],[8.7,-2.5,.9],[4.4,-2.9,.75],[-2.7,-3.1,.85],[7.7,3.6,.78]].forEach(t=>tree(...t));
+function bush(x,z,c=0x4d9b51){ box(1.05,.55,1.05,c,x,2.75,z,island); box(.72,.45,.72,c,x+.4,3.15,z+.1,island); }
+[[-9.2,-2.2],[-4.2,2.5],[0.4,3.25],[5.2,3.35],[9.3,-.4]].forEach(p=>bush(p[0],p[1]));
+// pink blossom trees
+function blossom(x,z){
+  box(.4,.85,.4,0x65462f,x,2.95,z,island);
+  const s = new THREE.Mesh(new THREE.IcosahedronGeometry(.78,0), M(0xf3c7d6,.7)); s.position.set(x,3.8,z); s.castShadow=true; island.add(s);
+}
+[[7.7,1.15],[2.2,4.35],[-5.7,4.05]].forEach(p=>blossom(p[0],p[1]));
+
+// Tiny flags
+function flag(x,z,ry=0){
+  const g=new THREE.Group(); g.position.set(x,2.75,z); island.add(g);
+  box(.08,1.7,.08,0x3a3a3a,0,.85,0,g);
+  const f=new THREE.Mesh(new THREE.PlaneGeometry(1.05,.62), new THREE.MeshBasicMaterial({ map:flagTex, side:THREE.DoubleSide }));
+  f.position.set(.56,1.42,0); f.rotation.y=ry; g.add(f);
+}
+flag(-7.6,-2.7,.2); flag(1.9,-3.1,-.35); flag(6.9,2.7,.5);
+
+// Hot air balloons
+function balloon(texture, scale=1, x=0,y=8,z=0){
+  const g = new THREE.Group(); g.position.set(x,y,z); g.scale.setScalar(scale); scene.add(g);
+  const env = new THREE.Mesh(new THREE.SphereGeometry(1.35,18,14,0,Math.PI*2,0,Math.PI*.82), new THREE.MeshStandardMaterial({ map:texture, roughness:.55, side:THREE.DoubleSide }));
+  env.scale.y = 1.18; env.castShadow = true; g.add(env);
+  box(.74,.42,.74,0x6b4a2e,0,-1.95,0,g);
+  for(let i=0;i<4;i++){ const a=i/4*Math.PI*2; const cord = box(.045,.85,.045,0x3a2b20,Math.cos(a)*.42,-1.5,Math.sin(a)*.42,g,false,false); cord.rotation.z=Math.cos(a)*.18; cord.rotation.x=Math.sin(a)*.18; }
+  g.userData = { baseY:y, phase:Math.random()*6.28, drift:.1+Math.random()*.18 };
+  return g;
+}
+const balloons = [
+  balloon(balloonRed, 1.15, -15, 10.5, -3),
+  balloon(balloonTricolor, .92, 12, 12.3, -7),
+  balloon(balloonRed, .78, 2.5, 14.4, -13),
+  balloon(balloonTricolor, .82, -11, 13.2, 5)
+];
+
+// Mini floating islands
+function miniIsland(x,y,z,s=1,kind='grass'){
+  const g=new THREE.Group(); g.position.set(x,y,z); g.scale.setScalar(s); scene.add(g);
+  box(2.35,.85,1.85,0x6f4f37,0,-.45,0,g);
+  box(2.65,.55,2.1,0x58a047,0,.15,0,g);
+  cyl(.02,1.05,1.55,0x4a3526,0,-1.45,0,g,7);
+  if(kind==='tree'){ box(.32,.65,.32,0x6b4a2e,0,.75,0,g); const t=new THREE.Mesh(new THREE.ConeGeometry(.72,1.25,8),M(0x3f8f43)); t.position.y=1.6; t.castShadow=true; g.add(t); }
+  if(kind==='house'){ box(.85,.72,.85,0xe7dec8,0,.8,0,g); box(1.05,.35,1.15,0xb44f3f,0,1.35,0,g); }
+  if(kind==='flag'){ box(.06,1.1,.06,0x2c2c2c,.6,.75,.2,g); const f=new THREE.Mesh(new THREE.PlaneGeometry(.62,.4),new THREE.MeshBasicMaterial({map:flagTex,side:THREE.DoubleSide})); f.position.set(.95,1.05,.2); g.add(f); }
+  g.userData={ baseY:y, phase:Math.random()*6.28, amp:.35+Math.random()*.25 };
+  return g;
+}
+const minis = [miniIsland(-12.5,5.5,5.5,1.0,'tree'), miniIsland(10.5,7.0,7.8,.82,'flag'), miniIsland(13.8,4.6,-3.2,.88,'house'), miniIsland(-7.2,7.1,-8.5,.65,'flag')];
+
+// Clouds
+const clouds = [];
+function cloud(x,y,z,s=1){
+  const g=new THREE.Group(); g.position.set(x,y,z); scene.add(g);
+  box(3.4,.85,1.5,0xffffff,0,0,0,g,false,false);
+  box(2.0,.7,1.2,0xffffff,-1.45,-.05,.35,g,false,false);
+  box(2.2,.75,1.35,0xffffff,1.4,.06,-.3,g,false,false);
+  g.scale.setScalar(s);
+  g.userData={speed:.35+Math.random()*.45,x0:x};
+  clouds.push(g);
+}
+cloud(-18,14,-8,.9); cloud(16,16,-4,1.1); cloud(-3,17,7,.8); cloud(19,11.5,7,.65); cloud(-20,11,6,1.05);
+
+// Birds
+const birds=[];
+for(let i=0;i<9;i++){
+  const b=new THREE.Group(); scene.add(b);
+  const wing=box(.9,.09,.38,0xffffff,-.22,0,0,b,false,false);
+  const wing2=box(.9,.09,.38,0xffffff,.22,0,0,b,false,false);
+  b.userData={a:Math.random()*6.28,r:13+Math.random()*11,h:7.5+Math.random()*6,s:.25+Math.random()*.35,w:Math.random()*6.28};
+  birds.push(b);
+}
+
+// Animate
+const clocker = new THREE.Clock();
+function animate(){
+  requestAnimationFrame(animate);
+  const dt = Math.min(clocker.getDelta(), .05);
+  const t = clocker.elapsedTime;
+
+  island.position.y = Math.sin(t*.55)*.55;
+  island.rotation.z = Math.sin(t*.42)*.025;
+  island.rotation.x = Math.cos(t*.38)*.02;
+
+  wheel.rotation.z += dt*.75;
+  balloons.forEach((b,i)=>{ const u=b.userData; b.position.y=u.baseY+Math.sin(t*.7+u.phase)*.65; b.position.x+=Math.sin(t*.28+i)*dt*u.drift; b.rotation.y += dt*.18; });
+  minis.forEach((m,i)=>{ m.position.y=m.userData.baseY+Math.sin(t*.75+m.userData.phase)*m.userData.amp; m.rotation.y = Math.sin(t*.3+i)*.12; });
+  clouds.forEach((c,i)=>{ c.position.x = c.userData.x0 + Math.sin(t*.18+i)*2.8; c.position.y += Math.sin(t*.45+i)*dt*.12; });
+  birds.forEach((b,i)=>{ const u=b.userData; u.a += dt*u.s; b.position.set(Math.cos(u.a)*u.r, u.h+Math.sin(t*1.4+u.w)*.7, Math.sin(u.a)*u.r); b.rotation.y = -u.a+Math.PI/2; b.rotation.z = Math.sin(t*7+u.w)*.35; });
+
+  controls.update();
+  renderer.render(scene,camera);
+}
+animate();
+
+addEventListener('resize', ()=>{
+  camera.aspect = innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+</script>
+</body>
+</html>

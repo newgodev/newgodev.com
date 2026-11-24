@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Castle — Inkling 2 Mini</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body { width:100%; height:100%; overflow:hidden; background:#1a1023; font-family: Georgia, 'Times New Roman', serif; }
+  #app { position:fixed; inset:0; }
+  canvas { display:block; }
+  .ui-corner { position:fixed; z-index:10; pointer-events:none; text-shadow:0 2px 8px rgba(0,0,0,.6); }
+  #topbar { top:14px; right:16px; }
+  #topbar span {
+    display:inline-block; padding:6px 14px; border-radius:14px;
+    background:rgba(20,10,30,.55); color:#fff; font-family:'Segoe UI',Arial,sans-serif;
+    font-size:14px; letter-spacing:.5px; border:1px solid rgba(255,255,255,.18);
+  }
+  #caption { top:12px; left:50%; transform:translateX(-50%); text-align:center; }
+  #bottom-left { left:0; bottom:0; width:100%; padding:0 28px 34px; background:linear-gradient(to top, rgba(0,0,0,.75), rgba(0,0,0,0)); }
+  .overline { font-family:'Segoe UI',Arial,sans-serif; font-size:11px; letter-spacing:4px; color:rgba(255,255,255,.6); margin-bottom:4px;}
+  h1 { font-size:44px; letter-spacing:8px; color:#f5e9d6; font-weight:600; line-height:.95; text-transform:uppercase; }
+  .sub { margin-top:10px; font-family:'Segoe UI',Arial,sans-serif; font-size:15px; color:#e8d9c2; letter-spacing:1px; }
+  .sub b { color:#fff; }
+  .cjk { position:fixed; left:50%; bottom:54px; transform:translateX(-50%); z-index:11; color:#ffd94d; font-family:'Microsoft YaHei','PingFang SC',sans-serif; font-size:32px; font-weight:700; text-shadow:0 3px 6px rgba(0,0,0,.85), 0 0 14px rgba(255,180,0,.35); pointer-events:none; white-space:nowrap;}
+  #hint { position:fixed; bottom:12px; right:22px; z-index:11; color:rgba(255,255,255,.55); font-family:'Segoe UI',Arial,sans-serif; font-size:12px; letter-spacing:2px; text-transform:uppercase; }
+</style>
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+}}
+</script>
+</head>
+<body>
+<div id="app"></div>
+<div class="ui-corner" id="topbar"><span>✕ @loktar00</span></div>
+<div class="ui-corner" id="bottom-left">
+  <div class="overline">REAL-TIME HD-2D SCENE</div>
+  <h1>The Castle</h1>
+  <div class="sub"><b>Inkling 2 Mini (NVFP4)</b> &nbsp;·&nbsp; Deep Sky &nbsp;·&nbsp; Chroma Key</div>
+</div>
+<div class="cjk">这也是汉敦模到的一个优点</div>
+<div id="hint">Click &amp; Drag — Orbit &nbsp;·&nbsp; Scroll — Zoom</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const app = document.getElementById('app');
+const renderer = new THREE.WebGLRenderer({ antialias:true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+app.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0xf7d9a8, 60, 220);
+
+const camera = new THREE.PerspectiveCamera(50, innerWidth/innerHeight, 0.1, 500);
+camera.position.set(-8, 7, 32);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 7, 0);
+controls.enableDamping = true;
+controls.dampingFactor = 0.06;
+controls.minDistance = 10;
+controls.maxDistance = 70;
+controls.maxPolarAngle = Math.PI/2 - 0.04;
+
+/* ---------- Sky: gradient + fog ---------- */
+const skyGeo = new THREE.SphereGeometry(240, 32, 16);
+const skyMat = new THREE.ShaderMaterial({
+  side: THREE.BackSide, depthWrite:false, fog:false,
+  uniforms: {
+    top: { value: new THREE.Color(0x8a5b9e) },
+    mid: { value: new THREE.Color(0xf2b48a) },
+    bot: { value: new THREE.Color(0xffe9c4) }
+  },
+  vertexShader: `varying vec3 vP; void main(){ vP=position; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader: `
+    varying vec3 vP; uniform vec3 top; uniform vec3 mid; uniform vec3 bot;
+    void main(){
+      float h = normalize(vP).y;
+      vec3 c = h > 0.0 ? mix(mid, top, pow(h,0.6)) : mix(mid, bot, pow(-h,0.5));
+      gl_FragColor = vec4(c,1.0);
+    }`
+});
+scene.add(new THREE.Mesh(skyGeo, skyMat));
+
+/* ---------- Sun + flare sprite ---------- */
+const sunCanvas = document.createElement('canvas'); sunCanvas.width = sunCanvas.height = 256;
+const sctx = sunCanvas.getContext('2d');
+const grad = sctx.createRadialGradient(128,128,0,128,128,128);
+grad.addColorStop(0,'rgba(255,255,255,1)');
+grad.addColorStop(0.25,'rgba(255,244,210,0.9)');
+grad.addColorStop(0.6,'rgba(255,205,120,0.35)');
+grad.addColorStop(1,'rgba(255,180,80,0)');
+sctx.fillStyle = grad; sctx.fillRect(0,0,256,256);
+const sunTex = new THREE.CanvasTexture(sunCanvas);
+const sunSprite = new THREE.Sprite(new THREE.SpriteMaterial({
+  map: sunTex, transparent:true, depthWrite:false, blending:THREE.AdditiveBlending, fog:false
+}));
+sunSprite.scale.set(95,95,1);
+sunSprite.position.set(-55, 22, -40);
+scene.add(sunSprite);
+
+/* ---------- Lights ---------- */
+scene.add(new THREE.HemisphereLight(0xffe0b8, 0x3c4a2e, 0.85));
+const sun = new THREE.DirectionalLight(0xffd9a0, 2.4);
+sun.position.set(-45, 40, 18);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.left = -40; sun.shadow.camera.right = 40;
+sun.shadow.camera.top = 40; sun.shadow.camera.bottom = -40;
+sun.shadow.camera.far = 160;
+sun.shadow.bias = -0.0008;
+scene.add(sun);
+const fill = new THREE.DirectionalLight(0xbfa8ff, 0.45);
+fill.position.set(30, 20, -30);
+scene.add(fill);
+
+/* ---------- Materials ---------- */
+const stone = new THREE.MeshStandardMaterial({ color:0xd8c39a, roughness:0.9, flatShading:true });
+const stoneDark = new THREE.MeshStandardMaterial({ color:0xb9a27e, roughness:0.95, flatShading:true });
+const slate = new THREE.MeshStandardMaterial({ color:0x3f4a6b, roughness:0.7, flatShading:true });
+const gold = new THREE.MeshStandardMaterial({ color:0xd8a24a, roughness:0.4, metalness:0.5 });
+const windowMat = new THREE.MeshStandardMaterial({ color:0x2a1a10, emissive:0xffc35e, emissiveIntensity:2.2 });
+const doorMat = new THREE.MeshStandardMaterial({ color:0x5a3a20, emissive:0xff9c3a, emissiveIntensity:0.55, roughness:0.8 });
+
+/* ---------- Ground & path ---------- */
+const ground = new THREE.Mesh(new THREE.CircleGeometry(130, 48), new THREE.MeshStandardMaterial({ color:0x4a6b35, roughness:1 }));
+ground.rotation.x = -Math.PI/2; ground.position.y = -0.05; ground.receiveShadow = true; scene.add(ground);
+
+const path = new THREE.Mesh(new THREE.PlaneGeometry(7, 40), new THREE.MeshStandardMaterial({ color:0x6e4a4a, roughness:1 }));
+path.rotation.x = -Math.PI/2; path.position.set(0, 0.02, 12); path.receiveShadow = true; scene.add(path);
+
+/* ---------- Castle builder ---------- */
+const castle = new THREE.Group();
+scene.add(castle);
+
+function box(w,h,d,x,y,z,mat=stone){
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), mat);
+  m.position.set(x,y,z); m.castShadow = true; m.receiveShadow = true;
+  castle.add(m); return m;
+}
+function coneRoof(r,h,x,y,z){
+  const m = new THREE.Mesh(new THREE.ConeGeometry(r,h,6), slate);
+  m.position.set(x,y,z); m.castShadow = true; castle.add(m);
+  const tip = new THREE.Mesh(new THREE.SphereGeometry(0.28,8,8), gold);
+  tip.position.set(x, y+h/2+0.1, z); castle.add(tip);
+}
+function crenellations(w,d,y,z=0,x=0,mat=stone){
+  const n = Math.floor(w/1.4);
+  for(let i=0;i<n;i++){
+    const px = x - w/2 + 0.7 + i*(w-1.4)/Math.max(n-1,1);
+    box(0.7,0.7,0.7, px, y, z-d/2+0.35, mat);
+    box(0.7,0.7,0.7, px, y, z+d/2-0.35, mat);
+  }
+}
+function window_(x,y,z,w=0.9,h=1.6){
+  const m = new THREE.Mesh(new THREE.BoxGeometry(w,h,0.12), windowMat);
+  m.position.set(x,y,z); castle.add(m);
+  const frame = new THREE.Mesh(new THREE.BoxGeometry(w+0.25,h+0.25,0.06), stoneDark);
+  frame.position.set(x,y,z-0.02); castle.add(frame);
+}
+
+/* Central keep */
+box(8, 12, 8, 0, 6, 0, stone);
+box(9.5, 0.9, 9.5, 0, 12.2, 0, stoneDark);
+crenellations(9.5, 9.5, 12.9, 0, 0, stoneDark);
+coneRoof(6.4, 6, 0, 16.2, 0);
+// middle roof small tower
+box(2.6, 3.4, 2.6, 0, 15.5, -5.6, stoneDark);
+coneRoof(2.1, 3.2, 0, 19.2, -5.6);
+
+/* Left tower */
+box(4.6, 14, 4.6, -8.8, 7, 0.6, stone);
+box(5.4, 0.9, 5.4, -8.8, 14.2, 0.6, stoneDark);
+crenellations(5.4, 5.4, 14.9, 0.6, -8.8, stoneDark);
+coneRoof(3.7, 5.5, -8.8, 18.9, 0.6);
+// small left turret
+box(1.9, 4.5, 1.9, -6.3, 13.2, 2.2, stoneDark);
+coneRoof(1.5, 2.6, -6.3, 16.6, 2.2);
+
+/* Right tower */
+box(4.6, 13, 4.6, 8.8, 6.5, 0.6, stone);
+box(5.4, 0.9, 5.4, 8.8, 13.2, 0.6, stoneDark);
+crenellations(5.4, 5.4, 13.9, 0.6, 8.8, stoneDark);
+coneRoof(3.7, 5.5, 8.8, 17.7, 0.6);
+box(1.9, 4.5, 1.9, 6.3, 12.4, 2.2, stoneDark);
+coneRoof(1.5, 2.6, 6.3, 15.8, 2.2);
+
+/* Side walls with crenellations */
+box(6, 5, 4, -4.5, 2.5, 0, stoneDark);
+box(6, 5, 4, 4.5, 2.5, 0, stoneDark);
+crenellations(6, 4, 5.2, 0, -4.5, stoneDark);
+crenellations(6, 4, 5.2, 0, 4.5, stoneDark);
+
+/* Door + banner */
+const door = new THREE.Mesh(new THREE.BoxGeometry(3.2, 5.4, 0.35), doorMat);
+door.position.set(0, 2.7, 4.05); door.castShadow = true; castle.add(door);
+const arch = new THREE.Mesh(new THREE.CylinderGeometry(1.6,1.6,0.36,16,1,false,0,Math.PI), stoneDark);
+arch.rotation.x = Math.PI/2; arch.rotation.z = Math.PI;
+arch.position.set(0, 5.4, 4.05); castle.add(arch);
+
+const banner = new THREE.Mesh(new THREE.BoxGeometry(2.4, 3.1, 0.18), new THREE.MeshStandardMaterial({ color:0xb03a2e, roughness:0.85 }));
+banner.position.set(0, 8.6, 4.05); castle.add(banner);
+const emblem = new THREE.Mesh(new THREE.ConeGeometry(0.55, 1.7, 4), gold);
+emblem.position.set(0, 8.6, 4.18); emblem.rotation.x = Math.PI; castle.add(emblem);
+
+/* Windows */
+window_(0, 10.6, 4.12);
+window_(-8.8, 11.4, 2.95); window_(-8.8, 7.8, 2.95); window_(-8.8, 4.4, 2.95);
+window_(8.8, 10.8, 2.95); window_(8.8, 7.4, 2.95); window_(8.8, 4.2, 2.95);
+window_(-3.4, 3.4, 2.12); window_(3.4, 3.4, 2.12);
+window_(-1.6, 6.6, 4.12); window_(1.6, 6.6, 4.12);
+
+/* Flags */
+function flag(x, y, z){
+  const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.07,3.4,6), new THREE.MeshStandardMaterial({color:0x222}));
+  pole.position.set(x, y+1.7, z); castle.add(pole);
+  const flagMesh = new THREE.Mesh(new THREE.BoxGeometry(1.9,1.0,0.05), new THREE.MeshStandardMaterial({color:0xc49a3a, side:THREE.DoubleSide}));
+  flagMesh.position.set(x+0.98, y+2.8, z); castle.add(flagMesh);
+}
+flag(0, 19.2, 0); flag(8.8, 21.0, 0.6);
+
+/* Barrels & crates */
+const barrelMat = new THREE.MeshStandardMaterial({ color:0x6b4226, roughness:0.85, flatShading:true });
+function barrel(x,z,r=0.55,h=1.4){
+  const b = new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,10), barrelMat);
+  b.position.set(x, 0.7, z); b.castShadow = true; castle.add(b);
+}
+barrel(-7.6, 6.2); barrel(-6.4, 6.4); barrel(-5.6, 6.5, 0.6, 1.5);
+const sack = new THREE.Mesh(new THREE.SphereGeometry(0.85,12,10), new THREE.MeshStandardMaterial({ color:0xc8a05a, roughness:1 }));
+sack.scale.set(1.5,0.8,1); sack.position.set(8.4, 0.65, 7.2); sack.rotation.y = 0.4; sack.castShadow = true; castle.add(sack);
+const crate = new THREE.Mesh(new THREE.BoxGeometry(1.1,1.1,1.1), barrelMat); crate.position.set(5.6,0.55,6.0); crate.rotation.y = 0.5; crate.castShadow = true; castle.add(crate);
+
+/* Torches */
+function torch(x,z){
+  const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.12,2.2,6), new THREE.MeshStandardMaterial({color:0x2a1c14}));
+  pole.position.set(x,1.1,z); pole.castShadow = true; castle.add(pole);
+  const flame = new THREE.Mesh(new THREE.ConeGeometry(0.32,0.85,8), new THREE.MeshStandardMaterial({color:0xff9a3c, emissive:0xff7a1e, emissiveIntensity:3}));
+  flame.position.set(x,2.45,z); castle.add(flame);
+  const glow = new THREE.PointLight(0xffb15e, 6, 9); glow.position.set(x,2.6,z); castle.add(glow);
+}
+torch(-3.2, 5.6); torch(3.2, 5.6);
+
+/* Lantern post */
+const lampPole = new THREE.Mesh(new THREE.CylinderGeometry(0.09,0.11,4.6,6), new THREE.MeshStandardMaterial({color:0x3a2a1c}));
+lampPole.position.set(12.2, 2.3, 6.5); lampPole.castShadow = true; castle.add(lampPole);
+const lampHead = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.6,0.5), new THREE.MeshStandardMaterial({color:0x111, emissive:0xffd27a, emissiveIntensity:2.5}));
+lampHead.position.set(12.2, 4.85, 6.5); castle.add(lampHead);
+
+/* Characters */
+function person(x,z,color,h=2.2){
+  const g = new THREE.Group();
+  const body = new THREE.Mesh(new THREE.BoxGeometry(0.85,1.25,0.55), new THREE.MeshStandardMaterial({color, roughness:0.8}));
+  body.position.y = 0.95; body.castShadow = true; g.add(body);
+  const head = new THREE.Mesh(new THREE.BoxGeometry(0.62,0.62,0.62), new THREE.MeshStandardMaterial({color:0xffd9b0}));
+  head.position.y = 1.95; head.castShadow = true; g.add(head);
+  const hat = new THREE.Mesh(new THREE.BoxGeometry(0.7,0.28,0.7), new THREE.MeshStandardMaterial({color:0x2a2f8a}));
+  hat.position.y = 2.38; g.add(hat);
+  g.position.set(x, 0, z);
+  castle.add(g); return g;
+}
+const p1 = person(-0.7, 6.6, 0x2a2f8a);
+const p2 = person(3.6, 5.4, 0xd8b27a);
+p1.rotation.y = Math.PI; p2.rotation.y = Math.PI * 0.9;
+
+/* Bushes */
+const bushMat = new THREE.MeshStandardMaterial({ color:0x2e4a24, roughness:1, flatShading:true });
+for(let i=0;i<14;i++){
+  const a = (i/14)*Math.PI*2 + 0.3;
+  const r = 26 + Math.random()*18;
+  const bush = new THREE.Mesh(new THREE.IcosahedronGeometry(0.9+Math.random()*0.9, 0), bushMat);
+  bush.position.set(Math.cos(a)*r, 0.55, Math.sin(a)*r * 0.6 + 8);
+  bush.castShadow = true; scene.add(bush);
+}
+
+/* ---------- Interaction: mouse-shifts-light ---------- */
+const targetLight = new THREE.Vector3(-45, 40, 18);
+const curLight = targetLight.clone();
+addEventListener('pointermove', e => {
+  const nx = (e.clientX/innerWidth - 0.5) * 2;
+  const ny = (e.clientY/innerHeight - 0.5) * 2;
+  targetLight.set(-45 + nx*20, 40 - ny*12, 18 + nx*10);
+});
+
+/* ---------- Loop ---------- */
+const clock = new THREE.Clock();
+function animate(){
+  requestAnimationFrame(animate);
+  const t = clock.getElapsedTime();
+  controls.update();
+  curLight.lerp(targetLight, 0.05);
+  sun.position.copy(curLight);
+  const sx = -55 + Math.sin(t*0.4)*1.5;
+  sunSprite.position.set(sx, 22 + Math.sin(t*0.25)*1.5, -45);
+  sunSprite.material.opacity = 0.9 + Math.sin(t*1.3)*0.08;
+  p1.position.y = Math.sin(t*2)*0.05;
+  p2.rotation.y = Math.PI*0.9 + Math.sin(t*0.8)*0.25;
+  renderer.render(scene, camera);
+}
+animate();
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+</script>
+</body>
+</html>

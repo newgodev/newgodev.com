@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snowy Village — a quiet evening under the dusk</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:100%; height:100%; overflow:hidden; background:#0b0b1e; font-family:Georgia,'Times New Roman',serif; }
+  #app { position:fixed; inset:0; }
+  canvas { display:block; }
+
+  /* vignette */
+  .vignette { position:fixed; inset:0; pointer-events:none; z-index:5;
+    background:radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(5,5,20,.55) 100%); }
+
+  /* top-right handle */
+  .handle { position:fixed; top:12px; right:14px; z-index:20; display:flex; align-items:center; gap:6px;
+    background:rgba(8,8,24,.55); border:1px solid rgba(255,255,255,.28); border-radius:12px;
+    padding:4px 10px; color:#fff; font-size:14px; letter-spacing:.4px; backdrop-filter:blur(4px); }
+  .handle b { font-weight:600; }
+
+  /* title overlay */
+  #overlay { position:fixed; inset:0; z-index:10; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    background:radial-gradient(ellipse at center, rgba(10,10,30,.05) 40%, rgba(8,8,26,.45) 100%);
+    transition:opacity 1.4s ease; cursor:pointer; user-select:none; }
+  #overlay.hidden { opacity:0; pointer-events:none; }
+  .kicker { color:#e8dfc8; font-size:13px; letter-spacing:8px; text-transform:uppercase; margin-bottom:14px; opacity:.9; }
+  h1 { color:#f4ecdd; font-weight:400; font-size:clamp(38px,7vw,84px); letter-spacing:0.14em; text-align:center;
+    text-shadow:0 2px 24px rgba(0,0,0,.6); line-height:1.05; }
+  .tagline { color:#d9d3c2; font-style:italic; font-size:clamp(13px,1.6vw,19px); letter-spacing:.12em; margin-top:16px; opacity:.92; }
+  .btn { margin-top:34px; display:inline-block; padding:10px 36px; color:#f2efe4; border:1px solid rgba(240,235,215,.55);
+    border-radius:4px; font-size:12px; letter-spacing:5px; text-transform:uppercase; background:rgba(20,20,40,.35);
+    backdrop-filter:blur(3px); animation:pulse 2.2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:.65;} 50%{opacity:1;} }
+
+  /* bottom ticker */
+  .ticker { position:fixed; left:10px; bottom:12px; z-index:20; color:#fff; font-family:Arial,Helvetica,sans-serif;
+    font-size:13px; background:rgba(6,6,18,.5); border-radius:6px; padding:6px 12px; letter-spacing:.2px; max-width:70vw;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .caption { position:fixed; left:0; right:0; bottom:0; z-index:20; text-align:center; font-family:Arial,sans-serif;
+    font-weight:700; font-size:clamp(16px,2.6vw,30px); color:#ffe14d; text-shadow:0 2px 6px #000, 0 0 18px rgba(0,0,0,.7);
+    padding:6px 12px 10px; pointer-events:none; letter-spacing:1px; }
+  .hint { position:fixed; bottom:64px; left:50%; transform:translateX(-50%); z-index:20; color:rgba(255,255,255,.75);
+    font-family:Arial,sans-serif; font-size:12px; letter-spacing:2px; opacity:0; transition:opacity .8s; pointer-events:none; }
+  .hint.show { opacity:.85; }
+</style>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<div id="app"></div>
+<div class="vignette"></div>
+<div class="handle"><span>X</span><b>@loktar00</b></div>
+
+<div id="overlay">
+  <div class="kicker">— the —</div>
+  <h1>SNOWY VILLAGE</h1>
+  <div class="tagline">a quiet evening under the dusk</div>
+  <div class="btn">Click to begin</div>
+</div>
+
+<div class="hint" id="hint">DRAG TO ORBIT &nbsp;·&nbsp; SCROLL TO ZOOM</div>
+<div class="ticker">Inkling 2 Mini (NVFP4) · DeepSeek Harness · 295k tokens — small towns hold the warmth</div>
+<div class="caption" id="caption">轻轻的雪，落在村庄里的每一盏灯上</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+/* ---------- renderer / scene / camera ---------- */
+const app = document.getElementById('app');
+const renderer = new THREE.WebGLRenderer({ antialias:true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+app.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x171632);
+scene.fog = new THREE.FogExp2(0x1c1b3a, 0.012);
+
+const camera = new THREE.PerspectiveCamera(48, innerWidth/innerHeight, 0.1, 300);
+camera.position.set(11, 7.5, 16);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.06;
+controls.target.set(0, 3.2, 0);
+controls.minDistance = 8;
+controls.maxDistance = 34;
+controls.maxPolarAngle = Math.PI * 0.49;
+controls.minPolarAngle = Math.PI * 0.18;
+controls.enablePan = false;
+
+/* ---------- lights ---------- */
+scene.add(new THREE.HemisphereLight(0x8fa3d9, 0x2b2a45, 0.75));
+const moonLight = new THREE.DirectionalLight(0xbdc7ff, 0.9);
+moonLight.position.set(-14, 22, -10);
+moonLight.castShadow = true;
+moonLight.shadow.mapSize.set(2048, 2048);
+moonLight.shadow.camera.left = -28; moonLight.shadow.camera.right = 28;
+moonLight.shadow.camera.top = 28; moonLight.shadow.camera.bottom = -28;
+scene.add(moonLight);
+const fill = new THREE.DirectionalLight(0xff9a5c, 0.28);
+fill.position.set(12, 6, 10);
+scene.add(fill);
+
+/* ---------- palette ---------- */
+const P = {
+  snow:0xe9ecf6, snowShadow:0xcfd6ea, wood:0x4e3527, woodDark:0x3a261a,
+  roof:0xf4f6fb, pine:0x1e3d2f, pineSnow:0xe6ebf6, stone:0x555a75,
+  window:0xffd98a, path:0xe4e9f6
+};
+
+const mat = (c, rough=0.9) => new THREE.MeshStandardMaterial({ color:c, roughness:rough, metalness:0 });
+
+/* ---------- ground ---------- */
+const ground = new THREE.Mesh(new THREE.CircleGeometry(60, 48), mat(P.snow, 1));
+ground.rotation.x = -Math.PI/2;
+ground.receiveShadow = true;
+scene.add(ground);
+
+// gentle snow mounds
+const moundMat = mat(0xdde3f2, 1);
+const moundPositions = [[-6,4,2.4],[5,6,2],[8,-2,2.6],[-9,-3,2.2],[2,-6,2],[-3,7,2.2]];
+moundPositions.forEach(([x,z,s])=>{
+  const m = new THREE.Mesh(new THREE.SphereGeometry(s, 12, 8), moundMat);
+  m.scale.y = 0.28; m.position.set(x, 0.1, z);
+  m.receiveShadow = true;
+  scene.add(m);
+});
+
+/* ---------- path ---------- */
+const path = new THREE.Mesh(new THREE.PlaneGeometry(3.4, 26), mat(P.path, 1));
+path.rotation.x = -Math.PI/2;
+path.position.set(0, 0.02, 0);
+path.receiveShadow = true;
+scene.add(path);
+
+/* ---------- cabin builder ---------- */
+function makeWindow(parent, x, y, z, w=0.55, h=0.62, ry=0){
+  const frame = new THREE.Mesh(new THREE.BoxGeometry(w+0.1, h+0.1, 0.06), mat(0x2c1c12,0.8));
+  const glass = new THREE.Mesh(new THREE.BoxGeometry(w, h, 0.08),
+    new THREE.MeshStandardMaterial({ color:0x2a2a2a, emissive:P.window, emissiveIntensity:2.4, roughness:0.4 }));
+  const cross = new THREE.Mesh(new THREE.BoxGeometry(0.05, h, 0.1), mat(0x3a261a,0.8));
+  const cross2 = new THREE.Mesh(new THREE.BoxGeometry(w, 0.05, 0.1), mat(0x3a261a,0.8));
+  frame.position.set(x, y, z);
+  glass.position.set(x, y, z+0.02);
+  cross.position.set(x, y, z+0.04); cross2.position.set(x, y, z+0.04);
+  frame.rotation.y = ry; glass.rotation.y = ry; cross.rotation.y = ry; cross2.rotation.y = ry;
+  parent.add(frame, glass, cross, cross2);
+  return glass;
+}
+
+function makeCabin(x, z, ry, s=1){
+  const g = new THREE.Group();
+  const base = new THREE.Mesh(new THREE.BoxGeometry(4.4*s, 2.4*s, 3.4*s), mat(P.wood, 0.95));
+  base.position.y = 1.2*s;
+  base.castShadow = true; base.receiveShadow = true;
+  g.add(base);
+
+  // timber frame
+  for(let i=-1;i<=1;i++){
+    const beam = new THREE.Mesh(new THREE.BoxGeometry(0.16*s, 2.4*s, 0.12*s), mat(P.woodDark,0.9));
+    beam.position.set(i*1.7*s, 1.2*s, 1.72*s);
+    g.add(beam);
+  }
+
+  // roof: two sloped slabs
+  const roofMat = mat(P.roof, 1);
+  const roofL = new THREE.Mesh(new THREE.BoxGeometry(5.2*s, 0.24*s, 2.6*s), roofMat);
+  roofL.position.set(0, 3.55*s, -0.9*s);
+  roofL.rotation.x = 0.55;
+  const roofR = roofL.clone();
+  roofR.position.set(0, 3.55*s, 0.9*s);
+  roofR.rotation.x = -0.55;
+  roofL.castShadow = roofR.castShadow = true;
+  g.add(roofL, roofR);
+
+  const ridge = new THREE.Mesh(new THREE.BoxGeometry(5.1*s, 0.22*s, 0.5*s), mat(P.roof,1));
+  ridge.position.set(0, 3.98*s, 0);
+  g.add(ridge);
+
+  // chimney
+  const chim = new THREE.Mesh(new THREE.BoxGeometry(0.55*s, 1.4*s, 0.55*s), mat(P.stone, 0.95));
+  chim.position.set(1.5*s, 4.2*s, -0.6*s);
+  chim.castShadow = true;
+  g.add(chim);
+  const cap = new THREE.Mesh(new THREE.BoxGeometry(0.75*s, 0.18*s, 0.75*s), mat(P.roof,1));
+  cap.position.set(1.5*s, 4.95*s, -0.6*s);
+  g.add(cap);
+
+  // door
+  const door = new THREE.Mesh(new THREE.BoxGeometry(0.9*s, 1.5*s, 0.1*s), mat(0x2c1c12,0.85));
+  door.position.set(0, 0.75*s, 1.71*s);
+  g.add(door);
+  const knob = new THREE.Mesh(new THREE.SphereGeometry(0.06*s,8,8), new THREE.MeshStandardMaterial({emissive:0xffd98a, emissiveIntensity:1.4, color:0x111111}));
+  knob.position.set(0.25*s, 0.8*s, 1.78*s);
+  g.add(knob);
+
+  // windows (front)
+  makeWindow(g, -1.45*s, 1.5*s, 1.71*s, 0.55*s, 0.6*s);
+  makeWindow(g, 1.0*s, 1.5*s, 1.71*s, 0.55*s, 0.6*s);
+  // side window
+  const sideGlass = makeWindow(g, 2.21*s, 1.5*s, 0, 0.5*s, 0.55*s, Math.PI/2);
+
+  // warm point light from windows
+  const wp = new THREE.PointLight(0xffb85e, 2.2, 9, 2);
+  wp.position.set(0, 1.6*s, 2.1*s);
+  g.add(wp);
+  g.userData.windowLight = wp;
+
+  // smoke puff from chimney
+  const smokeMat = new THREE.MeshStandardMaterial({ color:0xcfd4e6, transparent:true, opacity:0.35, roughness:1 });
+  const smoke = [];
+  for(let i=0;i<3;i++){
+    const puff = new THREE.Mesh(new THREE.IcosahedronGeometry(0.22+i*0.09, 0), smokeMat.clone());
+    puff.position.set(1.5*s, 5.1*s + i*0.45*s, -0.6*s);
+    puff.userData = { t: Math.random()*Math.PI*2, i };
+    g.add(puff); smoke.push(puff);
+  }
+  g.userData.smoke = smoke;
+
+  g.position.set(x, 0, z);
+  g.rotation.y = ry;
+  scene.add(g);
+  return g;
+}
+
+const cabins = [
+  makeCabin(-6.4, -2.5, 0.38, 1.15),
+  makeCabin(6.3, -2.2, -0.4, 1.05),
+  makeCabin(0.4, -7.6, 0.05, 0.9)
+];
+
+/* ---------- pine trees ---------- */
+function makePine(x, z, s=1, ry=0){
+  const g = new THREE.Group();
+  const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.16*s, 0.24*s, 0.8*s, 6), mat(P.woodDark,0.95));
+  trunk.position.y = 0.4*s;
+  trunk.castShadow = true;
+  g.add(trunk);
+  const layers = [[1.55,1.6,0.85],[1.15,2.15,1.7],[0.72,2.75,2.55]];
+  layers.forEach(([r,h,y], idx)=>{
+    const cone = new THREE.Mesh(new THREE.ConeGeometry(r*s, h*s, 7), mat(P.pine, 1));
+    cone.position.y = y*s;
+    cone.castShadow = true;
+    const snow = new THREE.Mesh(new THREE.ConeGeometry(r*0.72*s, h*0.42*s, 7), mat(P.pineSnow,1));
+    snow.position.y = (y + h*0.28)*s;
+    g.add(cone, snow);
+  });
+  g.position.set(x, 0, z);
+  g.rotation.y = ry;
+  scene.add(g);
+  return g;
+}
+
+const treeDefs = [
+  [-11,-4,1.25],[-9,1.5,0.95],[-12,4,1.1],[11,-3.5,1.2],[9.5,1.8,1.0],[12.5,4.5,1.3],
+  [4,-6.5,0.85],[-4,-6,0.9],[0.5,-10.5,1.15],[-7,-8,1.05],[7.5,-8.5,1.1],[-13,-8,1.3],
+  [13,-8,1.25],[0,-13,1.2],[-2.5,-11,0.8],[3,-11,0.95]
+];
+treeDefs.forEach(([x,z,s])=> makePine(x,z,s,Math.random()*6.28));
+
+/* ---------- distant mountain silhouettes ---------- */
+const mountainMat = mat(0x2b2a4e, 1);
+const mountainMat2 = mat(0x3a3860, 1);
+[[-32,-26,10,9],[-18,-30,12,12],[0,-33,9,11],[16,-31,11,10],[30,-27,12,11],[-26,-24,8,7],[26,-24,8,7]]
+.forEach(([x,z,r,h],i)=>{
+  const m = new THREE.Mesh(new THREE.ConeGeometry(r, h, 5), i%2? mountainMat:mountainMat2);
+  m.position.set(x, h/2 - 0.2, z);
+  scene.add(m);
+  const cap = new THREE.Mesh(new THREE.ConeGeometry(r*0.4, h*0.36, 5), mat(P.snow,1));
+  cap.position.set(x, h*0.83, z);
+  scene.add(cap);
+});
+
+/* ---------- lamp posts ---------- */
+function makeLamp(x, z, ry=0){
+  const g = new THREE.Group();
+  const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.1, 2.6, 6), mat(0x22283f,0.8));
+  pole.position.y = 1.3;
+  pole.castShadow = true;
+  g.add(pole);
+  const head = new THREE.Mesh(new THREE.BoxGeometry(0.42,0.5,0.42),
+    new THREE.MeshStandardMaterial({ color:0x30210f, emissive:0xffc478, emissiveIntensity:2.6, roughness:0.5 }));
+  head.position.y = 2.85;
+  g.add(head);
+  const cap = new THREE.Mesh(new THREE.ConeGeometry(0.42, 0.35, 4), mat(P.stone,0.9));
+  cap.position.y = 3.2; cap.rotation.y = Math.PI/4;
+  g.add(cap);
+  const pl = new THREE.PointLight(0xffb85e, 2.4, 10, 2);
+  pl.position.y = 2.85;
+  g.add(pl);
+  g.userData.light = pl;
+  g.position.set(x,0,z);
+  g.rotation.y = ry;
+  scene.add(g);
+  return g;
+}
+const lamps = [ makeLamp(-2.4, 3.2, 0.4), makeLamp(2.4, 3.2, -0.4), makeLamp(0, -3.4, 0) ];
+
+/* ---------- fence ---------- */
+const fenceMat = mat(P.woodDark, 0.95);
+function fenceRun(x1,z1,x2,z2,count){
+  for(let i=0;i<=count;i++){
+    const t = i/count;
+    const post = new THREE.Mesh(new THREE.BoxGeometry(0.12,0.7,0.12), fenceMat);
+    post.position.set(x1+(x2-x1)*t, 0.35, z1+(z2-z1)*t);
+    post.castShadow = true;
+    scene.add(post);
+    if(i<count){
+      const rail = new THREE.Mesh(new THREE.BoxGeometry(Math.hypot(x2-x1,z2-z1)/count, 0.09, 0.09), fenceMat);
+      rail.position.set(x1+(x2-x1)*(t+0.5/count), 0.48, z1+(z2-z1)*(t+0.5/count));
+      rail.rotation.y = Math.atan2(z2-z1, x2-x1);
+      scene.add(rail);
+    }
+  }
+}
+fenceRun(-4.6, 2.2, -2.2, 3.4, 3);
+fenceRun(4.6, 2.2, 2.2, 3.4, 3);
+
+/* ---------- characters ---------- */
+function makeCharacter(x, z, ry, bodyColor, hatColor){
+  const g = new THREE.Group();
+  const body = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.65, 0.4), mat(bodyColor, 0.9));
+  body.position.y = 0.62; body.castShadow = true;
+  g.add(body);
+  const head = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.42, 0.4), mat(0xf0d8c0, 0.85));
+  head.position.y = 1.18; head.castShadow = true;
+  g.add(head);
+  const eyes = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.08, 0.03), mat(0x1d1d2e,0.6));
+  eyes.position.set(0, 1.22, 0.21);
+  g.add(eyes);
+  const hat = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.32, 0.2, 6), mat(hatColor,0.85));
+  hat.position.y = 1.48;
+  g.add(hat);
+  const brim = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.46, 0.08, 6), mat(hatColor,0.85));
+  brim.position.y = 1.4;
+  g.add(brim);
+  const legs = new THREE.Mesh(new THREE.BoxGeometry(0.4,0.35,0.34), mat(0x2c2436,0.95));
+  legs.position.y = 0.18;
+  g.add(legs);
+  g.position.set(x, 0, z);
+  g.rotation.y = ry;
+  scene.add(g);
+  return g;
+}
+const chars = [makeCharacter(-3.6, 1.4, 0.8, 0x2b7f8a, 0x3aa6a0), makeCharacter(-2.3, 0.9, 0.5, 0xc9a24b, 0x8a6a2f)];
+
+/* ---------- moon + stars ---------- */
+const moon = new THREE.Mesh(new THREE.SphereGeometry(2.4, 24, 24),
+  new THREE.MeshBasicMaterial({ color:0xf2ecd8 }));
+moon.position.set(-18, 24, -38);
+scene.add(moon);
+const moonGlow = new THREE.Mesh(new THREE.SphereGeometry(3.4, 24, 24),
+  new THREE.MeshBasicMaterial({ color:0xf2ecd8, transparent:true, opacity:0.18 }));
+moonGlow.position.copy(moon.position);
+scene.add(moonGlow);
+
+const starGeo = new THREE.BufferGeometry();
+const starCount = 350;
+const pos = new Float32Array(starCount*3);
+for(let i=0;i<starCount;i++){
+  const theta = Math.random()*Math.PI*2;
+  const phi = Math.random()*Math.PI*0.42;
+  const r = 70 + Math.random()*30;
+  pos[i*3] = Math.cos(theta)*Math.sin(phi)*r;
+  pos[i*3+1] = Math.cos(phi)*r * 0.85 + 6;
+  pos[i*3+2] = Math.sin(theta)*Math.sin(phi)*r - 10;
+}
+starGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+const stars = new THREE.Points(starGeo, new THREE.PointsMaterial({ color:0xffffff, size:0.55, transparent:true, opacity:0.85, sizeAttenuation:true }));
+scene.add(stars);
+
+/* ---------- falling snow ---------- */
+const SNOWF = 900;
+const snowGeo = new THREE.BufferGeometry();
+const snowPos = new Float32Array(SNOWF*3);
+const snowVel = new Float32Array(SNOWF);
+const snowPhase = new Float32Array(SNOWF);
+for(let i=0;i<SNOWF;i++){
+  snowPos[i*3] = (Math.random()-0.5)*44;
+  snowPos[i*3+1] = Math.random()*20;
+  snowPos[i*3+2] = (Math.random()-0.5)*44;
+  snowVel[i] = 0.55 + Math.random()*0.9;
+  snowPhase[i] = Math.random()*Math.PI*2;
+}
+snowGeo.setAttribute('position', new THREE.BufferAttribute(snowPos, 3));
+const snow = new THREE.Points(snowGeo, new THREE.PointsMaterial({ color:0xffffff, size:0.16, transparent:true, opacity:0.9, sizeAttenuation:true, depthWrite:false }));
+scene.add(snow);
+
+/* ---------- interaction ---------- */
+const overlay = document.getElementById('overlay');
+const hint = document.getElementById('hint');
+let started = false;
+overlay.addEventListener('click', ()=>{
+  if(started) return;
+  started = true;
+  overlay.classList.add('hidden');
+  hint.classList.add('show');
+  setTimeout(()=> hint.classList.remove('show'), 5000);
+});
+renderer.domElement.addEventListener('click', ()=>{ if(!started) overlay.click(); });
+
+/* ---------- resize ---------- */
+addEventListener('resize', ()=>{
+  camera.aspect = innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+/* ---------- animate ---------- */
+const clock = new THREE.Clock();
+function animate(){
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), 0.05);
+  const t = clock.elapsedTime;
+
+  controls.update();
+
+  // snowfall
+  const arr = snowGeo.attributes.position.array;
+  for(let i=0;i<SNOWF;i++){
+    arr[i*3+1] -= snowVel[i]*dt;
+    arr[i*3] += Math.sin(t*1.2 + snowPhase[i])*0.008;
+    if(arr[i*3+1] < 0){
+      arr[i*3+1] = 20;
+      arr[i*3] = (Math.random()-0.5)*44;
+      arr[i*3+2] = (Math.random()-0.5)*44;
+    }
+  }
+  snowGeo.attributes.position.needsUpdate = true;
+
+  // window flicker
+  cabins.forEach((c,i)=>{
+    if(c.userData.windowLight) c.userData.windowLight.intensity = 2.1 + Math.sin(t*7 + i*2)*0.35;
+    // smoke
+    (c.userData.smoke||[]).forEach((p)=>{
+      p.position.y += dt*0.45;
+      p.position.x += Math.sin(t*0.9 + p.userData.t)*0.0016;
+      const k = (Math.sin(t*0.9 + p.userData.t)+1)/2;
+      p.material.opacity = 0.36 - k*0.24;
+      p.scale.setScalar(0.9 + k*0.4);
+    });
+  });
+
+  // lamp flicker + character sway
+  lamps.forEach((l,i)=>{
+    l.userData.light.intensity = 2.15 + Math.sin(t*8.5 + i*1.9)*0.4 + Math.sin(t*21 + i*3.1)*0.12;
+  });
+  chars[0].rotation.y = 0.8 + Math.sin(t*1.15)*0.12;
+  chars[1].rotation.y = 0.5 + Math.sin(t*1.3 + 2.1)*0.12;
+  chars[0].position.y = Math.sin(t*1.4)*0.02;
+  chars[1].position.y = Math.sin(t*1.25 + 1.4)*0.02;
+
+  // sky motion
+  stars.rotation.y = t*0.004;
+  moonGlow.material.opacity = 0.15 + Math.sin(t*1.35)*0.06;
+  moon.material.color.setHSL(0.13, 0.38, 0.86 + Math.sin(t*1.35)*0.05);
+
+  renderer.render(scene, camera);
+}
+animate();
+</script>
+</body>
+</html>
