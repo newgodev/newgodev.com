@@ -399,7 +399,7 @@ document.getElementById('btnDay').onclick=function(){ night=!night; this.textCon
 document.getElementById('btnMute').onclick=function(){ soundOn=!soundOn; this.textContent=soundOn?'🔊 Sound':'🔇 Muted'; };
 document.getElementById('btnZoom').onclick=function(){ zoom=Math.min(3,zoom+0.4); };
 
-setInterval(()=>{ cropState.wheat+=Math.floor(rand(1,6)); document.getElementById('wheat')+=Math.floor(rand(1,6)); document.getElementById('wheat').textContent = cropState.wheat.toLocaleString(); }, 1200);
+setInterval(()=>{ cropState.wheat+=Math.floor(rand(1,6)); document.getElementById('wheat').textContent = cropState.wheat.toLocaleString(); }, 1200);
 
 setInterval(()=>{
   const d=new Date(Date.now()/1000*1000);

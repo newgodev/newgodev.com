@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brushed DC Motor — Live Physics Animation</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#050508; color:#e8e8ef; font-family:'Segoe UI',system-ui,sans-serif; overflow:hidden; }
+  canvas { display:block; }
+  .panel { position:fixed; z-index:10; background:rgba(16,16,24,.85); border:1px solid rgba(255,255,255,.12); border-radius:10px; padding:12px; backdrop-filter:blur(6px); }
+  #left { top:14px; left:14px; width:230px; }
+  #left h1 { font-size:14px; letter-spacing:.5px; color:#f2f2f8; }
+  #left .sub { font-size:10px; color:#9a9aa8; margin:3px 0 10px; }
+  #left label { font-size:10px; color:#b9b9c6; display:block; margin-bottom:4px; }
+  #vol { width:100%; accent-color:#ffd166; }
+  .row { display:flex; gap:4px; margin:6px 0; }
+  .row button { flex:1; background:#23232f; color:#ddd; border:1px solid #333; border-radius:6px; padding:5px 0; cursor:pointer; font-size:10px; }
+  .row button.active, #pauseBtn { background:#ffd166; color:#1a1a1a; border-color:#ffd166; font-weight:600; }
+  #pauseBtn { width:100%; padding:7px 0; border-radius:7px; border:1px solid #ffd166; cursor:pointer; margin:6px 0; font-size:12px; }
+  .chk { display:flex; align-items:center; gap:6px; font-size:10px; margin:4px 0; cursor:pointer; }
+  .chk input { accent-color:#4da3ff; }
+  #help { font-size:9px; color:#777; margin-top:8px; line-height:1.5; }
+  #right { top:14px; right:14px; width:240px; }
+  #right h2 { font-size:11px; letter-spacing:1px; color:#ffd166; margin-bottom:8px; }
+  #right .line { display:flex; justify-content:space-between; font-size:11px; padding:3px 0; border-bottom:1px solid rgba(255,255,255,.08); }
+  #right .line b { color:#fff; font-variant-numeric:tabular-nums; }
+  #flowReadout { font-size:10px; color:#c8c8d4; margin-top:8px; line-height:1.6; }
+  #legend { bottom:10px; left:50%; transform:translateX(-50%); display:flex; gap:14px; padding:6px 12px; font-size:10px; }
+  .dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:4px; vertical-align:middle; }
+  #top { top:14px; left:50%; transform:translateX(-50%); padding:5px 14px; font-size:11px; color:#ffd166; border-color:#ffd166; border-radius:20px; }
+  #compass { position:fixed; bottom:14px; left:14px; font-size:10px; color:#8a8a96; }
+</style>
+</head>
+<body>
+<div class="panel" id="left">
+  <h1>DC Motor</h1>
+  <div class="sub">How it works — live cross-section</div>
+  <label>VOLTAGE <b id="vVal" style="color:#ffd166">12.0 V</b></label>
+  <input type="range" id="vol" min="0" max="24" step="0.5" value="12">
+  <label>TIME SCALE</label>
+  <div class="row">
+    <button data-t="0.5">½×</button><button data-t="1" class="active">1×</button><button data-t="2">2×</button>
+  </div>
+  <label>FLOW MODE</label>
+  <div class="row">
+    <button data-m="e" class="active">e⁻ electrons</button><button data-m="i">conventional</button>
+  </div>
+  <button id="pauseBtn">⏸ Pause</button>
+  <label class="chk"><input type="checkbox" id="cbFields" checked> FIELD LINES</label>
+  <label class="chk"><input type="checkbox" id="cbElectrons" checked> ELECTRON FLOW</label>
+  <label class="chk"><input type="checkbox" id="cbArrows" checked> FORCE ARROWS</label>
+  <label class="chk"><input type="checkbox" id="cbLabels" checked> LABELS</label>
+  <label class="chk"><input type="checkbox" id="cbAuto" checked> AUTO-ROTATE</label>
+  <div id="help">Drag to orbit · scroll to zoom · space = pause<br>F = flow · L = labels · R = rotate</div>
+</div>
+<div class="panel" id="top">⚡ Commutator flip → coil current reverses</div>
+<div class="panel" id="right">
+  <h2>LIVE READOUT</h2>
+  <div class="line"><span>VOLTAGE</span><b id="rV">12.0 V</b></div>
+  <div class="line"><span>CURRENT</span><b id="rI">4.0 A</b></div>
+  <div class="line"><span>SPEED</span><b id="rR">62 RPM</b></div>
+  <div class="line"><span>TORQUE</span><b id="rT">1.3 N·m</b></div>
+  <div class="line"><span>DIRECTION</span><b id="rD">clockwise</b></div>
+  <div id="flowReadout"></div>
+</div>
+<div class="panel" id="legend">
+  <span><span class="dot" style="background:#ff4d4d"></span>N pole</span>
+  <span><span class="dot" style="background:#4da3ff"></span>S pole</span>
+  <span><span class="dot" style="background:#ff9d45"></span>Copper coil</span>
+  <span><span class="dot" style="background:#b566ff"></span>Magnetic field B</span>
+  <span><span class="dot" style="background:#ffd166"></span>Current flow</span>
+  <span><span class="dot" style="background:#ff5fa2"></span>Torque direction</span>
+</div>
+<div id="compass">TOP view · axis horizontal</div>
+
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x050508);
+scene.fog = new THREE.Fog(0x050508, 18, 45);
+
+const camera = new THREE.PerspectiveCamera(45, innerWidth/innerHeight, 0.1, 100);
+camera.position.set(6.5, 3.2, 7.5);
+
+const renderer = new THREE.WebGLRenderer({ antialias:true });
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.shadowMap.enabled = true;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+document.body.appendChild(renderer.domElement);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; controls.target.set(0,1.6,0); controls.autoRotate = true; controls.autoRotateSpeed = 0.6;
+
+scene.add(new THREE.HemisphereLight(0x404060, 0x0a0a12, 0.9));
+const key = new THREE.DirectionalLight(0xffffff, 2.2); key.position.set(5,8,6); key.castShadow = true; scene.add(key);
+const rim = new THREE.DirectionalLight(0x6688ff, 1.4); rim.position.set(-6,4,-6); scene.add(rim);
+const warm = new THREE.PointLight(0xffb060, 1.6, 12); warm.position.set(0,2.2,3.5); scene.add(warm);
+
+// ground
+const ground = new THREE.Mesh(new THREE.CircleGeometry(14, 64), new THREE.MeshStandardMaterial({color:0x14141c, roughness:.85, metalness:.3}));
+ground.rotation.x = -Math.PI/2; ground.receiveShadow = true; scene.add(ground);
+
+// base + DC source
+const base = new THREE.Mesh(new THREE.BoxGeometry(5.2, .35, 3.2), new THREE.MeshStandardMaterial({color:0x1d1d28, roughness:.7, metalness:.4}));
+base.position.set(0,.18,0); base.castShadow = base.receiveShadow = true; scene.add(base);
+
+// motor group (stator axis along Z)
+const motor = new THREE.Group(); motor.position.set(0, 2.4, 0); scene.add(motor);
+
+const statorMat = new THREE.MeshStandardMaterial({color:0x22222e, roughness:.5, metalness:.7, side:THREE.DoubleSide});
+const left = new THREE.Mesh(new THREE.CylinderGeometry(2.1,2.1,1.5,64,1,true, Math.PI/2, Math.PI), new THREE.MeshStandardMaterial({color:0x2a2a38, roughness:.45, metalness:.8, side:THREE.DoubleSide}));
+left.rotation.x = Math.PI/2; left.castShadow = true; motor.add(left); // partial outer shell (back)
+
+// stator N/S ring halves (face viewer, axis Z)
+const ringGeoN = new THREE.CylinderGeometry(2.05,2.05,1.1,64,1,false, Math.PI/2, Math.PI);
+const ringN = new THREE.Mesh(ringGeoN, new THREE.MeshStandardMaterial({color:0xd83232, roughness:.4, metalness:.3, emissive:0x4a0d0d, emissiveIntensity:.55}));
+ringN.rotation.x = Math.PI/2; ringN.position.z = -0.1; motor.add(ringN);
+const ringS = new THREE.Mesh(new THREE.CylinderGeometry(2.05,2.05,1.1,64,1,false, -Math.PI/2, Math.PI), new THREE.MeshStandardMaterial({color:0x2f6fe0, roughness:.4, metalness:.3, emissive:0x0d1e4a, emissiveIntensity:.55}));
+ringS.rotation.x = Math.PI/2; ringS.position.z = -0.1; motor.add(ringS);
+
+// inner yoke cutaway band
+const yoke = new THREE.Mesh(new THREE.TorusGeometry(1.62, .28, 16, 80), new THREE.MeshStandardMaterial({color:0x2a2a38, roughness:.4, metalness:.85}));
+yoke.position.z = -0.15; motor.add(yoke);
+
+// copper coil (armature) — rotates around Z
+const armature = new THREE.Group(); motor.add(armature);
+const copperMat = new THREE.MeshStandardMaterial({color:0xd97b3f, roughness:.28, metalness:.95, emissive:0x3a1505, emissiveIntensity:.6});
+const barGeo = new THREE.BoxGeometry(.42, 2.5, .55);
+const barA = new THREE.Mesh(barGeo, copperMat); barA.position.y = 1.0; armature.add(barA);
+const barB = new THREE.Mesh(barGeo, copperMat); barB.position.y = -1.0; armature.add(barB);
+const coilRingA = new THREE.Mesh(new THREE.TorusGeometry(1.22,.17,14,40), copperMat);
+coilRingA.position.z = 0.28; armature.add(coilRingA);
+const coilRingB = new THREE.Mesh(new THREE.TorusGeometry(1.22,.17,14,40), copperMat);
+coilRingB.position.z = -0.28; armature.add(coilRingB);
+armature.rotation.z = 0.6;
+
+// split ring commutator + shaft
+const commutator = new THREE.Mesh(new THREE.CylinderGeometry(.42,.42,.5,18), new THREE.MeshStandardMaterial({color:0x8a6a44, roughness:.35, metalness:.9}));
+commutator.rotation.x = Math.PI/2; commutator.position.z = 0.62; motor.add(commutator);
+const shaft = new THREE.Mesh(new THREE.CylinderGeometry(.18,.18,2.6,16), new THREE.MeshStandardMaterial({color:0xd8d8e0, roughness:.25, metalness:.95}));
+shaft.rotation.x = Math.PI/2; shaft.position.z = 1.5; shaft.castShadow = true; motor.add(shaft);
+const rotor = new THREE.Mesh(new THREE.SphereGeometry(.55,24,24), new THREE.MeshStandardMaterial({color:0xb9b9c6, roughness:.3, metalness:.9}));
+rotor.position.z = .95; motor.add(rotor);
+
+// field lines (purple arcs across stator)
+const fieldGroup = new THREE.Group(); motor.add(fieldGroup);
+for (let i=0;i<5;i++){
+  const arc = new THREE.Mesh(new THREE.TorusGeometry(1.45 - i*0.06, .018, 6, 60, Math.PI), new THREE.MeshBasicMaterial({color:0xb566ff, transparent:true, opacity:.6}));
+  arc.rotation.z = 0.2 + i*0.04;
+  arc.position.z = -0.15 + i*0.06;
+  fieldGroup.add(arc);
+}
+
+// force arrows (F = I x B) at coil sides
+const arrowGroup = new THREE.Group(); armature.add(arrowGroup);
+function makeArrow(color){
+  const g = new THREE.Group();
+  const shaftM = new THREE.Mesh(new THREE.CylinderGeometry(.05,.05,.7,8), new THREE.MeshBasicMaterial({color})); shaftM.position.y = .35; g.add(shaftM);
+  const head = new THREE.Mesh(new THREE.ConeGeometry(.14,.28,12), new THREE.MeshBasicMaterial({color})); head.position.y = .75; g.add(head);
+  return g;
+}
+const arrowA = makeArrow(0x4dff9d); arrowGroup.add(arrowA); arrowA.position.set(0, 1.45, 0);
+const arrowB = makeArrow(0x4dff9d); arrowGroup.add(arrowB); arrowB.position.set(0,-1.45,0); arrowB.rotation.x = Math.PI;
+
+// torque curved arrow (around shaft)
+const torque = new THREE.Mesh(new THREE.TorusGeometry(.85,.05,10,50, Math.PI*1.35), new THREE.MeshBasicMaterial({color:0xff5fa2}));
+torque.rotation.x = 0; torque.position.z = 2.0; motor.add(torque);
+const torqueHead = new THREE.Mesh(new THREE.ConeGeometry(.16,.34,12), new THREE.MeshBasicMaterial({color:0xff5fa2}));
+motor.add(torqueHead);
+
+// electron flow particles along coil path (two vertical sides)
+const electronGroup = new THREE.Group(); motor.add(electronGroup);
+const electronGeo = new THREE.SphereGeometry(.07,10,10);
+const electronMat = new THREE.MeshBasicMaterial({color:0x3fd9ff, transparent:true, opacity:0.95});
+const electrons = [];
+for (let i=0;i<26;i++){
+  const e = new THREE.Mesh(electronGeo, electronMat);
+  electronGroup.add(e); electrons.push(e);
+}
+function placeElectrons(t){
+  electrons.forEach((e,i)=>{
+    const p = (i/26 + t) % 1;
+    let x,y;
+    if(p<0.25){ const q=(p/0.25); x=0.42; y=1.25-2.5*q*0+2.5*(1-q); } // over top? keep simple: sides
+    // path: around coil rectangle in XY plane at z=0.3
+    let ang = p*Math.PI*2;
+    // approximate rounded-rectangle path
+    let px = Math.cos(ang)*1.22, py = Math.sin(ang)*1.22;
+    e.position.set(px, py, 0.3);
+    e.position.set(Math.cos(ang)*1.35, Math.sin(ang)*1.35, 0.32);
+  });
+}
+// also animate electrons only on front side
+
+// labels (sprites)
+const labelGroup = new THREE.Group(); motor.add(labelGroup);
+function makeLabel(text, size=0.42, color='#fff'){
+  const c = document.createElement('canvas'); c.width=512; c.height=128;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle='rgba(10,10,16,0.78)'; roundRect(ctx, 8,18,496,92,22); ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,.25)'; ctx.lineWidth=3; roundRect(ctx,8,18,496,92,22); ctx.stroke();
+  ctx.font='600 44px system-ui'; ctx.fillStyle=color; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(text,256,64);
+  const tex = new THREE.CanvasTexture(c); tex.anisotropy=4;
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(1.6,0.4), new THREE.MeshBasicMaterial({map:tex, transparent:true, depthTest:false}));
+  m.renderOrder = 50;
+  return m;
+}
+function roundRect(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+const labels = [
+  makeLabel('N pole', .42, '#ff9a9a'),
+  makeLabel('S pole', .42, '#9ac4ff'),
+  makeLabel('Armature coil', .42, '#ffd2a8'),
+  makeLabel('Magnetic field B', .42, '#d7b3ff'),
+  makeLabel('Commutator', .42, '#ffc9a0'),
+  makeLabel('Shaft', .42, '#d8d8e0'),
+  makeLabel('Rotor spine', .42, '#c8c8d4'),
+  makeLabel('F = I × B', .42, '#8fffc0')
+];
+labels[0].position.set(-1.7, 1.95, -0.1);
+labels[1].position.set(1.7, -1.95, -0.1);
+labels[2].position.set(-2.2, 0.55, 0.5);
+labels[3].position.set(0.2, 1.85, 0.55);
+labels[4].position.set(1.05, -0.15, 0.65);
+labels[5].position.set(0.95, 0.35, 2.2);
+labels[6].position.set(-0.9, 0.15, 1.15);
+labels[7].position.set(0, 1.7, 0.9);
+labels.forEach(l=>labelGroup.add(l));
+
+// DC source box + cable
+const srcBox = new THREE.Mesh(new THREE.BoxGeometry(1.1,1.1,1.1), new THREE.MeshStandardMaterial({color:0x17171f, roughness:.5, metalness:.5}));
+srcBox.position.set(2.6,.75,1.7); srcBox.castShadow=true; scene.add(srcBox);
+const cable = new THREE.Mesh(new THREE.TorusGeometry(1.5,.05,8,40,Math.PI*0.9), new THREE.MeshStandardMaterial({color:0x111116, roughness:.6}));
+cable.rotation.y = 0.5; cable.position.set(1.4,.5,1.4); cable.rotation.x = 0.6; scene.add(cable);
+const srcLabel = makeLabel('DC source',.42,'#9fe6ff'); srcLabel.position.set(2.6,1.55,1.7); scene.add(srcLabel);
+
+// current pulse capsule
+const pulse = new THREE.Mesh(new THREE.TorusGeometry(.5,.09,10,24), new THREE.MeshBasicMaterial({color:0xff4d8d, transparent:true, opacity:0.85}));
+pulse.position.set(0, .45, 2.1); scene.add(pulse);
+
+// state
+const state = { voltage:12, speed:1, flow:'e', paused:false, autoRotate:true, rotor:0.6, current:4, torque:1.3, time:0, dirSign:1, commutatorPhase:0 };
+const $ = id=>document.getElementById(id);
+$('vol').addEventListener('input', e=>{ state.voltage=+e.target.value; $('vVal').textContent=state.voltage.toFixed(1)+' V'; });
+document.querySelectorAll('[data-t]').forEach(b=> b.addEventListener('click', ()=>{
+  document.querySelectorAll('[data-t]').forEach(x=>x.classList.remove('active')); b.classList.add('active'); state.speed=+b.dataset.t;
+}));
+document.querySelectorAll('[data-m]').forEach(b=> b.addEventListener('click', ()=>{
+  document.querySelectorAll('[data-m]').forEach(x=>x.classList.remove('active')); b.classList.add('active'); state.flow=b.dataset.m;
+  electronMat.color.set(b.dataset.m==='e'?0x3fd9ff:0xff5fa2);
+}));
+$('pauseBtn').addEventListener('click', togglePause);
+function togglePause(){ state.paused=!state.paused; $('pauseBtn').textContent = state.paused?'▶ Play':'⏸ Pause'; $('pauseBtn').classList.toggle('active', state.paused); controls.autoRotate = state.autoRotate && !state.paused; }
+[['cbFields',fieldGroup],['cbElectrons',electronGroup],['cbArrows',arrowGroup],['cbLabels',labelGroup]].forEach(([id,g])=>{
+  $(id).addEventListener('change', e=>{ g.visible = e.target.checked; });
+});
+$('cbLabels').addEventListener('change', e=>{ labelGroup.visible=e.target.checked; srcLabel.visible=e.target.checked; });
+$('cbAuto').addEventListener('change', e=>{ state.autoRotate=e.target.checked; controls.autoRotate=state.autoRotate && !state.paused; });
+const eVis = ()=>$('cbElectrons').checked;
+window.addEventListener('keydown', e=>{
+  if(e.code==='Space'){ e.preventDefault(); togglePause(); }
+  if(e.key==='f'){ $('cbElectrons').click(); }
+  if(e.key==='l'){ $('cbLabels').click(); }
+  if(e.key==='r'){ $('cbAuto').click(); }
+});
+
+const readout = $('flowReadout');
+const clock = new THREE.Clock();
+function rescale(){ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight); }
+addEventListener('resize', rescale);
+// keep labels facing camera
+function faceAll(){
+  [...labels, srcLabel].forEach(l=>{ if(l.parent===motor||l.parent===scene) l.lookup ? null:null; });
+  labels.forEach(l=>{ l.quaternion.copy(camera.quaternion); });
+  srcLabel.quaternion.copy(camera.quaternion);
+}
+
+function animate(){
+  requestAnimationFrame(animate);
+  const dt = Math.min(clock.getDelta(), .05) * state.speed;
+  if(!state.paused){
+    state.time += dt;
+    const v = state.voltage;
+    const omega = v * 0.55 + 0.25;
+    state.rotor += omega * dt * (state.dirSign);
+    armature.rotation.z = state.rotor;
+    commutator.rotation.z = state.rotor % (Math.PI*2);
+    shaft.rotation.z = state.rotor;
+    rotor.rotation.z = state.rotor;
+    torque.rotation.z = state.rotor*1.6;
+    torqueHead.position.set(Math.cos(state.rotor*1.6+2.6)*.85, Math.sin(state.rotor*1.6+2.6)*.85, 2.0);
+    torqueHead.rotation.z = state.rotor*1.6+2.6;
+    // current commutation
+    state.commutatorPhase += dt*0.85;
+    state.dirSign = Math.sin(state.commutatorPhase)>0 ? 1 : -1;
+    const cur = v * 0.34 * (0.85 + 0.15*Math.sin(state.time*3));
+    state.current = cur; state.torque = cur*0.32;
+    const rpm = Math.round(omega*9.549*6);
+    const dir = state.dirSign>0?'clockwise':'counterclockwise';
+    $('rV').textContent = v.toFixed(1)+' V';
+    $('rI').textContent = cur.toFixed(1)+' A';
+    $('rR').textContent = rpm+' RPM';
+    $('rT').textContent = state.torque.toFixed(2)+' N·m';
+    $('rD').textContent = dir;
+    readout.innerHTML = `F = I × B = ${cur.toFixed(1)} A × ${(v*0.12+0.4).toFixed(2)} T<br>` + (state.flow==='e'?'e⁻ flow: DC− → DC+ (opposite conventional current)':'conventional current: DC+ → DC−');
+    if(!state.paused){
+      electronGroup.children.forEach((p,i)=>{
+        const t = (state.time*0.7 + i/electronGroup.children.length) % 1;
+        const ang = t*Math.PI*2;
+        p.position.set(Math.cos(ang)*.62, Math.sin(ang)*.62, 1.2 + Math.sin(state.time*2+i)*.1);
+        p.material.opacity = 0.4 + 0.6*Math.abs(Math.sin(ang+state.rotor));
+      });
+      pulse.scale.setScalar(1 + Math.sin(state.time*4)*0.25);
+      pulse.material.opacity = 0.6 + 0.4*Math.sin(state.time*4);
+      arrowGroup.children.forEach(a=>{ a.rotation.z = state.rotor; });
+      labelGroup.children.forEach(l=>{ l.lookAt(camera.position); });
+      srcLabel.lookAt(camera.position);
+    }
+  }
+  controls.update();
+  renderer.render(scene,camera);
+}
+animate();
+</script>
+</body>
+</html>
