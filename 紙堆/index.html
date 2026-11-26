@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>紙堆 · 書信格式練習</title>
+<style>
+:root {
+  --paper: #f7f3e9;
+  --ink: #1a1a1a;
+  --seal: #c41e3a;
+  --moss: #2d5016;
+  --line: #d4cfc4;
+  --trap: #ff4d4d;
+  --ok: #2d5016;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "PingFang TC", "Noto Sans CJK TC", system-ui, sans-serif;
+  background: #2a2520;
+  color: var(--ink);
+  min-height: 100vh;
+  padding-bottom: 180px;
+}
+header {
+  background: #1e1a16;
+  color: #f7f3e9;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+h1 { margin: 0; font-size: 1.2rem; }
+.modes { display: flex; gap: 8px; }
+button {
+  background: #3a342c;
+  color: #f7f3e9;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+button.active { background: var(--seal); }
+.paper {
+  background: var(--paper);
+  max-width: 680px;
+  margin: 16px auto;
+  padding: 28px 32px 40px;
+  min-height: 520px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.4);
+  position: relative;
+}
+.paper::before {
+  content: "美城中學";
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  color: #ccc;
+  font-size: 0.75rem;
+}
+.slot {
+  border: 1.5px dashed #bbb;
+  border-radius: 6px;
+  min-height: 36px;
+  margin: 6px 0;
+  padding: 6px 10px;
+  font-size: 0.95rem;
+  position: relative;
+  transition: border-color .15s;
+}
+.slot.filled { border-style: solid; border-color: #888; background: rgba(255,255,255,.4); }
+.slot.trap { border-color: var(--trap); background: #fff0f0; }
+.slot.ok { border-color: var(--ok); }
+.slot .label {
+  position: absolute;
+  right: 8px;
+  top: 4px;
+  font-size: 0.65rem;
+  color: #999;
+  pointer-events: none;
+}
+.tray {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #1e1a16;
+  color: #f7f3e9;
+  padding: 10px 12px 16px;
+  z-index: 200;
+  max-height: 170px;
+  overflow-y: auto;
+}
+.tray h3 { margin: 0 0 8px; font-size: 0.85rem; opacity: .8; }
+.blocks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.block {
+  background: #3a342c;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: grab;
+  user-select: none;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.block:active { cursor: grabbing; opacity: .7; }
+.ghost {
+  position: fixed;
+  pointer-events: none;
+  background: #3a342c;
+  color: #f7f3e9;
+  padding: 6px 10px;
+  border-radius: 6px;
+  z-index: 300;
+  opacity: .9;
+  max-width: 280px;
+  font-size: 0.85rem;
+}
+.result {
+  margin-top: 16px;
+  padding: 12px;
+  background: #fff;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+.trap-count { color: #f7f3e9; font-size: 0.8rem; margin-left: 8px; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>紙堆 · 拖句砌信</h1>
+    <span class="trap-count" id="trapCount">今次紙堆有 3 個陷阱</span>
+  </div>
+  <div class="modes">
+    <button id="simple" class="active">簡單</button>
+    <button id="hard">困難</button>
+    <button id="check">核對</button>
+    <button id="reset">再砌</button>
+  </div>
+</header>
+
+<div class="paper" id="paper">
+  <div class="slot" data-slot="0"><span class="label">上款</span></div>
+  <div class="slot" data-slot="1"><span class="label">正文1</span></div>
+  <div class="slot" data-slot="2"><span class="label">正文2</span></div>
+  <div class="slot" data-slot="3"><span class="label">正文3</span></div>
+  <div class="slot" data-slot="4"><span class="label">祝頌語</span></div>
+  <div class="slot" data-slot="5"><span class="label">署名</span></div>
+  <div class="slot hard-only" data-slot="6" style="display:none"><span class="label">下款</span></div>
+  <div class="slot hard-only" data-slot="7" style="display:none"><span class="label">日期</span></div>
+  <div class="slot hard-only" data-slot="8" style="display:none"><span class="label">聯絡</span></div>
+</div>
+
+<div class="tray">
+  <h3>紙堆 · 拖去上面信紙</h3>
+  <div class="blocks" id="blocks"></div>
+</div>
+
+<div id="result" class="result" style="display:none; max-width:680px; margin:0 auto 20px;"></div>
+
+<script>
+const DATA = {
+  simple: {
+    traps: 3,
+    correct: [
+      "陳主席：",
+      "本校將於二零二三年六月一日舉行四十周年校慶典禮，誠邀　閣下擔任主禮嘉賓。",
+      "典禮於上午九時正於本校禮堂舉行，敬希　閣下撥冗出席。",
+      "如蒙　閣下於典禮上致辭，本校師生實感榮幸。",
+      "敬祝　安康",
+      "美城中學家長教師會主席　王大明敬上"
+    ],
+    traps: [
+      "親愛的陳小姐：",
+      "你務必出席",
+      "二零二三年六月　日"
+    ]
+  },
+  hard: {
+    traps: 7,
+    correct: [
+      "陳主席：",
+      "本校將於二零二三年六月一日舉行四十周年校慶典禮，誠邀　閣下擔任主禮嘉賓。",
+      "典禮於上午九時正於本校禮堂舉行。",
+      "如蒙　閣下於典禮上致辭，本校師生實感榮幸。",
+      "敬祝　安康",
+      "美城中學家長教師會主席　王大明敬上",
+      "王大明",
+      "二零二三年六月一日",
+      "聯絡電話：2345 6789"
+    ],
+    traps: [
+      "親愛的陳小姐：",
+      "你務必出席",
+      "二零二三年六月　日",
+      "王老師啟",
+      "4000123",
+      "祝　安康",
+      "請務必致辭"
+    ]
+  }
+};
+
+let mode = "simple";
+let slots = [];
+let dragging = null;
+let ghost = null;
+
+function shuffle(a) {
+  const b = [...a];
+  for (let i = b.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [b[i], b[j]] = [b[j], b[i]];
+  }
+  return b;
+}
+
+function init() {
+  const d = DATA[mode];
+  const all = shuffle([...d.correct, ...d.traps]);
+  slots = new Array(mode === "simple" ? 6 : 9).fill(null);
+  document.getElementById("trapCount").textContent = `今次紙堆有 ${d.traps} 個陷阱`;
+  document.querySelectorAll(".hard-only").forEach(el => {
+    el.style.display = mode === "hard" ? "" : "none";
+  });
+  renderSlots();
+  renderBlocks(all);
+  document.getElementById("result").style.display = "none";
+}
+
+function renderSlots() {
+  document.querySelectorAll(".slot").forEach((el, i) => {
+    const text = slots[i];
+    el.innerHTML = text ? text : `<span class="label">${el.querySelector(".label")?.textContent || ""}</span>`;
+    el.classList.toggle("filled", !!text);
+    el.classList.remove("trap", "ok");
+  });
+}
+
+function renderBlocks(list) {
+  const box = document.getElementById("blocks");
+  box.innerHTML = "";
+  list.forEach((text, idx) => {
+    const div = document.createElement("div");
+    div.className = "block";
+    div.textContent = text;
+    div.dataset.text = text;
+    div.addEventListener("pointerdown", startDrag);
+    box.appendChild(div);
+  });
+}
+
+function startDrag(e) {
+  e.preventDefault();
+  const text = e.currentTarget.dataset.text;
+  dragging = text;
+  ghost = document.createElement("div");
+  ghost.className = "ghost";
+  ghost.textContent = text;
+  document.body.appendChild(ghost);
+  moveGhost(e);
+  document.addEventListener("pointermove", moveGhost);
+  document.addEventListener("pointerup", endDrag);
+}
+
+function moveGhost(e) {
+  if (!ghost) return;
+  ghost.style.left = (e.clientX + 8) + "px";
+  ghost.style.top = (e.clientY + 8) + "px";
+}
+
+function endDrag(e) {
+  document.removeEventListener("pointermove", moveGhost);
+  document.removeEventListener("pointerup", endDrag);
+  if (ghost) ghost.remove();
+  ghost = null;
+  if (!dragging) return;
+  const el = document.elementFromPoint(e.clientX, e.clientY);
+  const slot = el?.closest(".slot");
+  if (slot) {
+    const idx = parseInt(slot.dataset.slot);
+    slots[idx] = dragging;
+    renderSlots();
+  }
+  dragging = null;
+}
+
+function check() {
+  const d = DATA[mode];
+  let correct = 0;
+  const details = [];
+  document.querySelectorAll(".slot").forEach((el, i) => {
+    if (i >= slots.length) return;
+    const text = slots[i];
+    el.classList.remove("trap", "ok");
+    if (!text) {
+      details.push(`第 ${i+1} 格未填`);
+      return;
+    }
+    if (d.traps.includes(text)) {
+      el.classList.add("trap");
+      details.push(`第 ${i+1} 格係陷阱：${text}`);
+    } else if (d.correct.includes(text)) {
+      el.classList.add("ok");
+      correct++;
+    } else {
+      details.push(`第 ${i+1} 格唔係標準答案`);
+    }
+  });
+  const res = document.getElementById("result");
+  res.style.display = "block";
+  res.innerHTML = `<strong>核對結果</strong><br>正確句：${correct} / ${d.correct.length}<br><br>${details.join("<br>") || "全部正確，做得好。"}`;
+}
+
+document.getElementById("simple").onclick = () => { mode = "simple"; document.getElementById("simple").classList.add("active"); document.getElementById("hard").classList.remove("active"); init(); };
+document.getElementById("hard").onclick = () => { mode = "hard"; document.getElementById("hard").classList.add("active"); document.getElementById("simple").classList.remove("active"); init(); };
+document.getElementById("check").onclick = check;
+document.getElementById("reset").onclick = init;
+
+init();
+</script>
+</body>
+</html>
