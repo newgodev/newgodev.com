@@ -1,0 +1,165 @@
+================================================================================
+AURORA SPIRE RELAY  —  Form 3 Two-Player Jumping Game
+Engine: tkinter + Pillow   (NO pygame needed)
+================================================================================
+
+HOW TO RUN (Thonny / school PC)
+--------------------------------------------------------------------------------
+1. Install Pillow once:
+     Tools → Manage packages → search "Pillow" → Install
+   Or terminal:
+     pip install Pillow
+
+2. Open this folder’s main program:
+     aurora_spire_relay.py
+
+3. Press F5 / Run.
+
+4. Optional self-check:
+     python aurora_spire_relay.py --verify
+
+Files:
+  aurora_spire_relay.py   ← main game (run this)
+  jumping_game.py         ← short launcher that starts the same game
+  requirements.txt        ← Pillow
+  AURORA_SPIRE_RELAY.txt  ← this guide
+
+
+CONTROLS
+--------------------------------------------------------------------------------
+Player 1:  A / D  move    W or SPACE  jump
+Player 2:  ← / →  move    ↑  jump
+Esc:       back to main menu
+After a win: click "Restart Race"  (or press R / Enter / Space)
+
+
+GAME MODES (start screen)
+--------------------------------------------------------------------------------
+1. Vertical Race      First courier to the SUMMIT star wins.
+                      Overlay: "Player X Win! Time: 12.34 seconds"
+                      + Restart Race button. Timer starts with the race
+                      and STOPS when someone wins.
+
+2. Co-op Climb        BOTH players must stand on the summit together.
+
+3. King of the Hill   Last player who has NOT fallen wins.
+                      Falling eliminates you in this mode only.
+
+VIEW
+--------------------------------------------------------------------------------
+Shared Screen  (default)
+Split Screen   (toggle on the start screen)
+
+
+================================================================================
+BRAINSTORM (invented match — NOT the teacher castle / wizard demo)
+================================================================================
+Theme:
+  AURORA SPIRE RELAY
+  Two polar couriers race up a frozen lighthouse under the northern lights.
+  Ice ledges, frost gems, falling snowballs. No castle ruins. No teacher wizard.
+
+Roles (3 — real stat differences):
+  1. Blink Duelist  — high jump, medium speed; stomps apply a LONG stun
+  2. Heavy Anchor   — slow + heavy; short jump; takes SHORTER stuns
+  3. Gale Runner    — fastest run, lowest jump; best for pure racing lines
+
+How modes feel per role:
+  Race  → Gale Runner shines on long ledges; Blink Duelist skips gaps
+  Co-op → Heavy Anchor can tank snowballs while the partner climbs
+  KOTH  → Blink Duelist stomps to pressure; Heavy resists being stomped out
+
+Theme power-up:  FROST GEM   → short speed burst + one extra air jump
+Theme hazard:    SNOWBALL    → falling ice that stuns on hit
+Shared screen default; split screen optional.
+
+
+================================================================================
+IMAGE URLS USED  (more than 2 — NONE are the teacher worksheet / gstatic links)
+License: Kenney.nl CC0  |  Planet Cute (Daniel Cook) prototyping tileset
+================================================================================
+background:
+  https://raw.githubusercontent.com/ETdoFresh/kenney.nl/master/spaceshooter/Backgrounds/darkPurple.png
+
+player 1 (different character from player 2):
+  https://raw.githubusercontent.com/ETdoFresh/kenney.nl/master/kenney_platformercharacters/PNG/Player/Poses/player_stand.png
+
+player 2:
+  https://raw.githubusercontent.com/ETdoFresh/kenney.nl/master/kenney_platformercharacters/PNG/Female/Poses/female_stand.png
+
+role alt (Heavy Anchor uses adventurer so roles look distinct):
+  https://raw.githubusercontent.com/ETdoFresh/kenney.nl/master/kenney_platformercharacters/PNG/Adventurer/Poses/adventurer_stand.png
+
+platform (ice):
+  https://raw.githubusercontent.com/ETdoFresh/kenney.nl/master/platformergraphics-iceworld/Tiles/iceBlockHalf.png
+
+power-up (frost gem):
+  https://raw.githubusercontent.com/ETdoFresh/kenney.nl/master/platformer-pack-redux-360-assets/PNG/Items/gemBlue.png
+
+hazard (snowball):
+  https://raw.githubusercontent.com/ETdoFresh/kenney.nl/master/platformergraphics-iceworld/Tiles/snowBall.png
+
+win flag / crown (star):
+  https://raw.githubusercontent.com/ETdoFresh/kenney.nl/master/platformer-pack-redux-360-assets/PNG/Items/star.png
+
+fallback extras (Planet Cute — still NOT teacher links):
+  https://raw.githubusercontent.com/Knagis/planet-cute/main/png/Gem%20Orange.png
+  https://raw.githubusercontent.com/Knagis/planet-cute/main/png/Enemy%20Bug.png
+  https://raw.githubusercontent.com/Knagis/planet-cute/main/png/Star.png
+
+If a URL fails: the game draws an original shape (or tries a Planet Cute
+fallback) and lists the failed URL in the console. It never uses the
+teacher’s 2 worksheet links.
+
+
+================================================================================
+FEATURE CHECKLIST  (video demo core + PDF B)
+================================================================================
+[VIDEO-STYLE CORE]
+  [x] Two players, independent controls
+  [x] Platforms, jump, gravity, solid landing
+  [x] Sprite facing flips left/right for BOTH players
+  [x] Fall off bottom → that player returns to start
+      (does NOT reset the other player, except KOTH eliminate)
+  [x] Reach top → "Player X Win! Time: … seconds"
+  [x] Restart Race button clears positions, velocities, stuns,
+      timer, pickups, and mode state
+  [x] Start screen options (mode, view, roles)
+  [x] Shared screen + split screen option
+
+[PDF B — MODES]
+  [x] Vertical Race
+  [x] Co-op Climb
+  [x] King of the Hill (last standing)
+
+[PDF B — INTERACTIONS]
+  [x] Competitive stomping (land on head → stun; never self-stun)
+  [x] Character roles / classes with different stats
+  [x] Asynchronous controls (WASD+Space vs Arrows)
+
+[PDF B — DYNAMIC FEATURES]
+  [x] Power-ups (Frost Gem)
+  [x] Hazards (snowballs + moving ice platforms)
+  [x] Shared Screen vs Split Screen
+
+[POLISH]
+  [x] Particles on jump / stomp / gem
+  [x] Height % tracking on HUD
+  [x] Stomp screen shake
+  [x] Animated aurora on start menu
+  [x] Timer stops after win (does not keep running)
+  [x] Clear visual distinction between players
+
+
+================================================================================
+QUICK TEACHER / MARKER NOTES
+================================================================================
+• Same required MECHANICS as the jumping-game worksheet.
+• Different THEME, ART, and ROLE names from the classroom video.
+• Image set has many direct URLs — not a 2-link teacher clone.
+• Pure Python + Pillow; works in Thonny on a typical school PC.
+
+
+================================================================================
+END OF GUIDE — run aurora_spire_relay.py to play
+================================================================================
