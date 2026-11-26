@@ -76,21 +76,37 @@ except AttributeError:  # older Pillow / some Thonny builds
 
 
 # ---------------------------------------------------------------------------
-# PDF / worksheet console rules (mechanics — our own art)
+# Window size — NOT locked tiny anymore
+# Worksheet base design is 400x300. SCALE makes the real window bigger.
+#   SCALE = 2   →  800 x 600
+#   SCALE = 2.5 → 1000 x 750   (default — comfortable)
+#   SCALE = 3   → 1200 x 900
+# Drag the window corners to resize. Press F11 for fullscreen.
 # ---------------------------------------------------------------------------
-WINDOW_W = 400
-WINDOW_H = 300
+SCALE = 2.5
+BASE_W, BASE_H = 400, 300
+WINDOW_W = int(BASE_W * SCALE)
+WINDOW_H = int(BASE_H * SCALE)
 WINDOW_TITLE = "My First Jumping Game – 3G26"  # class code 3G26
 
-GRAVITY = 0.55
-JUMP_VELOCITY = -9.0
+
+def S(v):
+    """Scale a base-400x300 number up to the real window size."""
+    return int(round(v * SCALE))
+
+
+GRAVITY = 0.55 * SCALE
+JUMP_VELOCITY = -9.0 * SCALE
 JUMP_CUT = 0.45          # release jump early → shorter hop
-MOVE_SPEED = 3.3
-DASH_SPEED = 7.5
+MOVE_SPEED = 3.3 * SCALE
+DASH_SPEED = 7.5 * SCALE
 DASH_FRAMES = 10
 COYOTE_FRAMES = 6        # jump briefly after walking off a dock
 JUMP_BUFFER_FRAMES = 6   # press jump slightly early — still counts
 TICK_MS = 16             # ~60 FPS with root.after()
+PLATFORM_H = max(14, S(14))
+TILE_PX = max(18, S(18))
+SPRITE_ZOOM = max(2, int(round(2 * SCALE)))  # pixel-art upscale
 
 # --- Image URLs (never the teacher's 2 worksheet links) ---
 URL_BG_PRIMARY = (
@@ -145,7 +161,7 @@ _FORBIDDEN_URL_BITS = (
     "ANd9GcRIxXcmjljDf1HN-kUkmPdzJU8cdcOrfRr_hibwaAFmzA",
 )
 
-# 8 dock layouts: (x, y, width)  — height fixed by tile strip
+# Dock layouts in BASE 400x300 coords — scaled with S() when building
 LAYOUTS = [
     # 0 — starter climb
     [(20, 270, 100), (140, 225, 80), (260, 185, 90), (80, 140, 80),
@@ -306,10 +322,13 @@ def load_all_assets():
         stand = drawn_courier(36)
     if run is None:
         run = stand.copy()
-    # Scale up pixel art crisply
-    scale = 2
-    stand = stand.resize((stand.width * scale, stand.height * scale), _NEAREST)
-    run = run.resize((run.width * scale, run.height * scale), _NEAREST)
+    # Scale up pixel art crisply (grows with SCALE)
+    stand = stand.resize(
+        (stand.width * SPRITE_ZOOM, stand.height * SPRITE_ZOOM), _NEAREST,
+    )
+    run = run.resize(
+        (run.width * SPRITE_ZOOM, run.height * SPRITE_ZOOM), _NEAREST,
+    )
     assets["player_stand_r"] = stand
     assets["player_run_r"] = run
     # Step 3 — facing left via FLIP_LEFT_RIGHT
@@ -325,8 +344,8 @@ def load_all_assets():
         plat = drawn_platform_tile(18)
     if ice is None:
         ice = plat.copy()
-    assets["platform_tile"] = plat.resize((18, 18), _NEAREST)
-    assets["ice_tile"] = ice.resize((18, 18), _NEAREST)
+    assets["platform_tile"] = plat.resize((TILE_PX, TILE_PX), _NEAREST)
+    assets["ice_tile"] = ice.resize((TILE_PX, TILE_PX), _NEAREST)
 
     # 5) Extra props
     gold = fetch_image([URL_GOLD_CORE], "gold_core")
@@ -341,21 +360,28 @@ def load_all_assets():
         beacon = gold.copy()
     if coin is None:
         coin = gold.copy()
-    assets["gold"] = gold.resize((20, 20), _NEAREST)
-    assets["beacon"] = beacon.resize((22, 22), _NEAREST)
-    assets["coin"] = coin.resize((16, 16), _NEAREST)
+    assets["gold"] = gold.resize((S(20), S(20)), _NEAREST)
+    assets["beacon"] = beacon.resize((S(22), S(22)), _NEAREST)
+    assets["coin"] = coin.resize((S(16), S(16)), _NEAREST)
     return assets
 
 
-def build_platform_surface(tile_img, width_px, height_px=14):
+def build_platform_surface(tile_img, width_px, height_px=None):
     """Tile a small PNG across a platform width."""
-    tile = tile_img.resize((18, height_px), _NEAREST)
-    surf = Image.new("RGBA", (max(width_px, 18), height_px), (0, 0, 0, 0))
+    if height_px is None:
+        height_px = PLATFORM_H
+    tile = tile_img.resize((TILE_PX, height_px), _NEAREST)
+    surf = Image.new("RGBA", (max(width_px, TILE_PX), height_px), (0, 0, 0, 0))
     x = 0
     while x < width_px:
         surf.paste(tile, (x, 0), tile)
         x += tile.width
     return surf.crop((0, 0, width_px, height_px))
+
+
+def scaled_layout(index):
+    """Turn a base 400x300 layout into real pixel coords for this SCALE."""
+    return [(S(x), S(y), S(w)) for (x, y, w) in LAYOUTS[index]]
 
 
 # ===========================================================================
@@ -553,8 +579,9 @@ class Player:
             self.dash_left -= 1
         else:
             self.vy += GRAVITY
-            if self.vy > 12:
-                self.vy = 12
+            max_fall = 12 * SCALE
+            if self.vy > max_fall:
+                self.vy = max_fall
 
         # Horizontal + left/right edges (school step 5)
         self.x += self.vx
@@ -604,19 +631,22 @@ class Game:
     def __init__(self, root):
         self.root = root
         self.root.title(WINDOW_TITLE)
-        self.root.resizable(False, False)
+        # UNLOCKED — drag corners to resize; F11 = fullscreen
+        self.root.resizable(True, True)
+        self.root.minsize(BASE_W, BASE_H)
         self.root.geometry(f"{WINDOW_W}x{WINDOW_H}")
+        self._fullscreen = False
 
         self.canvas = tk.Canvas(
             root, width=WINDOW_W, height=WINDOW_H,
             highlightthickness=0, bg="#0a1028",
         )
-        self.canvas.pack()
+        self.canvas.pack(fill="both", expand=True)
 
         # Load open-web art (our URLs, not the teacher's)
         self.raw = load_all_assets()
         self.bg_photo = ImageTk.PhotoImage(self.raw["bg"])
-        self.canvas.create_image(0, 0, image=self.bg_photo, anchor="nw")
+        self.bg_id = self.canvas.create_image(0, 0, image=self.bg_photo, anchor="nw")
 
         # Keep PhotoImage refs alive
         self._photos = {
@@ -630,9 +660,16 @@ class Game:
         }
         self._plat_photos = []  # per-platform tiled images
 
-        self.title_font = tkfont.Font(family="Helvetica", size=18, weight="bold")
-        self.ui_font = tkfont.Font(family="Helvetica", size=11, weight="bold")
-        self.small_font = tkfont.Font(family="Helvetica", size=9)
+        # Fonts scale with window so UI isn't tiny
+        self.title_font = tkfont.Font(
+            family="Helvetica", size=max(18, S(18)), weight="bold",
+        )
+        self.ui_font = tkfont.Font(
+            family="Helvetica", size=max(11, S(11)), weight="bold",
+        )
+        self.small_font = tkfont.Font(
+            family="Helvetica", size=max(9, S(9)),
+        )
 
         self.keys = set()
         self.state = "start"  # start | play | gameover | win
@@ -662,16 +699,37 @@ class Game:
 
         self._spawn_stars()
         self._bind_keys()
+        self.root.bind("<F11>", self._toggle_fullscreen)
+        self.root.bind("<Escape>", self._exit_fullscreen)
+        self.root.bind("<Configure>", self._on_resize)
         self._show_start_screen()   # school step 1
         self._loop()
+
+    def _toggle_fullscreen(self, _event=None):
+        self._fullscreen = not self._fullscreen
+        self.root.attributes("-fullscreen", self._fullscreen)
+
+    def _exit_fullscreen(self, _event=None):
+        if self._fullscreen:
+            self._fullscreen = False
+            self.root.attributes("-fullscreen", False)
+
+    def _on_resize(self, event):
+        """Keep canvas filling the window when you drag it bigger/smaller."""
+        if event.widget is not self.root:
+            return
+        # Canvas already expand=True; stretch the backdrop image item's space
+        w = max(event.width, BASE_W)
+        h = max(event.height, BASE_H)
+        self.canvas.config(width=w, height=h)
 
     def _spawn_stars(self):
         """Twinkling neon stars above the docks (canvas overlay)."""
         random.seed(99)
-        for _ in range(18):
+        for _ in range(28):
             x = random.randint(8, WINDOW_W - 8)
-            y = random.randint(8, 120)
-            r = random.choice([1, 1, 2])
+            y = random.randint(8, S(120))
+            r = random.choice([1, 1, 2, 2, 3])
             colour = random.choice(["#ffffff", "#7ef9e0", "#ff7adc", "#a0c4ff"])
             sid = self.canvas.create_oval(
                 x - r, y - r, x + r, y + r, fill=colour, outline="",
@@ -715,25 +773,27 @@ class Game:
         self._clear_world()
 
         panel = self.canvas.create_rectangle(
-            50, 55, 350, 230, fill="#0d1228", outline="#00e6c0", width=2,
+            S(50), S(55), S(350), S(230),
+            fill="#0d1228", outline="#00e6c0", width=2,
         )
         title = self.canvas.create_text(
-            WINDOW_W // 2, 85,
+            WINDOW_W // 2, S(85),
             text="Jumping Game", fill="#e8fff8", font=self.title_font,
         )
         sub = self.canvas.create_text(
-            WINDOW_W // 2, 112,
+            WINDOW_W // 2, S(112),
             text="Neon Sky Docks · Astro-Courier",
             fill="#7ec8ff", font=self.small_font,
         )
         tip = self.canvas.create_text(
-            WINDOW_W // 2, 138,
-            text="← → move · Space jump · Shift dash · grab coins",
+            WINDOW_W // 2, S(138),
+            text="← → move · Space jump · Shift dash · F11 fullscreen",
             fill="#8899bb", font=self.small_font,
         )
         class_tag = self.canvas.create_text(
-            WINDOW_W // 2, 158,
-            text=WINDOW_TITLE, fill="#556688", font=self.small_font,
+            WINDOW_W // 2, S(158),
+            text=WINDOW_TITLE + f"  ({WINDOW_W}x{WINDOW_H})",
+            fill="#556688", font=self.small_font,
         )
         self.ui_ids.extend([panel, title, sub, tip, class_tag])
 
@@ -745,13 +805,13 @@ class Game:
             command=self._start_game,
         )
         self.start_btn_window = self.canvas.create_window(
-            WINDOW_W // 2, 195, window=self.start_btn,
+            WINDOW_W // 2, S(195), window=self.start_btn,
         )
         self.ui_ids.append(self.start_btn_window)
 
         if self.high_score > 0:
             hs = self.canvas.create_text(
-                WINDOW_W // 2, 255,
+                WINDOW_W // 2, S(255),
                 text=f"High Score: {self.high_score}",
                 fill="#ffd76a", font=self.small_font,
             )
@@ -785,36 +845,38 @@ class Game:
     def _build_world(self):
         self._clear_world(keep_player=False)
         self._plat_photos = []
-        layout = LAYOUTS[self.layout_index]
+        layout = scaled_layout(self.layout_index)
         for i, (x, y, w) in enumerate(layout):
             # Mix neon teal + ice accent strips
             tile = self.raw["ice_tile"] if i % 3 == 2 else self.raw["platform_tile"]
-            surf = build_platform_surface(tile, w, 14)
+            surf = build_platform_surface(tile, w, PLATFORM_H)
             photo = ImageTk.PhotoImage(surf)
             self._plat_photos.append(photo)
-            self.platforms.append(Platform(self.canvas, x, y, w, photo, 14))
+            self.platforms.append(
+                Platform(self.canvas, x, y, w, photo, PLATFORM_H),
+            )
         self.top_platform = self.platforms[-1]
 
     def _spawn_player(self):
         if self.player:
             self.player.destroy()
         self.player = Player(self.canvas, self._photos)
-        first = LAYOUTS[self.layout_index][0]
-        self.player.reset(first[0] + 16, first[1] - self.player.h)
+        first = scaled_layout(self.layout_index)[0]
+        self.player.reset(first[0] + S(16), first[1] - self.player.h)
         self.canvas.tag_raise(self.player.id)
 
     def _spawn_props(self):
         # Gold Core power-up on a mid dock
-        layout = LAYOUTS[self.layout_index]
+        layout = scaled_layout(self.layout_index)
         mid = layout[len(layout) // 2]
-        self.gold_base = (mid[0] + mid[2] // 2 - 10, mid[1] - 24)
+        self.gold_base = (mid[0] + mid[2] // 2 - S(10), mid[1] - S(24))
         self.gold_id = self.canvas.create_image(
             self.gold_base[0], self.gold_base[1],
             image=self._photos["gold"], anchor="nw",
         )
         # Goal beacon on the top platform
         top = layout[-1]
-        self.beacon_base = (top[0] + top[2] // 2 - 11, top[1] - 26)
+        self.beacon_base = (top[0] + top[2] // 2 - S(11), top[1] - S(26))
         self.beacon_id = self.canvas.create_image(
             self.beacon_base[0], self.beacon_base[1],
             image=self._photos["beacon"], anchor="nw",
@@ -822,8 +884,8 @@ class Game:
         # Dock coins on a few platforms (skip first + last)
         self.coins = []
         for plat in layout[1:-1:2]:
-            cx = plat[0] + plat[2] // 2 - 8
-            cy = plat[1] - 20
+            cx = plat[0] + plat[2] // 2 - S(8)
+            cy = plat[1] - S(20)
             cid = self.canvas.create_image(
                 cx, cy, image=self._photos["coin"], anchor="nw",
             )
@@ -833,7 +895,7 @@ class Game:
         if self.float_msg_id:
             self.canvas.delete(self.float_msg_id)
         self.float_msg_id = self.canvas.create_text(
-            WINDOW_W // 2, 40, text=text, fill="#ff7adc", font=self.small_font,
+            WINDOW_W // 2, S(40), text=text, fill="#ff7adc", font=self.small_font,
         )
         self.float_msg_life = 40
 
@@ -860,8 +922,9 @@ class Game:
             fill="#ff7adc", font=self.small_font,
         ))
         self.hud_ids.append(self.canvas.create_text(
-            WINDOW_W // 2, 20, anchor="n",
-            text=f"Dock: {name}", fill="#667799", font=self.small_font,
+            WINDOW_W // 2, S(20), anchor="n",
+            text=f"Dock: {name}   (F11 fullscreen · drag to resize)",
+            fill="#667799", font=self.small_font,
         ))
 
     # ----------------------------------------- school step 5 game over
@@ -875,13 +938,14 @@ class Game:
         msg = "DOCK REACHED!" if won else "GAME OVER"
 
         overlay = self.canvas.create_rectangle(
-            50, 75, 350, 225, fill="#0d1228", outline=border, width=2,
+            S(50), S(75), S(350), S(225),
+            fill="#0d1228", outline=border, width=2,
         )
         label = self.canvas.create_text(
-            WINDOW_W // 2, 110, text=msg, fill=colour, font=self.title_font,
+            WINDOW_W // 2, S(110), text=msg, fill=colour, font=self.title_font,
         )
         score_txt = self.canvas.create_text(
-            WINDOW_W // 2, 145,
+            WINDOW_W // 2, S(145),
             text=f"Score: {self.score}   Best: {self.high_score}",
             fill="#e8fff8", font=self.small_font,
         )
@@ -896,7 +960,7 @@ class Game:
             command=self._restart,
         )
         self.restart_btn_window = self.canvas.create_window(
-            WINDOW_W // 2, 185, window=self.restart_btn,
+            WINDOW_W // 2, S(185), window=self.restart_btn,
         )
         self.ui_ids.append(self.restart_btn_window)
 
@@ -977,10 +1041,11 @@ class Game:
             # Gold Core pickup → double dash charges
             if self.gold_id and self.gold_base:
                 gx, gy = self.canvas.coords(self.gold_id)
+                gw, gh = S(20), S(20)
                 if (
-                    self.player.x < gx + 20
+                    self.player.x < gx + gw
                     and self.player.x + self.player.w > gx
-                    and self.player.y < gy + 20
+                    and self.player.y < gy + gh
                     and self.player.y + self.player.h > gy
                 ):
                     self.canvas.delete(self.gold_id)
@@ -995,12 +1060,13 @@ class Game:
 
             # Dock coin pickups
             kept = []
+            cw = S(16)
             for coin in self.coins:
                 cx, cy = self.canvas.coords(coin["id"])
                 hit = (
-                    self.player.x < cx + 16
+                    self.player.x < cx + cw
                     and self.player.x + self.player.w > cx
-                    and self.player.y < cy + 16
+                    and self.player.y < cy + cw
                     and self.player.y + self.player.h > cy
                 )
                 if hit:

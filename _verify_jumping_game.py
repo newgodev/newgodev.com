@@ -26,7 +26,13 @@ def main():
     print("=== Constants & anti-copy ===")
     import my_first_jumping_game_3g26 as g
 
-    check("WINDOW 400x300", g.WINDOW_W == 400 and g.WINDOW_H == 300)
+    check("SCALE >= 2 (bigger screen)", g.SCALE >= 2, str(g.SCALE))
+    check(
+        "window is scaled 400x300 base",
+        g.WINDOW_W == int(400 * g.SCALE) and g.WINDOW_H == int(300 * g.SCALE),
+        f"{g.WINDOW_W}x{g.WINDOW_H}",
+    )
+    check("resizable unlocked in Game", "resizable(True" in open(g.__file__).read())
     check("Title is 3G26", g.WINDOW_TITLE == "My First Jumping Game – 3G26", repr(g.WINDOW_TITLE))
     check("10+ layouts", len(g.LAYOUTS) >= 10, str(len(g.LAYOUTS)))
     check("Game/Player/Platform", all(hasattr(g, n) for n in ("Game", "Player", "Platform")))
@@ -40,7 +46,11 @@ def main():
 
     print("\n=== Asset load (real open-web URLs) ===")
     assets = g.load_all_assets()
-    check("bg loaded", assets["bg"].size == (400, 300), str(assets["bg"].size))
+    check(
+        "bg loaded",
+        assets["bg"].size == (g.WINDOW_W, g.WINDOW_H),
+        str(assets["bg"].size),
+    )
     check("player stand right", assets["player_stand_r"] is not None)
     check("player stand left (FLIP)", assets["player_stand_l"] is not None)
     check("player run pose", assets["player_run_r"] is not None)
@@ -64,7 +74,12 @@ def main():
     root.update()
 
     check("window title", root.title() == g.WINDOW_TITLE, root.title())
-    check("canvas 400x300", int(game.canvas["width"]) == 400 and int(game.canvas["height"]) == 300)
+    check(
+        "canvas matches WINDOW",
+        int(game.canvas["width"]) == g.WINDOW_W
+        and int(game.canvas["height"]) == g.WINDOW_H,
+        f"{game.canvas['width']}x{game.canvas['height']}",
+    )
     check("start state", game.state == "start")
     check("Start Game button", hasattr(game, "start_btn") and game.start_btn.winfo_exists())
 
